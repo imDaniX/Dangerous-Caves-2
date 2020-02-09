@@ -1,0 +1,12 @@
+main: mainPackage.main
+name: DangerousCaves
+version: 10.5
+author: DaddyLootly
+description: Adds and improves mechanics in caves.
+api-version: 1.13
+commands:
+  getworldname:
+    description: Gets the name of the world you are in for use in config.
+    usage: /getworldname
+    permission: dangerc.getworldname
+    permission-message: You don't have the dangerc.getworldname permission.
