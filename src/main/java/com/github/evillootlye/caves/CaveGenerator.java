@@ -1,21 +1,14 @@
 package com.github.evillootlye.caves;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Dispenser;
 import org.bukkit.entity.EntityType;
@@ -24,68 +17,66 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 //import net.minecraft.server.v1_12_R1.BlockPosition;
 //import net.minecraft.server.v1_12_R1.IBlockData;
 
 public class CaveGenerator extends BlockPopulator {
 	
-	Random randor = new Random();
+	private final Random randor = new Random();
 	/*int[][][] rock5 = { { {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
 						{   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
 						{   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };*/
-	int[][][] rock1 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
+	private final int[][][] rock1 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
 						{ {0, 1, 1}, {0, 1, 0}, {0, 1, 0} },
 						{ {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] rock2 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
+	private final int[][][] rock2 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
 						{ {1, 1, 1}, {1, 1, 1}, {0, 1, 0} },
 						{ {0, 1, 1}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] rock3 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] rock3 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
 						{ {0, 1, 1}, {0, 1, 0}, {0, 0, 0} },
 						{ {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] rock4 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] rock4 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
 						{ {1, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 1, 0} },
 						{ {0, 1, 0}, {0, 1, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] rock5 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] rock5 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
 						{ {1, 1, 1}, {0, 1, 1}, {0, 0, 1} },
 						{ {1, 1, 0}, {0, 1, 0}, {0, 0, 0} } };
-	int[][][] rock6 = { { {1, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 0, 1} },
+	private final int[][][] rock6 = { { {1, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 0, 1} },
 						{ {1, 1, 1}, {1, 1, 1}, {1, 1, 0}, {0, 0, 0}, {0, 0, 0} },
 						{ {1, 1, 0}, {0, 1, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] rock7 = { { {1, 1, 0}, {1, 0, 0}, {0, 0, 0} },
+	private final int[][][] rock7 = { { {1, 1, 0}, {1, 0, 0}, {0, 0, 0} },
 						{ {1, 1, 1}, {1, 1, 1}, {1, 1, 0} },
 						{ {1, 1, 1}, {0, 1, 0}, {0, 0, 0} } };
-	int[][][] rock8 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] rock8 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
 					{     {1, 1, 1}, {0, 1, 0}, {0, 0, 0} },
 					{     {0, 1, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] chests1 = { { {0, 6, 0}, {0, 6, 0}, {0, 0, 0} },
+	private final int[][][] chests1 = { { {0, 6, 0}, {0, 6, 0}, {0, 0, 0} },
 						{   {6, 2, 6}, {6, 0, 0}, {0, 0, 0} },
 						{   {0, 5, 0}, {0, 0, 0}, {0, 0, 0} } };
 	//1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
-	int[][][] chests2 = { { {1, 1, 1, 1, 1}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 0, 0, 0, 0} },
+	private final int[][][] chests2 = { { {1, 1, 1, 1, 1}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 0, 0, 0, 0} },
 						{   {1, 1, 1, 1, 1}, {1, 4, 4, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
 						{   {1, 1, 1, 1, 1}, {1, 4, 3, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
 						{   {1, 1, 1, 1, 1}, {1, 4, 0, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
 						{   {1, 1, 1, 1, 1}, {0, 1, 0, 1, 0}, {0, 1, 0, 1, 0}, {0, 1, 1, 1, 0}, {0, 0, 0, 0, 0} } };
-	int[][][] chests3 = { { {1, 1, 1}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] chests3 = { { {1, 1, 1}, {0, 0, 0}, {0, 0, 0} },
 						{   {1, 1, 1}, {0, 2, 0}, {0, 0, 0} },
 						{   {1, 1, 1}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] sfishs1 = { { {0, 7, 0}, {0, 0, 0}, {0, 0, 0} },
+	private final int[][][] sfishs1 = { { {0, 7, 0}, {0, 0, 0}, {0, 0, 0} },
 						{   {7, 9, 7}, {0, 7, 0}, {0, 0, 0} },
 						{   {0, 7, 0}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] sfishs2 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
+	private final int[][][] sfishs2 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
 						{   {10, 9, 10}, {0, 8, 0}, {0, 0, 0} },
 						{   {0, 10, 8}, {0, 0, 0}, {0, 0, 0} } };
-	int[][][] sfishs3 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
+	private final int[][][] sfishs3 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
 						{   {10, 9, 10}, {0, 8, 10}, {0, 10, 0} },
 						{   {0, 10, 8}, {0, 0, 0}, {0, 0, 0} } };
 	
 	@Override
 	public void populate(World wor, Random rand, Chunk chnk) {
 		
-		if(rand.nextInt(main.cavechance+1)==0&&main.cavestruct==true) {
+		if(rand.nextInt(DangerousCaves.cavechance+1)==0&& DangerousCaves.cavestruct) {
 		//-1 + | 1 == random pillar or shape / boulder 2 == random skeleton skull 3 == random room with stuff or random chest 4 == monsters spawner surrounded 5 == random mineshaft / tunnel 6 == spiders nest small 7 == traps
 		//int typeC = rand.nextInt(8);
 			int typeC = rand.nextInt(4);
@@ -94,29 +85,29 @@ public class CaveGenerator extends BlockPopulator {
 			int cZ = chnk.getZ() * 16;
 			int cXOff = cX + 7;
 			int cZOff = cZ + 7;
-			if(main.instance.roomX == -1 && randor.nextInt(100)==1) {
-				if(main.easter) {
+			if(DangerousCaves.instance.roomX == -1 && randor.nextInt(100)==1) {
+				if(DangerousCaves.easter) {
 				createEgg(cXOff, cZOff, wor);
 				}
 			}
 			else {
     		if(typeC==0) {
-    			if(randor.nextInt(main.plrate+1)==0) {
+    			if(randor.nextInt(DangerousCaves.plrate+1)==0) {
     			randomShape(cXOff, cZOff, wor);
     			}
     		}
     		else if(typeC==1) {
-    			if(randor.nextInt(main.blrate+1)==0) {
+    			if(randor.nextInt(DangerousCaves.blrate+1)==0) {
     			randomBoulder(cXOff, cZOff, wor);
     			}
     		}
     		else if(typeC==2) {
-    			if(randor.nextInt(main.trrate+1)==0) {
+    			if(randor.nextInt(DangerousCaves.trrate+1)==0) {
     			randomTrap(cXOff, cZOff, wor);
     			}
     		}
     		else if(typeC==3) {
-    			if(randor.nextInt(main.strate+1)==0) {
+    			if(randor.nextInt(DangerousCaves.strate+1)==0) {
     				randomStructure(cXOff, cZOff, wor);
     			}
     		}
@@ -154,7 +145,7 @@ public class CaveGenerator extends BlockPopulator {
     		}
 	}
 	
-	public int getClosestAir(int cXOff, int cZOff, World w) {
+	private int getClosestAir(int cXOff, int cZOff, World w) {
 		try {
 		Location loc = new Location(w, cXOff, 1, cZOff);
 		while(loc.getY()<55) {
@@ -176,9 +167,9 @@ public class CaveGenerator extends BlockPopulator {
 		}
 	}
 	
-	public Material getRandStone(int define) {
+	private Material getRandStone(int define) {
 		if(define == 1) {
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				return Material.STONE;
 			}
 			else {
@@ -190,11 +181,10 @@ public class CaveGenerator extends BlockPopulator {
 		}
 	}
 	
-	public void randomShape(int cXOff, int cZOff, World w) {
+	private void randomShape(int cXOff, int cZOff, World w) {
 		try {
 		int yVal = getClosestAir(cXOff, cZOff, w);
 		if(yVal == 55) {
-			return;
 		}
 		else {
 		Location loc = new Location(w, cXOff, yVal, cZOff);
@@ -210,11 +200,11 @@ public class CaveGenerator extends BlockPopulator {
 		}
 		else if(type==2) {
 			loc.getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc2 = new Location(loc.getWorld(), loc.getX()+randor.nextInt(2), loc.getY(), loc.getZ()+1);
@@ -223,15 +213,15 @@ public class CaveGenerator extends BlockPopulator {
 		}
 		else if(type==3) {
 			loc.getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc2 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ()+randor.nextInt(2));
@@ -248,17 +238,17 @@ public class CaveGenerator extends BlockPopulator {
 		else if(type==5) {
 			loc.getBlock().setType(Material.STONE_BRICKS, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc2 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()+1);
 			loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc22 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()-1);
@@ -268,29 +258,29 @@ public class CaveGenerator extends BlockPopulator {
 		else if(type==6) {
 			loc.getBlock().setType(Material.STONE_BRICKS, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc2 = new Location(loc.getWorld(), loc.getX()+randor.nextInt(2), loc.getY(), loc.getZ()+1);
 			loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc22 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
 			loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc222 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
 			loc222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
 			loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-			if(randor.nextBoolean()==true) {
+			if(randor.nextBoolean()) {
 				loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
 			}
 			Location loc2222 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ());
@@ -305,16 +295,15 @@ public class CaveGenerator extends BlockPopulator {
 		}
 	  }
 	}
-	catch(Exception error) {
+	catch(Exception ignored) {
 			
 	}
 	}
 	
-	public void randomBoulder(int cXOff, int cZOff, World w) {
+	private void randomBoulder(int cXOff, int cZOff, World w) {
 		try {
 		int yVal = getClosestAir(cXOff, cZOff, w);
 		if(yVal == 55) {
-			return;
 		}
 		else {
 		Location loc = new Location(w, cXOff, yVal, cZOff);
@@ -345,15 +334,14 @@ public class CaveGenerator extends BlockPopulator {
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public void randomTrap(int cXOff, int cZOff, World w) {
+	private void randomTrap(int cXOff, int cZOff, World w) {
 		try {
 		int yVal = getClosestAir(cXOff, cZOff, w);
 		if(yVal == 55) {
-			return;
 		}
 		else {
 		Location loc = new Location(w, cXOff, yVal, cZOff);
@@ -406,9 +394,9 @@ public class CaveGenerator extends BlockPopulator {
 				loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
 				loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
 				loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
-				if(randor.nextBoolean()==true) {
+				if(randor.nextBoolean()) {
 					loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-					if(randor.nextBoolean()==true) {
+					if(randor.nextBoolean()) {
 						loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
 					}
 				}
@@ -416,9 +404,9 @@ public class CaveGenerator extends BlockPopulator {
 			else if(type==6) {
 				loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
 				loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
-				if(randor.nextBoolean()==true) {
+				if(randor.nextBoolean()) {
 					loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-					if(randor.nextBoolean()==true) {
+					if(randor.nextBoolean()) {
 						loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
 					}
 				}
@@ -427,9 +415,9 @@ public class CaveGenerator extends BlockPopulator {
 				loc.getBlock().setType(Material.TRAPPED_CHEST, false);
 				ChestRandomizer.fillChest(loc.getBlock());
 				loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
-				if(randor.nextBoolean()==true) {
+				if(randor.nextBoolean()) {
 					loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-					if(randor.nextBoolean()==true) {
+					if(randor.nextBoolean()) {
 						loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
 					}
 				}
@@ -443,15 +431,14 @@ public class CaveGenerator extends BlockPopulator {
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public void randomStructure(int cXOff, int cZOff, World w) {
+	private void randomStructure(int cXOff, int cZOff, World w) {
 		try {
 		int yVal = getClosestAir(cXOff, cZOff, w);
 		if(yVal == 55) {
-			return;
 		}
 		else {
 		Location loc = new Location(w, cXOff, yVal, cZOff);
@@ -472,12 +459,11 @@ public class CaveGenerator extends BlockPopulator {
 				generateStructure(chests1, loc);
 			}
 			else if(type==4) {
-				if(main.skulls) {
+				if(DangerousCaves.skulls) {
 				loc.getBlock().setType(Material.SKELETON_SKULL, false);
 				}
 			}
 			else if(type==5) {
-				return;
 			}
 			else if(type==6) {
 				Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
@@ -522,11 +508,11 @@ public class CaveGenerator extends BlockPopulator {
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public void decideBlock(int type, Block b) {
+	private void decideBlock(int type, Block b) {
 		//1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
 		if(type==1) {
 			if(randor.nextInt(3)!=0) {
@@ -594,7 +580,7 @@ public class CaveGenerator extends BlockPopulator {
 		}
 	}
 	
-	public void generateStructure(int[][][] rock, Location loc) {
+	private void generateStructure(int[][][] rock, Location loc) {
 		try {
 		int randDirection = randor.nextInt(4);
 		if(randDirection==0) {
@@ -638,11 +624,11 @@ public class CaveGenerator extends BlockPopulator {
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public void generateBoulder(int[][][] rock, Location loc) {
+	private void generateBoulder(int[][][] rock, Location loc) {
 		try {
 		int randDirection = randor.nextInt(4);
 		if(randDirection==0) {
@@ -694,27 +680,21 @@ public class CaveGenerator extends BlockPopulator {
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public boolean isAir(Material m) {
-		if(m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR) {
-			return true;
-		}
-		return false;
+	private boolean isAir(Material m) {
+		return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR;
 	}
 	
-	public boolean isStony(Material m) {
-		if(m.name().toLowerCase().contains("dirt") || m == Material.STONE || m == Material.MOSSY_COBBLESTONE || m == Material.ANDESITE || m == Material.DIORITE || m == Material.COBBLESTONE || m == Material.GRANITE || m == Material.GRAVEL) {
-			return true;
-		}
-		return false;
+	private boolean isStony(Material m) {
+		return m.name().toLowerCase().contains("dirt") || m == Material.STONE || m == Material.MOSSY_COBBLESTONE || m == Material.ANDESITE || m == Material.DIORITE || m == Material.COBBLESTONE || m == Material.GRANITE || m == Material.GRAVEL;
 	}
 	
 	//
 	
-	public void createEgg(int cXOff, int cZOff, World w) {
+	private void createEgg(int cXOff, int cZOff, World w) {
 		Location l = new Location(w, cXOff, randor.nextInt(30)+15, cZOff);
 		Location loc = l.clone();
 		int radius = 7;
@@ -728,7 +708,7 @@ public class CaveGenerator extends BlockPopulator {
 			if(dist < radius * radius){
 				Location l2 = new Location(loc.getWorld(), x, y, z);
 				if(dist > (radius-2) * (radius-2)){
-					l2.getBlock().setMetadata("room1", new FixedMetadataValue(main.instance, 1));
+					l2.getBlock().setMetadata("room1", new FixedMetadataValue(DangerousCaves.instance, 1));
 					if(randor.nextInt(2)==0) {
 						l2.getBlock().setType(Material.BONE_BLOCK, false);
 					}
@@ -737,14 +717,14 @@ public class CaveGenerator extends BlockPopulator {
 					}
 				}
 				else if(dist > (radius-4) * (radius-4)) {
-					l2.getBlock().setMetadata("room1", new FixedMetadataValue(main.instance, 1));
+					l2.getBlock().setMetadata("room1", new FixedMetadataValue(DangerousCaves.instance, 1));
 					l2.getBlock().setType(Material.OBSIDIAN, false);
 				}
 			}
 		}
 		}
 		}
-		generateStructure0(structurefiles.zerozerotwo, l.clone().subtract(2, 3, 3), true, "room2", false, null, 0, false);
+		generateStructure0(StructureFiles.zerozerotwo, l.clone().subtract(2, 3, 3), true, "room2", false, null, false);
 		l.clone().add(4, 0, -2).getBlock().setType(Material.AIR, false);
 		l.clone().add(4, -1, -2).getBlock().setType(Material.AIR, false);
 		l.clone().add(5, 0, -2).getBlock().setType(Material.AIR, false);
@@ -756,16 +736,16 @@ public class CaveGenerator extends BlockPopulator {
 		l.clone().add(6, 0, 0).getBlock().setType(Material.AIR, false);
 		l.clone().add(6, -1, 0).getBlock().setType(Material.AIR, false);
 		Location roomEnter = l.clone().add(5, -1, -1);
-		main.instance.roomX = (int) roomEnter.getX()+1;
-		main.instance.roomY = (int) roomEnter.getY();
-		main.instance.roomZ = (int) roomEnter.getZ()+1;
-		main.instance.config.set("002roomx", main.instance.roomX);
-		main.instance.config.set("002roomy", main.instance.roomY);
-		main.instance.config.set("002roomz", main.instance.roomZ);
-		main.instance.saveConfig();
+		DangerousCaves.instance.roomX = (int) roomEnter.getX()+1;
+		DangerousCaves.instance.roomY = (int) roomEnter.getY();
+		DangerousCaves.instance.roomZ = (int) roomEnter.getZ()+1;
+		DangerousCaves.instance.config.set("002roomx", DangerousCaves.instance.roomX);
+		DangerousCaves.instance.config.set("002roomy", DangerousCaves.instance.roomY);
+		DangerousCaves.instance.config.set("002roomz", DangerousCaves.instance.roomZ);
+		DangerousCaves.instance.saveConfig();
 	}
 	
-	public void decideBlock(int type, Block b, boolean packet, Player p, boolean overwrite) {
+	private void decideBlock(int type, Block b, boolean packet, Player p, boolean overwrite) {
 		//0 == air 1 == null 2 == netherwart brick 3 == netherwart block+red concrete powder 4 == barrier 5 ==netherrack & netherwart block
 		if(overwrite) {
 			if(packet) {
@@ -974,7 +954,7 @@ public class CaveGenerator extends BlockPopulator {
 		}
 	}
 
-	public void generateStructure0(int[][][] structure, Location loc, boolean hasMeta, String meta, boolean packet, Player p, int direction, boolean overwrite) {
+	private void generateStructure0(int[][][] structure, Location loc, boolean hasMeta, String meta, boolean packet, Player p, boolean overwrite) {
 		try {
 		int randDirection = 0;//randor.nextInt(4);
 		if(randDirection==0) {
@@ -984,7 +964,7 @@ public class CaveGenerator extends BlockPopulator {
 						Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()+z);
 						decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
 						if(hasMeta) {
-							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(main.instance, 1));
+							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.instance, 1));
 						}
 					}	
 				}
@@ -997,7 +977,7 @@ public class CaveGenerator extends BlockPopulator {
 						Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()+z);
 						decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
 						if(hasMeta) {
-							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(main.instance, 1));
+							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.instance, 1));
 						}
 					}	
 				}
@@ -1010,7 +990,7 @@ public class CaveGenerator extends BlockPopulator {
 						Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
 						decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
 						if(hasMeta) {
-							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(main.instance, 1));
+							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.instance, 1));
 						}
 					}	
 				}
@@ -1023,14 +1003,14 @@ public class CaveGenerator extends BlockPopulator {
 						Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
 						decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
 						if(hasMeta) {
-							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(main.instance, 1));
+							loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.instance, 1));
 						}
 					}	
 				}
 			}
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 

@@ -2,8 +2,6 @@ package com.github.evillootlye.caves;
 
 import java.util.Random;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -11,12 +9,10 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 public class DressCursed {
 
-	public static Random rand = new Random();
+	private static final Random rand = new Random();
 	
 	public static void dressDGolem(LivingEntity s) {
 		try {
@@ -62,11 +58,11 @@ public class DressCursed {
 		ee.setBoots(lchest4);
 		}
 		}
-		catch(Exception error) {
+		catch(Exception ignored) {
 		}
 	}
 	
-	public static Material getArmor(int i) {
+	private static Material getArmor(int i) {
 		if(i==0) {
 			//helmet
 			int rander = rand.nextInt(7);

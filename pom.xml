@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.Evil-Lootlye</groupId>
+    <groupId>com.github.evillootlye</groupId>
     <artifactId>dangerous-caves</artifactId>
-    <version>1.0</version>
+    <version>10.5</version>
     <packaging>jar</packaging>
 
     <name>DangerousCaves</name>
@@ -25,8 +25,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <source>\${java.version}</source>
-                    <target>\${java.version}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>

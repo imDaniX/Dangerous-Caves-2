@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ChestRandomizer {
 
-	static Random randor = new Random();
+	private static final Random randor = new Random();
 	
 	public static void fillChest(Block b) {
          Chest chest = (Chest) b.getState();
@@ -22,15 +22,15 @@ public class ChestRandomizer {
         	 try {
         	 inv.setItem(randor.nextInt(inv.getSize())+1 , i);
         	 }
-        	 catch(Exception e) {
+        	 catch(Exception ignored) {
         		 
         	 }
          }
          //chest.update();
 	}
 	
-	public static List<ItemStack> getItems(){
-		List<ItemStack> items = new ArrayList<ItemStack>();
+	private static List<ItemStack> getItems(){
+		List<ItemStack> items = new ArrayList<>();
 		int randomAmmount = randor.nextInt(10)+2;
 		for(int i = 0; i < randomAmmount; i++) {
 			int choice = randor.nextInt(24);
@@ -105,11 +105,11 @@ public class ChestRandomizer {
 			}
 			else if(choice == 23) {
 				try {
-					if(main.itemcustom.size()>0) {
-						items.add(new ItemStack(Material.getMaterial(main.itemcustom.get(randor.nextInt(main.itemcustom.size()))), randor.nextInt(3)+1));
+					if(DangerousCaves.itemcustom.size()>0) {
+						items.add(new ItemStack(Material.getMaterial(DangerousCaves.itemcustom.get(randor.nextInt(DangerousCaves.itemcustom.size()))), randor.nextInt(3)+1));
 					}
 				}
-				catch(Exception e) {
+				catch(Exception ignored) {
 					
 				}
 			}
