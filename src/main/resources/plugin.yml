@@ -1,0 +1,12 @@
+name: DangerousCaves
+version: ${project.version}
+main: com.github.evillootlye.caves.DangerousCaves
+api-version: 1.13
+authors: [DaddyLootly]
+description: Adds and improves mechanics in caves.
+commands:
+  getworldname:
+    description: Gets the name of the world you are in for use in config.
+    usage: /getworldname
+    permission: dangerc.getworldname
+    permission-message: You don't have the dangerc.getworldname permission.
