@@ -75,7 +75,7 @@ public class main extends JavaPlugin implements Listener, CommandExecutor {
 	boolean hasWorlds = false;
 	public static List<String> worlds = new ArrayList<String>();
 	public boolean canSave = false;
-	public List<Entity> effectEnts = new ArrayList<Entity>();
+	private List<Entity> effectEnts = new ArrayList<Entity>();
 	boolean caveins = false;
 	boolean hungerdark = false;
 	boolean ambients = false;
