@@ -1,0 +1,22 @@
+caves:
+  ins:
+    enabled: true
+    chance: 399
+  hungering-darkness: true
+  ambient-sounds:
+    enabled: true
+    chance: 4
+  temperature: true
+  aging:
+    enabled: true
+    chance: 2
+    change-chance: 4
+  monsters:
+    enabled: true
+    fixing: true
+    broken-delete: false
+generator:
+  structures: true
+  chance: 1
+  skulls: true
+  easter-egg: true
