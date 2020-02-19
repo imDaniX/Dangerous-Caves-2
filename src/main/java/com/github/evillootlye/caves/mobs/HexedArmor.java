@@ -3,7 +3,7 @@ package com.github.evillootlye.caves.mobs;
 import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.PlayerAttackedEvent;
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.utils.MaterialUtils;
+import com.github.evillootlye.caves.utils.ItemUtils;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -42,10 +42,10 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
         entity.setCanPickupItems(false);
 
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(getRandom(MaterialUtils.HELMETS));
-        equipment.setChestplate(getRandom(MaterialUtils.CHESTPLATES));
-        equipment.setLeggings(getRandom(MaterialUtils.LEGGINGS));
-        equipment.setBoots(getRandom(MaterialUtils.BOOTS));
+        equipment.setHelmet(getRandom(ItemUtils.HELMETS));
+        equipment.setChestplate(getRandom(ItemUtils.CHESTPLATES));
+        equipment.setLeggings(getRandom(ItemUtils.LEGGINGS));
+        equipment.setBoots(getRandom(ItemUtils.BOOTS));
     }
 
     @EventHandler

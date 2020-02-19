@@ -13,8 +13,8 @@ public abstract class CustomMob {
     private final EntityType type;
     private final String id;
 
-    public CustomMob(EntityType type, String id) {
-        this.type = type.isAlive() ? type : EntityType.ZOMBIE;
+    public CustomMob(EntityType base, String id) {
+        this.type = base.isAlive() ? base : EntityType.ZOMBIE;
         this.id = id;
     }
 

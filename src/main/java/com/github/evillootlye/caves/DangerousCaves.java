@@ -1732,15 +1732,6 @@ public class DangerousCaves extends JavaPlugin implements Listener, CommandExecu
         if (!worlds.contains(event.getEntity().getWorld().getName())) {
             return;
         }
-        if (event.getDamager() instanceof Monster && event.getEntity() instanceof Player) {
-            if (hasName(config.getString("Magma Monster = "), event.getDamager())) {
-                if (randor.nextInt(2) == 1) {
-                    event.getEntity().setFireTicks(60);
-                }
-                return;
-            }
-
-        }
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Monster) {
             if (randor.nextInt(6) == 1) {
                 if (hasName(config.getString("TnT Creeper = "), event.getEntity())) {

@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MaterialUtils {
+public class ItemUtils {
     public static final Material[] HELMETS;
     public static final Material[] LEGGINGS;
     public static final Material[] CHESTPLATES;
