@@ -1,8 +1,7 @@
 package com.github.evillootlye.caves.generator;
 
-import java.util.Random;
-
 import com.github.evillootlye.caves.DangerousCaves;
+import com.github.evillootlye.caves.DangerousCavesOld;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -18,6 +17,8 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+
+import java.util.Random;
 
 //import net.minecraft.server.v1_12_R1.BlockPosition;
 //import net.minecraft.server.v1_12_R1.IBlockData;
@@ -77,7 +78,7 @@ public class CaveGenerator extends BlockPopulator {
     @Override
     public void populate(World wor, Random rand, Chunk chnk) {
 
-        if(rand.nextInt(DangerousCaves.cavechance+1)==0&& DangerousCaves.cavestruct) {
+        if(rand.nextInt(DangerousCavesOld.cavechance+1)==0&& DangerousCavesOld.cavestruct) {
             //-1 + | 1 == random pillar or shape / boulder 2 == random skeleton skull 3 == random room with stuff or random chest 4 == monsters spawner surrounded 5 == random mineshaft / tunnel 6 == spiders nest small 7 == traps
             //int typeC = rand.nextInt(8);
             int typeC = rand.nextInt(4);
@@ -86,29 +87,29 @@ public class CaveGenerator extends BlockPopulator {
             int cZ = chnk.getZ() * 16;
             int cXOff = cX + 7;
             int cZOff = cZ + 7;
-            if(DangerousCaves.INSTANCE.roomX == -1 && randor.nextInt(100)==1) {
-                if(DangerousCaves.easter) {
+            if(DangerousCavesOld.INSTANCE.roomX == -1 && randor.nextInt(100)==1) {
+                if(DangerousCavesOld.easter) {
                     createEgg(cXOff, cZOff, wor);
                 }
             }
             else {
                 if(typeC==0) {
-                    if(randor.nextInt(DangerousCaves.plrate+1)==0) {
+                    if(randor.nextInt(DangerousCavesOld.plrate+1)==0) {
                         randomShape(cXOff, cZOff, wor);
                     }
                 }
                 else if(typeC==1) {
-                    if(randor.nextInt(DangerousCaves.blrate+1)==0) {
+                    if(randor.nextInt(DangerousCavesOld.blrate+1)==0) {
                         randomBoulder(cXOff, cZOff, wor);
                     }
                 }
                 else if(typeC==2) {
-                    if(randor.nextInt(DangerousCaves.trrate+1)==0) {
+                    if(randor.nextInt(DangerousCavesOld.trrate+1)==0) {
                         randomTrap(cXOff, cZOff, wor);
                     }
                 }
                 else if(typeC==3) {
-                    if(randor.nextInt(DangerousCaves.strate+1)==0) {
+                    if(randor.nextInt(DangerousCavesOld.strate+1)==0) {
                         randomStructure(cXOff, cZOff, wor);
                     }
                 }
@@ -460,7 +461,7 @@ public class CaveGenerator extends BlockPopulator {
                     generateStructure(chests1, loc);
                 }
                 else if(type==4) {
-                    if(DangerousCaves.skulls) {
+                    if(DangerousCavesOld.skulls) {
                         loc.getBlock().setType(Material.SKELETON_SKULL, false);
                     }
                 }
@@ -737,13 +738,13 @@ public class CaveGenerator extends BlockPopulator {
         l.clone().add(6, 0, 0).getBlock().setType(Material.AIR, false);
         l.clone().add(6, -1, 0).getBlock().setType(Material.AIR, false);
         Location roomEnter = l.clone().add(5, -1, -1);
-        DangerousCaves.INSTANCE.roomX = (int) roomEnter.getX()+1;
-        DangerousCaves.INSTANCE.roomY = (int) roomEnter.getY();
-        DangerousCaves.INSTANCE.roomZ = (int) roomEnter.getZ()+1;
-        DangerousCaves.INSTANCE.config.set("002roomx", DangerousCaves.INSTANCE.roomX);
-        DangerousCaves.INSTANCE.config.set("002roomy", DangerousCaves.INSTANCE.roomY);
-        DangerousCaves.INSTANCE.config.set("002roomz", DangerousCaves.INSTANCE.roomZ);
-        DangerousCaves.INSTANCE.saveConfig();
+        DangerousCavesOld.INSTANCE.roomX = (int) roomEnter.getX()+1;
+        DangerousCavesOld.INSTANCE.roomY = (int) roomEnter.getY();
+        DangerousCavesOld.INSTANCE.roomZ = (int) roomEnter.getZ()+1;
+        DangerousCavesOld.INSTANCE.config.set("002roomx", DangerousCavesOld.INSTANCE.roomX);
+        DangerousCavesOld.INSTANCE.config.set("002roomy", DangerousCavesOld.INSTANCE.roomY);
+        DangerousCavesOld.INSTANCE.config.set("002roomz", DangerousCavesOld.INSTANCE.roomZ);
+        DangerousCavesOld.INSTANCE.saveConfig();
     }
 
     private void decideBlock(int type, Block b, boolean packet, Player p, boolean overwrite) {
@@ -991,7 +992,7 @@ public class CaveGenerator extends BlockPopulator {
                             Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
                             decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
                             if(hasMeta) {
-                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
+                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCavesOld.INSTANCE, 1));
                             }
                         }
                     }
@@ -1004,7 +1005,7 @@ public class CaveGenerator extends BlockPopulator {
                             Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
                             decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
                             if(hasMeta) {
-                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
+                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCavesOld.INSTANCE, 1));
                             }
                         }
                     }

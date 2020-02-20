@@ -60,10 +60,13 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     }
 
     public void registerMob(CustomMob mob) {
-        if(mobs.put(mob.getId(), mob) == null) {
+        if(!mobs.containsKey(mob.getId())) {
+            mobs.put(mob.getId(), mob);
             mobsList.add(mob);
             if(mob instanceof CustomMob.Tickable)
                 mobsTicked.add(mob.getId());
+            if(mob instanceof Listener)
+                Bukkit.getPluginManager().registerEvents((Listener)mob, DangerousCaves.INSTANCE);
         }
     }
 

@@ -1,15 +1,15 @@
 package com.github.evillootlye.caves.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.github.evillootlye.caves.DangerousCaves;
+import com.github.evillootlye.caves.DangerousCavesOld;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class ChestRandomizer {
 
@@ -106,8 +106,8 @@ public class ChestRandomizer {
             }
             else if(choice == 23) {
                 try {
-                    if(DangerousCaves.itemcustom.size()>0) {
-                        items.add(new ItemStack(Material.getMaterial(DangerousCaves.itemcustom.get(randor.nextInt(DangerousCaves.itemcustom.size()))), randor.nextInt(3)+1));
+                    if(DangerousCavesOld.itemcustom.size()>0) {
+                        items.add(new ItemStack(Material.getMaterial(DangerousCavesOld.itemcustom.get(randor.nextInt(DangerousCavesOld.itemcustom.size()))), randor.nextInt(3)+1));
                     }
                 }
                 catch(Exception ignored) {

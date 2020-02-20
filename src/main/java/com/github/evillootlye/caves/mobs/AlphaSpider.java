@@ -1,10 +1,8 @@
 package com.github.evillootlye.caves.mobs;
 
-import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Rnd;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +21,6 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
 
     public AlphaSpider() {
         super(EntityType.SPIDER, "alpha-spider");
-        Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
     }
 
     @Override

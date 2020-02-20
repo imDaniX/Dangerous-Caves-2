@@ -1,11 +1,9 @@
 package com.github.evillootlye.caves.mobs;
 
-import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.PlayerAttackedEvent;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.utils.ItemUtils;
 import com.github.evillootlye.caves.utils.Rnd;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -27,7 +25,6 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
 
     public HexedArmor() {
         super(EntityType.ZOMBIE, "hexed-armor");
-        Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
     }
 
     @Override
