@@ -54,7 +54,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -65,11 +64,22 @@ import java.util.List;
 import java.util.Random;
 
 @Deprecated
-public class DangerousCavesOld extends JavaPlugin implements Listener, CommandExecutor {
+public class DangerousCavesOld implements Listener, CommandExecutor {
 
     public static DangerousCavesOld INSTANCE;
     public final FileConfiguration config = getConfig();
-    private final ConsoleCommandSender console = getServer().getConsoleSender();
+
+    public static int trrate = 0;
+    public static int strate = 0;
+    public static int blrate = 0;
+    public static int plrate = 0;
+    public static boolean skulls = true;
+    public static boolean easter = true;
+    public static boolean cavestruct = false;
+    public static int cavechance = 3;
+    public static List<String> itemcustom = new ArrayList<>();
+
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
     private final Random randor = new Random();
     private static List<String> worlds = new ArrayList<>();
     private final List<Entity> effectEnts = new ArrayList<>();
@@ -79,29 +89,27 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
     private boolean cavetemp = false;
     private boolean caveage = false;
     private boolean caveents = false;
-    public static boolean cavestruct = false;
-    public static int cavechance = 3;
     private static final List<String> mobNames = new ArrayList<>();
-    public static List<String> itemcustom = new ArrayList<>();
     private static List<String> hotmessage = new ArrayList<>();
     private int damage = 0;
-    public static int trrate = 0;
-    public static int strate = 0;
-    public static int blrate = 0;
-    public static int plrate = 0;
-    public static boolean skulls = true;
-    public static boolean easter = true;
 
     private final ArrayList<String> roominfo = new ArrayList<>();
 
     public int roomX = -1;
     public int roomY = -1;
     public int roomZ = -1;
+    
+    public FileConfiguration getConfig() {
+        return DangerousCaves.INSTANCE.getConfig();
+    }
 
-    @Override
+    public void saveConfig() {
+        DangerousCaves.INSTANCE.saveConfig();
+    }
+
     public void onEnable() {
         createConfigFol();
-        this.getServer().getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
         roomX = config.getInt("002roomx");
         roomY = config.getInt("002roomy");
         roomZ = config.getInt("002roomz");
@@ -169,13 +177,13 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                 wor.getPopulators().add(new CaveGenerator());
             }
         }
-        BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, () -> {
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        scheduler.scheduleSyncRepeatingTask(DangerousCaves.INSTANCE, () -> {
             if (hungerdark || caveents) {
                 betterEffectLooper();
             }
         }, 0L, /* 600 */((long) 3));
-        scheduler.scheduleSyncRepeatingTask(this, () -> {
+        scheduler.scheduleSyncRepeatingTask(DangerousCaves.INSTANCE, () -> {
             try {
                 for (String namew : worlds) {
                     World wor = Bukkit.getWorld(namew);
@@ -398,7 +406,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Watcher = "))) {
-                                e.removeMetadata(config.getString("Watcher = "), this);
+                                e.removeMetadata(config.getString("Watcher = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         } else if (helmet.getType() != Material.PLAYER_HEAD) {
@@ -412,7 +420,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Watcher = "))) {
-                                e.removeMetadata(config.getString("Watcher = "), this);
+                                e.removeMetadata(config.getString("Watcher = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         }
@@ -426,7 +434,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), this);
+                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         } else if (cus == null) {
@@ -437,7 +445,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), this);
+                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         } else if (!cus.equals(config.getString("TnT Creeper = "))) {
@@ -448,7 +456,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), this);
+                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         }
@@ -462,7 +470,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), this);
+                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         } else if (cus == null) {
@@ -473,7 +481,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), this);
+                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         } else if (!cus.equals(config.getString("Lava Creeper = "))) {
@@ -484,7 +492,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), this);
+                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
                             }
                             return true;
                         }
@@ -498,7 +506,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Dead Miner = "))) {
-                                e.removeMetadata(config.getString("Dead Miner = "), this);
+                                e.removeMetadata(config.getString("Dead Miner = "), DangerousCaves.INSTANCE);
                             }
                             e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
                             e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
@@ -511,7 +519,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Dead Miner = "))) {
-                                e.removeMetadata(config.getString("Dead Miner = "), this);
+                                e.removeMetadata(config.getString("Dead Miner = "), DangerousCaves.INSTANCE);
                             }
                             e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
                             e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
@@ -527,7 +535,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Magma Monster = "))) {
-                                e.removeMetadata(config.getString("Magma Monster = "), this);
+                                e.removeMetadata(config.getString("Magma Monster = "), DangerousCaves.INSTANCE);
                             }
                             e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
                             e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
@@ -546,7 +554,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Magma Monster = "))) {
-                                e.removeMetadata(config.getString("Magma Monster = "), this);
+                                e.removeMetadata(config.getString("Magma Monster = "), DangerousCaves.INSTANCE);
                             }
                             e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
                             e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
@@ -568,7 +576,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), this);
+                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -582,7 +590,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), this);
+                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -596,7 +604,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), this);
+                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -613,7 +621,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", this);
+                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -637,7 +645,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", this);
+                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -661,7 +669,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 }
                             }
                             if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", this);
+                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
                             }
                             if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                                 e.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -1096,10 +1104,10 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                 }
                 String name = "The Darkness";
                 e.setCustomName(name);
-                e.setMetadata(name, new FixedMetadataValue(this, 0));
-                e.setMetadata("R", new FixedMetadataValue(this, 0));
-                e.setMetadata("cavem", new FixedMetadataValue(this, 0));
-                e.setMetadata("darkness", new FixedMetadataValue(this, 0));
+                e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                e.setMetadata("darkness", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                 e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 200, false, false));
                 e.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999999, 2, false, false));
                 e.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999999, damage, false, false));
@@ -1541,9 +1549,9 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                     ee.setHelmet(myAwesomeSkull);
                     ee.setHelmetDropChance(0);
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
-                    e.setMetadata("cavem", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     removeHand(e);
                     e.setCanPickupItems(false);
                 } else if (name.equals(config.getString("TnT Creeper = "))
@@ -1554,8 +1562,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                         e = (LivingEntity) e2;
                     }
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                 } else if (name.equals(config.getString("Lava Creeper = "))
                         && (randor.nextInt(config.getInt("Lava Creeper Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.CREEPER) {
@@ -1564,8 +1572,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                         e = (LivingEntity) e2;
                     }
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                 } else if (name.equals(config.getString("Dead Miner = "))
                         && (randor.nextInt(config.getInt("Dead Miner Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.ZOMBIE) {
@@ -1582,8 +1590,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                     ee.setHelmetDropChance(0);
                     setMinerHands(e);
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     e.setCanPickupItems(false);
                 } else if (name.equals(config.getString("Smoke Demon = "))
                         && (randor.nextInt(config.getInt("Smoke Demon Chance ") + 1) == 0)) {
@@ -1596,9 +1604,9 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                             .addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
                     e.setSilent(true);
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
-                    e.setMetadata("cavem", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     removeHand(e);
                     e.setCanPickupItems(false);
                 } else if (name.equals(config.getString("Crying Bat = "))
@@ -1609,8 +1617,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                         e = (LivingEntity) e2;
                     }
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     effectEnts.add(e);
                 } else if (name.equals(config.getString("Alpha Spider = "))
                         && (randor.nextInt(config.getInt("Alpha Spider Chance ") + 1) == 0)) {
@@ -1620,8 +1628,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                         e = (LivingEntity) e2;
                     }
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                 } else if (name.equals(config.getString("Hexed Armor = "))
                         && (randor.nextInt(config.getInt("Hexed Armor Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.ZOMBIE || e.getType() != EntityType.SKELETON) {
@@ -1632,8 +1640,8 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                     e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
                     e.setSilent(true);
                     e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
+                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
+                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     e.setCanPickupItems(false);
                 }
             } catch (Exception error) {
@@ -1802,7 +1810,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
     public void playerJoin(PlayerJoinEvent e) {
         if (roominfo.contains(e.getPlayer().getName())) {
             e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 85, 1));
-            Bukkit.getScheduler().runTaskLater(this, () -> manipulateRoomSpace(e.getPlayer()), 60);
+            Bukkit.getScheduler().runTaskLater(DangerousCaves.INSTANCE, () -> manipulateRoomSpace(e.getPlayer()), 60);
         }
     }
 
@@ -2076,7 +2084,7 @@ public class DangerousCavesOld extends JavaPlugin implements Listener, CommandEx
                                 loc.getZ() + z);
                         decideBlock(structure[x + 1][y][z + 1], loc2.getBlock(), packet, p, overwrite);
                         if (hasMeta) {
-                            loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCavesOld.INSTANCE, 1));
+                            loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
                         }
                     }
                 }

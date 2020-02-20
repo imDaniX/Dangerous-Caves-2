@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +25,7 @@ import java.util.Set;
 
 @Configurable.Path("mobs")
 public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
+    private final Configuration cfg;
     private final Map<String, CustomMob> mobs;
     private final List<CustomMob> mobsList;
     private final Set<String> mobsTicked;
@@ -32,13 +34,15 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     private int yMin, yMax;
     private double chance;
 
-    public MobsManager() {
+    public MobsManager(Configuration cfg) {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             Bukkit.getPluginManager().registerEvents(new PaperListener(), DangerousCaves.INSTANCE);
         } catch (ClassNotFoundException e) {
             Bukkit.getPluginManager().registerEvents(new SpigotListener(), DangerousCaves.INSTANCE);
         }
+        this.cfg = cfg;
+        cfg.registerConfigurable(this);
         mobs = new HashMap<>();
         mobsList = new ArrayList<>();
         mobsTicked = new HashSet<>();
@@ -67,6 +71,8 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
                 mobsTicked.add(mob.getId());
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, DangerousCaves.INSTANCE);
+            if(mob instanceof Configurable)
+                cfg.registerConfigurable((Configurable)mob);
         }
     }
 

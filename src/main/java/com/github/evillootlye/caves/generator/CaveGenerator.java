@@ -992,7 +992,7 @@ public class CaveGenerator extends BlockPopulator {
                             Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
                             decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
                             if(hasMeta) {
-                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCavesOld.INSTANCE, 1));
+                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
                             }
                         }
                     }
@@ -1005,7 +1005,7 @@ public class CaveGenerator extends BlockPopulator {
                             Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
                             decideBlock(structure[x+1][y][z+1], loc2.getBlock(), packet, p, overwrite);
                             if(hasMeta) {
-                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCavesOld.INSTANCE, 1));
+                                loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
                             }
                         }
                     }
