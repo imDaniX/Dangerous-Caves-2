@@ -1586,40 +1586,6 @@ public class DangerousCaves extends JavaPlugin implements Listener, CommandExecu
                     e.setMetadata(name, new FixedMetadataValue(this, 0));
                     e.setMetadata("R", new FixedMetadataValue(this, 0));
                     e.setCanPickupItems(false);
-                } else if (name.equals(config.getString("Magma Monster = "))
-                        && (randor.nextInt(config.getInt("Magma Monster Chance ") + 1) == 0)) {
-                    if (e.getType() != EntityType.ZOMBIE) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.ZOMBIE);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    EntityEquipment ee = (e).getEquipment();
-                    e.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999999, 100, false, false));
-                    e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 100, false, false));
-                    ItemStack lchest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-                    LeatherArmorMeta lch6 = (LeatherArmorMeta) lchest.getItemMeta();
-                    lch6.setColor(Color.fromRGB(252, 115, 69));
-                    lchest.setItemMeta(lch6);
-                    ItemStack lchest2 = new ItemStack(Material.LEATHER_BOOTS, 1);
-                    LeatherArmorMeta lch61 = (LeatherArmorMeta) lchest2.getItemMeta();
-                    lch61.setColor(Color.fromRGB(252, 115, 69));
-                    lchest2.setItemMeta(lch61);
-                    ItemStack lchest3 = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-                    LeatherArmorMeta lch62 = (LeatherArmorMeta) lchest3.getItemMeta();
-                    lch62.setColor(Color.fromRGB(252, 115, 69));
-                    lchest3.setItemMeta(lch62);
-                    ee.setItemInMainHand(new ItemStack(Material.FIRE, 1));
-                    ee.setItemInOffHand(new ItemStack(Material.FIRE, 1));
-                    ee.setChestplate(lchest);
-                    ee.setLeggings(lchest3);
-                    ee.setBoots(lchest2);
-                    e.setFireTicks(999999);
-                    e.setCustomName(name);
-                    e.setSilent(true);
-                    e.setMetadata(name, new FixedMetadataValue(this, 0));
-                    e.setMetadata("R", new FixedMetadataValue(this, 0));
-                    e.setMetadata("cavem", new FixedMetadataValue(this, 0));
-                    e.setCanPickupItems(false);
                 } else if (name.equals(config.getString("Smoke Demon = "))
                         && (randor.nextInt(config.getInt("Smoke Demon Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.ZOMBIE) {
