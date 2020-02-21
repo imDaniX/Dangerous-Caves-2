@@ -19,7 +19,7 @@ public class Dynamics {
             );
     }
 
-    public void registerTickable(Tickable tick) {
+    public void subscribe(Tickable tick) {
         tickables.put(tick.getTickLevel(), tick);
     }
 

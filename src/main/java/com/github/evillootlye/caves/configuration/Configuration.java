@@ -18,8 +18,12 @@ public class Configuration {
         file = new File(DangerousCaves.INSTANCE.getDataFolder(), name + ".yml");
     }
 
-    public void registerConfigurable(Configurable conf) {
-        configurables.put(conf, Configurable.getPath(conf));
+    public void register(Configurable conf) {
+        if(!configurables.containsKey(conf)) {
+            String path = Configurable.getPath(conf);
+            configurables.put(conf, path);
+            reload(conf, path);
+        }
     }
 
     public void create(boolean resource) {
@@ -36,21 +40,25 @@ public class Configuration {
         }
     }
 
-    public void reload() {
+    public void reloadYml() {
         try {
             yml = YamlConfiguration.loadConfiguration(file);
-            for(Map.Entry<Configurable, String> entry : configurables.entrySet()) {
-                String path = entry.getValue();
-                if(path.isEmpty())
-                    entry.getKey().reload(yml);
-                else
-                    entry.getKey().reload(yml.isConfigurationSection(path) ?
-                        yml.getConfigurationSection(path) : yml.createSection(path));
-
-            }
+            configurables.entrySet().forEach(this::reload);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void reload(Map.Entry<Configurable, String> entry) {
+        reload(entry.getKey(), entry.getValue());
+    }
+
+    public void reload(Configurable conf, String path) {
+        if(path.isEmpty())
+            conf.reload(yml);
+        else
+            conf.reload(yml.isConfigurationSection(path) ?
+                yml.getConfigurationSection(path) : yml.createSection(path));
     }
 
     public YamlConfiguration getYml() {

@@ -1,6 +1,5 @@
 caves:
   ins:
-    enabled: true
     chance: 0.0025
   hungering-darkness: true
   ambient-sounds:
@@ -11,12 +10,19 @@ caves:
     chance: 0.5
     change-chance: 0.25
 generator:
-  structures: true
-  chance: 0.5
+  worlds:
+  - world
+  try-chance: 0.5
+  traps: true
+  pillars: true
+  boulders: true
+  buildings: true
   skulls: true
   easter-egg: true
 mobs:
+  worlds:
+  - world
   enabled: true
   y-min: 0
   y-max: 64
-  chance: 1
+  try-chance: 1

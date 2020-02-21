@@ -2,6 +2,7 @@ package com.github.evillootlye.caves.generator;
 
 import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.DangerousCavesOld;
+import com.github.evillootlye.caves.configuration.Configurable;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Dispenser;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
@@ -18,132 +20,75 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 //import net.minecraft.server.v1_12_R1.BlockPosition;
 //import net.minecraft.server.v1_12_R1.IBlockData;
 
-public class CaveGenerator extends BlockPopulator {
+@Configurable.Path("generator")
+public class CaveGenerator extends BlockPopulator implements Configurable {
+
+    private final Set<String> worlds;
+    private double chance;
+    private boolean traps;
+    private boolean buildings;
+    private boolean boulders;
+    private boolean pillars;
+    private boolean skulls;
+    private boolean easter;
 
     private final Random randor = new Random();
-    /*int[][][] rock5 = { { {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
-                        {   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
-                        {   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };*/
-    private final int[][][] rock1 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
-            { {0, 1, 1}, {0, 1, 0}, {0, 1, 0} },
-            { {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] rock2 = { { {0, 1, 0}, {0, 1, 0}, {0, 0, 0} },
-            { {1, 1, 1}, {1, 1, 1}, {0, 1, 0} },
-            { {0, 1, 1}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] rock3 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
-            { {0, 1, 1}, {0, 1, 0}, {0, 0, 0} },
-            { {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] rock4 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
-            { {1, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 1, 0} },
-            { {0, 1, 0}, {0, 1, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] rock5 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
-            { {1, 1, 1}, {0, 1, 1}, {0, 0, 1} },
-            { {1, 1, 0}, {0, 1, 0}, {0, 0, 0} } };
-    private final int[][][] rock6 = { { {1, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 1, 1}, {0, 0, 1} },
-            { {1, 1, 1}, {1, 1, 1}, {1, 1, 0}, {0, 0, 0}, {0, 0, 0} },
-            { {1, 1, 0}, {0, 1, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] rock7 = { { {1, 1, 0}, {1, 0, 0}, {0, 0, 0} },
-            { {1, 1, 1}, {1, 1, 1}, {1, 1, 0} },
-            { {1, 1, 1}, {0, 1, 0}, {0, 0, 0} } };
-    private final int[][][] rock8 = { { {0, 1, 0}, {0, 0, 0}, {0, 0, 0} },
-            {     {1, 1, 1}, {0, 1, 0}, {0, 0, 0} },
-            {     {0, 1, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] chests1 = { { {0, 6, 0}, {0, 6, 0}, {0, 0, 0} },
-            {   {6, 2, 6}, {6, 0, 0}, {0, 0, 0} },
-            {   {0, 5, 0}, {0, 0, 0}, {0, 0, 0} } };
-    //1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
-    private final int[][][] chests2 = { { {1, 1, 1, 1, 1}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 1, 1, 1, 0}, {0, 0, 0, 0, 0} },
-            {   {1, 1, 1, 1, 1}, {1, 4, 4, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
-            {   {1, 1, 1, 1, 1}, {1, 4, 3, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
-            {   {1, 1, 1, 1, 1}, {1, 4, 0, 4, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {0, 1, 1, 1, 0} },
-            {   {1, 1, 1, 1, 1}, {0, 1, 0, 1, 0}, {0, 1, 0, 1, 0}, {0, 1, 1, 1, 0}, {0, 0, 0, 0, 0} } };
-    private final int[][][] chests3 = { { {1, 1, 1}, {0, 0, 0}, {0, 0, 0} },
-            {   {1, 1, 1}, {0, 2, 0}, {0, 0, 0} },
-            {   {1, 1, 1}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] sfishs1 = { { {0, 7, 0}, {0, 0, 0}, {0, 0, 0} },
-            {   {7, 9, 7}, {0, 7, 0}, {0, 0, 0} },
-            {   {0, 7, 0}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] sfishs2 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
-            {   {10, 9, 10}, {0, 8, 0}, {0, 0, 0} },
-            {   {0, 10, 8}, {0, 0, 0}, {0, 0, 0} } };
-    private final int[][][] sfishs3 = { { {0, 10, 0}, {0, 10, 0}, {0, 0, 0} },
-            {   {10, 9, 10}, {0, 8, 10}, {0, 10, 0} },
-            {   {0, 10, 8}, {0, 0, 0}, {0, 0, 0} } };
+
+    public CaveGenerator() {
+        worlds = new HashSet<>();
+    }
+
+    @Override
+    public void reload(ConfigurationSection cfg) {
+        chance = cfg.getDouble("try-chance");
+        traps = cfg.getBoolean("traps");
+        pillars = cfg.getBoolean("pillars");
+        boulders = cfg.getBoolean("boulders");
+        buildings = cfg.getBoolean("buildings");
+        skulls = cfg.getBoolean("skulls");
+        easter = cfg.getBoolean("easter");
+        worlds.clear();
+        List<String> worldsCfg = cfg.getStringList("worlds");
+        if(worldsCfg.isEmpty())
+            worlds.add(Bukkit.getWorlds().get(0).getName());
+        else
+            worlds.addAll(worldsCfg);
+        for(World world : Bukkit.getWorlds()) {
+            List<BlockPopulator> populators = world.getPopulators();
+            populators.remove(this);
+            if(chance > 0 && worlds.contains(world.getName())) populators.add(this);
+        }
+    }
 
     @Override
     public void populate(World wor, Random rand, Chunk chnk) {
-
-        if(rand.nextInt(DangerousCavesOld.cavechance+1)==0&& DangerousCavesOld.cavestruct) {
+        if(chance > rand.nextDouble()) {
             //-1 + | 1 == random pillar or shape / boulder 2 == random skeleton skull 3 == random room with stuff or random chest 4 == monsters spawner surrounded 5 == random mineshaft / tunnel 6 == spiders nest small 7 == traps
             //int typeC = rand.nextInt(8);
-            int typeC = rand.nextInt(4);
             //sendCaveMessage(typeC);
             int cX = chnk.getX() * 16;
             int cZ = chnk.getZ() * 16;
             int cXOff = cX + 7;
             int cZOff = cZ + 7;
-            if(DangerousCavesOld.INSTANCE.roomX == -1 && randor.nextInt(100)==1) {
-                if(DangerousCavesOld.easter) {
-                    createEgg(cXOff, cZOff, wor);
+            if(easter && DangerousCavesOld.INSTANCE.roomX == -1 && rand.nextDouble() < 0.1) {
+                createEgg(cXOff, cZOff, wor);
+            } else {
+                if(rand.nextBoolean()) return;
+                switch (rand.nextInt(4)) {
+                    case 0: if(pillars)     randomShape(cXOff, cZOff, wor); break;
+                    case 1: if(boulders)    randomBoulder(cXOff, cZOff, wor); break;
+                    case 2: if(traps)       randomTrap(cXOff, cZOff, wor); break;
+                    case 3: if(buildings)   randomStructure(cXOff, cZOff, wor); break;
                 }
             }
-            else {
-                if(typeC==0) {
-                    if(randor.nextInt(DangerousCavesOld.plrate+1)==0) {
-                        randomShape(cXOff, cZOff, wor);
-                    }
-                }
-                else if(typeC==1) {
-                    if(randor.nextInt(DangerousCavesOld.blrate+1)==0) {
-                        randomBoulder(cXOff, cZOff, wor);
-                    }
-                }
-                else if(typeC==2) {
-                    if(randor.nextInt(DangerousCavesOld.trrate+1)==0) {
-                        randomTrap(cXOff, cZOff, wor);
-                    }
-                }
-                else if(typeC==3) {
-                    if(randor.nextInt(DangerousCavesOld.strate+1)==0) {
-                        randomStructure(cXOff, cZOff, wor);
-                    }
-                }
-            }
-        }
-    }
-
-    public void sendCaveMessage(int typeC) {
-        if(typeC==0) {
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Spider Den!");
-        }
-        else if(typeC==1){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Mushroom Cave!");
-        }
-        else if(typeC==2){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Andesite Cave!");
-        }
-        else if(typeC==3){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Granite Cave!");
-        }
-        else if(typeC==4){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Diorite Cave!");
-        }
-        else if(typeC==5){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Lava Cave!");
-        }
-        else if(typeC==6){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Sandy Cave!");
-        }
-        else if(typeC==7){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Snow Cave!");
-        }
-        else if(typeC==8){
-            Bukkit.getServer().getConsoleSender().sendMessage("!Generated Flooded Cave!");
         }
     }
 
@@ -311,28 +256,28 @@ public class CaveGenerator extends BlockPopulator {
                 Location loc = new Location(w, cXOff, yVal, cZOff);
                 int type = randor.nextInt(8);
                 if(type==0) {
-                    generateBoulder(rock1, loc);
+                    generateBoulder(Structures.rock1, loc);
                 }
                 else if(type==1) {
-                    generateBoulder(rock2, loc);
+                    generateBoulder(Structures.rock2, loc);
                 }
                 else if(type==2) {
-                    generateBoulder(rock3, loc);
+                    generateBoulder(Structures.rock3, loc);
                 }
                 else if(type==3) {
-                    generateBoulder(rock4, loc);
+                    generateBoulder(Structures.rock4, loc);
                 }
                 else if(type==4) {
-                    generateBoulder(rock5, loc);
+                    generateBoulder(Structures.rock5, loc);
                 }
                 else if(type==5) {
-                    generateBoulder(rock6, loc);
+                    generateBoulder(Structures.rock6, loc);
                 }
                 else if(type==6) {
-                    generateBoulder(rock7, loc);
+                    generateBoulder(Structures.rock7, loc);
                 }
                 else if(type==7) {
-                    generateBoulder(rock8, loc);
+                    generateBoulder(Structures.rock8, loc);
                 }
             }
         }
@@ -451,17 +396,17 @@ public class CaveGenerator extends BlockPopulator {
                 }
                 else if(type==1) {
                     loc.subtract(0, 1, 0);
-                    generateStructure(chests3, loc);
+                    generateStructure(Structures.chests3, loc);
                 }
                 else if(type==2) {
                     loc.subtract(0, 1, 0);
-                    generateStructure(chests2, loc);
+                    generateStructure(Structures.chests2, loc);
                 }
                 else if(type==3) {
-                    generateStructure(chests1, loc);
+                    generateStructure(Structures.chests1, loc);
                 }
                 else if(type==4) {
-                    if(DangerousCavesOld.skulls) {
+                    if(skulls) {
                         loc.getBlock().setType(Material.SKELETON_SKULL, false);
                     }
                 }
@@ -500,13 +445,13 @@ public class CaveGenerator extends BlockPopulator {
                     }
                 }
                 else if(type==8) {
-                    generateStructure(sfishs1, loc);
+                    generateStructure(Structures.sfishs1, loc);
                 }
                 else if(type==9) {
-                    generateStructure(sfishs2, loc);
+                    generateStructure(Structures.sfishs2, loc);
                 }
                 else if(type==10) {
-                    generateStructure(sfishs3, loc);
+                    generateStructure(Structures.sfishs3, loc);
                 }
             }
         }
@@ -726,7 +671,7 @@ public class CaveGenerator extends BlockPopulator {
                 }
             }
         }
-        generateStructure0(StructureFiles.zerozerotwo, l.clone().subtract(2, 3, 3), true, "room2", false, null, false);
+        generateStructure0(Structures.zerozerotwo, l.clone().subtract(2, 3, 3), true, "room2", false, null, false);
         l.clone().add(4, 0, -2).getBlock().setType(Material.AIR, false);
         l.clone().add(4, -1, -2).getBlock().setType(Material.AIR, false);
         l.clone().add(5, 0, -2).getBlock().setType(Material.AIR, false);
@@ -1015,6 +960,4 @@ public class CaveGenerator extends BlockPopulator {
         catch(Exception ignored) {
         }
     }
-
-
 }

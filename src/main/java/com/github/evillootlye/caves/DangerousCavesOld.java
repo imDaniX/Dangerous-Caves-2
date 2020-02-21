@@ -1,7 +1,6 @@
 package com.github.evillootlye.caves;
 
-import com.github.evillootlye.caves.generator.CaveGenerator;
-import com.github.evillootlye.caves.generator.StructureFiles;
+import com.github.evillootlye.caves.generator.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -49,7 +48,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -69,14 +67,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     public static DangerousCavesOld INSTANCE;
     public final FileConfiguration config = getConfig();
 
-    public static int trrate = 0;
-    public static int strate = 0;
-    public static int blrate = 0;
-    public static int plrate = 0;
-    public static boolean skulls = true;
-    public static boolean easter = true;
-    public static boolean cavestruct = false;
-    public static int cavechance = 3;
     public static List<String> itemcustom = new ArrayList<>();
 
     private final ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -121,14 +111,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         cavetemp = config.getBoolean("Enable Cave Temperature ");
         caveage = config.getBoolean("Enable Cave Aging ");
         caveents = config.getBoolean("Enable Cave Monsters ");
-        cavechance = config.getInt("Cave Structure Chance ");
-        cavestruct = config.getBoolean("Enable Cave Structures ");
-        easter = config.getBoolean("Enable Easter Egg ");
-        blrate = config.getInt("Boulder Rate ");
-        trrate = config.getInt("Traps Rate ");
-        strate = config.getInt("Buildings Rate ");
-        plrate = config.getInt("Pillar Rate ");
-        skulls = config.getBoolean("Cave Skulls ");
         mobNames.add("The Darkness");
         mobNames.add(config.getString("Magma Monster = "));
         mobNames.add(config.getString("Crying Bat = "));
@@ -161,20 +143,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                 worlds.add("world");
             } else {
                 worlds.add(Bukkit.getWorlds().get(0).getName());
-            }
-        }
-        for (String namew : worlds) {
-            World wor = Bukkit.getWorld(namew);
-            if (wor != null) {
-                List<BlockPopulator> bp = new ArrayList<>(wor.getPopulators());
-                for (BlockPopulator bps : bp) {
-                    if (bps.toString().length() >= 25) {
-                        if (bps.toString().substring(0, 25).equals("mainPackage.CaveGenerator")) {
-                            wor.getPopulators().remove(bps);
-                        }
-                    }
-                }
-                wor.getPopulators().add(new CaveGenerator());
             }
         }
         BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -344,8 +312,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             cavetemp = config.getBoolean("Enable Cave Temperature ");
             caveage = config.getBoolean("Enable Cave Aging ");
             caveents = config.getBoolean("Enable Cave Monsters ");
-            cavechance = config.getInt("Cave Structure Chance ");
-            cavestruct = config.getBoolean("Enable Cave Structures ");
         }
         // }
     }
@@ -1897,9 +1863,9 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         Location door2 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ + 6);
         Location door3 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ - 11);
         // door 1
-        generateStructure0(StructureFiles.zerozerotwo2, door1.clone(), false, "", true, p, true);
-        generateStructure0(StructureFiles.zerozerotwo3, door2.clone(), false, "", true, p, true);
-        generateStructure0(StructureFiles.zerozerotwo4, door3.clone(), false, "", true, p, true);
+        generateStructure0(Structures.zerozerotwo2, door1.clone(), false, "", true, p, true);
+        generateStructure0(Structures.zerozerotwo3, door2.clone(), false, "", true, p, true);
+        generateStructure0(Structures.zerozerotwo4, door3.clone(), false, "", true, p, true);
     }
 
     private void manipulateRoomSpace(Player p) {
@@ -1907,9 +1873,9 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         Location door2 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ + 6);
         Location door3 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ - 11);
 
-        generateStructure0(StructureFiles.zerozerotwo2, door1.clone(), false, "", true, p, false);
-        generateStructure0(StructureFiles.zerozerotwo3, door2.clone(), false, "", true, p, false);
-        generateStructure0(StructureFiles.zerozerotwo4, door3.clone(), false, "", true, p, false);
+        generateStructure0(Structures.zerozerotwo2, door1.clone(), false, "", true, p, false);
+        generateStructure0(Structures.zerozerotwo3, door2.clone(), false, "", true, p, false);
+        generateStructure0(Structures.zerozerotwo4, door3.clone(), false, "", true, p, false);
     }
 
     private void decideBlock(int type, Block b, boolean packet, Player p, boolean overwrite) {

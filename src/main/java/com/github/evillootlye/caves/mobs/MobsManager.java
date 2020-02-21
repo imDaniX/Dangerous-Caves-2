@@ -42,7 +42,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             Bukkit.getPluginManager().registerEvents(new SpigotListener(), DangerousCaves.INSTANCE);
         }
         this.cfg = cfg;
-        cfg.registerConfigurable(this);
+        cfg.register(this);
         mobs = new HashMap<>();
         mobsList = new ArrayList<>();
         mobsTicked = new HashSet<>();
@@ -54,7 +54,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
         enabled = cfg.getBoolean("enabled", true);
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
-        chance = cfg.getDouble("chance", 1);
+        chance = cfg.getDouble("try-chance", 1);
         worlds.clear();
         List<String> worldsCfg = cfg.getStringList("worlds");
         if(worldsCfg.isEmpty())
@@ -63,7 +63,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             worlds.addAll(worldsCfg);
     }
 
-    public void registerMob(CustomMob mob) {
+    public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getId())) {
             mobs.put(mob.getId(), mob);
             mobsList.add(mob);
@@ -72,7 +72,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, DangerousCaves.INSTANCE);
             if(mob instanceof Configurable)
-                cfg.registerConfigurable((Configurable)mob);
+                cfg.register((Configurable)mob);
         }
     }
 
