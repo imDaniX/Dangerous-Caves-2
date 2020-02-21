@@ -11,7 +11,11 @@ caves:
     change-chance: 0.25
 generator:
   worlds:
-  - world
+    - world
+  chest-items:
+    - sugar
+    - torch
+    - dirt
   try-chance: 0.5
   traps: true
   pillars: true
@@ -21,7 +25,7 @@ generator:
   easter-egg: true
 mobs:
   worlds:
-  - world
+    - world
   enabled: true
   y-min: 0
   y-max: 64

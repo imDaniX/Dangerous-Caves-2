@@ -101,7 +101,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
                 !worlds.contains(loc.getWorld().getName()) ||
                 Rnd.nextDouble() < chance)
             return false;
-        CustomMob mob = mobsList.get(Rnd.nextInt(mobsList.size()) - 1);
+        CustomMob mob = mobsList.get(Rnd.nextInt(mobsList.size()));
         if(mob.canSpawn(type, loc)) {
             mob.spawn(loc);
             return true;
