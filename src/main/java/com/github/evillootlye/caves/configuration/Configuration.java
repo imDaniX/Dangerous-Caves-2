@@ -1,6 +1,7 @@
 package com.github.evillootlye.caves.configuration;
 
 import com.github.evillootlye.caves.DangerousCaves;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -18,14 +19,6 @@ public class Configuration {
         file = new File(DangerousCaves.INSTANCE.getDataFolder(), name + ".yml");
     }
 
-    public void register(Configurable conf) {
-        if(!configurables.containsKey(conf)) {
-            String path = Configurable.getPath(conf);
-            configurables.put(conf, path);
-            reload(conf, path);
-        }
-    }
-
     public void create(boolean resource) {
         file.getParentFile().mkdirs();
         if(!file.exists()) {
@@ -34,9 +27,18 @@ public class Configuration {
             else
                 try {
                     file.createNewFile();
+                    reloadYml();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+        }
+    }
+
+    public void register(Configurable conf) {
+        if(!configurables.containsKey(conf)) {
+            String path = Configurable.getPath(conf);
+            configurables.put(conf, path);
+            reload(conf, path);
         }
     }
 
@@ -54,14 +56,15 @@ public class Configuration {
     }
 
     public void reload(Configurable conf, String path) {
-        if(path.isEmpty())
-            conf.reload(yml);
-        else
-            conf.reload(yml.isConfigurationSection(path) ?
-                yml.getConfigurationSection(path) : yml.createSection(path));
+        conf.reload(path.isEmpty() ? yml : section(yml, path));
     }
 
     public YamlConfiguration getYml() {
         return yml;
+    }
+
+    public static ConfigurationSection section(ConfigurationSection cfg, String path) {
+        return cfg.isConfigurationSection(path) ?
+                cfg.getConfigurationSection(path) : cfg.createSection(path);
     }
 }

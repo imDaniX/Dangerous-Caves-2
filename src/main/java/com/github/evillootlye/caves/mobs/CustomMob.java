@@ -30,10 +30,10 @@ public abstract class CustomMob {
     public final void spawn(Location loc) {
         LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
         entity.getPersistentDataContainer().set(KEY, PersistentDataType.STRING, id);
-        build(entity);
+        setup(entity);
     }
 
-    public abstract void build(LivingEntity entity);
+    public abstract void setup(LivingEntity entity);
 
     public String getId() {
         return id;

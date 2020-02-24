@@ -20,4 +20,11 @@ public class LocationUtils {
         for(int z = start.getBlockZ() - zOff; z <= start.getBlockZ() + zOff; z++)
             loop.accept(new Location(world, x, y, z));
     }
+
+    public static boolean isCave(Location loc, int yMax) {
+        return loc.getBlockY() <= yMax &&
+                loc.getBlock().getLightLevel() < 1 &&
+                MaterialUtils.CAVE.contains(loc.subtract( 0, 1, 0).getBlock().getType());
+
+    }
 }

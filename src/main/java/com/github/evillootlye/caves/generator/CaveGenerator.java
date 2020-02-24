@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.DangerousCavesOld;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.utils.Rnd;
+import com.github.evillootlye.caves.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -49,20 +50,17 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        chance = cfg.getDouble("try-chance");
-        traps = cfg.getBoolean("traps");
-        pillars = cfg.getBoolean("pillars");
-        boulders = cfg.getBoolean("boulders");
-        buildings = cfg.getBoolean("buildings");
-        skulls = cfg.getBoolean("skulls");
-        easter = cfg.getBoolean("easter");
-        Set<String> worlds = new HashSet<>();
+        chance = cfg.getDouble("chance", 50)/100;
+        traps = cfg.getBoolean("traps", true);
+        pillars = cfg.getBoolean("pillars", true);
+        boulders = cfg.getBoolean("boulders", true);
+        buildings = cfg.getBoolean("buildings", true);
+        skulls = cfg.getBoolean("skulls", true);
+        easter = cfg.getBoolean("easter-egg", false);
 
-        List<String> worldsCfg = cfg.getStringList("worlds");
-        if(worldsCfg.isEmpty())
-            worlds.add(Bukkit.getWorlds().get(0).getName());
-        else
-            worlds.addAll(worldsCfg);
+        Set<String> worlds = new HashSet<>();
+        Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+
         for(World world : Bukkit.getWorlds()) {
             List<BlockPopulator> populators = world.getPopulators();
             populators.remove(this);

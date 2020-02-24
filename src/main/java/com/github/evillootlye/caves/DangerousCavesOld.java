@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -75,7 +74,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private final List<Entity> effectEnts = new ArrayList<>();
     private boolean caveins = false;
     private boolean hungerdark = false;
-    private boolean ambients = false;
     private boolean cavetemp = false;
     private boolean caveage = false;
     private boolean caveents = false;
@@ -107,7 +105,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         INSTANCE = this;
         caveins = config.getBoolean("Enable Cave-Ins ");
         hungerdark = config.getBoolean("Enable Hungering Darkness ");
-        ambients = config.getBoolean("Enable Ambient Sounds ");
         cavetemp = config.getBoolean("Enable Cave Temperature ");
         caveage = config.getBoolean("Enable Cave Aging ");
         caveents = config.getBoolean("Enable Cave Monsters ");
@@ -160,9 +157,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                             for (Player p : wor.getPlayers()) {
                                 doCaveStuff(p);
                             }
-                        }
-                        if (ambients) {
-                            doCaveSounds();
                         }
                     }
                 }
@@ -308,7 +302,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         if (!hasWorlds) {
             caveins = config.getBoolean("Enable Cave-Ins ");
             hungerdark = config.getBoolean("Enable Hungering Darkness ");
-            ambients = config.getBoolean("Enable Ambient Sounds ");
             cavetemp = config.getBoolean("Enable Cave Temperature ");
             caveage = config.getBoolean("Enable Cave Aging ");
             caveents = config.getBoolean("Enable Cave Monsters ");
@@ -1113,48 +1106,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                 if (e.getEntity().getLocation().getBlock().getLightLevel() > 0) {
                     e.setCancelled(true);
                     e.getDamager().remove();
-                }
-            }
-        }
-    }
-
-    //
-
-    // Ambient Sounds
-
-    private void doCaveSounds() {
-        for (String namew : worlds) {
-            World wor = Bukkit.getWorld(namew);
-            if (wor != null) {
-                for (Player p : wor.getPlayers()) {
-                    if (randor.nextInt(config.getInt("Cave Ambience Chance ") + 1) == 0) {
-                        int choice = randor.nextInt(6);
-                        if (inCave(p)) {
-                            if (choice == 0) {
-                                p.playSound(p.getLocation(), Sound.MUSIC_DRAGON, SoundCategory.AMBIENT, 100,
-                                        0);
-                            } else if (choice == 1) {
-                                p.playSound(p.getLocation(), Sound.MUSIC_NETHER, SoundCategory.AMBIENT, 100,
-                                        (float) .5);
-                            } else if (choice == 2) {
-                                if (randor.nextInt(5) == 1) {
-                                    p.playSound(p.getLocation(), Sound.MUSIC_DISC_11, SoundCategory.AMBIENT,
-                                            100, (float) .5);
-                                }
-                            } else if (choice == 3) {
-                                p.playSound(p.getLocation(), Sound.MUSIC_DISC_13, SoundCategory.AMBIENT,
-                                        100, (float) .5);
-                            } else if (choice == 4) {
-                                p.playSound(p.getLocation(), Sound.MUSIC_DISC_MELLOHI,
-                                        SoundCategory.AMBIENT, 100, (float) .5);
-                            } else if (choice == 5) {
-                                if (randor.nextInt(6) == 1) {
-                                    p.playSound(p.getLocation(), Sound.ENCHANT_THORNS_HIT,
-                                            SoundCategory.AMBIENT, (float) .04, (float) .2);
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

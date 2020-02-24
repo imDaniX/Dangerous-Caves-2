@@ -5,7 +5,6 @@ import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -16,7 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.alpha-spider")
-public class AlphaSpider extends CustomMob implements Listener, Configurable {
+public class AlphaSpider extends CustomMob implements Listener {
     private static final PotionEffect POISON = new PotionEffect(PotionEffectType.POISON, 75, 1);
 
     public AlphaSpider() {
@@ -24,13 +23,8 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     }
 
     @Override
-    public void build(LivingEntity entity) {
+    public void setup(LivingEntity entity) {
         // entity.setCustomName(name);
-    }
-
-    @Override
-    public void reload(ConfigurationSection cfg) {
-
     }
 
     @EventHandler

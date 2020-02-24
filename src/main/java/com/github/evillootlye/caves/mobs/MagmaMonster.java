@@ -43,13 +43,13 @@ public class MagmaMonster extends CustomMob implements Listener {
     }
 
     @Override
-    public void build(LivingEntity entity) {
-        EntityEquipment equipment = entity.getEquipment();
+    public void setup(LivingEntity entity) {
         entity.addPotionEffect(FIRE_RESISTANCE);
         entity.addPotionEffect(INVISIBILITY);
         entity.setFireTicks(Integer.MAX_VALUE);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
+        EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(POWDER);
         equipment.setItemInOffHand(POWDER);
         equipment.setChestplate(CHESTPLATE);

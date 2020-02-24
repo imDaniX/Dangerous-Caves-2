@@ -6,6 +6,7 @@ import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.utils.Rnd;
+import com.github.evillootlye.caves.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,7 +31,6 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     private final List<CustomMob> mobsList;
     private final Set<String> mobsTicked;
     private final Set<String> worlds;
-    private boolean enabled;
     private int yMin, yMax;
     private double chance;
 
@@ -51,16 +51,11 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        enabled = cfg.getBoolean("enabled", true);
+        chance = cfg.getDouble("try-chance", 50)/100;
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
-        chance = cfg.getDouble("try-chance", 1);
         worlds.clear();
-        List<String> worldsCfg = cfg.getStringList("worlds");
-        if(worldsCfg.isEmpty())
-            worlds.add(Bukkit.getWorlds().get(0).getName());
-        else
-            worlds.addAll(worldsCfg);
+        Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
     }
 
     public void register(CustomMob mob) {
@@ -96,7 +91,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
-        if(!enabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
+        if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
                 Rnd.nextDouble() < chance)

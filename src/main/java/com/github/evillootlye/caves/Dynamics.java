@@ -24,7 +24,7 @@ public class Dynamics {
     }
 
     public enum TickLevel {
-        WORLD(6000), ENTITY(4);
+        WORLD(6300), ENTITY(4);
 
         public final int ticks;
 

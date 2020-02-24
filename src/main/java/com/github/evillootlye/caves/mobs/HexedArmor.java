@@ -2,10 +2,9 @@ package com.github.evillootlye.caves.mobs;
 
 import com.github.evillootlye.caves.PlayerAttackedEvent;
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.utils.ItemUtils;
+import com.github.evillootlye.caves.utils.MaterialUtils;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -20,7 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.hexed-armor")
-public class HexedArmor extends CustomMob implements Listener, Configurable {
+public class HexedArmor extends CustomMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
     public HexedArmor() {
@@ -28,21 +27,16 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-
-    }
-
-    @Override
-    public void build(LivingEntity entity) {
+    public void setup(LivingEntity entity) {
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
 
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(getRandom(ItemUtils.HELMETS));
-        equipment.setChestplate(getRandom(ItemUtils.CHESTPLATES));
-        equipment.setLeggings(getRandom(ItemUtils.LEGGINGS));
-        equipment.setBoots(getRandom(ItemUtils.BOOTS));
+        equipment.setHelmet(getRandom(MaterialUtils.HELMETS));
+        equipment.setChestplate(getRandom(MaterialUtils.CHESTPLATES));
+        equipment.setLeggings(getRandom(MaterialUtils.LEGGINGS));
+        equipment.setBoots(getRandom(MaterialUtils.BOOTS));
     }
 
     @EventHandler
@@ -63,7 +57,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     }
 
     private static ItemStack getRandom(Material[] arr) {
-        int i = Rnd.nextInt(arr.length);
+        int i = Rnd.nextInt(arr.length + 2);
         return enchant(i >= arr.length ? new ItemStack(Material.AIR) : new ItemStack(arr[i]));
     }
 

@@ -2,10 +2,12 @@ package com.github.evillootlye.caves.utils;
 
 import org.bukkit.Material;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ItemUtils {
+public class MaterialUtils {
     public static final Material[] HELMETS;
     public static final Material[] LEGGINGS;
     public static final Material[] CHESTPLATES;
@@ -34,4 +36,12 @@ public class ItemUtils {
         CHESTPLATES = (Material[]) chestplates.toArray();
         BOOTS = (Material[]) boots.toArray();
     }
+    public static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
+            Material.DIRT, Material.COARSE_DIRT, Material.GRAVEL,
+            Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,
+            Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
+            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
+            Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
+            Material.OBSIDIAN, Material.OAK_WOOD
+    ));
 }

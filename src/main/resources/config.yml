@@ -1,32 +1,62 @@
 caves:
   ins:
-    chance: 0.0025
-  hungering-darkness: true
-  ambient-sounds:
+    worlds:
+      - world
     chance: 0.25
+  hungering-darkness:
+    worlds:
+      - world
+    chance: 0.25
+  ambient:
+    worlds:
+      - world
+    chance: 25
+    y-max: 64
+    sounds:
+      MUSIC_DRAGON:
+        volume: 1
+        pitch: 0
+      MUSIC_NETHER:
+        volume: 1
+        pitch: 0.5
+      MUSIC_DISC_11:
+        volume: 1
+        pitch: 0.5
+      MUSIC_DISC_13:
+        volume: 1
+        pitch: 0.5
+      ENCHANT_THORNS_HIT:
+        volume: 0.04
+        pitch: 0.2
+      ENTITY_GHAST_SCREAM:
+        volume: 1
+        pitch: 0.5
   temperature:
-    chance: 0.15
+    worlds:
+      - world
+    chance: 15
   aging:
-    chance: 0.5
-    change-chance: 0.25
+    worlds:
+      - world
+    try-chance: 50
+    change-chance: 25
 generator:
+  chance: 50
   worlds:
     - world
   chest-items:
     - sugar
     - torch
     - dirt
-  try-chance: 0.5
   traps: true
   pillars: true
   boulders: true
   buildings: true
   skulls: true
-  easter-egg: true
+  easter-egg: false
 mobs:
+  try-chance: 50
   worlds:
     - world
-  enabled: true
   y-min: 0
   y-max: 64
-  try-chance: 1
