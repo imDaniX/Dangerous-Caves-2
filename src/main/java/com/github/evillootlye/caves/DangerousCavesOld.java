@@ -1,6 +1,5 @@
 package com.github.evillootlye.caves;
 
-import com.github.evillootlye.caves.generator.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -35,8 +34,6 @@ import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -80,12 +77,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private static final List<String> mobNames = new ArrayList<>();
     private static List<String> hotmessage = new ArrayList<>();
     private int damage = 0;
-
-    private final ArrayList<String> roominfo = new ArrayList<>();
-
-    public int roomX = -1;
-    public int roomY = -1;
-    public int roomZ = -1;
     
     public FileConfiguration getConfig() {
         return DangerousCaves.INSTANCE.getConfig();
@@ -98,9 +89,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     public void onEnable() {
         createConfigFol();
         Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
-        roomX = config.getInt("002roomx");
-        roomY = config.getInt("002roomy");
-        roomZ = config.getInt("002roomz");
 
         INSTANCE = this;
         caveins = config.getBoolean("Enable Cave-Ins ");
@@ -1716,297 +1704,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             EntityEquipment ee = ((LivingEntity) e).getEquipment();
             ee.setItemInMainHand(new ItemStack(Material.AIR));
             ee.setItemInOffHand(new ItemStack(Material.AIR));
-        }
-    }
-
-    //
-
-    // Easter Egg
-
-    @EventHandler
-    public void playerJoin(PlayerJoinEvent e) {
-        if (roominfo.contains(e.getPlayer().getName())) {
-            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 85, 1));
-            Bukkit.getScheduler().runTaskLater(DangerousCaves.INSTANCE, () -> manipulateRoomSpace(e.getPlayer()), 60);
-        }
-    }
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (e.getBlock().hasMetadata("room1") || e.getBlock().hasMetadata("room2")) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        if (e.getBlock().hasMetadata("room1") || e.getBlock().hasMetadata("room2")) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onEntityExplode(EntityExplodeEvent e) {
-        if (!e.isCancelled()) {
-            ArrayList<Block> blocks = new ArrayList<>(e.blockList());
-            for (Block b : blocks) {
-                if (b.hasMetadata("room1") || b.hasMetadata("room2")) {
-                    e.blockList().remove(b);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockExplode(BlockExplodeEvent e) {
-        if (!e.isCancelled()) {
-            ArrayList<Block> blocks = new ArrayList<>(e.blockList());
-            for (Block b : blocks) {
-                if (b.hasMetadata("room1") || b.hasMetadata("room2")) {
-                    e.blockList().remove(b);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onEnter(PlayerMoveEvent e) {
-        if (roominfo.contains(e.getPlayer().getName())) {
-            if ((!e.getPlayer().getLocation().getBlock().hasMetadata("room1"))
-                    && (!e.getPlayer().getLocation().getBlock().hasMetadata("room2"))) {
-                removeRoomWarp(e.getPlayer());
-                roominfo.remove(e.getPlayer().getName());
-            }
-        }
-        if (e.getPlayer().getLocation().getBlock().hasMetadata("room2")) {
-            if (!roominfo.contains(e.getPlayer().getName())) {
-                roominfo.add(e.getPlayer().getName());
-            }
-        }
-        Location to = e.getTo();
-        Location from = e.getFrom();
-        if ((to.getBlockX()) != (from.getBlockX())
-                || (to.getBlockY()) != (from.getBlockY())
-                || (to.getBlockZ()) != (from.getBlockZ())) {
-            // check if new location is equal to room location
-            if (((from.getBlockX()) == roomX) && ((from.getBlockY()) == roomY)
-                    && ((from.getBlockZ()) == roomZ)) {
-                // if entity exits room
-                if (((to.getBlockX()) == roomX + 1) && ((to.getBlockY()) == roomY)
-                        && ((to.getBlockZ()) == roomZ)) {
-                    removeRoomWarp(e.getPlayer());
-                    roominfo.remove(e.getPlayer().getName());
-                }
-                // if entity enters room
-                if (((to.getBlockX()) == roomX) && ((to.getBlockY()) == roomY)
-                        && ((to.getBlockZ()) == roomZ - 1)) {
-                    manipulateRoomSpace(e.getPlayer());
-                    if (!roominfo.contains(e.getPlayer().getName())) {
-                        roominfo.add(e.getPlayer().getName());
-                    }
-                }
-            }
-        }
-    }
-
-    private void removeRoomWarp(Player p) {
-        Location door1 = new Location(p.getWorld(), roomX - 15, roomY - 2, roomZ - 3);
-        Location door2 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ + 6);
-        Location door3 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ - 11);
-        // door 1
-        generateStructure0(Structures.zerozerotwo2, door1.clone(), false, "", true, p, true);
-        generateStructure0(Structures.zerozerotwo3, door2.clone(), false, "", true, p, true);
-        generateStructure0(Structures.zerozerotwo4, door3.clone(), false, "", true, p, true);
-    }
-
-    private void manipulateRoomSpace(Player p) {
-        Location door1 = new Location(p.getWorld(), roomX - 15, roomY - 2, roomZ - 3);
-        Location door2 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ + 6);
-        Location door3 = new Location(p.getWorld(), roomX - 8, roomY - 2, roomZ - 11);
-
-        generateStructure0(Structures.zerozerotwo2, door1.clone(), false, "", true, p, false);
-        generateStructure0(Structures.zerozerotwo3, door2.clone(), false, "", true, p, false);
-        generateStructure0(Structures.zerozerotwo4, door3.clone(), false, "", true, p, false);
-    }
-
-    private void decideBlock(int type, Block b, boolean packet, Player p, boolean overwrite) {
-        // 0 == air 1 == null 2 == netherwart brick 3 == netherwart block+red concrete
-        // powder 4 == barrier 5 ==netherrack & netherwart block
-        if (overwrite) {
-            if (packet) {
-                p.sendBlockChange(b.getLocation(), b.getType().createBlockData());
-            } else {
-                b.setType(b.getType(), false);
-            }
-        } else {
-            if (type == -1) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), b.getType().createBlockData());
-                } else {
-                    b.setType(b.getType(), false);
-                }
-            }
-            if (type == 0) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.AIR.createBlockData());
-                } else {
-                    b.setType(Material.AIR, false);
-                }
-            } else if (type == 1) {
-
-            } else if (type == 2) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_NETHER_BRICKS.createBlockData());
-                } else {
-                    b.setType(Material.RED_NETHER_BRICKS, false);
-                }
-            } else if (type == 3) {
-                int choice = randor.nextInt(2);
-                if (choice == 0) {
-                    if (packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                    } else {
-                        b.setType(Material.NETHER_WART_BLOCK, false);
-                    }
-                } else if (choice == 1) {
-                    if (packet) {
-                        p.sendBlockChange(b.getLocation(), Material.RED_CONCRETE_POWDER.createBlockData());
-                    } else {
-                        b.setType(Material.RED_CONCRETE_POWDER, false);
-                    }
-                }
-            } else if (type == 4) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.BARRIER.createBlockData());
-                } else {
-                    b.setType(Material.BARRIER, false);
-                }
-            } else if (type == 5) {
-                int choice = randor.nextInt(2);
-                if (choice == 0) {
-                    if (packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                    } else {
-                        b.setType(Material.NETHER_WART_BLOCK, false);
-                    }
-                } else if (choice == 1) {
-                    if (packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHERRACK.createBlockData());
-                    } else {
-                        b.setType(Material.NETHERRACK, false);
-                    }
-                }
-            } else if (type == 6) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_CONCRETE_POWDER.createBlockData());
-                } else {
-                    b.setType(Material.RED_CONCRETE_POWDER, false);
-                }
-            } else if (type == 7) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                } else {
-                    b.setType(Material.NETHER_WART_BLOCK, false);
-                }
-            } else if (type == 8) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_STAINED_GLASS_PANE.createBlockData());
-                } else {
-                    b.setType(Material.RED_STAINED_GLASS_PANE, false);
-                }
-            } else if (type == 9) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.QUARTZ_BLOCK.createBlockData());
-                } else {
-                    b.setType(Material.QUARTZ_BLOCK, false);
-                }
-            } else if (type == 10) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.QUARTZ_SLAB.createBlockData());
-                } else {
-                    b.setType(Material.QUARTZ_SLAB, false);
-                }
-            } else if (type == 11) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_NETHER_BRICK_WALL.createBlockData());
-                } else {
-                    b.setType(Material.RED_NETHER_BRICK_WALL, false);
-                }
-            } else if (type == 12) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.BONE_BLOCK.createBlockData());
-                } else {
-                    b.setType(Material.BONE_BLOCK, false);
-                }
-            } else if (type == 13) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_SHULKER_BOX.createBlockData());
-                } else {
-                    b.setType(Material.RED_SHULKER_BOX, false);
-                }
-            } else if (type == 14) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_BRICK_SLAB.createBlockData());
-                } else {
-                    b.setType(Material.NETHER_BRICK_SLAB, false);
-                }
-            } else if (type == 15) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_WOOL.createBlockData());
-                } else {
-                    b.setType(Material.RED_WOOL, false);
-                }
-            } else if (type == 16) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_BRICK_SLAB.createBlockData());
-                } else {
-                    b.setType(Material.NETHER_BRICK_SLAB, false);
-                }
-            } else if (type == 17) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.REDSTONE_TORCH.createBlockData());
-                } else {
-                    b.setType(Material.REDSTONE_TORCH, false);
-                }
-            } else if (type == 18) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.SKELETON_SKULL.createBlockData());
-                } else {
-                    b.setType(Material.SKELETON_SKULL, false);
-                }
-            } else if (type == 19) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_CARPET.createBlockData());
-                } else {
-                    b.setType(Material.RED_CARPET, false);
-                }
-            } else if (type == 20) {
-                if (packet) {
-                    p.sendBlockChange(b.getLocation(), Material.REDSTONE_WIRE.createBlockData());
-                } else {
-                    b.setType(Material.REDSTONE_WIRE, false);
-                }
-            }
-        }
-    }
-
-    private void generateStructure0(int[][][] structure, Location loc, boolean hasMeta, String meta, boolean packet,
-                                    Player p, boolean overwrite) {
-        try {
-            int randDirection = 0;// randor.nextInt(4);
-            for (int y = 0; y < structure[0].length; y++) {
-                for (int x = -1; x < structure.length - 1; x++) {
-                    for (int z = -1; z < structure[0][0].length - 1; z++) {
-                        Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y,
-                                loc.getZ() + z);
-                        decideBlock(structure[x + 1][y][z + 1], loc2.getBlock(), packet, p, overwrite);
-                        if (hasMeta) {
-                            loc2.getBlock().setMetadata(meta, new FixedMetadataValue(DangerousCaves.INSTANCE, 1));
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) {
         }
     }
 

@@ -53,7 +53,6 @@ generator:
   boulders: true
   buildings: true
   skulls: true
-  easter-egg: false
 mobs:
   try-chance: 50
   worlds:
