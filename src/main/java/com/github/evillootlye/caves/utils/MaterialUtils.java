@@ -37,11 +37,11 @@ public class MaterialUtils {
         BOOTS = (Material[]) boots.toArray();
     }
     public static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
-            Material.DIRT, Material.COARSE_DIRT, Material.GRAVEL,
+            Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS,
             Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.OBSIDIAN, Material.OAK_WOOD
+            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK
     ));
 }
