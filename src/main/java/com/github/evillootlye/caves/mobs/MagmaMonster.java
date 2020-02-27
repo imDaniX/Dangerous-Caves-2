@@ -1,7 +1,7 @@
 package com.github.evillootlye.caves.mobs;
 
-import com.github.evillootlye.caves.PlayerAttackedEvent;
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Color;
 import org.bukkit.Material;

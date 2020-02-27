@@ -1,8 +1,8 @@
 package com.github.evillootlye.caves.configuration;
 
-import com.github.evillootlye.caves.DangerousCaves;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,20 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Configuration {
+    private final Plugin plugin;
     private final Map<Configurable, String> configurables;
     private final File file;
     private YamlConfiguration yml;
 
-    public Configuration(String name) {
+    public Configuration(Plugin plugin, String name) {
+        this.plugin = plugin;
         configurables = new HashMap<>();
-        file = new File(DangerousCaves.INSTANCE.getDataFolder(), name + ".yml");
+        file = new File(plugin.getDataFolder(), name + ".yml");
     }
 
     public void create(boolean resource) {
         file.getParentFile().mkdirs();
         if(!file.exists()) {
             if(resource)
-                DangerousCaves.INSTANCE.saveResource(file.getName(), false);
+                plugin.saveResource(file.getName(), false);
             else
                 try {
                     file.createNewFile();

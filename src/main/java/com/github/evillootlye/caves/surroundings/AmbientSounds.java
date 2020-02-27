@@ -7,6 +7,7 @@ import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Rnd;
 import com.github.evillootlye.caves.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
@@ -54,7 +55,8 @@ public class AmbientSounds implements Dynamics.Tickable, Configurable {
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
-                if(LocationUtils.isCave(player.getLocation(), y) && chance > Rnd.nextDouble())
+                Location loc = player.getLocation();
+                if(loc.getBlockY() <= y && LocationUtils.isCave(loc) && chance > Rnd.nextDouble())
                     sounds.get(Rnd.nextInt(sounds.size())).play(player);
             }
         }

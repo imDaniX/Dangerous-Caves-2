@@ -1,7 +1,6 @@
 package com.github.evillootlye.caves.mobs;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
@@ -16,6 +15,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import java.util.Set;
 
 @Configurable.Path("mobs")
 public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
+    private final Plugin plugin;
     private final Configuration cfg;
     private final Map<String, CustomMob> mobs;
     private final List<CustomMob> mobsList;
@@ -34,13 +35,14 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     private int yMin, yMax;
     private double chance;
 
-    public MobsManager(Configuration cfg) {
+    public MobsManager(Plugin plugin, Configuration cfg) {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
-            Bukkit.getPluginManager().registerEvents(new PaperListener(), DangerousCaves.INSTANCE);
+            Bukkit.getPluginManager().registerEvents(new PaperListener(), plugin);
         } catch (ClassNotFoundException e) {
-            Bukkit.getPluginManager().registerEvents(new SpigotListener(), DangerousCaves.INSTANCE);
+            Bukkit.getPluginManager().registerEvents(new SpigotListener(), plugin);
         }
+        this.plugin = plugin;
         this.cfg = cfg;
         cfg.register(this);
         mobs = new HashMap<>();
@@ -65,7 +67,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             if(mob instanceof CustomMob.Tickable)
                 mobsTicked.add(mob.getId());
             if(mob instanceof Listener)
-                Bukkit.getPluginManager().registerEvents((Listener)mob, DangerousCaves.INSTANCE);
+                Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
             if(mob instanceof Configurable)
                 cfg.register((Configurable)mob);
         }

@@ -5,6 +5,7 @@ import com.github.evillootlye.caves.generator.CaveGenerator;
 import com.github.evillootlye.caves.mobs.DefaultMobs;
 import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.surroundings.AmbientSounds;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DangerousCaves extends JavaPlugin {
@@ -17,16 +18,19 @@ public class DangerousCaves extends JavaPlugin {
     public void onEnable() {
         DangerousCaves.INSTANCE = this;
 
-        Dynamics dynamics = new Dynamics();
-        Configuration cfg = new Configuration("config"); cfg.create(true);
+        Dynamics dynamics = new Dynamics(this);
+        Configuration cfg = new Configuration(this, "config"); cfg.create(true);
 
-        mobsManager = new MobsManager(cfg);
+        mobsManager = new MobsManager(this, cfg);
         DefaultMobs.registerAll(mobsManager);
         AmbientSounds ambient = new AmbientSounds();
+        CaveInsPlayerListener caveIns = new CaveInsPlayerListener();
+        Bukkit.getPluginManager().registerEvents(caveIns, this);
 
         dynamics.subscribe(ambient);
         dynamics.subscribe(mobsManager);
 
+        cfg.register(caveIns);
         cfg.register(new CaveGenerator());
         cfg.register(ambient);
 

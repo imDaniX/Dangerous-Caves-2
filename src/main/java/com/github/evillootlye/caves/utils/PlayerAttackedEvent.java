@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves;
+package com.github.evillootlye.caves.utils;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

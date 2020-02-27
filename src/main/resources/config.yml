@@ -2,6 +2,8 @@ caves:
   ins:
     worlds:
       - world
+    rabbit-foot: true
+    radius: 6
     chance: 0.25
   hungering-darkness:
     worlds:

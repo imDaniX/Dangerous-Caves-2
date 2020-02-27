@@ -1,5 +1,6 @@
 package com.github.evillootlye.caves;
 
+import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -69,7 +70,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private final Random randor = new Random();
     private static List<String> worlds = new ArrayList<>();
     private final List<Entity> effectEnts = new ArrayList<>();
-    private boolean caveins = false;
     private boolean hungerdark = false;
     private boolean cavetemp = false;
     private boolean caveage = false;
@@ -91,7 +91,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
 
         INSTANCE = this;
-        caveins = config.getBoolean("Enable Cave-Ins ");
         hungerdark = config.getBoolean("Enable Hungering Darkness ");
         cavetemp = config.getBoolean("Enable Cave Temperature ");
         caveage = config.getBoolean("Enable Cave Aging ");
@@ -288,7 +287,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         // public World wor = null;
         boolean hasWorlds = false;
         if (!hasWorlds) {
-            caveins = config.getBoolean("Enable Cave-Ins ");
             hungerdark = config.getBoolean("Enable Hungering Darkness ");
             cavetemp = config.getBoolean("Enable Cave Temperature ");
             caveage = config.getBoolean("Enable Cave Aging ");
@@ -1296,43 +1294,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         Player p = dr.getPlayer();
         if (!worlds.contains(p.getWorld().getName())) {
             return;
-        }
-        if (caveins) {
-            if (randor.nextInt(config.getInt("Cave-In Chance ") + 1) == 0) {
-                if (dr.getPlayer().getLocation().getY() < 25) {
-                    if ((isStony(dr.getBlock().getType()))
-                            && (isStony(p.getLocation().subtract(0, 1, 0).getBlock().getType()))) {
-                        if (!p.getInventory().contains(Material.RABBIT_FOOT)) {
-                            Location loc = p.getLocation();
-                            int radius = 7;
-                            int cx = loc.getBlockX();
-                            int cy = loc.getBlockY();
-                            int cz = loc.getBlockZ();
-                            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 65, 3));
-                            for (int x = cx - radius; x <= cx + radius; x++) {
-                                for (int z = cz - radius; z <= cz + radius; z++) {
-                                    for (int y = (cy - radius); y < (cy + radius); y++) {
-                                        double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z)
-                                                + ((cy - y) * (cy - y));
-
-                                        if (dist < radius * radius) {
-                                            Location l = new Location(loc.getWorld(), x, y + 2, z);
-                                            Block b = l.getBlock();
-                                            if (isAir(b.getType()) || b.getType() == Material.BEDROCK || b.getType()
-                                                    .toString().toLowerCase().contains("shulker_box")) {
-                                            } else {
-                                                b.getWorld().spawnFallingBlock(b.getLocation(), b.getBlockData());
-                                                l.getBlock().setType(Material.AIR);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
         if (cavetemp && (!p.getLocation().getBlock().getBiome().toString().contains("OCEAN"))) {
             if (randor.nextInt(config.getInt("Cave Break Block Temp Chance ") + 1) == 0) {

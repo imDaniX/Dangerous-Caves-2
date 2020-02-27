@@ -1,8 +1,8 @@
 package com.github.evillootlye.caves.mobs;
 
-import com.github.evillootlye.caves.PlayerAttackedEvent;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.utils.MaterialUtils;
+import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
 import com.github.evillootlye.caves.utils.Rnd;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

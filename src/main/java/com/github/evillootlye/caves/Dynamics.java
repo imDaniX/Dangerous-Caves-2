@@ -1,6 +1,7 @@
 package com.github.evillootlye.caves;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -8,11 +9,11 @@ import java.util.Map;
 public class Dynamics {
     private final Map<TickLevel, Tickable> tickables;
 
-    public Dynamics() {
+    public Dynamics(Plugin plugin) {
         tickables = new EnumMap<>(TickLevel.class);
         for(TickLevel level : TickLevel.values())
             Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                    DangerousCaves.INSTANCE,
+                    plugin,
                     () -> tickables.get(level).tick(),
                     level.ticks,
                     level.ticks
