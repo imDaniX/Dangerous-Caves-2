@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves.surroundings;
+package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Configurable.Path("caves.ambient")
+@Configurable.Path("caverns.ambient")
 public class AmbientSounds implements Dynamics.Tickable, Configurable {
     private final List<WrappedSound> sounds;
     private final Set<String> worlds;

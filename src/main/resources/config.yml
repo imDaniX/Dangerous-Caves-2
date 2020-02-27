@@ -1,19 +1,52 @@
-caves:
+# | DangerousCaves by Evil-Lootlye
+# | Forked by imDaniX
+
+# NOTE: All the chances are in percents
+# NOTE: Setting chance to 0 means that you want to disable the feature
+
+# NOTE: Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
+# NOTE: "Blank worlds" doesn't means "worlds:" - use "worlds: []"
+
+#
+# Cave-related things
+#
+caverns:
+
+  # Cave-ins - blocks may fall down when mining
   ins:
+    # List of worlds where cave-in may appear
     worlds:
       - world
+    # Chance of cave-in while mining blocks
+    # In percents
+    chance: 0.25
+    # Immunity to cave-in if player has rabbit foot in inventory
     rabbit-foot: true
+    # Radius of cave-in
     radius: 6
-    chance: 0.25
+    # Maximal Y where cave-in may appear
+    y-max: 25
+
+  # Hungering darkness - special mob can be spawned if player is not using torches
   hungering-darkness:
+    # List of worlds where hungering darkness can be spawned
     worlds:
       - world
+    # Chance of spawning mob in darkness near player
     chance: 0.25
+
+  # Ambient sounds - special sound may be played underground
   ambient:
+    # List of worlds where ambient sounds can be played
     worlds:
       - world
+    # Chance of sound will be played
+    # Checking every 5 minutes 15 seconds
     chance: 25
+    # Maximal Y where sound can be played
     y-max: 64
+    # List of sounds to play - you can add more or remove some
+    # All the sounds can be found here hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
     sounds:
       MUSIC_DRAGON:
         volume: 1
@@ -33,16 +66,49 @@ caves:
       ENTITY_GHAST_SCREAM:
         volume: 1
         pitch: 0.5
+
+  # Underground temperature
   temperature:
+    # List of worlds where players can sense temperature
     worlds:
       - world
-    chance: 15
+    # Chance of player to sense high temperature
+    # Checking every 200 milliseconds
+    chance: 0.8
+    # Immunity to high temperature if player has one of these items in inventory
+    # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    cold-items:
+      - potion
+      - splash_potion
+      - snow
+      - snowball
+      - snow_block
+      - water_bucket
+      - ice
+      - frosted_ice
+      - packed_ice
+    # Immunity to high temperature if player has fire resistance effect
+    fire-resistance: true
+
+  # Caves aging - over time caves will get some vines and rocks
   aging:
+    # List of worlds where aging will be processed
     worlds:
       - world
-    try-chance: 50
+    # Chance of caves near player will be affected
+    # Checking every 5 minutes 15 seconds
+    chance: 50
+    # Radius of cave aging near player
+    # In chunks (+1 where the player is)
+    radius: 3
+    # Chance of block will be affected
     change-chance: 25
+
+#
+# Generator-related things
+#
 generator:
+  wait-other: true
   chance: 50
   worlds:
     - world

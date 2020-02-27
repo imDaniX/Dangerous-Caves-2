@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves;
+package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.utils.LocationUtils;
@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashSet;
 import java.util.Set;
 
-@Configurable.Path("caves.ins")
+@Configurable.Path("caverns.ins")
 public class CaveInsPlayerListener implements Listener, Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 65, 3);
 
