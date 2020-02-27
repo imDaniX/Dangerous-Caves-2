@@ -32,8 +32,10 @@ public class DangerousCaves extends JavaPlugin {
         dynamics.subscribe(mobsManager);
 
         cfg.register(caveIns);
-        cfg.register(new CaveGenerator());
         cfg.register(ambient);
+        if(cfg.getYml().getBoolean("generator.wait-other", false)) {
+            Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(new CaveGenerator()), 1);
+        } else cfg.register(new CaveGenerator());
 
         new DangerousCavesOld().onEnable();
     }

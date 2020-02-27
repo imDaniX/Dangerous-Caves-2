@@ -108,7 +108,7 @@ caverns:
 # Generator-related things
 #
 generator:
-  wait-other: true
+  wait-other: false
   chance: 50
   worlds:
     - world
