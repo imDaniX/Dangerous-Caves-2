@@ -1,6 +1,5 @@
 package com.github.evillootlye.caves;
 
-import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -152,15 +151,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             }
         }, 0L, /* 600 */7000L);
 
-    }
-
-    @EventHandler
-    public void onEntityAttack(EntityDamageByEntityEvent event) {
-        if(event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
-            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager());
-            Bukkit.getPluginManager().callEvent(pEvent);
-            event.setCancelled(pEvent.isCancelled());
-        }
     }
 
     private static boolean getLookingAt2(LivingEntity player, LivingEntity player1) {
