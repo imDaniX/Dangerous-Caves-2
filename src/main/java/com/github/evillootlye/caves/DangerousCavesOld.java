@@ -33,7 +33,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -43,7 +42,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -70,11 +68,9 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private static List<String> worlds = new ArrayList<>();
     private final List<Entity> effectEnts = new ArrayList<>();
     private boolean hungerdark = false;
-    private boolean cavetemp = false;
     private boolean caveage = false;
     private boolean caveents = false;
     private static final List<String> mobNames = new ArrayList<>();
-    private static List<String> hotmessage = new ArrayList<>();
     private int damage = 0;
     
     public FileConfiguration getConfig() {
@@ -91,7 +87,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
 
         INSTANCE = this;
         hungerdark = config.getBoolean("Enable Hungering Darkness ");
-        cavetemp = config.getBoolean("Enable Cave Temperature ");
         caveage = config.getBoolean("Enable Cave Aging ");
         caveents = config.getBoolean("Enable Cave Monsters ");
         mobNames.add("The Darkness");
@@ -105,7 +100,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         mobNames.add(config.getString("Dead Miner = "));
         mobNames.add(config.getString("Hexed Armor = "));
         itemcustom = config.getStringList("Items that can spawn in chests ");
-        hotmessage = config.getStringList("Temperature Messages ");
         worlds = config.getStringList("Enabled Worlds - If Left Blank Will Just Use default world ");
         int d = config.getInt("Hungering Darkness Damage ");
         if (d > 200) {
@@ -165,7 +159,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         config.addDefault("Enable Cave-Ins ", true);
         config.addDefault("Enable Hungering Darkness ", true);
         config.addDefault("Enable Ambient Sounds ", true);
-        config.addDefault("Enable Cave Temperature ", true);
         config.addDefault("Enable Cave Aging ", true);
         config.addDefault("Enable Cave Monsters ", true);
         config.addDefault("Enable Cave Structures ", true);
@@ -177,8 +170,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         config.addDefault("Cave Aging Chance ", 2);
         config.addDefault("Cave Aging Change Chance ", 39);
         config.addDefault("Cave Ambience Chance ", 4);
-        config.addDefault("Cave Walk Temp Chance ", 1449);
-        config.addDefault("Cave Break Block Temp Chance ", 1450);
         config.addDefault("Cave-In Chance ", 399);
         config.addDefault("Darkness Spawn Chance ", 1);
         config.addDefault("Cave Structure Chance ", 1);
@@ -221,13 +212,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         config.addDefault("Dead Miner Chance ", 0);
         config.addDefault("Hexed Armor Chance ", 0);
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
-        List<String> listitem1 = new ArrayList<>();
-        listitem1.add("Wow, it's hot down here.  I better bring something to cool myself off next time.");
-        listitem1.add("It is realllyyy hot down here.");
-        listitem1.add("I'm going to need something to cool myself off next time.");
-        listitem1.add("Is it hot in here, or is it just me?");
-        listitem1.add("I really need some ice.");
-        config.addDefault("Temperature Messages ", listitem1);
         List<String> listitem2 = new ArrayList<>();
         boolean hasWorldR = false;
         for (World w : Bukkit.getWorlds()) {
@@ -278,7 +262,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         boolean hasWorlds = false;
         if (!hasWorlds) {
             hungerdark = config.getBoolean("Enable Hungering Darkness ");
-            cavetemp = config.getBoolean("Enable Cave Temperature ");
             caveage = config.getBoolean("Enable Cave Aging ");
             caveents = config.getBoolean("Enable Cave Monsters ");
         }
@@ -1231,83 +1214,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             return BlockFace.SOUTH;
         } else {
             return BlockFace.NORTH;
-        }
-    }
-
-    //
-
-    // Cave Temperature
-
-    @EventHandler
-    public void onWalk(PlayerMoveEvent event) {
-        if (cavetemp) {
-            try {
-                Player p = event.getPlayer();
-                if ((!worlds.contains(p.getWorld().getName()))
-                        || (p.getLocation().getBlock().getBiome().toString().contains("OCEAN"))) {
-                    return;
-                }
-                if (randor.nextInt(config.getInt("Cave Walk Temp Chance ") + 1) == 0) {
-                    if (p.getLocation().getY() < 30 && (p.getGameMode() != GameMode.CREATIVE)) {
-                        if (p.getInventory().contains(Material.POTION)
-                                || p.getInventory().contains(Material.SPLASH_POTION)
-                                || p.getInventory().contains(Material.SNOW)
-                                || p.getInventory().contains(Material.SNOWBALL)
-                                || p.getInventory().contains(Material.SNOW_BLOCK)
-                                || p.getInventory().contains(Material.WATER_BUCKET)
-                                || p.getInventory().contains(Material.ICE)
-                                || p.getInventory().contains(Material.FROSTED_ICE)
-                                || p.getInventory().contains(Material.PACKED_ICE)) {
-                        } else if (p.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) {
-                        } else {
-                            if (hotmessage.size() != 0) {
-                                int msg = randor.nextInt(hotmessage.size());
-                                p.sendMessage(ChatColor.RED + hotmessage.get(msg));
-                            }
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1));
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1));
-                        }
-                    }
-                }
-            } catch (Exception error) {
-                console.sendMessage(ChatColor.RED + "Uh oh error inside moving.");
-            }
-        }
-    }
-
-    //
-
-    // Cave Ins
-
-    @EventHandler
-    public void onBreakB(BlockBreakEvent dr) {
-        Player p = dr.getPlayer();
-        if (!worlds.contains(p.getWorld().getName())) {
-            return;
-        }
-        if (cavetemp && (!p.getLocation().getBlock().getBiome().toString().contains("OCEAN"))) {
-            if (randor.nextInt(config.getInt("Cave Break Block Temp Chance ") + 1) == 0) {
-                if (p.getLocation().getY() < 30 && (p.getGameMode() != GameMode.CREATIVE)) {
-                    if (p.getInventory().contains(Material.POTION)
-                            || p.getInventory().contains(Material.SPLASH_POTION)
-                            || p.getInventory().contains(Material.SNOW)
-                            || p.getInventory().contains(Material.SNOWBALL)
-                            || p.getInventory().contains(Material.SNOW_BLOCK)
-                            || p.getInventory().contains(Material.WATER_BUCKET)
-                            || p.getInventory().contains(Material.ICE)
-                            || p.getInventory().contains(Material.FROSTED_ICE)
-                            || p.getInventory().contains(Material.PACKED_ICE)) {
-                    } else if (p.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) {
-                    } else {
-                        if (hotmessage.size() != 0) {
-                            int msg = randor.nextInt(hotmessage.size());
-                            p.sendMessage(ChatColor.RED + hotmessage.get(msg));
-                        }
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1));
-                    }
-                }
-            }
         }
     }
 

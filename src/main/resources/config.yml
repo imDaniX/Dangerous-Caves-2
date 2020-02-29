@@ -72,9 +72,12 @@ caverns:
     # List of worlds where players can sense temperature
     worlds:
       - world
+      - world_nether
     # Chance of player to sense high temperature
     # Checking every 200 milliseconds
     chance: 0.8
+    # Maximal Y where players can sense temperature
+    y-max: 32
     # Immunity to high temperature if player has one of these items in inventory
     # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
     cold-items:
@@ -89,6 +92,13 @@ caverns:
       - packed_ice
     # Immunity to high temperature if player has fire resistance effect
     fire-resistance: true
+    # Messages when player is feeling high temperature
+    messages:
+      - "&cWow, it's hot down here. I better bring something to cool myself off next time."
+      - "&cIt is realllyyy hot down here."
+      - "&cI'm going to need something to cool myself off next time."
+      - "&cIs it hot in here, or is it just me?"
+      - "&cI really need some ice."
 
   # Caves aging - over time caves will get some vines and rocks
   aging:
@@ -101,6 +111,8 @@ caverns:
     # Radius of cave aging near player
     # In chunks (+1 where the player is)
     radius: 3
+    # Maximal Y where aging will be processed
+    y-max: 80
     # Chance of block will be affected
     change-chance: 25
 

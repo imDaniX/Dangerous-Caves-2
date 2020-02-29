@@ -13,11 +13,11 @@ public class LocationUtils {
             loop.accept(new Location(world, x, y, z));
     }
 
-    public static void loopRelative(int xOff, int yOff, int zOff, Location start, Consumer<Location> loop) {
+    public static void loopRelative(int xRadius, int yRadius, int zRadius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();
-        for(int x = start.getBlockX() - xOff; x <= start.getBlockX() + xOff; x++)
-        for(int y = start.getBlockY() - yOff; y <= start.getBlockY() + yOff; y++)
-        for(int z = start.getBlockZ() - zOff; z <= start.getBlockZ() + zOff; z++)
+        for(int x = start.getBlockX() - xRadius; x <= start.getBlockX() + xRadius; x++)
+        for(int y = start.getBlockY() - yRadius; y <= start.getBlockY() + yRadius; y++)
+        for(int z = start.getBlockZ() - zRadius; z <= start.getBlockZ() + zRadius; z++)
             loop.accept(new Location(world, x, y, z));
     }
 
