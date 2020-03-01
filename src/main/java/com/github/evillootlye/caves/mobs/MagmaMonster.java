@@ -52,9 +52,9 @@ public class MagmaMonster extends CustomMob implements Listener {
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(POWDER);
         equipment.setItemInOffHand(POWDER);
-        equipment.setChestplate(CHESTPLATE);
-        equipment.setLeggings(LEGGINGS);
-        equipment.setBoots(BOOTS);
+        equipment.setChestplate(CHESTPLATE);    equipment.setChestplateDropChance(0);
+        equipment.setLeggings(LEGGINGS);        equipment.setLeggingsDropChance(0);
+        equipment.setBoots(BOOTS);              equipment.setBootsDropChance(0);
     }
 
     @EventHandler
