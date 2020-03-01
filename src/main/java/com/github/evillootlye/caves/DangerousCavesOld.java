@@ -61,8 +61,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     public static DangerousCavesOld INSTANCE;
     public final FileConfiguration config = getConfig();
 
-    public static List<String> itemcustom = new ArrayList<>();
-
     private final ConsoleCommandSender console = Bukkit.getConsoleSender();
     private final Random randor = new Random();
     private static List<String> worlds = new ArrayList<>();
@@ -90,16 +88,12 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         caveage = config.getBoolean("Enable Cave Aging ");
         caveents = config.getBoolean("Enable Cave Monsters ");
         mobNames.add("The Darkness");
-        mobNames.add(config.getString("Magma Monster = "));
         mobNames.add(config.getString("Crying Bat = "));
         mobNames.add(config.getString("Lava Creeper = "));
         mobNames.add(config.getString("TnT Creeper = "));
         mobNames.add(config.getString("Watcher = "));
         mobNames.add(config.getString("Smoke Demon = "));
-        mobNames.add(config.getString("Alpha Spider = "));
         mobNames.add(config.getString("Dead Miner = "));
-        mobNames.add(config.getString("Hexed Armor = "));
-        itemcustom = config.getStringList("Items that can spawn in chests ");
         worlds = config.getStringList("Enabled Worlds - If Left Blank Will Just Use default world ");
         int d = config.getInt("Hungering Darkness Damage ");
         if (d > 200) {
@@ -156,61 +150,38 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     }
 
     private void createConfigFol() {
-        config.addDefault("Enable Cave-Ins ", true);
         config.addDefault("Enable Hungering Darkness ", true);
-        config.addDefault("Enable Ambient Sounds ", true);
         config.addDefault("Enable Cave Aging ", true);
         config.addDefault("Enable Cave Monsters ", true);
-        config.addDefault("Enable Cave Structures ", true);
         config.addDefault("Enable Monster Fixing ", false);
         config.addDefault("Enable Broken Monster Deletion ", false);
         config.addDefault("Cave Skulls ", true);
-        config.addDefault("Enable Easter Egg ", true);
         config.addDefault("::::Higher equals lower chance!::::", "");
         config.addDefault("Cave Aging Chance ", 2);
         config.addDefault("Cave Aging Change Chance ", 39);
-        config.addDefault("Cave Ambience Chance ", 4);
-        config.addDefault("Cave-In Chance ", 399);
         config.addDefault("Darkness Spawn Chance ", 1);
-        config.addDefault("Cave Structure Chance ", 1);
         config.addDefault("Hungering Darkness Damage ", 200);
-        config.addDefault("Monster Spawning Highest Y ", 50);
-        config.addDefault("Monster Spawning Lowest Y ", 0);
-        config.addDefault(":::::::::::::::::::::::::::::::::::", "");
-        config.addDefault("Traps Rate ", 0);
-        config.addDefault("Buildings Rate ", 0);
-        config.addDefault("Boulder Rate ", 0);
-        config.addDefault("Pillar Rate ", 0);
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
         config.addDefault("Spawn Crying Bat ", true);
-        config.addDefault("Spawn Magma Monster ", true);
         config.addDefault("Spawn Lava Creeper ", true);
         config.addDefault("Spawn TnT Creeper ", true);
         config.addDefault("Spawn Watcher ", true);
         config.addDefault("Spawn Smoke Demon ", true);
-        config.addDefault("Spawn Alpha Spider ", true);
         config.addDefault("Spawn Dead Miner ", true);
-        config.addDefault("Spawn Hexed Armor ", true);
         config.addDefault(":::::Monster Names - no Blanks:::::", "");
         config.addDefault("Crying Bat = ", "Crying Bat");
-        config.addDefault("Magma Monster = ", "Magma Monster");
         config.addDefault("Lava Creeper = ", "Lava Creeper");
         config.addDefault("TnT Creeper = ", "TnT Infused Creeper");
         config.addDefault("Watcher = ", "Watcher");
         config.addDefault("Smoke Demon = ", "Smoke Demon");
-        config.addDefault("Alpha Spider = ", "Alpha Spider");
         config.addDefault("Dead Miner = ", "Dead Miner");
-        config.addDefault("Hexed Armor = ", "Hexed Armor");
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
         config.addDefault("Crying Bat Chance ", 0);
-        config.addDefault("Magma Monster Chance ", 0);
         config.addDefault("Lava Creeper Chance ", 0);
         config.addDefault("TnT Creeper Chance ", 0);
         config.addDefault("Watcher Chance ", 0);
         config.addDefault("Smoke Demon Chance ", 0);
-        config.addDefault("Alpha Spider Chance ", 0);
         config.addDefault("Dead Miner Chance ", 0);
-        config.addDefault("Hexed Armor Chance ", 0);
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
         List<String> listitem2 = new ArrayList<>();
         boolean hasWorldR = false;
@@ -225,18 +196,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             listitem2.add(Bukkit.getWorlds().get(0).getName());
         }
         config.addDefault("Enabled Worlds - If Left Blank Will Just Use default world ", listitem2);
-        List<String> listitem3 = new ArrayList<>();
-        listitem3.add("SUGAR");
-        listitem3.add("TORCH");
-        listitem3.add("DIRT");
-        config.addDefault("Items that can spawn in chests ", listitem3);
-        config.addDefault("Enabled Worlds - If Left Blank Will Just Use default world ", listitem2);
-        config.addDefault(":Below is used to store information", 1);
-        config.addDefault(":Do Not Modify Anything Below This", 1);
-        config.addDefault(":Doing So Can Result in Messed up Worlds", 1);
-        config.addDefault("002roomx", -1);
-        config.addDefault("002roomy", -1);
-        config.addDefault("002roomz", -1);
         // config.getString("Dead Miner = ")
         config.options().copyDefaults(true);
         saveConfig();
@@ -286,20 +245,14 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private String isMetad(LivingEntity e) {
         if (e.hasMetadata(config.getString("Watcher = "))) {
             return config.getString("Watcher = ");
-        } else if (e.hasMetadata(config.getString("Magma Monster = "))) {
-            return config.getString("Magma Monster = ");
         } else if (e.hasMetadata(config.getString("Lava Creeper = "))) {
             return config.getString("Lava Creeper = ");
         } else if (e.hasMetadata(config.getString("TnT Creeper = "))) {
             return config.getString("TnT Creeper = ");
         } else if (e.hasMetadata(config.getString("Smoke Demon = "))) {
             return config.getString("Smoke Demon = ");
-        } else if (e.hasMetadata(config.getString("Alpha Spider = "))) {
-            return config.getString("Alpha Spider = ");
         } else if (e.hasMetadata(config.getString("Dead Miner = "))) {
             return config.getString("Dead Miner = ");
-        } else if (e.hasMetadata(config.getString("Hexed Armor = "))) {
-            return config.getString("Hexed Armor = ");
         } else if (e.hasMetadata("The Darkness")) {
             return "The Darkness";
         }
@@ -441,47 +394,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                             }
                             e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
                             e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                            return true;
-                        }
-                    } else if (name.equals(config.getString("Magma Monster = "))) {
-                        ItemStack boot = e.getEquipment().getBoots();
-                        if (boot == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Magma Monster = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Magma Monster = "))) {
-                                e.removeMetadata(config.getString("Magma Monster = "), DangerousCaves.INSTANCE);
-                            }
-                            e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-                            e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) {
-                                e.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-                            }
-                            return true;
-                        } else if (boot.getType() != Material.LEATHER_BOOTS) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Magma Monster = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Magma Monster = "))) {
-                                e.removeMetadata(config.getString("Magma Monster = "), DangerousCaves.INSTANCE);
-                            }
-                            e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-                            e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) {
-                                e.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-                            }
                             return true;
                         }
                     } else if (name.equals(config.getString("Smoke Demon = "))) {
@@ -677,47 +589,21 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         }
         if (caveents) {
             if (event.getEntity() instanceof Monster) {
-                if (config.getBoolean("Enable Monster Fixing ")) {
-                    if (!fixMonster((LivingEntity) event.getEntity())) {
-                        Monster e = (Monster) event.getEntity();
-                        if (hasName(config.getString("Watcher = "), e)) {
-                            if (e.getCustomName() != null) {
-                                String name = e.getCustomName();
-                                if (name.toLowerCase().contains("elite")) {
-                                    e.remove();
-                                }
-                            }
-                        }
-                        else if (hasName(config.getString("Magma Monster = "), e)) {
-                            effectEnts.add(event.getEntity());
-                        }
-                        else if (hasName(config.getString("Dead Miner = "), e)) {
-                            effectEnts.add(event.getEntity());
-                        }
-                        else if (hasName(config.getString("Lava Creeper = "), e)) {
-                            effectEnts.add(event.getEntity());
-                        }
-                        else if (hasName(config.getString("Smoke Demon = "), e)) {
-                            effectEnts.add(event.getEntity());
-                        }
-                    }
-                } else {
-                    Monster e = (Monster) event.getEntity();
-                    if (hasName(config.getString("Watcher = "), e)) {
-                        effectEnts.add(event.getEntity());
-                    }
-                    else if (hasName(config.getString("Magma Monster = "), e)) {
-                        effectEnts.add(event.getEntity());
-                    }
-                    else if (hasName(config.getString("Dead Miner = "), e)) {
-                        effectEnts.add(event.getEntity());
-                    }
-                    else if (hasName(config.getString("Lava Creeper = "), e)) {
-                        effectEnts.add(event.getEntity());
-                    }
-                    else if (hasName(config.getString("Smoke Demon = "), e)) {
-                        effectEnts.add(event.getEntity());
-                    }
+                Monster e = (Monster) event.getEntity();
+                if (hasName(config.getString("Watcher = "), e)) {
+                    effectEnts.add(event.getEntity());
+                }
+                else if (hasName(config.getString("Magma Monster = "), e)) {
+                    effectEnts.add(event.getEntity());
+                }
+                else if (hasName(config.getString("Dead Miner = "), e)) {
+                    effectEnts.add(event.getEntity());
+                }
+                else if (hasName(config.getString("Lava Creeper = "), e)) {
+                    effectEnts.add(event.getEntity());
+                }
+                else if (hasName(config.getString("Smoke Demon = "), e)) {
+                    effectEnts.add(event.getEntity());
                 }
             }
         }
@@ -772,90 +658,68 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     if (existMonster(e)) {
                         String name = e2.getCustomName();
                         if (name != null) {
-                            boolean continuee;
-                            if (config.getBoolean("Enable Broken Monster Deletion ")) {
-                                if (name.toLowerCase().contains("elite")) {
-                                    continuee = false;
-                                    effectEnts.remove(e);
+                            boolean continuee = true;
+                            if (hasName("The Darkness", e)) {
+                                if ((e.getLocation().getBlock().getLightLevel() > 0) || (e.getFireTicks() > 0)) {
                                     e.remove();
-                                } else {
-                                    continuee = true;
                                 }
-                            } else {
-                                continuee = true;
-                            }
-                            if (continuee) {
-                                if (hasName("The Darkness", e)) {
-                                    if ((e.getLocation().getBlock().getLightLevel() > 0) || (e.getFireTicks() > 0)) {
-                                        e.remove();
-                                    }
-                                    else if (((Monster) e).getTarget().hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-                                        e.remove();
-                                    }
-                                    else if ((((Monster) e).getTarget().getLocation().getBlock().getLightLevel() == 0)) {
-                                        e.getWorld().playSound(e.getLocation(), Sound.ENTITY_CAT_PURR, (float) .5, 0);
-                                    }
-                                } else if (hasName(config.getString("Watcher = "), e)) {
-                                    LivingEntity e3 = ((Monster) e).getTarget();
-                                    if (e3 instanceof Player) {
-                                        if (!getLookingAt2(e3, (LivingEntity) e)) {
-                                            Player p = (Player) e3;
-                                            Location loc = getBlockInFrontOfPlayer(p);
-                                            double newYaw;
-                                            double newPitch;
-                                            if (p.getLocation().getYaw() < 0) {
-                                                newYaw = p.getLocation().getYaw() + 180;
-                                            } else {
-                                                newYaw = p.getLocation().getYaw() - 180;
-                                            }
-                                            newPitch = p.getLocation().getPitch() * -1;
-                                            Location jumpLoc = new Location(p.getWorld(), loc.getX(),
-                                                    p.getLocation().getY(), loc.getZ(), ((float) newYaw),
-                                                    ((float) newPitch));
-                                            e.teleport(jumpLoc);
-                                            e.setVelocity(new Vector(0, 0, 0));
-                                            p.setVelocity(new Vector(0, 0, 0));
-                                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 200));
-                                            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_HURT, 1, 2);
-                                            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 2));
+                                else if (((Monster) e).getTarget().hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                                    e.remove();
+                                }
+                                else if ((((Monster) e).getTarget().getLocation().getBlock().getLightLevel() == 0)) {
+                                    e.getWorld().playSound(e.getLocation(), Sound.ENTITY_CAT_PURR, (float) .5, 0);
+                                }
+                            } else if (hasName(config.getString("Watcher = "), e)) {
+                                LivingEntity e3 = ((Monster) e).getTarget();
+                                if (e3 instanceof Player) {
+                                    if (!getLookingAt2(e3, (LivingEntity) e)) {
+                                        Player p = (Player) e3;
+                                        Location loc = getBlockInFrontOfPlayer(p);
+                                        double newYaw;
+                                        double newPitch;
+                                        if (p.getLocation().getYaw() < 0) {
+                                            newYaw = p.getLocation().getYaw() + 180;
+                                        } else {
+                                            newYaw = p.getLocation().getYaw() - 180;
                                         }
+                                        newPitch = p.getLocation().getPitch() * -1;
+                                        Location jumpLoc = new Location(p.getWorld(), loc.getX(),
+                                                p.getLocation().getY(), loc.getZ(), ((float) newYaw),
+                                                ((float) newPitch));
+                                        e.teleport(jumpLoc);
+                                        e.setVelocity(new Vector(0, 0, 0));
+                                        p.setVelocity(new Vector(0, 0, 0));
+                                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 200));
+                                        p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_HURT, 1, 2);
+                                        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 2));
                                     }
-                                } else if (hasName(config.getString("Dead Miner = "), e)) {
-                                    if (e.getLocation().getBlock().getLightLevel() == 0) {
-                                        e.getLocation().getBlock().setType(Material.TORCH);
-                                    }
-                                } else if (hasName(config.getString("Magma Monster = "), e)) {
-                                    if (randor.nextInt(14) == 1) {
-                                        e.getLocation().getBlock().setType(Material.FIRE);
-                                    }
-                                    if (randor.nextInt(28) == 1) {
-                                        e.getLocation().subtract(0, 1, 0).getBlock().setType(Material.MAGMA_BLOCK);
-                                    }
-                                } else if (hasName(config.getString("Lava Creeper = "), e)) {
-                                    if (randor.nextInt(24) == 1) {
-                                        e.getWorld().spawnParticle(Particle.LAVA, e.getLocation().add(0, 1, 0), 1);
-                                    }
-                                } else if (hasName(config.getString("Smoke Demon = "), e)) {
-                                    if (e.getLocation().getBlock().getLightLevel() < 12) {
-                                        List<Entity> ents = e.getNearbyEntities(3, 3, 3);
-                                        for (Entity es : ents) {
-                                            if(es == e) {
+                                }
+                            } else if (hasName(config.getString("Dead Miner = "), e)) {
+                                if (e.getLocation().getBlock().getLightLevel() == 0) {
+                                    e.getLocation().getBlock().setType(Material.TORCH);
+                                }
+                            } else if (hasName(config.getString("Lava Creeper = "), e)) {
+                                if (randor.nextInt(24) == 1) {
+                                    e.getWorld().spawnParticle(Particle.LAVA, e.getLocation().add(0, 1, 0), 1);
+                                }
+                            } else if (hasName(config.getString("Smoke Demon = "), e)) {
+                                if (e.getLocation().getBlock().getLightLevel() < 12) {
+                                    List<Entity> ents = e.getNearbyEntities(3, 3, 3);
+                                    for (Entity es : ents) {
+                                        if(es == e) {
 
-                                            }
-                                            else if (es instanceof LivingEntity) {
-                                                ((LivingEntity) es).addPotionEffect(
-                                                        new PotionEffect(PotionEffectType.BLINDNESS, 120, 1));
-                                                ((LivingEntity) es).addPotionEffect(
-                                                        new PotionEffect(PotionEffectType.WITHER, 120, 0));
-                                            }
                                         }
-                                        e.getWorld().spawnParticle(Particle.CLOUD, e.getLocation().add(0, 1, 0), 60,
-                                                1, 1, 1, 0.00f/* , m */);
-                                    } else {
-                                        e.remove();
+                                        else if (es instanceof LivingEntity) {
+                                            ((LivingEntity) es).addPotionEffect(
+                                                    new PotionEffect(PotionEffectType.BLINDNESS, 120, 1));
+                                            ((LivingEntity) es).addPotionEffect(
+                                                    new PotionEffect(PotionEffectType.WITHER, 120, 0));
+                                        }
                                     }
+                                    e.getWorld().spawnParticle(Particle.CLOUD, e.getLocation().add(0, 1, 0), 60,
+                                            1, 1, 1, 0.00f/* , m */);
                                 } else {
-                                    effectEnts.remove(e);
+                                    e.remove();
                                 }
                             } else {
                                 effectEnts.remove(e);
@@ -1248,12 +1112,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                 } else {
                     return "";
                 }
-            } else if (choice == 4) {
-                if (config.getBoolean("Spawn Magma Monster ")) {
-                    return config.getString("Magma Monster = ");
-                } else {
-                    return "";
-                }
             } else if (choice == 5) {
                 if (config.getBoolean("Spawn Smoke Demon ")) {
                     return config.getString("Smoke Demon = ");
@@ -1267,18 +1125,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     } else {
                         return "";
                     }
-                } else {
-                    return "";
-                }
-            } else if (choice == 7) {
-                if (config.getBoolean("Spawn Alpha Spider ")) {
-                    return config.getString("Alpha Spider = ");
-                } else {
-                    return "";
-                }
-            } else if (choice == 8) {
-                if (config.getBoolean("Spawn Hexed Armor ")) {
-                    return config.getString("Hexed Armor = ");
                 } else {
                     return "";
                 }
@@ -1382,29 +1228,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     effectEnts.add(e);
-                } else if (name.equals(config.getString("Alpha Spider = "))
-                        && (randor.nextInt(config.getInt("Alpha Spider Chance ") + 1) == 0)) {
-                    if (!(e.getType() == EntityType.SPIDER || e.getType() == EntityType.CAVE_SPIDER)) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.SPIDER);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                } else if (name.equals(config.getString("Hexed Armor = "))
-                        && (randor.nextInt(config.getInt("Hexed Armor Chance ") + 1) == 0)) {
-                    if (e.getType() != EntityType.ZOMBIE || e.getType() != EntityType.SKELETON) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.ZOMBIE);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
-                    e.setSilent(true);
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setCanPickupItems(false);
                 }
             } catch (Exception error) {
                 console.sendMessage(ChatColor.RED + "Uh oh error inside dressing mob.");
