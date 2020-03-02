@@ -58,7 +58,7 @@ public class HexedArmor extends CustomMob implements Listener {
 
     private static ItemStack getRandom(Material[] arr) {
         int i = Rnd.nextInt(arr.length + 2);
-        return enchant(i >= arr.length ? new ItemStack(Material.AIR) : new ItemStack(arr[i]));
+        return i >= arr.length ? new ItemStack(Material.AIR) : enchant(new ItemStack(arr[i]));
     }
 
     private static ItemStack enchant(ItemStack item) {
