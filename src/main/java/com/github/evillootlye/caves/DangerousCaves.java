@@ -2,6 +2,7 @@ package com.github.evillootlye.caves;
 
 import com.github.evillootlye.caves.caverns.AmbientSounds;
 import com.github.evillootlye.caves.caverns.CaveInsPlayerListener;
+import com.github.evillootlye.caves.caverns.CavesAging;
 import com.github.evillootlye.caves.caverns.DepthTemperature;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.generator.CaveGenerator;
@@ -36,16 +37,19 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
         AmbientSounds ambient = new AmbientSounds();
         CaveInsPlayerListener caveIns = new CaveInsPlayerListener();
+        CavesAging cavesAging = new CavesAging();
         DepthTemperature temperature = new DepthTemperature();
 
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(caveIns, this);
 
         dynamics.subscribe(ambient);
+        dynamics.subscribe(cavesAging);
         dynamics.subscribe(mobsManager);
         dynamics.subscribe(temperature);
 
         cfg.register(ambient);
+        cfg.register(cavesAging);
         cfg.register(caveIns);
         cfg.register(temperature);
         if(cfg.getYml().getBoolean("generator.wait-other", false)) {

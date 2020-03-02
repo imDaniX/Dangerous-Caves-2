@@ -115,6 +115,11 @@ caverns:
     y-max: 80
     # Chance of block will be affected
     change-chance: 25
+    # List of coordinates of chunks that should be ignored
+    # To get chunk coordinates just divide your coordinates by 16 and ignore remainder
+    # "-1,-1" variant is allowed(just one chunk)
+    skip-chunks:
+      - "-1,-1 1,1"
 
 #
 # Generator-related things
