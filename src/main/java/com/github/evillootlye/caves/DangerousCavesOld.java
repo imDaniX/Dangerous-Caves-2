@@ -2,17 +2,11 @@ package com.github.evillootlye.caves;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.block.data.type.Switch;
-import org.bukkit.block.data.type.Switch.Face;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -66,7 +60,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private static List<String> worlds = new ArrayList<>();
     private final List<Entity> effectEnts = new ArrayList<>();
     private boolean hungerdark = false;
-    private boolean caveage = false;
     private boolean caveents = false;
     private static final List<String> mobNames = new ArrayList<>();
     private int damage = 0;
@@ -85,7 +78,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
 
         INSTANCE = this;
         hungerdark = config.getBoolean("Enable Hungering Darkness ");
-        caveage = config.getBoolean("Enable Cave Aging ");
         caveents = config.getBoolean("Enable Cave Monsters ");
         mobNames.add("The Darkness");
         mobNames.add(config.getString("Crying Bat = "));
@@ -122,23 +114,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                 betterEffectLooper();
             }
         }, 0L, /* 600 */((long) 3));
-        scheduler.scheduleSyncRepeatingTask(DangerousCaves.INSTANCE, () -> {
-            try {
-                for (String namew : worlds) {
-                    World wor = Bukkit.getWorld(namew);
-                    if (wor != null) {
-                        if (caveage) {
-                            for (Player p : wor.getPlayers()) {
-                                doCaveStuff(p);
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                console.sendMessage(ChatColor.DARK_RED + "Our worst fears were real.");
-            }
-        }, 0L, /* 600 */7000L);
-
     }
 
     private static boolean getLookingAt2(LivingEntity player, LivingEntity player1) {
@@ -151,14 +126,11 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
 
     private void createConfigFol() {
         config.addDefault("Enable Hungering Darkness ", true);
-        config.addDefault("Enable Cave Aging ", true);
         config.addDefault("Enable Cave Monsters ", true);
         config.addDefault("Enable Monster Fixing ", false);
         config.addDefault("Enable Broken Monster Deletion ", false);
         config.addDefault("Cave Skulls ", true);
         config.addDefault("::::Higher equals lower chance!::::", "");
-        config.addDefault("Cave Aging Chance ", 2);
-        config.addDefault("Cave Aging Change Chance ", 39);
         config.addDefault("Darkness Spawn Chance ", 1);
         config.addDefault("Hungering Darkness Damage ", 200);
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
@@ -221,7 +193,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         boolean hasWorlds = false;
         if (!hasWorlds) {
             hungerdark = config.getBoolean("Enable Hungering Darkness ");
-            caveage = config.getBoolean("Enable Cave Aging ");
             caveents = config.getBoolean("Enable Cave Monsters ");
         }
         // }
@@ -233,7 +204,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             if (sender instanceof Player) {
                 console.sendMessage(ChatColor.GREEN + "World Name = " + ChatColor.RESET + " "
                         + ((Player) sender).getWorld().getName());
-                doCaveStuff(((Player) sender));
                 return true;
             }
         }
@@ -934,110 +904,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         }
     }
 
-    //
-
-    // Cave Aging
-
-    private boolean inCave(Player p) {
-        boolean cave = true;
-        if (p.getLocation().getBlock().getLightFromSky() > 0) {
-            return false;
-        }
-        if (p.getLocation().getY() < 49) {
-            return false;
-        }
-        if (p.getGameMode() != GameMode.SURVIVAL) {
-            return false;
-        }
-        if (!isStony(p.getLocation().subtract(0, 1, 0).getBlock().getType())) {
-            return false;
-        }
-        return cave;
-    }
-
-    private void doCaveStuff(Player p) {
-        if (!worlds.contains(p.getWorld().getName())) {
-            return;
-        }
-        if(inCave(p)) {
-            if (randor.nextInt(config.getInt("Cave Aging Chance ") + 1) == 0) {
-                World wor = p.getWorld();
-                Random rand = new Random();
-                Location loc = p.getLocation();
-                int radius = 45;
-                int cx = loc.getBlockX();
-                int cy = loc.getBlockY();
-                int cz = loc.getBlockZ();
-                for (int x = cx - radius; x <= cx + radius; x++) {
-                    for (int z = cz - radius; z <= cz + radius; z++) {
-                        for (int y = (cy - radius); y < (cy + radius); y++) {
-                            double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + ((cy - y) * (cy - y));
-
-                            if (dist < radius * radius) {
-                                if (rand.nextInt(config.getInt("Cave Aging Change Chance ") + 1) == 0) {
-                                    Location l = new Location(loc.getWorld(), x, y, z);
-                                    doCaveBlocks(l.getBlock());
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void doCaveBlocks(Block b) {
-        if (b.getLocation().getY() > 50 || b.getLightFromSky() > 0) {
-            return;
-        }
-        if (isStony(b.getType()) && randor.nextInt(2) == 1) {
-            int chose = randor.nextInt(3);
-            if (chose == 0) {
-                b.setType(Material.COBBLESTONE);
-            } else if (chose == 1) {
-                b.setType(Material.ANDESITE);
-            } else {
-                Block b2 = b.getLocation().subtract(0, 1, 0).getBlock();
-                if (randor.nextInt(2) == 1 && isAir(b2.getType())) {
-                    b2.setType(Material.COBBLESTONE_WALL);
-                }
-            }
-        }
-        if (b.getType() == Material.COBBLESTONE_WALL) {
-            if (randor.nextInt(3) == 1) {
-                b.setType(Material.COBBLESTONE);
-            } else {
-                Block b2 = b.getLocation().subtract(0, 1, 0).getBlock();
-                if (randor.nextInt(2) == 1 && isAir(b2.getType())) {
-                    b2.setType(Material.COBBLESTONE_WALL);
-                }
-            }
-        }
-        if ((isStony(b.getType())) && (randor.nextInt(8) == 1)) {
-            doVines2(b.getLocation());
-        }
-        if ((isStony(b.getType())) && randor.nextInt(9) == 1) {
-            Block b2 = b.getRelative(BlockFace.UP);
-            if (isAir(b2.getType())) {
-                if (randor.nextBoolean()) {
-                    b2.setType(Material.BROWN_MUSHROOM);
-                } else {
-                    b2.setType(Material.RED_MUSHROOM);
-                }
-            }
-        }
-        if ((isStony(b.getType())) && randor.nextInt(6) == 1) {
-            Block b2 = b.getRelative(BlockFace.UP);
-            if (isAir(b2.getType())) {
-                b2.setType(Material.STONE_BUTTON);
-                Switch dr = (Switch) b2.getBlockData();
-                dr.setFace(Face.FLOOR);
-                b2.setBlockData(dr);
-            }
-        }
-    }
-
     private boolean isAir(Material m) {
         return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR;
     }
@@ -1046,39 +912,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         return m.name().toLowerCase().contains("dirt") || m == Material.STONE || m == Material.MOSSY_COBBLESTONE
                 || m == Material.ANDESITE || m == Material.DIORITE || m == Material.COBBLESTONE || m == Material.GRANITE
                 || m == Material.GRAVEL;
-    }
-
-    private void doVines2(Location l) {
-        World wor = l.getWorld();
-        if (wor != null) {
-            Block b = l.getBlock();
-            if (b.getType().name().toLowerCase().contains("leave") || isStony(b.getType())) {
-                BlockFace[] blocksf = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
-                for (BlockFace blockface : blocksf) {
-                    Block b2 = l.getBlock().getRelative(blockface);
-                    if (isAir(b2.getType())) {
-                        b2.setType(Material.VINE);
-                        if (b2.getBlockData() instanceof MultipleFacing) {
-                            MultipleFacing dr = (MultipleFacing) b2.getBlockData();
-                            dr.setFace(oppisiteBf(blockface), true);
-                            b2.setBlockData(dr);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private BlockFace oppisiteBf(BlockFace be) {
-        if (be == BlockFace.EAST) {
-            return BlockFace.WEST;
-        } else if (be == BlockFace.WEST) {
-            return BlockFace.EAST;
-        } else if (be == BlockFace.NORTH) {
-            return BlockFace.SOUTH;
-        } else {
-            return BlockFace.NORTH;
-        }
     }
 
     //
