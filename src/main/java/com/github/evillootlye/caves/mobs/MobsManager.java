@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
+import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.AliasMethod;
 import com.github.evillootlye.caves.utils.random.Rnd;
@@ -52,7 +53,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        chance = cfg.getDouble("try-chance", 50)/100;
+        chance = cfg.getDouble("try-chance", 50) / 100;
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
         worlds.clear();
@@ -99,7 +100,8 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
         if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
-                Rnd.nextDouble() < chance)
+                !LocationUtils.isCave(loc) ||
+                Rnd.nextDouble() > chance)
             return false;
         CustomMob mob = mobsPool.next();
         if(mob.canSpawn(type, loc)) {

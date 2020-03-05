@@ -13,25 +13,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Bat;
-import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Husk;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Zombie;
-import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -59,10 +48,8 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private final Random randor = new Random();
     private static List<String> worlds = new ArrayList<>();
     private final List<Entity> effectEnts = new ArrayList<>();
-    private boolean hungerdark = false;
     private boolean caveents = false;
     private static final List<String> mobNames = new ArrayList<>();
-    private int damage = 0;
     
     public FileConfiguration getConfig() {
         return DangerousCaves.INSTANCE.getConfig();
@@ -77,9 +64,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         Bukkit.getPluginManager().registerEvents(this, DangerousCaves.INSTANCE);
 
         INSTANCE = this;
-        hungerdark = config.getBoolean("Enable Hungering Darkness ");
         caveents = config.getBoolean("Enable Cave Monsters ");
-        mobNames.add("The Darkness");
         mobNames.add(config.getString("Crying Bat = "));
         mobNames.add(config.getString("Lava Creeper = "));
         mobNames.add(config.getString("TnT Creeper = "));
@@ -87,14 +72,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         mobNames.add(config.getString("Smoke Demon = "));
         mobNames.add(config.getString("Dead Miner = "));
         worlds = config.getStringList("Enabled Worlds - If Left Blank Will Just Use default world ");
-        int d = config.getInt("Hungering Darkness Damage ");
-        if (d > 200) {
-            damage = 200;
-        } else if (d < 0) {
-            damage = 0;
-        } else {
-            damage = d;
-        }
         if (worlds.size() == 0) {
             boolean hasWorldR = false;
             for (World w : Bukkit.getWorlds()) {
@@ -110,7 +87,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         }
         BukkitScheduler scheduler = Bukkit.getScheduler();
         scheduler.scheduleSyncRepeatingTask(DangerousCaves.INSTANCE, () -> {
-            if (hungerdark || caveents) {
+            if (caveents) {
                 betterEffectLooper();
             }
         }, 0L, /* 600 */((long) 3));
@@ -125,15 +102,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     }
 
     private void createConfigFol() {
-        config.addDefault("Enable Hungering Darkness ", true);
-        config.addDefault("Enable Cave Monsters ", true);
-        config.addDefault("Enable Monster Fixing ", false);
-        config.addDefault("Enable Broken Monster Deletion ", false);
-        config.addDefault("Cave Skulls ", true);
-        config.addDefault("::::Higher equals lower chance!::::", "");
-        config.addDefault("Darkness Spawn Chance ", 1);
-        config.addDefault("Hungering Darkness Damage ", 200);
-        config.addDefault(":::::::::::::::::::::::::::::::::::", "");
         config.addDefault("Spawn Crying Bat ", true);
         config.addDefault("Spawn Lava Creeper ", true);
         config.addDefault("Spawn TnT Creeper ", true);
@@ -192,7 +160,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         // public World wor = null;
         boolean hasWorlds = false;
         if (!hasWorlds) {
-            hungerdark = config.getBoolean("Enable Hungering Darkness ");
             caveents = config.getBoolean("Enable Cave Monsters ");
         }
         // }
@@ -223,8 +190,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             return config.getString("Smoke Demon = ");
         } else if (e.hasMetadata(config.getString("Dead Miner = "))) {
             return config.getString("Dead Miner = ");
-        } else if (e.hasMetadata("The Darkness")) {
-            return "The Darkness";
         }
         return "null";
     }
@@ -411,81 +376,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                             }
                             return true;
                         }
-                    } else if (name.equals("The Darkness")) {
-                        String cus = e.getCustomName();
-                        if (e.getType() != EntityType.HUSK) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals("The Darkness")) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.SLOW)) {
-                                e.removePotionEffect(PotionEffectType.SLOW);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-                                e.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-                                e.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                            }
-                            e.setCollidable(true);
-                            return true;
-                        } else if (cus == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals("The Darkness")) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.SLOW)) {
-                                e.removePotionEffect(PotionEffectType.SLOW);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-                                e.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-                                e.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                            }
-                            e.setCollidable(true);
-                            return true;
-                        } else if (!cus.equals("The Darkness")) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals("The Darkness")) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata("The Darkness")) {
-                                e.removeMetadata("The Darkness", DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.SLOW)) {
-                                e.removePotionEffect(PotionEffectType.SLOW);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-                                e.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-                                e.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                            }
-                            e.setCollidable(true);
-                            return true;
-                        }
                     }
                     return false;
                 } catch (Exception error) {
@@ -512,51 +402,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             return;
         }
         //console.sendMessage("yea");
-        if (hungerdark) {
-            if (config.getBoolean("Enable Monster Fixing ")) {
-                if (!worlds.contains(event.getEntity().getWorld().getName())) {
-                    return;
-                }
-                if (event.getEntity() instanceof Monster) {
-                    if (!fixMonster((LivingEntity) event.getEntity())) {
-                        Monster e = (Monster) event.getEntity();
-                        if (hasName("The Darkness", e)) {
-                            if (event.getTarget().getLocation().getBlock().getLightLevel() > 0) {
-                                event.setTarget(null);
-                            } else {
-                                try {
-                                    effectEnts.add(event.getEntity());
-                                } catch (Exception error) {
-                                    console.sendMessage(ChatColor.RED + "Uh oh error inside targeting.");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                if (!worlds.contains(event.getEntity().getWorld().getName())) {
-                    return;
-                }
-                if (event.getEntity() instanceof Monster) {
-                    if (!fixMonster((LivingEntity) event.getEntity())) {
-                        Monster e = (Monster) event.getEntity();
-                        if (hasName("The Darkness", e)) {
-                            if (event.getTarget().getLocation().getBlock().getLightLevel() > 0) {
-                                event.setTarget(null);
-                            }
-                            else {
-                                try {
-                                    effectEnts.add(event.getEntity());
-                                } catch (Exception error) {
-                                    console.sendMessage(ChatColor.RED + "Uh oh error inside targeting.");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         if (caveents) {
             if (event.getEntity() instanceof Monster) {
                 Monster e = (Monster) event.getEntity();
@@ -628,18 +473,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     if (existMonster(e)) {
                         String name = e2.getCustomName();
                         if (name != null) {
-                            boolean continuee = true;
-                            if (hasName("The Darkness", e)) {
-                                if ((e.getLocation().getBlock().getLightLevel() > 0) || (e.getFireTicks() > 0)) {
-                                    e.remove();
-                                }
-                                else if (((Monster) e).getTarget().hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-                                    e.remove();
-                                }
-                                else if ((((Monster) e).getTarget().getLocation().getBlock().getLightLevel() == 0)) {
-                                    e.getWorld().playSound(e.getLocation(), Sound.ENTITY_CAT_PURR, (float) .5, 0);
-                                }
-                            } else if (hasName(config.getString("Watcher = "), e)) {
+                            if (hasName(config.getString("Watcher = "), e)) {
                                 LivingEntity e3 = ((Monster) e).getTarget();
                                 if (e3 instanceof Player) {
                                     if (!getLookingAt2(e3, (LivingEntity) e)) {
@@ -765,52 +599,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         }
     }
 
-    @EventHandler
-    public void deleteLightLevel(CreatureSpawnEvent event) {
-        if (!worlds.contains(event.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (hungerdark || caveents) {
-            Entity e = event.getEntity();
-            try {
-                e.getLocation().subtract(0, 1, 0).getBlock();
-                boolean isEnemy = (e instanceof Creeper || e instanceof Skeleton || e instanceof Zombie
-                        || e instanceof Spider)
-                        && (!(e instanceof PigZombie || e instanceof ZombieVillager
-                        || e instanceof Husk));
-                if (randor.nextInt(config.getInt("Darkness Spawn Chance ") + 1) != 0 || !hungerdark) {
-                    if (caveents) {
-                        if (!e.isDead()) {
-                            if (isEnemy) {
-                                if (event.getSpawnReason() == SpawnReason.NATURAL && event.getSpawnReason() != SpawnReason.REINFORCEMENTS && isStony(e.getLocation().subtract(0, 1, 0).getBlock().getType())) {
-                                    if (e.getLocation().getY() <= config.getInt("Monster Spawning Highest Y ")
-                                            && e.getLocation().getY() >= config.getInt("Monster Spawning Lowest Y ")) {
-                                        doMobSpawns(e);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        return;
-                    }
-                } else {
-                    if (!e.isDead()) {
-                        if (isEnemy) {
-                            if (event.getSpawnReason() == SpawnReason.NATURAL && isStony(e.getLocation().subtract(0, 1, 0).getBlock().getType())) {
-                                if (e.getLocation().getY() <= config.getInt("Monster Spawning Highest Y ")
-                                        && e.getLocation().getY() >= config.getInt("Monster Spawning Lowest Y ")) {
-                                    doDarkness(e);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception error) {
-                console.sendMessage(ChatColor.RED + "Uh oh error inside spawning method.");
-            }
-        }
-    }
-
     private boolean exists(Entity e) {
         return e != null;
     }
@@ -830,88 +618,8 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         return false;
     }
 
-    @EventHandler
-    public void onDeath(EntityDeathEvent e) {
-        if (hungerdark) {
-            if (!worlds.contains(e.getEntity().getWorld().getName())) {
-                return;
-            }
-            if (hasName("The Darkness", e.getEntity())) {
-                List<ItemStack> drops = e.getDrops();
-                for (ItemStack i : drops) {
-                    i.setType(Material.AIR);
-                }
-            }
-        }
-    }
-
-    private void doDarkness(Entity entitye) {
-        try {
-            LivingEntity e = (LivingEntity) entitye;
-            if (e != null && !e.isDead()) {
-                if (e.getType() != EntityType.HUSK) {
-                    Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.HUSK);
-                    e.remove();
-                    e = (LivingEntity) e2;
-                }
-                String name = "The Darkness";
-                e.setCustomName(name);
-                e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                e.setMetadata("darkness", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 200, false, false));
-                e.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999999, 2, false, false));
-                e.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999999, damage, false, false));
-                e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999, 3, false, false));
-                e.setSilent(true);
-                e.setCanPickupItems(false);
-                e.setCustomNameVisible(false);
-                e.setCollidable(false);
-            }
-        } catch (Exception error) {
-            console.sendMessage(ChatColor.RED + "Uh oh error inside darkness dressing.");
-        }
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageEvent e) {
-        if (hungerdark) {
-            if (!worlds.contains(e.getEntity().getWorld().getName())) {
-                return;
-            }
-            if (hasName("The Darkness", e.getEntity())) {
-                if (((LivingEntity) e.getEntity()).getHealth() - e.getFinalDamage() <= 0) {
-                    e.setCancelled(true);
-                    e.getEntity().remove();
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onDamageP(EntityDamageByEntityEvent e) {
-        if (!worlds.contains(e.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (e.getEntity() instanceof Player) {
-            if (hasName("The Darkness", e.getDamager())) {
-                if (e.getEntity().getLocation().getBlock().getLightLevel() > 0) {
-                    e.setCancelled(true);
-                    e.getDamager().remove();
-                }
-            }
-        }
-    }
-
     private boolean isAir(Material m) {
         return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR;
-    }
-
-    private boolean isStony(Material m) {
-        return m.name().toLowerCase().contains("dirt") || m == Material.STONE || m == Material.MOSSY_COBBLESTONE
-                || m == Material.ANDESITE || m == Material.DIORITE || m == Material.COBBLESTONE || m == Material.GRANITE
-                || m == Material.GRAVEL;
     }
 
     //

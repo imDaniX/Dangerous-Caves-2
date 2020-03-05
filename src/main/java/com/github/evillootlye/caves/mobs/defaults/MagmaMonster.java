@@ -48,7 +48,7 @@ public class MagmaMonster extends CustomMob implements Listener, Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("weight");
+        weight = cfg.getInt("priority", 1);
     }
 
     @Override

@@ -137,10 +137,12 @@ mobs:
   y-min: 0
   y-max: 64
   alpha-spider:
-    weight: 1
+    priority: 1
   hexed-armor:
-    weight: 1
+    priority: 1
   hungering-darkness:
-    weight: 1
+    priority: 1
+    remove-on-light: true
+    damage: 200
   magma-monster:
-    weight: 1
+    priority: 1

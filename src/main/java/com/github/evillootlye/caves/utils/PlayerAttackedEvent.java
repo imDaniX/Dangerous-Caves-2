@@ -9,11 +9,21 @@ import org.bukkit.event.player.PlayerEvent;
 public class PlayerAttackedEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private final LivingEntity attacker;
+    private double damage;
     private boolean cancelled;
 
-    public PlayerAttackedEvent(Player player, LivingEntity attacker) {
+    public PlayerAttackedEvent(Player player, LivingEntity attacker, double damage) {
         super(player);
         this.attacker = attacker;
+        this.damage = damage;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 
     public LivingEntity getAttacker() {

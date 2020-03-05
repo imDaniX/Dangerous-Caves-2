@@ -62,8 +62,9 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if(event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
-            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager());
+            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager(), event.getDamage());
             Bukkit.getPluginManager().callEvent(pEvent);
+            event.setDamage(pEvent.getDamage());
             event.setCancelled(pEvent.isCancelled());
         }
     }
