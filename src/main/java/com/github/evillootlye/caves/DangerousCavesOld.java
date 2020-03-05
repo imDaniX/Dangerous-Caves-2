@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -66,7 +65,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         caveents = config.getBoolean("Enable Cave Monsters ");
         mobNames.add(config.getString("Lava Creeper = "));
         mobNames.add(config.getString("TnT Creeper = "));
-        mobNames.add(config.getString("Watcher = "));
         mobNames.add(config.getString("Smoke Demon = "));
         mobNames.add(config.getString("Dead Miner = "));
         worlds = config.getStringList("Enabled Worlds - If Left Blank Will Just Use default world ");
@@ -91,30 +89,19 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         }, 0L, /* 600 */((long) 3));
     }
 
-    private static boolean getLookingAt2(LivingEntity player, LivingEntity player1) {
-        Location eye = player.getEyeLocation();
-        Vector toEntity = player1.getEyeLocation().toVector().subtract(eye.toVector());
-        double dot = toEntity.normalize().dot(eye.getDirection());
-
-        return dot > 0.70D;
-    }
-
     private void createConfigFol() {
         config.addDefault("Spawn Lava Creeper ", true);
         config.addDefault("Spawn TnT Creeper ", true);
-        config.addDefault("Spawn Watcher ", true);
         config.addDefault("Spawn Smoke Demon ", true);
         config.addDefault("Spawn Dead Miner ", true);
         config.addDefault(":::::Monster Names - no Blanks:::::", "");
         config.addDefault("Lava Creeper = ", "Lava Creeper");
         config.addDefault("TnT Creeper = ", "TnT Infused Creeper");
-        config.addDefault("Watcher = ", "Watcher");
         config.addDefault("Smoke Demon = ", "Smoke Demon");
         config.addDefault("Dead Miner = ", "Dead Miner");
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
         config.addDefault("Lava Creeper Chance ", 0);
         config.addDefault("TnT Creeper Chance ", 0);
-        config.addDefault("Watcher Chance ", 0);
         config.addDefault("Smoke Demon Chance ", 0);
         config.addDefault("Dead Miner Chance ", 0);
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
@@ -175,9 +162,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     // The Darkness
 
     private String isMetad(LivingEntity e) {
-        if (e.hasMetadata(config.getString("Watcher = "))) {
-            return config.getString("Watcher = ");
-        } else if (e.hasMetadata(config.getString("Lava Creeper = "))) {
+        if (e.hasMetadata(config.getString("Lava Creeper = "))) {
             return config.getString("Lava Creeper = ");
         } else if (e.hasMetadata(config.getString("TnT Creeper = "))) {
             return config.getString("TnT Creeper = ");
@@ -208,10 +193,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         if (caveents) {
             if (event.getEntity() instanceof Monster) {
                 Monster e = (Monster) event.getEntity();
-                if (hasName(config.getString("Watcher = "), e)) {
-                    effectEnts.add(event.getEntity());
-                }
-                else if (hasName(config.getString("Magma Monster = "), e)) {
+                if (hasName(config.getString("Magma Monster = "), e)) {
                     effectEnts.add(event.getEntity());
                 }
                 else if (hasName(config.getString("Dead Miner = "), e)) {
@@ -266,32 +248,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     if (existMonster(e)) {
                         String name = e2.getCustomName();
                         if (name != null) {
-                            if (hasName(config.getString("Watcher = "), e)) {
-                                LivingEntity e3 = ((Monster) e).getTarget();
-                                if (e3 instanceof Player) {
-                                    if (!getLookingAt2(e3, (LivingEntity) e)) {
-                                        Player p = (Player) e3;
-                                        Location loc = getBlockInFrontOfPlayer(p);
-                                        double newYaw;
-                                        double newPitch;
-                                        if (p.getLocation().getYaw() < 0) {
-                                            newYaw = p.getLocation().getYaw() + 180;
-                                        } else {
-                                            newYaw = p.getLocation().getYaw() - 180;
-                                        }
-                                        newPitch = p.getLocation().getPitch() * -1;
-                                        Location jumpLoc = new Location(p.getWorld(), loc.getX(),
-                                                p.getLocation().getY(), loc.getZ(), ((float) newYaw),
-                                                ((float) newPitch));
-                                        e.teleport(jumpLoc);
-                                        e.setVelocity(new Vector(0, 0, 0));
-                                        p.setVelocity(new Vector(0, 0, 0));
-                                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 200));
-                                        p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_HURT, 1, 2);
-                                        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 2));
-                                    }
-                                }
-                            } else if (hasName(config.getString("Dead Miner = "), e)) {
+                            if (hasName(config.getString("Dead Miner = "), e)) {
                                 if (e.getLocation().getBlock().getLightLevel() == 0) {
                                     e.getLocation().getBlock().setType(Material.TORCH);
                                 }
@@ -407,13 +364,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private String mobTypes() {
         int choice = randor.nextInt(9);
         try {
-            if (choice == 0) {
-                if (config.getBoolean("Spawn Watcher ")) {
-                    return config.getString("Watcher = ");
-                } else {
-                    return "";
-                }
-            } else if (choice == 1) {
+            if (choice == 1) {
                 if (config.getBoolean("Spawn TnT Creeper ")) {
                     return config.getString("TnT Creeper = ");
                 } else {
@@ -450,28 +401,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         String name = mobTypes();
         if (e != null && !e.isDead()) {
             try {
-                if (name.equals(config.getString("Watcher = "))
-                        && (randor.nextInt(config.getInt("Watcher Chance ") + 1) == 0)) {
-                    // now teleports in front of the player if the player looks away from it
-                    Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.HUSK);
-                    e.remove();
-                    e = (LivingEntity) e2;
-                    e.setSilent(true);
-                    e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 200));
-                    EntityEquipment ee = e.getEquipment();
-                    ItemStack myAwesomeSkull = new ItemStack(Material.PLAYER_HEAD, 1);
-                    SkullMeta myAwesomeSkullMeta = (SkullMeta) myAwesomeSkull.getItemMeta();
-                    myAwesomeSkullMeta.setOwner("Creegn");
-                    myAwesomeSkull.setItemMeta(myAwesomeSkullMeta);
-                    ee.setHelmet(myAwesomeSkull);
-                    ee.setHelmetDropChance(0);
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    removeHand(e);
-                    e.setCanPickupItems(false);
-                } else if (name.equals(config.getString("TnT Creeper = "))
+                if (name.equals(config.getString("TnT Creeper = "))
                         && (randor.nextInt(config.getInt("TnT Creeper Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.CREEPER) {
                         Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.CREEPER);
@@ -612,12 +542,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(),
                                 new ItemStack(Material.TORCH, randor.nextInt(3) + 1));
                     }
-                    return;
                 }
-            }
-            if (hasName(config.getString("Watcher = "), event.getEntity())) {
-                event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_SLIME_SQUISH,
-                        1, (float) 1.1);
             }
         }
     }

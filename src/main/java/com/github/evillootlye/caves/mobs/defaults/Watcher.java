@@ -12,7 +12,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -60,6 +62,12 @@ public class Watcher extends TickableMob implements Configurable, Listener {
     @Override
     public int getWeight() {
         return weight;
+    }
+
+    @EventHandler
+    public void onAttack(EntityDamageByEntityEvent event) {
+        if(isThis(event.getEntity()))
+            event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1.1f);
     }
 
     @Override

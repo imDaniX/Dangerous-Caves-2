@@ -118,7 +118,7 @@ caverns:
 #
 generator:
 
-  # Force DangerousCaves' generator to wait for other plugins (for other generators)
+  # Force DangerousCaves' generator to wait for other plugins (other generators)
   wait-other: false
   # Chance of custom structure generations in chunk
   chance: 50
