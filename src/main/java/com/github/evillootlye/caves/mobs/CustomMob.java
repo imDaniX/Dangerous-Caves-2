@@ -9,7 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class CustomMob {
-    private static final NamespacedKey KEY = new NamespacedKey(DangerousCaves.INSTANCE, "dangerouscaves-mob-type");
+    private static final NamespacedKey KEY = new NamespacedKey(DangerousCaves.INSTANCE, "mob-type");
     private final EntityType type;
     private final String id;
 

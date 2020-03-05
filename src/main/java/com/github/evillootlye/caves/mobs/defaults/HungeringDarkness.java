@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+@Configurable.Path("mobs.hungering-darkness")
 public class HungeringDarkness extends CustomMob.TickableMob implements Listener, Configurable {
     private final static PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private final static PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
@@ -57,7 +58,7 @@ public class HungeringDarkness extends CustomMob.TickableMob implements Listener
             if(remove)
                 event.getEntity().remove();
             else
-                event.setTarget(null);
+                event.setCancelled(true);
         }
     }
 
@@ -66,7 +67,7 @@ public class HungeringDarkness extends CustomMob.TickableMob implements Listener
         if(!isThis(event.getAttacker())) return;
         if(event.getPlayer().getLocation().getBlock().getLightLevel() > 0) {
             event.setCancelled(true);
-            event.getAttacker().remove();
+            if(remove) event.getAttacker().remove();
         } else event.setDamage(damage);
     }
 

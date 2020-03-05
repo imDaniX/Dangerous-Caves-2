@@ -150,6 +150,10 @@ mobs:
   y-max: 64
   alpha-spider:
     priority: 1
+  crying-bat:
+    priority: 1
+    cry-chance: 3.33
+    death-chance: 20
   hexed-armor:
     priority: 1
   hungering-darkness:
