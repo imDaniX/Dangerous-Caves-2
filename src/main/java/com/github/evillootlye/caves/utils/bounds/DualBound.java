@@ -5,10 +5,20 @@ public class DualBound implements Bound {
     private final int zMin, zMax;
 
     public DualBound(int xMin, int xMax, int zMin, int zMax) {
-        this.xMin = xMin;
-        this.xMax = xMax;
-        this.zMin = zMin;
-        this.zMax = zMax;
+        if(xMin > xMax) {
+            this.xMin = xMax;
+            this.xMax = xMin;
+        } else {
+            this.xMin = xMin;
+            this.xMax = xMax;
+        }
+        if(zMin > zMax) {
+            this.zMin = zMax;
+            this.zMax = zMin;
+        } else {
+            this.zMin = zMin;
+            this.zMax = zMax;
+        }
     }
 
     @Override
@@ -26,7 +36,6 @@ public class DualBound implements Bound {
     public boolean equals(Object object) {
         if(!(object instanceof DualBound)) return false;
         DualBound b = (DualBound) object;
-        return ((xMin == b.xMin && xMax == b.xMax) || (xMin == b.xMax && xMax == b.xMin)) &&
-                ((zMin == b.zMax && zMax == b.zMax) || (zMin == b.zMax && zMax == b.zMin));
+        return (xMin == b.xMin && xMax == b.xMax) && (zMin == b.zMax && zMax == b.zMax);
     }
 }

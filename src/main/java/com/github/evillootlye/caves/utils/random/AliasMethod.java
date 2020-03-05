@@ -39,18 +39,25 @@ public final class AliasMethod<T> {
      * ..., n - 1, this constructor creates the probability and alias tables
      * needed to efficiently sample from this distribution.
      *
-     * @param items The list of probabilities.
+     * @param collection The list of probabilities.
      */
-    public AliasMethod(Collection<T> items, ToDoubleFunction<T> funct) {
-        List<Double> probabilities = new ArrayList<>();
-        this.items = new ArrayList<>();
-        for(T item : items) {
-            this.items.add(item);
-            probabilities.add(funct.applyAsDouble(item));
-        }
+    public AliasMethod(Collection<T> collection, ToDoubleFunction<T> funct) {
         /* Begin by doing basic structural checks on the inputs. */
-        if (probabilities.size() == 0)
+        if (collection == null || funct == null)
+            throw new NullPointerException();
+        if (collection.isEmpty())
             throw new IllegalArgumentException("Probability vector must be nonempty.");
+
+        List<Double> probabilities = new ArrayList<>();
+        items = new ArrayList<>();
+        double sum = 0;
+        for(T item : collection) {
+            items.add(item);
+            sum += funct.applyAsDouble(item);
+        }
+        for(T item : items) {
+            probabilities.add(funct.applyAsDouble(item) / sum);
+        }
 
         /* Allocate space for the probability and alias tables. */
         probability = new double[probabilities.size()];

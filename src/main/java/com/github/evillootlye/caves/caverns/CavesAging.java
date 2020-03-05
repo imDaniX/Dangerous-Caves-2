@@ -50,16 +50,16 @@ public class CavesAging implements Dynamics.Tickable, Configurable {
             if(xzStr.length > 1) {
                 String[] secondCoords = xzStr[1].split(",");
                 try {
-                    DualBound bound = new DualBound(
-                            Integer.valueOf(firstCoords[0]), Integer.valueOf(secondCoords[0]),
-                            Integer.valueOf(firstCoords[1]), Integer.valueOf(secondCoords[1])
+                    Bound bound = new DualBound(
+                            Integer.parseInt(firstCoords[0]), Integer.parseInt(secondCoords[0]),
+                            Integer.parseInt(firstCoords[1]), Integer.parseInt(secondCoords[1])
                     );
                     skippedChunks.add(bound);
                 } catch (NumberFormatException ignored) {}
             } else {
                 try {
-                    SingularBound bound = new SingularBound(
-                            Integer.valueOf(firstCoords[0]), Integer.valueOf(firstCoords[1])
+                    Bound bound = new SingularBound(
+                            Integer.parseInt(firstCoords[0]), Integer.parseInt(firstCoords[1])
                     );
                     skippedChunks.add(bound);
                 } catch (NumberFormatException ignored) {}
@@ -85,6 +85,7 @@ public class CavesAging implements Dynamics.Tickable, Configurable {
     }
 
     private boolean isAllowed(int x, int z) {
+//      return skippedChunks.contains(new SingularBound(x, z));
         for(Bound bound : skippedChunks)
             if(bound.isInside(x, z)) return false;
         return true;
