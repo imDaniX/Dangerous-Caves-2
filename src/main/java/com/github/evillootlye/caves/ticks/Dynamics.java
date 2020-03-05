@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves;
+package com.github.evillootlye.caves.ticks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -38,8 +38,4 @@ public class Dynamics {
         }
     }
 
-    public interface Tickable {
-        void tick();
-        TickLevel getTickLevel();
-    }
 }

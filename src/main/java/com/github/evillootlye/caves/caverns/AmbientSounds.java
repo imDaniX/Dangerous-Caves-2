@@ -1,8 +1,9 @@
 package com.github.evillootlye.caves.caverns;
 
-import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
+import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.Rnd;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @Configurable.Path("caverns.ambient")
-public class AmbientSounds implements Dynamics.Tickable, Configurable {
+public class AmbientSounds implements Tickable, Configurable {
     private final List<WrappedSound> sounds;
     private final Set<String> worlds;
     private double chance;

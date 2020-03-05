@@ -1,17 +1,16 @@
 package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.mobs.CustomMob;
+import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 
 @Configurable.Path("mobs.crying-bat")
-public class CryingBat extends CustomMob.TickableMob implements Configurable, Listener {
+public class CryingBat extends TickableMob implements Configurable, Listener {
     private int weight;
     private double cryChance;
     private double deathChance;
@@ -38,10 +37,10 @@ public class CryingBat extends CustomMob.TickableMob implements Configurable, Li
     }
 
     @Override
-    public void tick(Entity entity) {
+    public void tick(LivingEntity entity) {
         if(cryChance > 0 && cryChance > Rnd.nextDouble())
             entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
         else if(deathChance > 0 && deathChance > Rnd.nextDouble())
-            ((LivingEntity)entity).damage(1000);
+            entity.damage(1000);
     }
 }

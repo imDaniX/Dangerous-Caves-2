@@ -48,11 +48,4 @@ public abstract class CustomMob {
         return isCustomMob(entity) ? entity.getPersistentDataContainer().get(KEY, PersistentDataType.STRING) : null;
     }
 
-    public static abstract class TickableMob extends CustomMob {
-        public TickableMob(EntityType base, String id) {
-            super(base, id);
-        }
-
-        public abstract void tick(Entity entity);
-    }
 }

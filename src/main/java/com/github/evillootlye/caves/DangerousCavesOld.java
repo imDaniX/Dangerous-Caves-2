@@ -12,7 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -65,7 +64,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
 
         INSTANCE = this;
         caveents = config.getBoolean("Enable Cave Monsters ");
-        mobNames.add(config.getString("Crying Bat = "));
         mobNames.add(config.getString("Lava Creeper = "));
         mobNames.add(config.getString("TnT Creeper = "));
         mobNames.add(config.getString("Watcher = "));
@@ -102,21 +100,18 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     }
 
     private void createConfigFol() {
-        config.addDefault("Spawn Crying Bat ", true);
         config.addDefault("Spawn Lava Creeper ", true);
         config.addDefault("Spawn TnT Creeper ", true);
         config.addDefault("Spawn Watcher ", true);
         config.addDefault("Spawn Smoke Demon ", true);
         config.addDefault("Spawn Dead Miner ", true);
         config.addDefault(":::::Monster Names - no Blanks:::::", "");
-        config.addDefault("Crying Bat = ", "Crying Bat");
         config.addDefault("Lava Creeper = ", "Lava Creeper");
         config.addDefault("TnT Creeper = ", "TnT Infused Creeper");
         config.addDefault("Watcher = ", "Watcher");
         config.addDefault("Smoke Demon = ", "Smoke Demon");
         config.addDefault("Dead Miner = ", "Dead Miner");
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
-        config.addDefault("Crying Bat Chance ", 0);
         config.addDefault("Lava Creeper Chance ", 0);
         config.addDefault("TnT Creeper Chance ", 0);
         config.addDefault("Watcher Chance ", 0);
@@ -194,198 +189,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         return "null";
     }
 
-    private boolean fixMonster(LivingEntity e) {
-        if (!isMetad(e).equals("null")) {
-            String name = isMetad(e);
-            if (!e.isDead()) {
-                try {
-                    if (name.equals(config.getString("Watcher = "))) {
-                        ItemStack helmet = e.getEquipment().getHelmet();
-                        if (helmet == null) {
-                            e.setSilent(false);
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Watcher = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Watcher = "))) {
-                                e.removeMetadata(config.getString("Watcher = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        } else if (helmet.getType() != Material.PLAYER_HEAD) {
-                            e.setSilent(false);
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Watcher = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Watcher = "))) {
-                                e.removeMetadata(config.getString("Watcher = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        }
-                    } else if (name.equals(config.getString("TnT Creeper = "))) {
-                        String cus = e.getCustomName();
-                        if (e.getType() != EntityType.CREEPER) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("TnT Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        } else if (cus == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("TnT Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        } else if (!cus.equals(config.getString("TnT Creeper = "))) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("TnT Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-                                e.removeMetadata(config.getString("TnT Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        }
-                    } else if (name.equals(config.getString("Lava Creeper = "))) {
-                        String cus = e.getCustomName();
-                        if (e.getType() != EntityType.CREEPER) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Lava Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        } else if (cus == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Lava Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        } else if (!cus.equals(config.getString("Lava Creeper = "))) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Lava Creeper = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-                                e.removeMetadata(config.getString("Lava Creeper = "), DangerousCaves.INSTANCE);
-                            }
-                            return true;
-                        }
-                    } else if (name.equals(config.getString("Dead Miner = "))) {
-                        ItemStack helmet = e.getEquipment().getHelmet();
-                        if (helmet == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Dead Miner = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Dead Miner = "))) {
-                                e.removeMetadata(config.getString("Dead Miner = "), DangerousCaves.INSTANCE);
-                            }
-                            e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-                            e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                            return true;
-                        } else if (helmet.getType() != Material.PLAYER_HEAD) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Dead Miner = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Dead Miner = "))) {
-                                e.removeMetadata(config.getString("Dead Miner = "), DangerousCaves.INSTANCE);
-                            }
-                            e.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-                            e.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                            return true;
-                        }
-                    } else if (name.equals(config.getString("Smoke Demon = "))) {
-                        String cus = e.getCustomName();
-                        if (e.getType() != EntityType.ZOMBIE) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Smoke Demon = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            return true;
-                        } else if (cus == null) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Smoke Demon = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            return true;
-                        } else if (!cus.equals(config.getString("Smoke Demon = "))) {
-                            e.setSilent(false);
-                            if (e.getCustomName() != null) {
-                                if (e.getCustomName().equals(config.getString("Smoke Demon = "))) {
-                                    e.setCustomName("");
-                                }
-                            }
-                            if (e.hasMetadata(config.getString("Smoke Demon = "))) {
-                                e.removeMetadata(config.getString("Smoke Demon = "), DangerousCaves.INSTANCE);
-                            }
-                            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                                e.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            }
-                            return true;
-                        }
-                    }
-                    return false;
-                } catch (Exception error) {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
     private boolean existTarget(Entity e) {
         if(e == null) {
             return false;
@@ -450,16 +253,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             return false;
         }
         return !m.getTarget().isDead();
-    }
-
-    private boolean existBat(Entity e) {
-        if (e == null) {
-            return false;
-        }
-        if (!(e instanceof Bat)) {
-            return false;
-        }
-        return !e.isDead();
     }
 
     private void betterEffectLooper() {
@@ -531,22 +324,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                         } else {
                             effectEnts.remove(e);
                         }
-                    } else if (existBat(e)) {
-                        String name = e2.getCustomName();
-                        if (name != null) {
-                            if (hasName(config.getString("Crying Bat = "), e)) {
-                                if (randor.nextInt(30) == 1) {
-                                    e.getWorld().playSound(e.getLocation(), Sound.ENTITY_WOLF_WHINE, 1,
-                                            (float) (1.4 + (randor.nextInt(5 + 1) / 10.0)));
-                                    if (randor.nextInt(5) == 1) {
-                                        ((Bat) e).damage(999999);
-                                    }
-                                }
-                            }
-                        } else {
-                            effectEnts.remove(e);
-                        }
-                    } else {
+                    }  else {
                         effectEnts.remove(e);
                     }
                 }
@@ -659,16 +437,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                 } else {
                     return "";
                 }
-            } else if (choice == 6) {
-                if (config.getBoolean("Spawn Crying Bat ")) {
-                    if (randor.nextInt(20) == 1) {
-                        return config.getString("Crying Bat = ");
-                    } else {
-                        return "";
-                    }
-                } else {
-                    return "";
-                }
             }
             return "";
         } catch (Exception error) {
@@ -758,17 +526,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     e.setMetadata("cavem", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
                     removeHand(e);
                     e.setCanPickupItems(false);
-                } else if (name.equals(config.getString("Crying Bat = "))
-                        && (randor.nextInt(config.getInt("Crying Bat Chance ") + 1) == 0)) {
-                    if (e.getType() != EntityType.BAT) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.BAT);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    effectEnts.add(e);
                 }
             } catch (Exception error) {
                 console.sendMessage(ChatColor.RED + "Uh oh error inside dressing mob.");

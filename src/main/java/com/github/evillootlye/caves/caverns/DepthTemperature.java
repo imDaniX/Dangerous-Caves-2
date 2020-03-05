@@ -1,7 +1,8 @@
 package com.github.evillootlye.caves.caverns;
 
-import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.Rnd;
@@ -23,7 +24,7 @@ import java.util.Set;
 // TODO: Temperature with accumulation based on player's depth
 
 @Configurable.Path("caverns.temperature")
-public class DepthTemperature implements Dynamics.Tickable, Configurable {
+public class DepthTemperature implements Tickable, Configurable {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 

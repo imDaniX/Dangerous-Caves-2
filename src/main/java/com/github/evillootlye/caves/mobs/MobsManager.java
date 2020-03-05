@@ -1,9 +1,10 @@
 package com.github.evillootlye.caves.mobs;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import com.github.evillootlye.caves.Dynamics;
+import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.configuration.Configuration;
+import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.AliasMethod;
@@ -14,11 +15,11 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,9 +27,8 @@ import java.util.Map;
 import java.util.Set;
 
 @Configurable.Path("mobs")
-public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
-    private final Plugin plugin;
-    private final Configuration cfg;
+public class MobsManager implements Listener, Tickable, Configurable {
+    private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
     private final Set<String> mobsTicked;
     private final Set<String> worlds;
@@ -36,7 +36,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     private int yMin, yMax;
     private double chance;
 
-    public MobsManager(Plugin plugin, Configuration cfg) {
+    public MobsManager(DangerousCaves plugin) {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             Bukkit.getPluginManager().registerEvents(new PaperListener(), plugin);
@@ -44,8 +44,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             Bukkit.getPluginManager().registerEvents(new SpigotListener(), plugin);
         }
         this.plugin = plugin;
-        this.cfg = cfg;
-        cfg.register(this);
+        plugin.getConfiguration().register(this);
         mobs = new HashMap<>();
         mobsTicked = new HashSet<>();
         worlds = new HashSet<>();
@@ -68,12 +67,14 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getId())) {
             mobs.put(mob.getId(), mob);
-            if(mob instanceof CustomMob.TickableMob)
+            if(mob instanceof TickableMob)
                 mobsTicked.add(mob.getId());
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
             if(mob instanceof Configurable)
-                cfg.register((Configurable)mob);
+                plugin.getConfiguration().register((Configurable)mob);
+            if(mob instanceof Tickable)
+                plugin.getDynamics().subscribe((Tickable)mob);
         }
     }
 
@@ -83,10 +84,12 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
             World world = Bukkit.getWorld(worldStr);
             if(world == null) continue;
             for(Entity entity : world.getEntities()) {
+                if(!(entity instanceof LivingEntity)) continue;
                 String type = CustomMob.getCustomType(entity);
                 if(type == null) continue;
-                if(mobsTicked.contains(type))
-                    ((CustomMob.TickableMob)mobs.get(type)).tick(entity);
+                if(mobsTicked.contains(type)) {
+                    ((TickableMob)mobs.get(type)).tick((LivingEntity)entity);
+                }
             }
         }
     }

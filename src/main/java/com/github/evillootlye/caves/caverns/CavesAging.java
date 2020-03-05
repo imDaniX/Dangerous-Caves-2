@@ -1,7 +1,8 @@
 package com.github.evillootlye.caves.caverns;
 
-import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.MaterialUtils;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.bounds.Bound;
@@ -22,7 +23,7 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CavesAging implements Dynamics.Tickable, Configurable {
+public class CavesAging implements Tickable, Configurable {
     private static final BlockFace[] FACES = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
     private final Set<Bound> skippedChunks;
     private final Set<String> worlds;

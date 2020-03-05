@@ -26,13 +26,14 @@ public class Configuration {
         if(!file.exists()) {
             if(resource)
                 plugin.saveResource(file.getName(), false);
-            else
+            else {
                 try {
                     file.createNewFile();
                     reloadYml();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
         }
     }
 
@@ -45,12 +46,8 @@ public class Configuration {
     }
 
     public void reloadYml() {
-        try {
-            yml = YamlConfiguration.loadConfiguration(file);
-            configurables.entrySet().forEach(this::reload);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        yml = YamlConfiguration.loadConfiguration(file);
+        configurables.entrySet().forEach(this::reload);
     }
 
     private void reload(Map.Entry<Configurable, String> entry) {
