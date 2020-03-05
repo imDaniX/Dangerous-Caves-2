@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.caverns.AmbientSounds;
 import com.github.evillootlye.caves.caverns.CaveInsPlayerListener;
 import com.github.evillootlye.caves.caverns.CavesAging;
 import com.github.evillootlye.caves.caverns.DepthTemperature;
+import com.github.evillootlye.caves.commands.Commander;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.generator.CaveGenerator;
 import com.github.evillootlye.caves.mobs.DefaultMobs;
@@ -28,7 +29,6 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     private Configuration cfg;
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onEnable() {
         DangerousCaves.INSTANCE = this;
 
@@ -57,7 +57,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(new CaveGenerator()), 1);
         } else cfg.register(new CaveGenerator());
 
-        new DangerousCavesOld().onEnable();
+        getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg));
     }
 
     @EventHandler

@@ -99,6 +99,14 @@ public class MobsManager implements Listener, Tickable, Configurable {
         return Dynamics.TickLevel.ENTITY;
     }
 
+    public boolean summon(String type, Location loc) {
+        CustomMob mob = mobs.get(type.toLowerCase());
+        if(mob == null) return false;
+        LivingEntity entity = (LivingEntity) loc.getWorld().spawn(loc, mob.getType().getEntityClass());
+        mob.setup(entity);
+        return true;
+    }
+
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
         if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||

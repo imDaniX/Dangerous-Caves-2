@@ -34,6 +34,10 @@ public abstract class CustomMob {
 
     public abstract void setup(LivingEntity entity);
 
+    public EntityType getType() {
+        return type;
+    }
+
     public String getId() {
         return id;
     }

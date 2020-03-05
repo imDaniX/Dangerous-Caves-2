@@ -9,11 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class Utils {
-    @SafeVarargs
-    public static <T> T[] array(T... t) {
-        return t;
-    }
-
     public static String clr(String s){
         return s == null ? "\u00A74Error" : ChatColor.translateAlternateColorCodes('&', s);
     }

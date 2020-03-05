@@ -5,8 +5,7 @@ api-version: 1.13
 authors: [DaddyLootly]
 description: Adds and improves mechanics in caves.
 commands:
-  getworldname:
-    description: Gets the name of the world you are in for use in config.
-    usage: /getworldname
-    permission: dangerc.getworldname
-    permission-message: You don't have the dangerc.getworldname permission.
+  dangerouscaves:
+    aliases: [dcaves, dc]
+    usage: "/<command> [info|summon|reload]"
+    permission: dangerous.caves.command
