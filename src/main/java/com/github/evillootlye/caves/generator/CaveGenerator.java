@@ -47,11 +47,11 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("chance", 50)/100;
-        traps = cfg.getBoolean("traps", true);
-        pillars = cfg.getBoolean("pillars", true);
-        boulders = cfg.getBoolean("boulders", true);
-        buildings = cfg.getBoolean("buildings", true);
-        skulls = cfg.getBoolean("skulls", true);
+        traps = cfg.getBoolean("structures.traps", true);
+        pillars = cfg.getBoolean("structures.pillars", true);
+        boulders = cfg.getBoolean("structures.boulders", true);
+        buildings = cfg.getBoolean("structures.buildings", true);
+        skulls = cfg.getBoolean("structures.skulls", true);
 
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
@@ -72,7 +72,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
 
     @Override
     public void populate(World wor, Random rand, Chunk chnk) {
-        if(chance > rand.nextDouble()) {
+        if(chance > 0 && chance > rand.nextDouble()) {
             //-1 + | 1 == random pillar or shape / boulder 2 == random skeleton skull 3 == random room with stuff or random chest 4 == monsters spawner surrounded 5 == random mineshaft / tunnel 6 == spiders nest small 7 == traps
             //int typeC = rand.nextInt(8);
             //sendCaveMessage(typeC);

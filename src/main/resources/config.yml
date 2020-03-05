@@ -117,19 +117,31 @@ caverns:
 # Generator-related things
 #
 generator:
+
+  # Force DangerousCaves' generator to wait for other plugins (for other generators)
   wait-other: false
+  # Chance of custom structure generations in chunk
   chance: 50
+  # Worlds where generator will work
   worlds:
     - world
+  # Items in generated chests
+  # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
   chest-items:
     - sugar
     - torch
     - dirt
-  traps: true
-  pillars: true
-  boulders: true
-  buildings: true
-  skulls: true
+  # Structures to generate
+  structures:
+    traps: true
+    pillars: true
+    boulders: true
+    buildings: true
+    skulls: true
+
+#
+# Mob-related things
+#
 mobs:
   try-chance: 50
   worlds:
