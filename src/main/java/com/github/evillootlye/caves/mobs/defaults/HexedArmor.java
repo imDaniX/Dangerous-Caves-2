@@ -1,10 +1,12 @@
-package com.github.evillootlye.caves.mobs;
+package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.utils.MaterialUtils;
 import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
-import com.github.evillootlye.caves.utils.Rnd;
+import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -19,11 +21,18 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.hexed-armor")
-public class HexedArmor extends CustomMob implements Listener {
+public class HexedArmor extends CustomMob implements Listener, Configurable {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
+
+    private int weight;
 
     public HexedArmor() {
         super(EntityType.ZOMBIE, "hexed-armor");
+    }
+
+    @Override
+    public void reload(ConfigurationSection cfg) {
+        weight = cfg.getInt("weight");
     }
 
     @Override
@@ -37,6 +46,11 @@ public class HexedArmor extends CustomMob implements Listener {
         equipment.setChestplate(getRandom(MaterialUtils.CHESTPLATES));
         equipment.setLeggings(getRandom(MaterialUtils.LEGGINGS));
         equipment.setBoots(getRandom(MaterialUtils.BOOTS));
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @EventHandler

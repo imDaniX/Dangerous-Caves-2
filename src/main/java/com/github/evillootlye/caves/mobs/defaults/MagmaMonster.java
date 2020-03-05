@@ -1,10 +1,12 @@
-package com.github.evillootlye.caves.mobs;
+package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
-import com.github.evillootlye.caves.utils.Rnd;
+import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -16,7 +18,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.magma-monster")
-public class MagmaMonster extends CustomMob implements Listener {
+public class MagmaMonster extends CustomMob implements Listener, Configurable {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY,
@@ -38,8 +40,15 @@ public class MagmaMonster extends CustomMob implements Listener {
         POWDER = new ItemStack(Material.BLAZE_POWDER);
     }
 
+    private int weight;
+
     public MagmaMonster() {
         super(EntityType.ZOMBIE, "magma-monster");
+    }
+
+    @Override
+    public void reload(ConfigurationSection cfg) {
+        weight = cfg.getInt("weight");
     }
 
     @Override
@@ -61,5 +70,10 @@ public class MagmaMonster extends CustomMob implements Listener {
     public void onAttack(PlayerAttackedEvent event) {
         if(!isThis(event.getAttacker()) || Rnd.nextBoolean()) return;
         event.getPlayer().setFireTicks(60);
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 }

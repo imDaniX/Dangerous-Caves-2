@@ -19,8 +19,7 @@ public abstract class CustomMob {
     }
 
     public final boolean isThis(Entity entity) {
-        return CustomMob.isCustomMob(entity) &&
-                entity.getPersistentDataContainer().get(KEY, PersistentDataType.STRING).equals(id);
+        return id.equals(CustomMob.getCustomType(entity));
     }
 
     public boolean canSpawn(EntityType type, Location loc) {
@@ -39,17 +38,18 @@ public abstract class CustomMob {
         return id;
     }
 
+    public abstract int getWeight();
+
     public static boolean isCustomMob(Entity entity) {
-        if(!(entity instanceof LivingEntity)) return false;
         return entity.getPersistentDataContainer().has(KEY, PersistentDataType.STRING);
     }
 
     public static String getCustomType(Entity entity) {
-        return entity.getPersistentDataContainer().get(KEY, PersistentDataType.STRING);
+        return isCustomMob(entity) ? entity.getPersistentDataContainer().get(KEY, PersistentDataType.STRING) : null;
     }
 
-    public static abstract class Tickable extends CustomMob {
-        public Tickable(EntityType base, String id) {
+    public static abstract class TickableMob extends CustomMob {
+        public TickableMob(EntityType base, String id) {
             super(base, id);
         }
 

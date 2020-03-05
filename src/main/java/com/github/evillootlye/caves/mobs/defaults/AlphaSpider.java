@@ -1,10 +1,12 @@
-package com.github.evillootlye.caves.mobs;
+package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.utils.LocationUtils;
-import com.github.evillootlye.caves.utils.Rnd;
+import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -15,16 +17,28 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.alpha-spider")
-public class AlphaSpider extends CustomMob implements Listener {
+public class AlphaSpider extends CustomMob implements Listener, Configurable {
     private static final PotionEffect POISON = new PotionEffect(PotionEffectType.POISON, 75, 1);
+
+    private int weight;
 
     public AlphaSpider() {
         super(EntityType.SPIDER, "alpha-spider");
     }
 
     @Override
+    public void reload(ConfigurationSection cfg) {
+        weight = cfg.getInt("weight");
+    }
+
+    @Override
     public void setup(LivingEntity entity) {
         // entity.setCustomName(name);
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @EventHandler

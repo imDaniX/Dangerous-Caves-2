@@ -1,8 +1,8 @@
 package com.github.evillootlye.caves.generator;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.utils.Rnd;
 import com.github.evillootlye.caves.utils.Utils;
+import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;

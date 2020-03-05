@@ -4,8 +4,9 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.github.evillootlye.caves.Dynamics;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
-import com.github.evillootlye.caves.utils.Rnd;
 import com.github.evillootlye.caves.utils.Utils;
+import com.github.evillootlye.caves.utils.random.AliasMethod;
+import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,14 +14,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,9 +29,9 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     private final Plugin plugin;
     private final Configuration cfg;
     private final Map<String, CustomMob> mobs;
-    private final List<CustomMob> mobsList;
     private final Set<String> mobsTicked;
     private final Set<String> worlds;
+    private AliasMethod<CustomMob> mobsPool;
     private int yMin, yMax;
     private double chance;
 
@@ -46,7 +46,6 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
         this.cfg = cfg;
         cfg.register(this);
         mobs = new HashMap<>();
-        mobsList = new ArrayList<>();
         mobsTicked = new HashSet<>();
         worlds = new HashSet<>();
     }
@@ -58,13 +57,17 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
         yMax = cfg.getInt("y-max", 64);
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+        recalculate();
+    }
+
+    public void recalculate() {
+        mobsPool = new AliasMethod<>(mobs.values(), CustomMob::getWeight);
     }
 
     public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getId())) {
             mobs.put(mob.getId(), mob);
-            mobsList.add(mob);
-            if(mob instanceof CustomMob.Tickable)
+            if(mob instanceof CustomMob.TickableMob)
                 mobsTicked.add(mob.getId());
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
@@ -82,7 +85,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
                 String type = CustomMob.getCustomType(entity);
                 if(type == null) continue;
                 if(mobsTicked.contains(type))
-                    ((CustomMob.Tickable)mobs.get(type)).tick(entity);
+                    ((CustomMob.TickableMob)mobs.get(type)).tick(entity);
             }
         }
     }
@@ -98,7 +101,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
                 !worlds.contains(loc.getWorld().getName()) ||
                 Rnd.nextDouble() < chance)
             return false;
-        CustomMob mob = mobsList.get(Rnd.nextInt(mobsList.size()));
+        CustomMob mob = mobsPool.next();
         if(mob.canSpawn(type, loc)) {
             mob.spawn(loc);
             return true;
@@ -107,7 +110,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     }
 
     private class PaperListener implements Listener {
-        @EventHandler
+        @EventHandler(priority = EventPriority.HIGHEST)
         public void onSpawn(PreCreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
@@ -115,7 +118,7 @@ public class MobsManager implements Listener, Dynamics.Tickable, Configurable {
     }
 
     private class SpigotListener implements Listener {
-        @EventHandler
+        @EventHandler(priority = EventPriority.HIGHEST)
         public void onSpawn(CreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
