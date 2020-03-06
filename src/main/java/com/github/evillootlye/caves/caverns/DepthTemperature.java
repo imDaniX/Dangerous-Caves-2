@@ -1,7 +1,7 @@
 package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
@@ -86,7 +86,7 @@ public class DepthTemperature implements Tickable, Configurable {
     }
 
     @Override
-    public Dynamics.TickLevel getTickLevel() {
-        return Dynamics.TickLevel.ENTITY;
+    public TickLevel getTickLevel() {
+        return TickLevel.ENTITY;
     }
 }

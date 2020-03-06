@@ -29,12 +29,12 @@ public class Configuration {
             else {
                 try {
                     file.createNewFile();
-                    reloadYml();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+        yml = YamlConfiguration.loadConfiguration(file);
     }
 
     public void register(Configurable conf) {

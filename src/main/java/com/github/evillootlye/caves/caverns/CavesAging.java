@@ -1,7 +1,7 @@
 package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.MaterialUtils;
 import com.github.evillootlye.caves.utils.Utils;
@@ -134,7 +134,7 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     @Override
-    public Dynamics.TickLevel getTickLevel() {
-        return Dynamics.TickLevel.WORLD;
+    public TickLevel getTickLevel() {
+        return TickLevel.WORLD;
     }
 }

@@ -44,11 +44,12 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(caveIns, this);
 
+        dynamics.subscribe(mobsManager);
         dynamics.subscribe(ambient);
         dynamics.subscribe(cavesAging);
-        dynamics.subscribe(mobsManager);
         dynamics.subscribe(temperature);
 
+        cfg.register(mobsManager);
         cfg.register(ambient);
         cfg.register(cavesAging);
         cfg.register(caveIns);

@@ -9,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+// TODO: Classes for each subcommand
+// TODO: TabCompleter
 public class Commander implements CommandExecutor {
     private final MobsManager mobsManager;
     private final Configuration cfg;
@@ -21,10 +23,7 @@ public class Commander implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length < 1) {
-            sender.sendMessage(Utils.clr("&6&lDangerousCaves by DaddyLootly &e(fork imDaniX)"));
-            sender.sendMessage(Utils.clr(" &a/" + label + " info &7- Get some info about your location."));
-            sender.sendMessage(Utils.clr(" &a/" + label + " summon [mob] &7- Spawn a mob on your location."));
-            sender.sendMessage(Utils.clr(" &a/" + label + " reload &7- Reload plugin configuration."));
+            help(sender, label);
         } else switch (args[0].toLowerCase()) {
             case "info":
                 if(!(sender instanceof Player)) {
@@ -53,7 +52,17 @@ public class Commander implements CommandExecutor {
             case "reload":
                 if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
+                sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
+                break;
+            default: help(sender, label);
         }
         return true;
+    }
+
+    private static void help(CommandSender sender, String label) {
+        sender.sendMessage(Utils.clr("&6&lDangerousCaves by Evil-Lootlye&e (fork imDaniX)"));
+        sender.sendMessage(Utils.clr(" &a/" + label + " info &7- Get some info about your location."));
+        sender.sendMessage(Utils.clr(" &a/" + label + " summon [mob] &7- Spawn a mob on your location."));
+        sender.sendMessage(Utils.clr(" &a/" + label + " reload &7- Reload plugin configuration."));
     }
 }

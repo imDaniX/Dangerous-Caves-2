@@ -2,7 +2,7 @@ package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
-import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
@@ -64,8 +64,8 @@ public class AmbientSounds implements Tickable, Configurable {
     }
 
     @Override
-    public Dynamics.TickLevel getTickLevel() {
-        return Dynamics.TickLevel.WORLD;
+    public TickLevel getTickLevel() {
+        return TickLevel.WORLD;
     }
 
     private static class WrappedSound {

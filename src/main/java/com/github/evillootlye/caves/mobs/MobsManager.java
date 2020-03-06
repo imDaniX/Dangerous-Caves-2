@@ -3,7 +3,7 @@ package com.github.evillootlye.caves.mobs;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.utils.LocationUtils;
 import com.github.evillootlye.caves.utils.Utils;
@@ -44,7 +44,6 @@ public class MobsManager implements Listener, Tickable, Configurable {
             Bukkit.getPluginManager().registerEvents(new SpigotListener(), plugin);
         }
         this.plugin = plugin;
-        plugin.getConfiguration().register(this);
         mobs = new HashMap<>();
         mobsTicked = new HashSet<>();
         worlds = new HashSet<>();
@@ -95,8 +94,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     @Override
-    public Dynamics.TickLevel getTickLevel() {
-        return Dynamics.TickLevel.ENTITY;
+    public TickLevel getTickLevel() {
+        return TickLevel.ENTITY;
     }
 
     public boolean summon(String type, Location loc) {
