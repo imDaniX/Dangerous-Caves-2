@@ -32,11 +32,6 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
-        // entity.setCustomName(name);
-    }
-
-    @Override
     public int getWeight() {
         return weight;
     }

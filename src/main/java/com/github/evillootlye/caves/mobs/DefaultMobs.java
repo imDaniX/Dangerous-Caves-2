@@ -5,6 +5,7 @@ import com.github.evillootlye.caves.mobs.defaults.CryingBat;
 import com.github.evillootlye.caves.mobs.defaults.HexedArmor;
 import com.github.evillootlye.caves.mobs.defaults.HungeringDarkness;
 import com.github.evillootlye.caves.mobs.defaults.MagmaMonster;
+import com.github.evillootlye.caves.mobs.defaults.TNTCreeper;
 import com.github.evillootlye.caves.mobs.defaults.Watcher;
 
 public enum DefaultMobs {
@@ -13,7 +14,8 @@ public enum DefaultMobs {
     MAGMA_MONSTER(new MagmaMonster()),
     HUNGERING_DARKNESS(new HungeringDarkness()),
     CRYING_BAT(new CryingBat()),
-    WATCHER(new Watcher());
+    WATCHER(new Watcher()),
+    TNT_CREEPER(new TNTCreeper());
 
     private final CustomMob custom;
 

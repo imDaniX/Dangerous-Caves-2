@@ -553,18 +553,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
             return;
         }
         if (event.getEntity().getType() == EntityType.CREEPER) {
-            if (hasName(config.getString("TnT Creeper = "), event.getEntity())) {
-                Location l = event.getEntity().getLocation();
-                Entity e1 = event.getEntity().getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
-                e1.setVelocity(new Vector(-1 * (randor.nextInt(5 + 1) / 10.0), randor.nextInt(5 + 1) / 10.0,
-                        -1 * (randor.nextInt(5 + 1) / 10.0)));
-                if (randor.nextBoolean()) {
-                    Entity e2 = event.getEntity().getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
-                    e2.setVelocity(new Vector(randor.nextInt(5 + 1) / 10.0, randor.nextInt(5 + 1) / 10.0,
-                            randor.nextInt(5 + 1) / 10.0));
-                }
-                return;
-            }
             if (hasName(config.getString("Lava Creeper = "), event.getEntity())) {
                 Location l = event.getEntity().getLocation();
                 int radius = 4;

@@ -40,7 +40,7 @@ public abstract class CustomMob {
         return true;
     }
 
-    public abstract void setup(LivingEntity entity);
+    public void setup(LivingEntity entity) {}
 
     public abstract int getWeight();
 

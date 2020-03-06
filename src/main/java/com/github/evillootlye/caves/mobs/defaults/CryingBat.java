@@ -27,11 +27,6 @@ public class CryingBat extends TickableMob implements Configurable, Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
-        //
-    }
-
-    @Override
     public int getWeight() {
         return weight;
     }
