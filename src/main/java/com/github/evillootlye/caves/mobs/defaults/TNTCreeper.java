@@ -4,13 +4,17 @@ import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class TNTCreeper extends CustomMob implements Configurable, Listener {
@@ -27,6 +31,15 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
         weight = cfg.getInt("priority", 1);
         tntAmount = cfg.getInt("tnt-amount", 2);
         explosionChance = cfg.getDouble("explosion-chance", 33.3) / 100;
+    }
+
+    @Override
+    public void setup(LivingEntity entity) {
+        Item item = entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.TNT));
+        item.setCanMobPickup(false);
+        item.setInvulnerable(true);
+        item.setTicksLived(-32768);
+        entity.addPassenger(item);
     }
 
     @EventHandler
