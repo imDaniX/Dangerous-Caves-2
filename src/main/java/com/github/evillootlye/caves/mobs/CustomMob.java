@@ -22,8 +22,12 @@ public abstract class CustomMob {
         return id.equals(CustomMob.getCustomType(entity));
     }
 
-    public boolean canSpawn(EntityType type, Location loc) {
-        return true;
+    public final EntityType getType() {
+        return type;
+    }
+
+    public final String getCustomType() {
+        return id;
     }
 
     public final void spawn(Location loc) {
@@ -32,15 +36,11 @@ public abstract class CustomMob {
         setup(entity);
     }
 
+    public boolean canSpawn(EntityType type, Location loc) {
+        return true;
+    }
+
     public abstract void setup(LivingEntity entity);
-
-    public EntityType getType() {
-        return type;
-    }
-
-    public String getId() {
-        return id;
-    }
 
     public abstract int getWeight();
 

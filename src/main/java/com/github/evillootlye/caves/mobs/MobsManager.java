@@ -64,10 +64,10 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     public void register(CustomMob mob) {
-        if(!mobs.containsKey(mob.getId())) {
-            mobs.put(mob.getId(), mob);
+        if(!mobs.containsKey(mob.getCustomType())) {
+            mobs.put(mob.getCustomType(), mob);
             if(mob instanceof TickableMob)
-                mobsTicked.add(mob.getId());
+                mobsTicked.add(mob.getCustomType());
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
             if(mob instanceof Configurable)
