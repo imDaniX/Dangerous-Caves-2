@@ -900,7 +900,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
                 case 22:
                     items.add(new ItemStack(Material.SUGAR_CANE, random.nextInt(3) + 1)); break;
                 default: {
-                    if (this.items.size() > 0)
+                    if (this.items.isEmpty())
                         items.add(new ItemStack(this.items.get(Rnd.nextInt(this.items.size())), Rnd.nextInt(3) + 1));
                 }
             }

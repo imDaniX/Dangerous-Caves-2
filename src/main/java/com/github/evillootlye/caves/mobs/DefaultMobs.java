@@ -2,6 +2,7 @@ package com.github.evillootlye.caves.mobs;
 
 import com.github.evillootlye.caves.mobs.defaults.AlphaSpider;
 import com.github.evillootlye.caves.mobs.defaults.CryingBat;
+import com.github.evillootlye.caves.mobs.defaults.DeadMiner;
 import com.github.evillootlye.caves.mobs.defaults.HexedArmor;
 import com.github.evillootlye.caves.mobs.defaults.HungeringDarkness;
 import com.github.evillootlye.caves.mobs.defaults.LavaCreeper;
@@ -17,7 +18,8 @@ public enum DefaultMobs {
     CRYING_BAT(new CryingBat()),
     WATCHER(new Watcher()),
     TNT_CREEPER(new TNTCreeper()),
-    LAVA_CREEPER(new LavaCreeper());
+    LAVA_CREEPER(new LavaCreeper()),
+    DEAD_MINER(new DeadMiner());
 
     private final CustomMob custom;
 

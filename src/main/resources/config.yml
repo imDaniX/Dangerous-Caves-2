@@ -154,6 +154,16 @@ mobs:
     priority: 1
     cry-chance: 3.33
     death-chance: 20
+  dead-miner:
+    priority: 1
+    place-torches: true
+    red-torches: false
+    drop-chance: 16.67
+    drop-items:
+      - COBBLESTONE
+      - DIRT
+      - COAL
+      - TORCH
   hexed-armor:
     priority: 1
   hungering-darkness:
