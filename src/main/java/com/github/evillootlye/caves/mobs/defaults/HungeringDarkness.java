@@ -1,7 +1,7 @@
 package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.mobs.TickableMob;
+import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,9 +15,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.hungering-darkness")
-public class HungeringDarkness extends TickableMob implements Listener, Configurable {
-    private final static PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
-    private final static PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
+public class HungeringDarkness extends CustomMob implements Listener, Configurable {
+    private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
+    private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
     private int weight;
     private double damage;
     private boolean remove;
@@ -73,10 +73,5 @@ public class HungeringDarkness extends TickableMob implements Listener, Configur
     @Override
     public int getWeight() {
         return weight;
-    }
-
-    @Override
-    public void tick(LivingEntity entity) {
-        if(entity.getLocation().getBlock().getLightLevel() > 0) entity.remove();
     }
 }
