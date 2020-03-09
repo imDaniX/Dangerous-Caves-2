@@ -101,8 +101,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public boolean summon(String type, Location loc) {
         CustomMob mob = mobs.get(type.toLowerCase());
         if(mob == null) return false;
-        LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mob.getType());
-        mob.setup(entity);
+        mob.spawn(loc);
         return true;
     }
 
