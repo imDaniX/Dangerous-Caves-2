@@ -3,7 +3,7 @@ package com.github.evillootlye.caves.caverns;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
-import com.github.evillootlye.caves.utils.LocationUtils;
+import com.github.evillootlye.caves.utils.Locations;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class DepthTemperature implements Tickable, Configurable {
             for(Player player : world.getPlayers()) {
                 if(fireRes && player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) continue;
                 Location loc = player.getLocation();
-                if(loc.getBlockY() > y || !LocationUtils.isCave(loc)) continue;
+                if(loc.getBlockY() > y || !Locations.isCave(loc)) continue;
                 if(loc.getBlock().getType() == Material.WATER) continue;
                 Inventory inv = player.getInventory();
                 boolean check = true;

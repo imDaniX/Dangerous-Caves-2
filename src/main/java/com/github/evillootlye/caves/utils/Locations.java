@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 
 import java.util.function.Consumer;
 
-public class LocationUtils {
+public class Locations {
     public static void loop(int radius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();
         for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
@@ -26,7 +26,7 @@ public class LocationUtils {
 
     public static boolean isCave(Location loc) {
         return loc.getBlock().getLightFromSky() < 1 &&
-                MaterialUtils.CAVE.contains(loc.subtract( 0, 1, 0).getBlock().getType());
+                Materials.CAVE.contains(loc.subtract( 0, 1, 0).getBlock().getType());
 
     }
 

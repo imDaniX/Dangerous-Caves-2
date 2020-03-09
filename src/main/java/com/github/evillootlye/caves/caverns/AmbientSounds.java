@@ -4,7 +4,7 @@ import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
-import com.github.evillootlye.caves.utils.LocationUtils;
+import com.github.evillootlye.caves.utils.Locations;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.Bukkit;
@@ -57,7 +57,7 @@ public class AmbientSounds implements Tickable, Configurable {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if(loc.getBlockY() <= y && LocationUtils.isCave(loc) && chance > Rnd.nextDouble())
+                if(loc.getBlockY() <= y && Locations.isCave(loc) && chance > Rnd.nextDouble())
                     sounds.get(Rnd.nextInt(sounds.size())).play(player);
             }
         }

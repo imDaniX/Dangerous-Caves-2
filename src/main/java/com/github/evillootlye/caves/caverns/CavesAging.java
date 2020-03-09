@@ -3,7 +3,7 @@ package com.github.evillootlye.caves.caverns;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
-import com.github.evillootlye.caves.utils.MaterialUtils;
+import com.github.evillootlye.caves.utils.Materials;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.bounds.Bound;
 import com.github.evillootlye.caves.utils.bounds.DualBound;
@@ -97,7 +97,7 @@ public class CavesAging implements Tickable, Configurable {
             Block block = chunk.getBlock(x, y, z);
             if(block.getLightFromSky() > 0) break;
             Material type = block.getType();
-            if((MaterialUtils.CAVE.contains(type) || type == Material.COBBLESTONE_WALL) && Rnd.nextDouble() < agingChance) {
+            if((Materials.CAVE.contains(type) || type == Material.COBBLESTONE_WALL) && Rnd.nextDouble() < agingChance) {
                 switch(Rnd.nextInt(3)) {
                     case 0: block.setType(Material.COBBLESTONE); break;
                     case 1: block.setType(Material.ANDESITE); break;

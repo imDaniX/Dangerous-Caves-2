@@ -1,8 +1,8 @@
 package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.utils.LocationUtils;
-import com.github.evillootlye.caves.utils.MaterialUtils;
+import com.github.evillootlye.caves.utils.Locations;
+import com.github.evillootlye.caves.utils.Materials;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.Rnd;
 import org.bukkit.GameMode;
@@ -53,20 +53,20 @@ public class CaveInsPlayerListener implements Listener, Configurable {
         Block block = event.getBlock();
         World world = block.getWorld();
         if(block.getY() > y || !worlds.contains(world.getName()) ||
-                !MaterialUtils.CAVE.contains(block.getType())) return;
+                !Materials.CAVE.contains(block.getType())) return;
 
         Player player = event.getPlayer();
         Location loc = player.getLocation();
-        if(player.getGameMode() == GameMode.CREATIVE || !LocationUtils.isCave(loc) ||
+        if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(loc) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
         if(chance > Rnd.nextDouble()) {
             Location blockLoc = block.getLocation();
             world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             player.addPotionEffect(BLINDNESS);
-            LocationUtils.loop(radius, blockLoc, (l) -> {
+            Locations.loop(radius, blockLoc, (l) -> {
                 Block loopBlock = l.getBlock();
-                if (loopBlock.getType() != Material.BEDROCK && MaterialUtils.CAVE.contains(loopBlock.getType())) {
+                if (loopBlock.getType() != Material.BEDROCK && Materials.CAVE.contains(loopBlock.getType())) {
                     world.spawnFallingBlock(l, block.getBlockData());
                     loopBlock.setType(Material.AIR);
                 }

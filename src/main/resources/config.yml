@@ -181,7 +181,12 @@ mobs:
       lava: 16.67
   magma-monster:
     priority: 1
+  smoke-demon:
+    priority: 1
+    harm-radius: 3
   tnt-creeper:
     priority: 1
     tnt-amount: 2
     explosion-chance: 33.33
+  watcher:
+    priority: 1

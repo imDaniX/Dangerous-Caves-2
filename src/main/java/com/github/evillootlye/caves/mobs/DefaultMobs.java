@@ -7,6 +7,7 @@ import com.github.evillootlye.caves.mobs.defaults.HexedArmor;
 import com.github.evillootlye.caves.mobs.defaults.HungeringDarkness;
 import com.github.evillootlye.caves.mobs.defaults.LavaCreeper;
 import com.github.evillootlye.caves.mobs.defaults.MagmaMonster;
+import com.github.evillootlye.caves.mobs.defaults.SmokeDemon;
 import com.github.evillootlye.caves.mobs.defaults.TNTCreeper;
 import com.github.evillootlye.caves.mobs.defaults.Watcher;
 
@@ -19,7 +20,8 @@ public enum DefaultMobs {
     WATCHER(new Watcher()),
     TNT_CREEPER(new TNTCreeper()),
     LAVA_CREEPER(new LavaCreeper()),
-    DEAD_MINER(new DeadMiner());
+    DEAD_MINER(new DeadMiner()),
+    SMOKE_DEMON(new SmokeDemon());
 
     private final CustomMob custom;
 

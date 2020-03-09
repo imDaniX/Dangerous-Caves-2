@@ -7,7 +7,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MaterialUtils {
+public class Materials {
     public static final Material[] HELMETS;
     public static final Material[] LEGGINGS;
     public static final Material[] CHESTPLATES;

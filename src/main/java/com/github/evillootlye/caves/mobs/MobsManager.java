@@ -5,7 +5,7 @@ import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
-import com.github.evillootlye.caves.utils.LocationUtils;
+import com.github.evillootlye.caves.utils.Locations;
 import com.github.evillootlye.caves.utils.Utils;
 import com.github.evillootlye.caves.utils.random.AliasMethod;
 import com.github.evillootlye.caves.utils.random.Rnd;
@@ -110,7 +110,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
-                !LocationUtils.isCave(loc) ||
+                !Locations.isCave(loc) ||
                 Rnd.nextDouble() > chance)
             return false;
         CustomMob mob = mobsPool.next();
