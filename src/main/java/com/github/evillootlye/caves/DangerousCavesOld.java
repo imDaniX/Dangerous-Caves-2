@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -63,8 +62,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
 
         INSTANCE = this;
         caveents = config.getBoolean("Enable Cave Monsters ");
-        mobNames.add(config.getString("Lava Creeper = "));
-        mobNames.add(config.getString("TnT Creeper = "));
         mobNames.add(config.getString("Smoke Demon = "));
         mobNames.add(config.getString("Dead Miner = "));
         worlds = config.getStringList("Enabled Worlds - If Left Blank Will Just Use default world ");
@@ -90,17 +87,14 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     }
 
     private void createConfigFol() {
-        config.addDefault("Spawn Lava Creeper ", true);
         config.addDefault("Spawn TnT Creeper ", true);
         config.addDefault("Spawn Smoke Demon ", true);
         config.addDefault("Spawn Dead Miner ", true);
         config.addDefault(":::::Monster Names - no Blanks:::::", "");
-        config.addDefault("Lava Creeper = ", "Lava Creeper");
         config.addDefault("TnT Creeper = ", "TnT Infused Creeper");
         config.addDefault("Smoke Demon = ", "Smoke Demon");
         config.addDefault("Dead Miner = ", "Dead Miner");
         config.addDefault(":::::::::::::::::::::::::::::::::::", "");
-        config.addDefault("Lava Creeper Chance ", 0);
         config.addDefault("TnT Creeper Chance ", 0);
         config.addDefault("Smoke Demon Chance ", 0);
         config.addDefault("Dead Miner Chance ", 0);
@@ -162,11 +156,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     // The Darkness
 
     private String isMetad(LivingEntity e) {
-        if (e.hasMetadata(config.getString("Lava Creeper = "))) {
-            return config.getString("Lava Creeper = ");
-        } else if (e.hasMetadata(config.getString("TnT Creeper = "))) {
-            return config.getString("TnT Creeper = ");
-        } else if (e.hasMetadata(config.getString("Smoke Demon = "))) {
+        if (e.hasMetadata(config.getString("Smoke Demon = "))) {
             return config.getString("Smoke Demon = ");
         } else if (e.hasMetadata(config.getString("Dead Miner = "))) {
             return config.getString("Dead Miner = ");
@@ -193,13 +183,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         if (caveents) {
             if (event.getEntity() instanceof Monster) {
                 Monster e = (Monster) event.getEntity();
-                if (hasName(config.getString("Magma Monster = "), e)) {
-                    effectEnts.add(event.getEntity());
-                }
-                else if (hasName(config.getString("Dead Miner = "), e)) {
-                    effectEnts.add(event.getEntity());
-                }
-                else if (hasName(config.getString("Lava Creeper = "), e)) {
+                if (hasName(config.getString("Dead Miner = "), e)) {
                     effectEnts.add(event.getEntity());
                 }
                 else if (hasName(config.getString("Smoke Demon = "), e)) {
@@ -252,11 +236,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                                 if (e.getLocation().getBlock().getLightLevel() == 0) {
                                     e.getLocation().getBlock().setType(Material.TORCH);
                                 }
-                            } else if (hasName(config.getString("Lava Creeper = "), e)) {
-                                if (randor.nextInt(24) == 1) {
-                                    e.getWorld().spawnParticle(Particle.LAVA, e.getLocation().add(0, 1, 0), 1);
-                                }
-                            } else if (hasName(config.getString("Smoke Demon = "), e)) {
+                            } if (hasName(config.getString("Smoke Demon = "), e)) {
                                 if (e.getLocation().getBlock().getLightLevel() < 12) {
                                     List<Entity> ents = e.getNearbyEntities(3, 3, 3);
                                     for (Entity es : ents) {
@@ -364,21 +344,9 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
     private String mobTypes() {
         int choice = randor.nextInt(9);
         try {
-            if (choice == 1) {
-                if (config.getBoolean("Spawn TnT Creeper ")) {
-                    return config.getString("TnT Creeper = ");
-                } else {
-                    return "";
-                }
-            } else if (choice == 2) {
+            if (choice == 2) {
                 if (config.getBoolean("Spawn Dead Miner ")) {
                     return config.getString("Dead Miner = ");
-                } else {
-                    return "";
-                }
-            } else if (choice == 3) {
-                if (config.getBoolean("Spawn Lava Creeper ")) {
-                    return config.getString("Lava Creeper = ");
                 } else {
                     return "";
                 }
@@ -401,27 +369,7 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
         String name = mobTypes();
         if (e != null && !e.isDead()) {
             try {
-                if (name.equals(config.getString("TnT Creeper = "))
-                        && (randor.nextInt(config.getInt("TnT Creeper Chance ") + 1) == 0)) {
-                    if (e.getType() != EntityType.CREEPER) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.CREEPER);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                } else if (name.equals(config.getString("Lava Creeper = "))
-                        && (randor.nextInt(config.getInt("Lava Creeper Chance ") + 1) == 0)) {
-                    if (e.getType() != EntityType.CREEPER) {
-                        Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.CREEPER);
-                        e.remove();
-                        e = (LivingEntity) e2;
-                    }
-                    e.setCustomName(name);
-                    e.setMetadata(name, new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                    e.setMetadata("R", new FixedMetadataValue(DangerousCaves.INSTANCE, 0));
-                } else if (name.equals(config.getString("Dead Miner = "))
+                if (name.equals(config.getString("Dead Miner = "))
                         && (randor.nextInt(config.getInt("Dead Miner Chance ") + 1) == 0)) {
                     if (e.getType() != EntityType.ZOMBIE) {
                         Entity e2 = e.getWorld().spawnEntity(e.getLocation(), EntityType.ZOMBIE);
@@ -541,49 +489,6 @@ public class DangerousCavesOld implements Listener, CommandExecutor {
                     } else if (choice == 3) {
                         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(),
                                 new ItemStack(Material.TORCH, randor.nextInt(3) + 1));
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onCreeperExplode(EntityExplodeEvent event) {
-        if (!worlds.contains(event.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (event.getEntity().getType() == EntityType.CREEPER) {
-            if (hasName(config.getString("Lava Creeper = "), event.getEntity())) {
-                Location l = event.getEntity().getLocation();
-                int radius = 4;
-                int cx = l.getBlockX();
-                int cy = l.getBlockY();
-                int cz = l.getBlockZ();
-                for (int x = cx - radius; x <= cx + radius; x++) {
-                    for (int z = cz - radius; z <= cz + radius; z++) {
-                        for (int y = (cy - radius); y < (cy + radius); y++) {
-                            double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + ((cy - y) * (cy - y));
-
-                            if (dist < radius * radius) {
-                                Location l2 = new Location(l.getWorld(), x, y, z);
-                                if (l2.getBlock().getType() != Material.BEDROCK) {
-                                    if (isAir(l2.getBlock().getType())) {
-                                        if (randor.nextInt(3) == 1) {
-                                            l2.getBlock().setType(Material.FIRE);
-                                        }
-                                    } else if (!isAir(l2.getBlock().getType())) {
-                                        if (randor.nextInt(4) == 1) {
-                                            l2.getBlock().setType(Material.MAGMA_BLOCK);
-                                        } else if (randor.nextInt(5) == 1) {
-                                            l2.getBlock().setType(Material.OBSIDIAN);
-                                        } else if (randor.nextInt(6) == 1) {
-                                            l2.getBlock().setType(Material.LAVA);
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
                     }
                 }
             }

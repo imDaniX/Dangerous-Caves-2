@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+@Configurable.Path("mobs.tnt-creeper")
 public class TNTCreeper extends CustomMob implements Configurable, Listener {
     private int weight;
     private int tntAmount;
@@ -30,7 +31,7 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         tntAmount = cfg.getInt("tnt-amount", 2);
-        explosionChance = cfg.getDouble("explosion-chance", 33.3) / 100;
+        explosionChance = cfg.getDouble("explosion-chance", 33.33) / 100;
     }
 
     @Override

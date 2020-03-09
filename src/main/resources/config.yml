@@ -160,5 +160,18 @@ mobs:
     priority: 1
     remove-on-light: true
     damage: 200
+  lava-creeper:
+    priority: 1
+    radius: 4
+    fire-touch: 10
+    block-chances:
+      fire: 33.33
+      magma_block: 25
+      obsidian: 20
+      lava: 16.67
   magma-monster:
     priority: 1
+  tnt-creeper:
+    priority: 1
+    tnt-amount: 2
+    explosion-chance: 33.33

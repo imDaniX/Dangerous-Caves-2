@@ -64,7 +64,7 @@ public class CaveInsPlayerListener implements Listener, Configurable {
             Location blockLoc = block.getLocation();
             world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             player.addPotionEffect(BLINDNESS);
-            LocationUtils.loopRelative(radius, radius, radius, blockLoc, (l) -> {
+            LocationUtils.loop(radius, blockLoc, (l) -> {
                 Block loopBlock = l.getBlock();
                 if (loopBlock.getType() != Material.BEDROCK && MaterialUtils.CAVE.contains(loopBlock.getType())) {
                     world.spawnFallingBlock(l, block.getBlockData());

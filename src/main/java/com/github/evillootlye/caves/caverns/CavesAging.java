@@ -122,7 +122,7 @@ public class CavesAging implements Tickable, Configurable {
                     if(Rnd.nextDouble() > 0.111) {
                         upBlock.setType(Rnd.nextBoolean() ? Material.BROWN_MUSHROOM : Material.RED_MUSHROOM);
                     }
-                    if(Rnd.nextDouble() > 0.667) {
+                    if(Rnd.nextDouble() > 0.167) {
                         upBlock.setType(Material.STONE_BUTTON);
                         Switch button = (Switch) upBlock.getBlockData();
                         button.setFace(Switch.Face.FLOOR);

@@ -8,19 +8,20 @@ import org.bukkit.util.Vector;
 import java.util.function.Consumer;
 
 public class LocationUtils {
-    public static void loop(int xMin, int xMax, int yMin, int yMax, int zMin, int zMax, World world, Consumer<Location> loop) {
-        for(int x = xMin; x <= xMax; x++)
-        for(int y = yMin; y <= yMax; y++)
-        for(int z = zMin; z <= zMax; z++)
+    public static void loop(int radius, Location start, Consumer<Location> loop) {
+        World world = start.getWorld();
+        for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
+        for(int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
+        for(int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
             loop.accept(new Location(world, x, y, z));
     }
 
-    public static void loopRelative(int xRadius, int yRadius, int zRadius, Location start, Consumer<Location> loop) {
+    public static void loop(int radius, Location start, LocationConsumer loop) {
         World world = start.getWorld();
-        for(int x = start.getBlockX() - xRadius; x <= start.getBlockX() + xRadius; x++)
-        for(int y = start.getBlockY() - yRadius; y <= start.getBlockY() + yRadius; y++)
-        for(int z = start.getBlockZ() - zRadius; z <= start.getBlockZ() + zRadius; z++)
-            loop.accept(new Location(world, x, y, z));
+        for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
+        for(int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
+        for(int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
+            loop.accept(world, x, y, z);
     }
 
     public static boolean isCave(Location loc) {
@@ -33,5 +34,10 @@ public class LocationUtils {
         Location eye = viewer.getEyeLocation();
         Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
         return toEntity.normalize().dot(eye.getDirection()) > 0.70D;
+    }
+
+    @FunctionalInterface
+    public interface LocationConsumer {
+        void accept(World w, int x, int y, int z);
     }
 }

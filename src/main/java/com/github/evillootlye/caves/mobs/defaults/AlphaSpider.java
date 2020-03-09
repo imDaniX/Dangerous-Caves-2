@@ -50,7 +50,7 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
                 if (Rnd.nextDouble() < 0.07)
                     damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
 
-                LocationUtils.loopRelative(3, 3, 3, loc, l -> {
+                LocationUtils.loop(3, loc, l -> {
                     if (Rnd.nextDouble() < 0.03 && l.getBlock().getType() == Material.AIR) {
                         l.getBlock().setType(Material.COBWEB);
                     }}
