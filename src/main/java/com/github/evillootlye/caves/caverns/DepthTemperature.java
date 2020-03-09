@@ -76,7 +76,7 @@ public class DepthTemperature implements Tickable, Configurable {
                         break;
                     }
                 }
-                if(check && Rnd.nextDouble() > chance) {
+                if(check && Rnd.nextDouble() < chance) {
                     player.addPotionEffect(SLOW);
                     player.addPotionEffect(SLOW_DIGGING);
                     if(!messages.isEmpty()) player.sendMessage(messages.get(Rnd.nextInt(messages.size())));

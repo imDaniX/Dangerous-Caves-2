@@ -2,39 +2,40 @@ package com.github.evillootlye.caves.utils;
 
 import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Materials {
-    public static final Material[] HELMETS;
-    public static final Material[] LEGGINGS;
-    public static final Material[] CHESTPLATES;
-    public static final Material[] BOOTS;
+public final class Materials {
+    public static final List<Material> HELMETS;
+    public static final List<Material> LEGGINGS;
+    public static final List<Material> CHESTPLATES;
+    public static final List<Material> BOOTS;
     static {
-        Set<Material> helmets = new HashSet<>();
-        Set<Material> leggings = new HashSet<>();
-        Set<Material> chestplates = new HashSet<>();
-        Set<Material> boots = new HashSet<>();
-        for(Material mat : Material.values()) {
-            if(mat.isBlock()) continue;
+        List<Material> helmets = new ArrayList<>();
+        List<Material> leggings = new ArrayList<>();
+        List<Material> chestplates = new ArrayList<>();
+        List<Material> boots = new ArrayList<>();
+        for (Material mat : Material.values()) {
+            if (mat.isBlock()) continue;
             String name = mat.name();
-            if(name.endsWith("_HELMET")) {
+            if (name.endsWith("_HELMET")) {
                 helmets.add(mat);
-            } else if(name.endsWith("_LEGGINGS")) {
+            } else if (name.endsWith("_LEGGINGS")) {
                 leggings.add(mat);
-            } else if(name.endsWith("_CHESTPLATE")) {
+            } else if (name.endsWith("_CHESTPLATE")) {
                 chestplates.add(mat);
-            } else if(name.endsWith("_BOOTS")) {
+            } else if (name.endsWith("_BOOTS")) {
                 boots.add(mat);
             }
         }
         helmets.add(Material.CARVED_PUMPKIN);
-        HELMETS = (Material[]) helmets.toArray();
-        LEGGINGS = (Material[]) leggings.toArray();
-        CHESTPLATES = (Material[]) chestplates.toArray();
-        BOOTS = (Material[]) boots.toArray();
+        HELMETS = Collections.unmodifiableList(helmets);
+        LEGGINGS = Collections.unmodifiableList(leggings);
+        CHESTPLATES = Collections.unmodifiableList(chestplates);
+        BOOTS = Collections.unmodifiableList(boots);
     }
     public static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
             Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,

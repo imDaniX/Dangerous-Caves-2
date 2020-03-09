@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 
 import java.util.function.Consumer;
 
-public class Locations {
+public final class Locations {
     public static void loop(int radius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();
         for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)

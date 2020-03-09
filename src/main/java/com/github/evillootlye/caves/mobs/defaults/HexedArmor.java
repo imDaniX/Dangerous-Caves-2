@@ -20,11 +20,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+
 @Configurable.Path("mobs.hexed-armor")
 public class HexedArmor extends CustomMob implements Listener, Configurable {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
     private int weight;
+
+    private double chance;
 
     public HexedArmor() {
         super(EntityType.ZOMBIE, "hexed-armor");
@@ -33,6 +37,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        chance = cfg.getDouble("apply-chance", 25) / 100;
     }
 
     @Override
@@ -56,7 +61,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     @EventHandler
     public void onAttack(PlayerAttackedEvent event) {
         LivingEntity entity = event.getAttacker();
-        if (isThis(entity) && Rnd.nextDouble() < 0.2) {
+        if (isThis(entity) && Rnd.nextDouble() < chance) {
             PlayerInventory inv = event.getPlayer().getInventory();
             ItemStack[] armor = inv.getArmorContents();
             for (ItemStack i2 : armor) {
@@ -70,9 +75,9 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
         }
     }
 
-    private static ItemStack getRandom(Material[] arr) {
-        int i = Rnd.nextInt(arr.length + 2);
-        return i >= arr.length ? new ItemStack(Material.AIR) : enchant(new ItemStack(arr[i]));
+    private static ItemStack getRandom(List<Material> arr) {
+        int i = Rnd.nextInt(arr.size() + 1);
+        return i >= arr.size() ? new ItemStack(Material.AIR) : enchant(new ItemStack(arr.get(i)));
     }
 
     private static ItemStack enchant(ItemStack item) {

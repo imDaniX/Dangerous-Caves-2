@@ -39,7 +39,6 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
         Item item = entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.TNT));
         item.setCanMobPickup(false);
         item.setInvulnerable(true);
-        item.setTicksLived(-32768);
         entity.addPassenger(item);
     }
 
