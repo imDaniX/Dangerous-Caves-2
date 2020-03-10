@@ -58,7 +58,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(new CaveGenerator()), 1);
         } else cfg.register(new CaveGenerator());
 
-        getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg));
+        getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg, dynamics));
     }
 
     @EventHandler

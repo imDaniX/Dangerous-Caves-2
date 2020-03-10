@@ -17,7 +17,7 @@ public class Dynamics {
             tickables.put(level, new HashSet<>());
             Bukkit.getScheduler().scheduleSyncRepeatingTask(
                     plugin,
-                    () -> tickables.get(level).forEach(Tickable::tick),
+                    () -> tick(level),
                     level.ticks,
                     level.ticks
             );
@@ -26,6 +26,10 @@ public class Dynamics {
 
     public void subscribe(Tickable tick) {
         tickables.get(tick.getTickLevel()).add(tick);
+    }
+
+    public void tick(TickLevel level) {
+        tickables.get(level).forEach(Tickable::tick);
     }
 
 }

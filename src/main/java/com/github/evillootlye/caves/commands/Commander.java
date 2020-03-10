@@ -2,6 +2,8 @@ package com.github.evillootlye.caves.commands;
 
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.mobs.MobsManager;
+import com.github.evillootlye.caves.ticks.Dynamics;
+import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -14,10 +16,12 @@ import org.bukkit.entity.Player;
 public class Commander implements CommandExecutor {
     private final MobsManager mobsManager;
     private final Configuration cfg;
+    private final Dynamics dynamics;
 
-    public Commander(MobsManager mobsManager, Configuration cfg) {
+    public Commander(MobsManager mobsManager, Configuration cfg, Dynamics dynamics) {
         this.mobsManager = mobsManager;
         this.cfg = cfg;
+        this.dynamics = dynamics;
     }
 
     @Override
@@ -49,6 +53,11 @@ public class Commander implements CommandExecutor {
                     sender.sendMessage(Utils.clr("&cThere's no mobs called " + args[1] + "!"));
                 }
                 break;
+            case "tick":
+                if(!sender.hasPermission("dangerous.caves.command.tick")) return false;
+                for(TickLevel level : TickLevel.values()) dynamics.tick(level);
+                sender.sendMessage(Utils.clr("&aTicked every tickables."));
+                break;
             case "reload":
                 if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
@@ -63,6 +72,7 @@ public class Commander implements CommandExecutor {
         sender.sendMessage(Utils.clr("&6&lDangerousCaves by Evil-Lootlye&e (fork imDaniX)"));
         sender.sendMessage(Utils.clr(" &a/" + label + " info &7- Get some info about your location."));
         sender.sendMessage(Utils.clr(" &a/" + label + " summon [mob] &7- Spawn a mob on your location."));
+        sender.sendMessage(Utils.clr(" &a/" + label + " tick &7- Tick everything manually."));
         sender.sendMessage(Utils.clr(" &a/" + label + " reload &7- Reload plugin configuration."));
     }
 }
