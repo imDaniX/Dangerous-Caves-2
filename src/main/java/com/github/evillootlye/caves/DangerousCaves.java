@@ -1,7 +1,7 @@
 package com.github.evillootlye.caves;
 
 import com.github.evillootlye.caves.caverns.AmbientSounds;
-import com.github.evillootlye.caves.caverns.CaveInsPlayerListener;
+import com.github.evillootlye.caves.caverns.CaveIns;
 import com.github.evillootlye.caves.caverns.CavesAging;
 import com.github.evillootlye.caves.caverns.DepthTemperature;
 import com.github.evillootlye.caves.commands.Commander;
@@ -37,7 +37,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         mobsManager = new MobsManager(this); DefaultMobs.registerAll(mobsManager);
 
         AmbientSounds ambient = new AmbientSounds();
-        CaveInsPlayerListener caveIns = new CaveInsPlayerListener();
+        CaveIns caveIns = new CaveIns();
         CavesAging cavesAging = new CavesAging();
         DepthTemperature temperature = new DepthTemperature();
 

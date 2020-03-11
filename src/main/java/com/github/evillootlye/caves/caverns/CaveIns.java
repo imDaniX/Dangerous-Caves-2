@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configurable.Path("caverns.ins")
-public class CaveInsPlayerListener implements Listener, Configurable {
+public class CaveIns implements Listener, Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 65, 3);
 
     private final Set<String> worlds;
@@ -32,7 +32,7 @@ public class CaveInsPlayerListener implements Listener, Configurable {
     private int radius;
     private boolean rabbitFoot;
 
-    public CaveInsPlayerListener() {
+    public CaveIns() {
         worlds = new HashSet<>();
     }
 
