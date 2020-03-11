@@ -67,7 +67,7 @@ caverns:
       - world_nether
     # Chance of player to sense high temperature
     # Checking every 200 milliseconds
-    chance: 0.8
+    chance: 0.4
     # Maximal Y where players can sense temperature
     y-max: 32
     # Immunity to high temperature if player has one of these items in inventory
@@ -143,7 +143,7 @@ generator:
 # Mob-related things
 #
 mobs:
-  try-chance: 50
+  try-chance: 25
   worlds:
     - world
   y-min: 0
