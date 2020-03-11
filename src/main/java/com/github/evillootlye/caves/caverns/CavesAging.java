@@ -110,7 +110,7 @@ public class CavesAging implements Tickable, Configurable {
                     for(BlockFace face : FACES) {
                         Block relBlock = block.getRelative(face);
                         if (relBlock.getType() == Material.AIR) {
-                            relBlock.setType(Material.VINE);
+                            relBlock.setType(Material.VINE, false);
                             MultipleFacing facing = (MultipleFacing) relBlock.getBlockData();
                             facing.setFace(face.getOppositeFace(), true);
                             relBlock.setBlockData(facing);
@@ -123,7 +123,7 @@ public class CavesAging implements Tickable, Configurable {
                         upBlock.setType(Rnd.nextBoolean() ? Material.BROWN_MUSHROOM : Material.RED_MUSHROOM);
                     }
                     if(Rnd.nextDouble() > 0.167) {
-                        upBlock.setType(Material.STONE_BUTTON);
+                        upBlock.setType(Material.STONE_BUTTON, false);
                         Switch button = (Switch) upBlock.getBlockData();
                         button.setFace(Switch.Face.FLOOR);
                         upBlock.setBlockData(button);
