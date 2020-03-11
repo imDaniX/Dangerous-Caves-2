@@ -46,7 +46,15 @@ public final class Materials {
             Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS
     ));
 
+    public static final Set<Material> AIR = Collections.unmodifiableSet(EnumSet.of(
+            Material.AIR, Material.CAVE_AIR, Material.VOID_AIR
+    ));
+
     public static boolean isCave(Material material) {
         return CAVE.contains(material);
+    }
+
+    public static boolean isAir(Material material) {
+        return AIR.contains(material);
     }
 }

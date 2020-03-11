@@ -103,13 +103,13 @@ public class CavesAging implements Tickable, Configurable {
                     case 1: block.setType(Material.ANDESITE); break;
                     default:
                         Block downBlock = block.getRelative(BlockFace.DOWN);
-                        if(downBlock.getType() == Material.AIR && Rnd.nextBoolean())
+                        if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
                             downBlock.setType(Material.COBBLESTONE_WALL);
                 }
                 if(Rnd.nextDouble() > 0.125) {
                     for(BlockFace face : FACES) {
                         Block relBlock = block.getRelative(face);
-                        if (relBlock.getType() == Material.AIR) {
+                        if (Materials.isAir(relBlock.getType())) {
                             relBlock.setType(Material.VINE, false);
                             MultipleFacing facing = (MultipleFacing) relBlock.getBlockData();
                             facing.setFace(face.getOppositeFace(), true);
@@ -118,7 +118,7 @@ public class CavesAging implements Tickable, Configurable {
                     }
                 }
                 Block upBlock = block.getRelative(BlockFace.UP);
-                if(upBlock.getType() == Material.AIR){
+                if(Materials.isAir(upBlock.getType())){
                     if(Rnd.nextDouble() > 0.111) {
                         upBlock.setType(Rnd.nextBoolean() ? Material.BROWN_MUSHROOM : Material.RED_MUSHROOM);
                     }

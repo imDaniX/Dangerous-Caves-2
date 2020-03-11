@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,7 +67,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
         Locations.loop(radius, start, (world, x, y, z) -> {
             if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || chance < Rnd.nextDouble()) return;
             Block block = new Location(world, x, y, z).getBlock();
-            if(block.getType() == Material.AIR) {
+            if(Materials.isAir(block.getType())) {
                 if(fire > 0 && Rnd.nextDouble() < fire) block.setType(Material.FIRE);
             } else if(block.getType() != Material.BEDROCK) {
                 if(magmaBlock > 0 && Rnd.nextDouble() < magmaBlock) {

@@ -160,7 +160,7 @@ mobs:
   y-max: 64
 
   # List of *default* custom mobs
-  # Larger priority - larger chance in comparison with others
+  # Larger priority - larger chance in comparison with others. Set to 0 to disable
   # Chance formula - (mob_priority)/(total_priority)
   alpha-spider:
     priority: 1

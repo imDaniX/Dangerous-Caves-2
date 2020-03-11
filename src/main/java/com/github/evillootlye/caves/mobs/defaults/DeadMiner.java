@@ -2,6 +2,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
+import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -63,7 +64,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
         LivingEntity entity = (LivingEntity) event.getEntity();
         if(dropChance > 0 && !items.isEmpty() && Rnd.nextDouble() < dropChance)
             entity.getWorld().dropItemNaturally(
-                    entity.getEyeLocation(),
+                    entity.getLocation(),
                     new ItemStack(items.get(Rnd.nextInt(items.size())))
             );
     }
@@ -88,7 +89,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
         if(block.getLightLevel() > 0) return;
-        if(block.getType() == Material.AIR && block.getRelative(BlockFace.DOWN).getType().isSolid())
+        if(Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
             block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH);
     }
 

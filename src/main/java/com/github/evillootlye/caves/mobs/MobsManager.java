@@ -60,7 +60,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     public void recalculate() {
-        mobsPool = new AliasMethod<>(mobs.values(), CustomMob::getWeight);
+        Set<CustomMob> mobsSet = new HashSet<>();
+        mobs.values().forEach(m -> {if(m.getWeight() > 0) mobsSet.add(m);});
+        mobsPool = new AliasMethod<>(mobsSet, CustomMob::getWeight);
     }
 
     public void register(CustomMob mob) {

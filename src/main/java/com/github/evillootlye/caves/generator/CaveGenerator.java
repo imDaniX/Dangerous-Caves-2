@@ -95,11 +95,11 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
             Location loc = new Location(w, cXOff, 1, cZOff);
             while(loc.getY()<55) {
                 loc.add(0, 1, 0);
-                if(isAir(loc.getBlock().getType())) {
+                if(Materials.isAir(loc.getBlock().getType())) {
                     Location loc2 = new Location(w, loc.getX(), loc.getY() - 1, loc.getZ());
                     if(Materials.isCave(loc2.getBlock().getType())) {
                         Location loc3 = new Location(w, loc.getX(), loc.getY() + 1, loc.getZ());
-                        if(isAir(loc3.getBlock().getType())) {
+                        if(Materials.isAir(loc3.getBlock().getType())) {
                             break;
                         }
                     }
@@ -429,16 +429,16 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
                     Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()+1);
                     Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()-1);
                     loc.getBlock().setType(Material.CRAFTING_TABLE, false);
-                    if(tempL1.getBlock().getType()!=Material.AIR&&random.nextInt(3)==1) {
+                    if(!Materials.isAir(tempL1.getBlock().getType())&&random.nextInt(3)==1) {
                         tempL1.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
                     }
-                    if(tempL2.getBlock().getType()!=Material.AIR&&random.nextInt(3)==1) {
+                    if(!Materials.isAir(tempL2.getBlock().getType())&&random.nextInt(3)==1) {
                         tempL2.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
                     }
-                    if(tempL3.getBlock().getType()!=Material.AIR&&random.nextInt(3)==1) {
+                    if(!Materials.isAir(tempL3.getBlock().getType())&&random.nextInt(3)==1) {
                         tempL3.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
                     }
-                    if(tempL4.getBlock().getType()!=Material.AIR&&random.nextInt(3)==1) {
+                    if(!Materials.isAir(tempL4.getBlock().getType())&&random.nextInt(3)==1) {
                         tempL4.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
                     }
                 }
@@ -627,10 +627,6 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
         }
         catch(Exception ignored) {
         }
-    }
-
-    private boolean isAir(Material m) {
-        return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR;
     }
 
     private void fillChest(Random random, Block block) {

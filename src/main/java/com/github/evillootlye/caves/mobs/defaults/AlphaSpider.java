@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,7 +52,7 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
                     damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
 
                 Locations.loop(3, loc, l -> {
-                    if (Rnd.nextDouble() < 0.03 && l.getBlock().getType() == Material.AIR) {
+                    if (Rnd.nextDouble() < 0.03 && Materials.isAir(l.getBlock().getType())) {
                         l.getBlock().setType(Material.COBWEB);
                     }}
                 );
