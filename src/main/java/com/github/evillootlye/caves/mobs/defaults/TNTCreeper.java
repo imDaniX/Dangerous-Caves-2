@@ -15,10 +15,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 @Configurable.Path("mobs.tnt-creeper")
 public class TNTCreeper extends CustomMob implements Configurable, Listener {
+    private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0);
     private int weight;
     private int tntAmount;
     private double explosionChance;
@@ -40,6 +43,7 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
         item.setCanMobPickup(false);
         item.setInvulnerable(true);
         entity.addPassenger(item);
+        entity.addPotionEffect(INCREASE_DAMAGE);
     }
 
     @EventHandler
