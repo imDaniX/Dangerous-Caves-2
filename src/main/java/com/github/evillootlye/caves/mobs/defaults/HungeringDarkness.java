@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.potion.PotionEffect;
@@ -50,14 +49,14 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
         entity.addPotionEffect(SLOW);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onTarget(EntityTargetEvent event) {
         if(!isThis(event.getEntity()) || event.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER) return;
         if(event.getTarget().getLocation().getBlock().getLightLevel() > 0) {
-            if(remove)
-                event.getEntity().remove();
-            else
+            if(remove) {
                 event.setCancelled(true);
+                event.getEntity().remove();
+            } else event.setCancelled(true);
         }
     }
 

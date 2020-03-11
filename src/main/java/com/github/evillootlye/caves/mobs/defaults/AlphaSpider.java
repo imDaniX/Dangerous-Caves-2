@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 @Configurable.Path("mobs.alpha-spider")
 public class AlphaSpider extends CustomMob implements Listener, Configurable {
     private static final PotionEffect POISON = new PotionEffect(PotionEffectType.POISON, 75, 1);
+    private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0);
 
     private int weight;
 
@@ -30,6 +31,13 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+    }
+
+    @Override
+    public void setup(LivingEntity entity) {
+        entity.addPotionEffect(REGENERATION);
+        Entity caveSpider = entity.getWorld().spawnEntity(entity.getLocation(), EntityType.CAVE_SPIDER);
+        entity.addPassenger(caveSpider);
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class SmokeDemon extends TickableMob implements Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 120, 1);
-    private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.BLINDNESS, 120, 0);
+    private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER, 120, 0);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
 
     private int weight;
