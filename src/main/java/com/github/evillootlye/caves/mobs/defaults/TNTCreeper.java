@@ -21,7 +21,7 @@ import org.bukkit.util.Vector;
 
 @Configurable.Path("mobs.tnt-creeper")
 public class TNTCreeper extends CustomMob implements Configurable, Listener {
-    private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0);
+    private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
     private int weight;
     private int tntAmount;
     private double explosionChance;
@@ -49,9 +49,11 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
         if(!isThis(event.getEntity())) return;
-        Location loc = event.getEntity().getLocation();
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        entity.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        Location loc = entity.getLocation();
         for(int i = 0; i < tntAmount; i++) {
-            Entity tnt = event.getEntity().getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
+            Entity tnt = entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
             tnt.setVelocity(new Vector(Rnd.nextDouble(2) - 1, 0.3, Rnd.nextDouble(2) - 1));
         }
     }

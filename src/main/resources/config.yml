@@ -59,7 +59,7 @@ caverns:
         volume: 1
         pitch: 0.5
 
-  # Underground temperature
+  # Depth temperature - will cause player to move and dig slower
   temperature:
     # List of worlds where players can sense temperature
     worlds:
@@ -120,17 +120,21 @@ generator:
 
   # Force DangerousCaves' generator to wait for other plugins (other generators)
   wait-other: false
+
   # Chance of custom structure generations in chunk
   chance: 50
+
   # Worlds where generator will work
   worlds:
     - world
+
   # Items in generated chests
   # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
   chest-items:
     - sugar
     - torch
     - dirt
+
   # Structures to generate
   structures:
     traps: true
@@ -143,11 +147,21 @@ generator:
 # Mob-related things
 #
 mobs:
+
+  # Chance of spawning custom mob instead of vanilla one
   try-chance: 25
+
+  # World where mob can spawn(and work as it's intended to work)
   worlds:
     - world
+
+  # Minimal and maximal Y where custom mobs can spawn
   y-min: 0
   y-max: 64
+
+  # List of *default* custom mobs
+  # Larger priority - larger chance in comparison with others
+  # Chance formula - (mob_priority)/(total_priority)
   alpha-spider:
     priority: 1
   crying-bat:
