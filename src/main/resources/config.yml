@@ -1,0 +1,207 @@
+# | DangerousCaves by Evil-Lootlye
+# | Forked by imDaniX
+
+# NOTE: All the chances are in percents
+# NOTE: Setting chance to 0 means that you want to disable the feature
+
+# NOTE: Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
+# NOTE: "Blank worlds" doesn't means "worlds:" - use "worlds: []"
+
+#
+# Cave-related things
+#
+caverns:
+
+  # Cave-ins - blocks may fall down when mining
+  ins:
+    # List of worlds where cave-in may appear
+    worlds:
+      - world
+    # Chance of cave-in while mining blocks
+    # In percents
+    chance: 0.25
+    # Immunity to cave-in if player has rabbit foot in inventory
+    rabbit-foot: true
+    # Radius of cave-in
+    radius: 6
+    # Maximal Y where cave-in may appear
+    y-max: 25
+
+  # Ambient sounds - special sound may be played underground
+  ambient:
+    # List of worlds where ambient sounds can be played
+    worlds:
+      - world
+    # Chance of sound will be played
+    # Checking every 5 minutes 15 seconds
+    chance: 25
+    # Maximal Y where sound can be played
+    y-max: 64
+    # List of sounds to play - you can add more or remove some
+    # All the sounds can be found here hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+    sounds:
+      MUSIC_DRAGON:
+        volume: 1
+        pitch: 0
+      MUSIC_NETHER:
+        volume: 1
+        pitch: 0.5
+      MUSIC_DISC_11:
+        volume: 1
+        pitch: 0.5
+      MUSIC_DISC_13:
+        volume: 1
+        pitch: 0.5
+      ENCHANT_THORNS_HIT:
+        volume: 0.04
+        pitch: 0.2
+      ENTITY_GHAST_SCREAM:
+        volume: 1
+        pitch: 0.5
+
+  # Depth temperature - will cause player to move and dig slower
+  temperature:
+    # List of worlds where players can sense temperature
+    worlds:
+      - world
+      - world_nether
+    # Chance of player to sense high temperature
+    # Checking every 200 milliseconds
+    chance: 0.4
+    # Maximal Y where players can sense temperature
+    y-max: 32
+    # Immunity to high temperature if player has one of these items in inventory
+    # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    cold-items:
+      - potion
+      - splash_potion
+      - snow
+      - snowball
+      - snow_block
+      - water_bucket
+      - ice
+      - frosted_ice
+      - packed_ice
+    # Immunity to high temperature if player has fire resistance effect
+    fire-resistance: true
+    # Messages when player is feeling high temperature
+    messages:
+      - "&cWow, it's hot down here. I better bring something to cool myself off next time."
+      - "&cIt is realllyyy hot down here."
+      - "&cI'm going to need something to cool myself off next time."
+      - "&cIs it hot in here, or is it just me?"
+      - "&cI really need some ice."
+
+  # Caves aging - over time caves will get some vines and rocks
+  aging:
+    # List of worlds where aging will be processed
+    worlds:
+      - world
+    # Chance of caves near player will be affected
+    # Checking every 5 minutes 15 seconds
+    chance: 50
+    # Radius of cave aging near player
+    # In chunks (+1 where the player is)
+    radius: 3
+    # Maximal Y where aging will be processed
+    y-max: 80
+    # Chance of block will be affected
+    change-chance: 2.5
+    # List of coordinates of chunks that should be ignored
+    # To get chunk coordinates just divide your coordinates by 16 and ignore remainder
+    # "-1,-1" variant is allowed(just one chunk)
+    skip-chunks:
+      - "-1,-1 1,1"
+
+#
+# Generator-related things
+#
+generator:
+
+  # Force DangerousCaves' generator to wait for other plugins (other generators)
+  wait-other: false
+
+  # Chance of custom structure generations in chunk
+  chance: 50
+
+  # Worlds where generator will work
+  worlds:
+    - world
+
+  # Items in generated chests
+  # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  chest-items:
+    - sugar
+    - torch
+    - dirt
+
+  # Structures to generate
+  structures:
+    traps: true
+    pillars: true
+    boulders: true
+    buildings: true
+    skulls: true
+
+#
+# Mob-related things
+#
+mobs:
+
+  # Chance of spawning custom mob instead of vanilla one
+  try-chance: 25
+
+  # World where mob can spawn(and work as it's intended to work)
+  worlds:
+    - world
+
+  # Minimal and maximal Y where custom mobs can spawn
+  y-min: 0
+  y-max: 64
+
+  # List of *default* custom mobs
+  # Larger priority - larger chance in comparison with others. Set to 0 to disable
+  # Chance formula - (mob_priority)/(total_priority)
+  alpha-spider:
+    priority: 1
+  crying-bat:
+    priority: 1
+    cry-chance: 3.33
+    death-chance: 20
+  dead-miner:
+    priority: 1
+    place-torches: true
+    red-torches: false
+    drop-chance: 30
+    drop-items:
+      - COBBLESTONE
+      - DIRT
+      - COAL
+      - TORCH
+  hexed-armor:
+    priority: 1
+  hungering-darkness:
+    priority: 1
+    remove-on-light: true
+    damage: 200
+  lava-creeper:
+    priority: 1
+    radius: 4
+    fire-touch: 10
+    change-chance: 50
+    block-chances:
+      fire: 33.33
+      magma_block: 25
+      obsidian: 20
+      lava: 16.67
+  magma-monster:
+    priority: 1
+  smoke-demon:
+    priority: 1
+    harm-radius: 3
+  tnt-creeper:
+    priority: 1
+    tnt-amount: 2
+    explosion-chance: 33.33
+  watcher:
+    priority: 1
