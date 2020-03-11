@@ -3,6 +3,6 @@ Adds more mechanics to caves in order to make caving a more interesting but chal
 
 Plugin contains new custom dangerous monsters, cave aging, ins, new underground structures.
 
-Right now plugin is **absolutely unusable** due to deep development changes. If you want to support - just make some cool PRs :D
+If you want to support - just make some cool PRs :D
 ### Build
 Just.. you know.. `mvn clean package`
