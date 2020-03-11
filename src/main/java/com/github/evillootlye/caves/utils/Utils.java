@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,9 +13,8 @@ public final class Utils {
     }
 
     public static List<String> clr(List<String> list) {
-        List<String> clred = new ArrayList<>();
-        list.forEach(s -> clred.add(clr(s)));
-        return clred;
+        list.replaceAll(Utils::clr);
+        return list;
     }
 
     public static void fillWorlds(List<String> worldsCfg, Set<String> worlds) {
