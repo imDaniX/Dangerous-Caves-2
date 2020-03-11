@@ -23,6 +23,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
     private int weight;
+    private double chance;
     private double fire, magmaBlock, obsidian, lava;
     private int fireTouch;
     private int radius, radiusSquared;
@@ -34,6 +35,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        chance = cfg.getDouble("change-chance", 50) / 100;
         fire = cfg.getDouble("blocks.fire", 33.33) / 100;
         magmaBlock = cfg.getDouble("blocks.magma_block", 25) / 100;
         obsidian = cfg.getDouble("blocks.obsidian", 20) / 100;
@@ -56,13 +58,13 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
-        if(!isThis(event.getEntity())) return;
+        if(!isThis(event.getEntity()) || chance <= 0) return;
         Location start = event.getLocation();
         int cx = start.getBlockX();
         int cy = start.getBlockY();
         int cz = start.getBlockZ();
         Locations.loop(radius, start, (world, x, y, z) -> {
-            if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared) return;
+            if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || chance < Rnd.nextDouble()) return;
             Block block = new Location(world, x, y, z).getBlock();
             if(block.getType() == Material.AIR) {
                 if(fire > 0 && Rnd.nextDouble() < fire) block.setType(Material.FIRE);

@@ -188,6 +188,7 @@ mobs:
     priority: 1
     radius: 4
     fire-touch: 10
+    change-chance: 50
     block-chances:
       fire: 33.33
       magma_block: 25
