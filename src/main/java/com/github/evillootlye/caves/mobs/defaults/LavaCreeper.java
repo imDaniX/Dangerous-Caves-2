@@ -83,7 +83,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        entity.getWorld().spawnParticle(Particle.LAVA, entity.getLocation().add(0, 1, 0), 2, 0.4, 0.9, 0.4);
+        entity.getWorld().spawnParticle(Particle.LAVA, entity.getLocation().add(0, 1, 0), 1, 0.3, 0.8, 0.3);
     }
 
     @Override
