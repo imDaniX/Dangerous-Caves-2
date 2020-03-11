@@ -4,7 +4,7 @@ import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.ticks.Dynamics;
 import com.github.evillootlye.caves.ticks.TickLevel;
-import com.github.evillootlye.caves.utils.Utils;
+import com.github.evillootlye.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

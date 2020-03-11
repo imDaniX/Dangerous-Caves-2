@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves.utils;
+package com.github.evillootlye.caves.util;
 
 import org.bukkit.Material;
 

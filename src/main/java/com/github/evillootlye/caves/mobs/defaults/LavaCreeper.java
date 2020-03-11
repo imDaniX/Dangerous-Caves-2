@@ -2,8 +2,8 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
-import com.github.evillootlye.caves.utils.Locations;
-import com.github.evillootlye.caves.utils.random.Rnd;
+import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;

@@ -2,7 +2,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
-import com.github.evillootlye.caves.utils.random.Rnd;
+import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;

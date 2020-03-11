@@ -2,8 +2,8 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
-import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
-import com.github.evillootlye.caves.utils.random.Rnd;
+import com.github.evillootlye.caves.util.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

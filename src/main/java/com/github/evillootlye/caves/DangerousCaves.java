@@ -10,7 +10,7 @@ import com.github.evillootlye.caves.generator.CaveGenerator;
 import com.github.evillootlye.caves.mobs.DefaultMobs;
 import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.ticks.Dynamics;
-import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;

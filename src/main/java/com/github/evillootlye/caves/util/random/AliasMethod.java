@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves.utils.random;
+package com.github.evillootlye.caves.util.random;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

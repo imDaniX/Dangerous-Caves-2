@@ -2,7 +2,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
-import com.github.evillootlye.caves.utils.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;

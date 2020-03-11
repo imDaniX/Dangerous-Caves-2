@@ -1,10 +1,10 @@
 package com.github.evillootlye.caves.caverns;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.utils.Locations;
-import com.github.evillootlye.caves.utils.Materials;
-import com.github.evillootlye.caves.utils.Utils;
-import com.github.evillootlye.caves.utils.random.Rnd;
+import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.Materials;
+import com.github.evillootlye.caves.util.Utils;
+import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
