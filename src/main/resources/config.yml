@@ -106,7 +106,7 @@ caverns:
     # Maximal Y where aging will be processed
     y-max: 80
     # Chance of block will be affected
-    change-chance: 25
+    change-chance: 2.5
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder
     # "-1,-1" variant is allowed(just one chunk)

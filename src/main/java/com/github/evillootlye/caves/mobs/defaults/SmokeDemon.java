@@ -47,7 +47,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
             return;
         }
         entity.getNearbyEntities(radius, radius, radius).forEach(SmokeDemon::harm);
-        entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().add(0, 1, 0), 30, 1, 1, 1, 0f);
+        entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().add(0, 1, 0), 20, 1, 1, 1, 0f);
     }
 
     private static void harm(Entity entity) {
