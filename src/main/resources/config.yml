@@ -172,7 +172,7 @@ mobs:
     priority: 1
     place-torches: true
     red-torches: false
-    drop-chance: 16.67
+    drop-chance: 30
     drop-items:
       - COBBLESTONE
       - DIRT

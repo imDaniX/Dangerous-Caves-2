@@ -2,10 +2,10 @@ name: DangerousCaves
 version: ${project.version}
 main: com.github.evillootlye.caves.DangerousCaves
 api-version: 1.13
-authors: [DaddyLootly]
+authors: [Evil-Lootlye]
 description: Adds and improves mechanics in caves.
 commands:
   dangerouscaves:
     aliases: [dcaves, dc]
-    usage: "/<command> [info|summon|reload]"
+    usage: "/<command> [info|summon|tick|reload]"
     permission: dangerous.caves.command
