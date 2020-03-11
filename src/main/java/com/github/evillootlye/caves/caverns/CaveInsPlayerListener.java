@@ -53,7 +53,7 @@ public class CaveInsPlayerListener implements Listener, Configurable {
         Block block = event.getBlock();
         World world = block.getWorld();
         if(block.getY() > y || !worlds.contains(world.getName()) ||
-                !Materials.CAVE.contains(block.getType())) return;
+                !Materials.isCave(block.getType())) return;
 
         Player player = event.getPlayer();
         Location loc = player.getLocation();
@@ -66,7 +66,7 @@ public class CaveInsPlayerListener implements Listener, Configurable {
             player.addPotionEffect(BLINDNESS);
             Locations.loop(radius, blockLoc, (l) -> {
                 Block loopBlock = l.getBlock();
-                if (loopBlock.getType() != Material.BEDROCK && Materials.CAVE.contains(loopBlock.getType())) {
+                if (loopBlock.getType() != Material.BEDROCK && Materials.isCave(loopBlock.getType())) {
                     world.spawnFallingBlock(l, block.getBlockData());
                     loopBlock.setType(Material.AIR);
                 }

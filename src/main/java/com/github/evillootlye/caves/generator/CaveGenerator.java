@@ -1,6 +1,7 @@
 package com.github.evillootlye.caves.generator;
 
 import com.github.evillootlye.caves.configuration.Configurable;
+import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
@@ -15,7 +16,6 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -97,7 +97,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
                 loc.add(0, 1, 0);
                 if(isAir(loc.getBlock().getType())) {
                     Location loc2 = new Location(w, loc.getX(), loc.getY() - 1, loc.getZ());
-                    if(isStony(loc2.getBlock().getType())) {
+                    if(Materials.isCave(loc2.getBlock().getType())) {
                         Location loc3 = new Location(w, loc.getX(), loc.getY() + 1, loc.getZ());
                         if(isAir(loc3.getBlock().getType())) {
                             break;
@@ -631,221 +631,6 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
 
     private boolean isAir(Material m) {
         return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR;
-    }
-
-    private boolean isStony(Material m) {
-        return m.name().toLowerCase().contains("dirt") || m == Material.STONE || m == Material.MOSSY_COBBLESTONE || m == Material.ANDESITE || m == Material.DIORITE || m == Material.COBBLESTONE || m == Material.GRANITE || m == Material.GRAVEL;
-    }
-
-    //
-
-    private void decideBlock(Random random, int type, Block b, boolean packet, Player p, boolean overwrite) {
-        //0 == air 1 == null 2 == netherwart brick 3 == netherwart block+red concrete powder 4 == barrier 5 ==netherrack & netherwart block
-        if(overwrite) {
-            if(packet) {
-                p.sendBlockChange(b.getLocation(), b.getType().createBlockData());
-            }
-            else {
-                b.setType(b.getType(), false);
-            }
-        }
-        else {
-            if(type==-1) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), b.getType().createBlockData());
-                }
-                else {
-                    b.setType(b.getType(), false);
-                }
-            }
-            if(type==0) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.AIR.createBlockData());
-                }
-                else {
-                    b.setType(Material.AIR, false);
-                }
-            }
-            else if(type == 1) {
-
-            }
-            else if(type == 2) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_NETHER_BRICKS.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_NETHER_BRICKS, false);
-                }
-            }
-            else if(type == 3) {
-                int choice = random.nextInt(2);
-                if(choice == 0) {
-                    if(packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                    }
-                    else {
-                        b.setType(Material.NETHER_WART_BLOCK, false);
-                    }
-                }
-                else if(choice == 1) {
-                    if(packet) {
-                        p.sendBlockChange(b.getLocation(), Material.RED_CONCRETE_POWDER.createBlockData());
-                    }
-                    else {
-                        b.setType(Material.RED_CONCRETE_POWDER, false);
-                    }
-                }
-            }
-            else if(type == 4) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.BARRIER.createBlockData());
-                }
-                else {
-                    b.setType(Material.BARRIER, false);
-                }
-            }
-            else if(type == 5) {
-                int choice = random.nextInt(2);
-                if(choice == 0) {
-                    if(packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                    }
-                    else {
-                        b.setType(Material.NETHER_WART_BLOCK, false);
-                    }
-                }
-                else if(choice == 1) {
-                    if(packet) {
-                        p.sendBlockChange(b.getLocation(), Material.NETHERRACK.createBlockData());
-                    }
-                    else {
-                        b.setType(Material.NETHERRACK, false);
-                    }
-                }
-            }
-            else if(type == 6) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_CONCRETE_POWDER.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_CONCRETE_POWDER, false);
-                }
-            }
-            else if(type == 7) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_WART_BLOCK.createBlockData());
-                }
-                else {
-                    b.setType(Material.NETHER_WART_BLOCK, false);
-                }
-            }
-            else if(type == 8) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_STAINED_GLASS_PANE.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_STAINED_GLASS_PANE, false);
-                }
-            }
-            else if(type == 9) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.QUARTZ_BLOCK.createBlockData());
-                }
-                else {
-                    b.setType(Material.QUARTZ_BLOCK, false);
-                }
-            }
-            else if(type == 10) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.QUARTZ_SLAB.createBlockData());
-                }
-                else {
-                    b.setType(Material.QUARTZ_SLAB, false);
-                }
-            }
-            else if(type == 11) {
-                if(!Bukkit.getServer().getBukkitVersion().contains("1.13")) {
-                    if(packet) {
-                        p.sendBlockChange(b.getLocation(), Material.RED_NETHER_BRICK_WALL.createBlockData());
-                    }
-                    else {
-                        b.setType(Material.RED_NETHER_BRICK_WALL, false);
-                    }
-                }
-            }
-            else if(type == 12) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.BONE_BLOCK.createBlockData());
-                }
-                else {
-                    b.setType(Material.BONE_BLOCK, false);
-                }
-            }
-            else if(type == 13) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_SHULKER_BOX.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_SHULKER_BOX, false);
-                }
-            }
-            else if(type == 14) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_BRICK_SLAB.createBlockData());
-                }
-                else {
-                    b.setType(Material.NETHER_BRICK_SLAB, false);
-                }
-            }
-            else if(type == 15) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_WOOL.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_WOOL, false);
-                }
-            }
-            else if(type == 16) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.NETHER_BRICK_SLAB.createBlockData());
-                }
-                else {
-                    b.setType(Material.NETHER_BRICK_SLAB, false);
-                }
-            }
-            else if(type == 17) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.REDSTONE_TORCH.createBlockData());
-                }
-                else {
-                    b.setType(Material.REDSTONE_TORCH, false);
-                }
-            }
-            else if(type == 18) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.SKELETON_SKULL.createBlockData());
-                }
-                else {
-                    b.setType(Material.SKELETON_SKULL, false);
-                }
-            }
-            else if(type == 19) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.RED_CARPET.createBlockData());
-                }
-                else {
-                    b.setType(Material.RED_CARPET, false);
-                }
-            }
-            else if(type == 20) {
-                if(packet) {
-                    p.sendBlockChange(b.getLocation(), Material.REDSTONE_WIRE.createBlockData());
-                }
-                else {
-                    b.setType(Material.REDSTONE_WIRE, false);
-                }
-            }
-        }
     }
 
     private void fillChest(Random random, Block block) {

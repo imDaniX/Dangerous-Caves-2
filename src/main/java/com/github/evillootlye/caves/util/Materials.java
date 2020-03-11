@@ -45,4 +45,8 @@ public final class Materials {
             Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK,
             Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS
     ));
+
+    public static boolean isCave(Material material) {
+        return CAVE.contains(material);
+    }
 }

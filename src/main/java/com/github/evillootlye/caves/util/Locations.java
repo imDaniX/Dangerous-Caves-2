@@ -26,7 +26,7 @@ public final class Locations {
 
     public static boolean isCave(Location loc) {
         return loc.getBlock().getLightFromSky() < 1 &&
-                Materials.CAVE.contains(loc.subtract( 0, 1, 0).getBlock().getType());
+                Materials.isCave(loc.subtract( 0, 1, 0).getBlock().getType());
 
     }
 
