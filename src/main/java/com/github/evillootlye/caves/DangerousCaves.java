@@ -65,7 +65,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         String oldVersion = cfg.getYml().getString("version", "");
         if(!cfgVersion.equals(oldVersion)) {
             getLogger().warning("Seems like your config is outdated (current " + cfgVersion + ", yours " + oldVersion + ")");
-            getLogger().warning("Please check latest changes, and if everything is good, change version your in config.yml to " + cfgVersion);
+            getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + cfgVersion);
         }
     }
 
