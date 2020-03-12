@@ -23,7 +23,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DangerousCaves extends JavaPlugin implements Listener {
-    public static Plugin INSTANCE;
+    public static Plugin PLUGIN;
 
     private MobsManager mobsManager;
     private Dynamics dynamics;
@@ -31,7 +31,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        DangerousCaves.INSTANCE = this;
+        DangerousCaves.PLUGIN = this;
 
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config"); cfg.create(true);
