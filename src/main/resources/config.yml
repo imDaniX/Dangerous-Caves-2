@@ -1,6 +1,8 @@
 # | DangerousCaves by Evil-Lootlye
 # | Forked by imDaniX
 
+version: ${cfgVersion}
+
 # NOTE: All the chances are in percents
 # NOTE: Setting chance to 0 means that you want to disable the feature
 

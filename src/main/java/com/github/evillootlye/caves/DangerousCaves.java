@@ -12,6 +12,7 @@ import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.ticks.Dynamics;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -59,6 +60,13 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         } else cfg.register(new CaveGenerator());
 
         getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg, dynamics));
+
+        String cfgVersion = getDescription().getVersion().split("-")[1];
+        String oldVersion = cfg.getYml().getString("version", "");
+        if(!cfgVersion.equals(oldVersion)) {
+            getLogger().warning("Seems like your config is outdated (current " + cfgVersion + ", yours " + oldVersion + ")");
+            getLogger().warning("Please check latest changes, and if everything is good, change version your in config.yml to " + cfgVersion);
+        }
     }
 
     @EventHandler
@@ -81,5 +89,10 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     public Configuration getConfiguration() {
         return cfg;
+    }
+
+    @Override
+    public FileConfiguration getConfig() {
+        return cfg.getYml();
     }
 }
