@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public final class Utils {
     public static String clr(String s){
@@ -17,7 +17,7 @@ public final class Utils {
         return list;
     }
 
-    public static void fillWorlds(List<String> worldsCfg, Set<String> worlds) {
+    public static void fillWorlds(List<String> worldsCfg, Collection<String> worlds) {
         if(worldsCfg.isEmpty()) {
             for(World world : Bukkit.getWorlds()) {
                 if(world.getEnvironment() == World.Environment.NORMAL)
