@@ -164,6 +164,8 @@ mobs:
   # Chance formula - (mob_priority)/(total_priority)
   alpha-spider:
     priority: 1
+    cobweb-chance: 14.29
+    minion-chance: 6.67
   crying-bat:
     priority: 1
     cry-chance: 3.33

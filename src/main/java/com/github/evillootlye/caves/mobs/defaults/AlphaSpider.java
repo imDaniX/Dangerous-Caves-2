@@ -23,6 +23,8 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, false, true);
 
     private int weight;
+    private double cobwebChance;
+    private double minionChance;
 
     public AlphaSpider() {
         super(EntityType.SPIDER, "alpha-spider");
@@ -31,6 +33,8 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        cobwebChance = cfg.getDouble("cobweb-chance", 14.29) / 100;
+        minionChance = cfg.getDouble("minion-chance", 6.67) / 100;
     }
 
     @Override
@@ -49,21 +53,20 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
         LivingEntity entity = (LivingEntity) event.getEntity();
         Entity damager = event.getDamager();
         if (Rnd.nextBoolean()) {
-            if (Rnd.nextDouble() < 0.2) {
+            if (minionChance > 0 && Rnd.nextDouble() < minionChance)
+                damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
+
+            if (cobwebChance > 0) {
                 Location loc = event.getEntity().getLocation();
                 loc.getBlock().setType(Material.COBWEB);
                 entity.getEyeLocation().getBlock().setType(Material.COBWEB);
 
-                if (Rnd.nextDouble() < 0.07)
-                    damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
-
                 Locations.loop(3, loc, l -> {
-                    if (Rnd.nextDouble() < 0.03 && Materials.isAir(l.getBlock().getType())) {
+                    if (Rnd.nextDouble() < cobwebChance && Materials.isAir(l.getBlock().getType())) {
                         l.getBlock().setType(Material.COBWEB);
                     }}
                 );
             }
-            entity.addPotionEffect(POISON);
-        }
+        } else entity.addPotionEffect(POISON);
     }
 }
