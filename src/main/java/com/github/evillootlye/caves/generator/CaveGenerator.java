@@ -91,369 +91,327 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     }
 
     private int getClosestAir(int cXOff, int cZOff, World w) {
-        try {
-            Location loc = new Location(w, cXOff, 1, cZOff);
-            while(loc.getY()<55) {
-                loc.add(0, 1, 0);
-                if(Materials.isAir(loc.getBlock().getType())) {
-                    Location loc2 = new Location(w, loc.getX(), loc.getY() - 1, loc.getZ());
-                    if(Materials.isCave(loc2.getBlock().getType())) {
-                        Location loc3 = new Location(w, loc.getX(), loc.getY() + 1, loc.getZ());
-                        if(Materials.isAir(loc3.getBlock().getType())) {
-                            break;
-                        }
+        Location loc = new Location(w, cXOff, 1, cZOff);
+        while(loc.getY() < 55) {
+            loc.add(0, 1, 0);
+            if(Materials.isAir(loc.getBlock().getType())) {
+                Location loc2 = new Location(w, loc.getX(), loc.getY() - 1, loc.getZ());
+                if(Materials.isCave(loc2.getBlock().getType())) {
+                    Location loc3 = new Location(w, loc.getX(), loc.getY() + 1, loc.getZ());
+                    if(Materials.isAir(loc3.getBlock().getType())) {
+                        break;
                     }
                 }
             }
-            return (int) loc.getY();
         }
-        catch(Exception error) {
-            return 1;
-        }
+        return loc.getBlockY();
     }
 
-    private Material getRandStone(Random random, int define) {
-        if(define == 1) {
-            if(random.nextBoolean()) {
-                return Material.STONE;
-            }
-            else {
-                return Material.COBBLESTONE;
-            }
-        }
-        else {
-            return Material.AIR;
-        }
+    private Material getRandStone(Random random) {
+        return random.nextBoolean() ? Material.STONE : Material.COBBLESTONE;
     }
 
     private void randomShape(Random random, int cXOff, int cZOff, World w) {
-        try {
-            int yVal = getClosestAir(cXOff, cZOff, w);
-            if(yVal == 55) {
+        int yVal = getClosestAir(cXOff, cZOff, w);
+        if(yVal != 55) {
+            Location loc = new Location(w, cXOff, yVal, cZOff);
+            int type = random.nextInt(8);
+            if(type==0) {
+                loc.getBlock().setType(Material.POLISHED_ANDESITE, false);
+                loc.add(0, 1, 0).getBlock().setType(getRandStone(random), false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
             }
-            else {
-                Location loc = new Location(w, cXOff, yVal, cZOff);
-                int type = random.nextInt(8);
-                if(type==0) {
-                    loc.getBlock().setType(Material.POLISHED_ANDESITE, false);
-                    loc.add(0, 1, 0).getBlock().setType(getRandStone(random, 1), false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==1) {
-                    loc.getBlock().setType(Material.POLISHED_ANDESITE, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==2) {
-                    loc.getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
-                    loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==3) {
-                    loc.getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc2 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ()+random.nextInt(2));
-                    loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==4) {
-                    loc.getBlock().setType(getRandStone(random, 1), false);
-                    Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
-                    loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0,1,0).getBlock().setType(Material.POLISHED_ANDESITE, false);
-                    Location loc22 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ()+random.nextInt(2));
-                    loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==5) {
-                    loc.getBlock().setType(Material.STONE_BRICKS, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc2 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()+1);
-                    loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc22 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()-1);
-                    loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==6) {
-                    loc.getBlock().setType(Material.STONE_BRICKS, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
-                    loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc22 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
-                    loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc222 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
-                    loc222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
-                    if(random.nextBoolean()) {
-                        loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
-                    }
-                    Location loc2222 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ());
-                    loc2222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                    Location loc22222 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
-                    loc22222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
-                }
-                else if(type==7) {
-                    loc.getBlock().setType(Material.COBBLESTONE, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.COBBLESTONE_WALL, false);
-                }
+            else if(type==1) {
+                loc.getBlock().setType(Material.POLISHED_ANDESITE, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
             }
-        }
-        catch(Exception ignored) {
-
+            else if(type==2) {
+                loc.getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
+                loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
+            }
+            else if(type==3) {
+                loc.getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc2 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ()+random.nextInt(2));
+                loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+            }
+            else if(type==4) {
+                loc.getBlock().setType(getRandStone(random), false);
+                Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
+                loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0,1,0).getBlock().setType(Material.POLISHED_ANDESITE, false);
+                Location loc22 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ()+random.nextInt(2));
+                loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+            }
+            else if(type==5) {
+                loc.getBlock().setType(Material.STONE_BRICKS, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc2 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()+1);
+                loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc22 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()-1);
+                loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
+            }
+            else if(type==6) {
+                loc.getBlock().setType(Material.STONE_BRICKS, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc2 = new Location(loc.getWorld(), loc.getX()+random.nextInt(2), loc.getY(), loc.getZ()+1);
+                loc2.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc22 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
+                loc22.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc222 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
+                loc222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICKS, false);
+                if(random.nextBoolean()) {
+                    loc.getBlock().setType(Material.CRACKED_STONE_BRICKS, false);
+                }
+                Location loc2222 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ());
+                loc2222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.STONE_BRICK_SLAB, false);
+                Location loc22222 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
+                loc22222.getBlock().setType(Material.STONE_BRICK_SLAB, false);
+            }
+            else if(type==7) {
+                loc.getBlock().setType(Material.COBBLESTONE, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.COBBLESTONE_WALL, false);
+            }
         }
     }
 
     private void randomBoulder(Random random, int cXOff, int cZOff, World w) {
-        try {
-            int yVal = getClosestAir(cXOff, cZOff, w);
-            if(yVal == 55) {
+        int yVal = getClosestAir(cXOff, cZOff, w);
+        if(yVal != 55) {
+            Location loc = new Location(w, cXOff, yVal, cZOff);
+            int type = random.nextInt(8);
+            if(type==0) {
+                generateBoulder(random, Structures.rock1, loc);
             }
-            else {
-                Location loc = new Location(w, cXOff, yVal, cZOff);
-                int type = random.nextInt(8);
-                if(type==0) {
-                    generateBoulder(random, Structures.rock1, loc);
-                }
-                else if(type==1) {
-                    generateBoulder(random, Structures.rock2, loc);
-                }
-                else if(type==2) {
-                    generateBoulder(random, Structures.rock3, loc);
-                }
-                else if(type==3) {
-                    generateBoulder(random, Structures.rock4, loc);
-                }
-                else if(type==4) {
-                    generateBoulder(random, Structures.rock5, loc);
-                }
-                else if(type==5) {
-                    generateBoulder(random, Structures.rock6, loc);
-                }
-                else if(type==6) {
-                    generateBoulder(random, Structures.rock7, loc);
-                }
-                else if(type==7) {
-                    generateBoulder(random, Structures.rock8, loc);
-                }
+            else if(type==1) {
+                generateBoulder(random, Structures.rock2, loc);
             }
-        }
-        catch(Exception ignored) {
+            else if(type==2) {
+                generateBoulder(random, Structures.rock3, loc);
+            }
+            else if(type==3) {
+                generateBoulder(random, Structures.rock4, loc);
+            }
+            else if(type==4) {
+                generateBoulder(random, Structures.rock5, loc);
+            }
+            else if(type==5) {
+                generateBoulder(random, Structures.rock6, loc);
+            }
+            else if(type==6) {
+                generateBoulder(random, Structures.rock7, loc);
+            }
+            else if(type==7) {
+                generateBoulder(random, Structures.rock8, loc);
+            }
         }
     }
 
     private void randomTrap(Random random, int cXOff, int cZOff, World w) {
-        try {
-            int yVal = getClosestAir(cXOff, cZOff, w);
-            if(yVal == 55) {
-            }
-            else {
-                Location loc = new Location(w, cXOff, yVal, cZOff);
-                int type = random.nextInt(9);
-                if(type==0) {
-                    //for(int i = yVal ; i > 4 ; i--) {
-                    while(loc.getY()>4) {
-                        loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
-                    }
-                }
-                else if(type==1) {
-                    while(loc.getY()>4) {
-                        loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                }
-                else if(type==2) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
-                    while(loc.getY()>4) {
-                        loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
-                }
-                else if(type==3) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
-                    while(loc.getY()>4) {
-                        loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
-                    }
-                    loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
-                    loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
-                }
-                else if(type==4) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
-                    while(loc.getY()>4) {
-                        loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
-                    }
-                }
-                else if(type==5) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
-                    if(random.nextBoolean()) {
-                        loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-                        if(random.nextBoolean()) {
-                            loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
-                        }
-                    }
-                }
-                else if(type==6) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
-                    if(random.nextBoolean()) {
-                        loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-                        if(random.nextBoolean()) {
-                            loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
-                        }
-                    }
-                }
-                else if(type==7) {
-                    loc.getBlock().setType(Material.TRAPPED_CHEST, false);
-                    fillChest(random, loc.getBlock());
-                    loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
-                    if(random.nextBoolean()) {
-                        loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
-                        if(random.nextBoolean()) {
-                            loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
-                        }
-                    }
-                }
-                else if(type==8) {
-                    loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
-                    loc.subtract(0, 1, 0).getBlock().setType(Material.DISPENSER, false);
-                    Dispenser dis = (Dispenser) loc.getBlock().getState();
-                    Inventory inv = dis.getInventory();
-                    inv.addItem(new ItemStack(Material.ARROW, random.nextInt(3)+1));
+        int yVal = getClosestAir(cXOff, cZOff, w);
+        if(yVal != 55) {
+            Location loc = new Location(w, cXOff, yVal, cZOff);
+            int type = random.nextInt(9);
+            if(type==0) {
+                //for(int i = yVal ; i > 4 ; i--) {
+                while(loc.getY()>4) {
+                    loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
                 }
             }
-        }
-        catch(Exception ignored) {
+            else if(type==1) {
+                while(loc.getY()>4) {
+                    loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+            }
+            else if(type==2) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
+                while(loc.getY()>4) {
+                    loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.LAVA, false);
+            }
+            else if(type==3) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
+                while(loc.getY()>4) {
+                    loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
+                }
+                loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
+                loc.add(0, 1, 0).getBlock().setType(Material.COBWEB, false);
+            }
+            else if(type==4) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
+                while(loc.getY()>4) {
+                    loc.subtract(0, 1, 0).getBlock().setType(Material.AIR, false);
+                }
+            }
+            else if(type==5) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.GRAVEL, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.TNT, false);
+                if(random.nextBoolean()) {
+                    loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
+                    if(random.nextBoolean()) {
+                        loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
+                    }
+                }
+            }
+            else if(type==6) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
+                if(random.nextBoolean()) {
+                    loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
+                    if(random.nextBoolean()) {
+                        loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
+                    }
+                }
+            }
+            else if(type==7) {
+                loc.getBlock().setType(Material.TRAPPED_CHEST, false);
+                fillChest(random, loc.getBlock());
+                loc.subtract(0, 2, 0).getBlock().setType(Material.TNT, false);
+                if(random.nextBoolean()) {
+                    loc.add(0, 0, 1).getBlock().setType(Material.TNT, false);
+                    if(random.nextBoolean()) {
+                        loc.add(1, 0, 0).getBlock().setType(Material.TNT, false);
+                    }
+                }
+            }
+            else if(type==8) {
+                loc.getBlock().setType(Material.STONE_PRESSURE_PLATE, false);
+                loc.subtract(0, 1, 0).getBlock().setType(Material.DISPENSER, false);
+                Dispenser dis = (Dispenser) loc.getBlock().getState();
+                Inventory inv = dis.getInventory();
+                inv.addItem(new ItemStack(Material.ARROW, random.nextInt(3)+1));
+            }
         }
     }
 
     private void randomStructure(Random random, int cXOff, int cZOff, World w) {
-        try {
-            int yVal = getClosestAir(cXOff, cZOff, w);
-            if(yVal == 55) {
+        int yVal = getClosestAir(cXOff, cZOff, w);
+        if(yVal != 55) {
+            Location loc = new Location(w, cXOff, yVal, cZOff);
+            int type = random.nextInt(10);
+            if(type==0) {
+                loc.getBlock().setType(Material.CHEST, false);
+                fillChest(random, loc.getBlock());
             }
-            else {
-                Location loc = new Location(w, cXOff, yVal, cZOff);
-                int type = random.nextInt(11);
-                if(type==0) {
-                    loc.getBlock().setType(Material.CHEST, false);
-                    fillChest(random, loc.getBlock());
-                }
-                else if(type==1) {
-                    loc.subtract(0, 1, 0);
-                    generateStructure(random, Structures.chests3, loc);
-                }
-                else if(type==2) {
-                    loc.subtract(0, 1, 0);
-                    generateStructure(random, Structures.chests2, loc);
-                }
-                else if(type==3) {
-                    generateStructure(random, Structures.chests1, loc);
-                }
-                else if(type==4) {
-                    if(skulls) {
-                        loc.getBlock().setType(Material.SKELETON_SKULL, false);
-                    }
-                }
-                else if(type==5) {
-                }
-                else if(type==6) {
-                    Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
-                    Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ());
-                    Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()+1);
-                    Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()-1);
-                    tempL1.getBlock().setType(Material.COBBLESTONE_SLAB, false);
-                    tempL2.getBlock().setType(Material.COBBLESTONE_SLAB, false);
-                    tempL3.getBlock().setType(Material.COBBLESTONE_SLAB, false);
-                    tempL4.getBlock().setType(Material.COBBLESTONE_SLAB, false);
-                    Location tempL5 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ());
-                    tempL5.getBlock().setType(Material.NETHERRACK, false);
-                    loc.getBlock().setType(Material.FIRE, false);
-                }
-                else if(type==7) {
-                    Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY()-1, loc.getZ());
-                    Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY()-1, loc.getZ());
-                    Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()+1);
-                    Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()-1);
-                    loc.getBlock().setType(Material.CRAFTING_TABLE, false);
-                    if(!Materials.isAir(tempL1.getBlock().getType())&&random.nextInt(3)==1) {
-                        tempL1.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
-                    }
-                    if(!Materials.isAir(tempL2.getBlock().getType())&&random.nextInt(3)==1) {
-                        tempL2.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
-                    }
-                    if(!Materials.isAir(tempL3.getBlock().getType())&&random.nextInt(3)==1) {
-                        tempL3.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
-                    }
-                    if(!Materials.isAir(tempL4.getBlock().getType())&&random.nextInt(3)==1) {
-                        tempL4.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
-                    }
-                }
-                else if(type==8) {
-                    generateStructure(random, Structures.sfishs1, loc);
-                }
-                else if(type==9) {
-                    generateStructure(random, Structures.sfishs2, loc);
-                }
-                else if(type==10) {
-                    generateStructure(random, Structures.sfishs3, loc);
+            else if(type==1) {
+                loc.subtract(0, 1, 0);
+                generateStructure(random, Structures.chests3, loc);
+            }
+            else if(type==2) {
+                loc.subtract(0, 1, 0);
+                generateStructure(random, Structures.chests2, loc);
+            }
+            else if(type==3) {
+                generateStructure(random, Structures.chests1, loc);
+            }
+            else if(type==4) {
+                if(skulls) {
+                    loc.getBlock().setType(Material.SKELETON_SKULL, false);
                 }
             }
-        }
-        catch(Exception ignored) {
+            else if(type==5) {
+                Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY(), loc.getZ());
+                Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY(), loc.getZ());
+                Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()+1);
+                Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()-1);
+                tempL1.getBlock().setType(Material.COBBLESTONE_SLAB, false);
+                tempL2.getBlock().setType(Material.COBBLESTONE_SLAB, false);
+                tempL3.getBlock().setType(Material.COBBLESTONE_SLAB, false);
+                tempL4.getBlock().setType(Material.COBBLESTONE_SLAB, false);
+                Location tempL5 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ());
+                tempL5.getBlock().setType(Material.NETHERRACK, false);
+                loc.getBlock().setType(Material.FIRE, false);
+            }
+            else if(type==6) {
+                Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY()-1, loc.getZ());
+                Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY()-1, loc.getZ());
+                Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()+1);
+                Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()-1);
+                loc.getBlock().setType(Material.CRAFTING_TABLE, false);
+                if(!Materials.isAir(tempL1.getBlock().getType())&&random.nextInt(3)==1) {
+                    tempL1.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
+                }
+                if(!Materials.isAir(tempL2.getBlock().getType())&&random.nextInt(3)==1) {
+                    tempL2.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
+                }
+                if(!Materials.isAir(tempL3.getBlock().getType())&&random.nextInt(3)==1) {
+                    tempL3.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
+                }
+                if(!Materials.isAir(tempL4.getBlock().getType())&&random.nextInt(3)==1) {
+                    tempL4.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE, false);
+                }
+            }
+            else if(type==7) {
+                generateStructure(random, Structures.sfishs1, loc);
+            }
+            else if(type==8) {
+                generateStructure(random, Structures.sfishs2, loc);
+            }
+            else if(type==9) {
+                generateStructure(random, Structures.sfishs3, loc);
+            }
         }
     }
 
@@ -526,106 +484,98 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     }
 
     private void generateStructure(Random random, int[][][] rock, Location loc) {
-        try {
-            int randDirection = random.nextInt(4);
-            if(randDirection==0) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()+z);
-                            decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
-                        }
-                    }
-                }
-            }
-            else if(randDirection==1) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()+z);
-                            decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
-                        }
-                    }
-                }
-            }
-            else if(randDirection==2) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
-                            decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
-                        }
-                    }
-                }
-            }
-            else if(randDirection==3) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
-                            decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
-                        }
+        int randDirection = random.nextInt(4);
+        if(randDirection==0) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()+z);
+                        decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
                     }
                 }
             }
         }
-        catch(Exception ignored) {
+        else if(randDirection==1) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()+z);
+                        decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
+                    }
+                }
+            }
+        }
+        else if(randDirection==2) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
+                        decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
+                    }
+                }
+            }
+        }
+        else if(randDirection==3) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
+                        decideBlock(random, rock[x+1][y][z+1], loc2.getBlock());
+                    }
+                }
+            }
         }
     }
 
     private void generateBoulder(Random random, int[][][] rock, Location loc) {
-        try {
-            int randDirection = random.nextInt(4);
-            if(randDirection==0) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            if(rock[x+1][y][z+1]==1) {
-                                Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()+z);
-                                loc2.getBlock().setType(getRandStone(random,1), false);
-                            }
-                        }
-                    }
-                }
-            }
-            else if(randDirection==1) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            if(rock[x+1][y][z+1]==1) {
-                                Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()+z);
-                                loc2.getBlock().setType(getRandStone(random,1), false);
-                            }
-                        }
-                    }
-                }
-            }
-            else if(randDirection==2) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            if(rock[x+1][y][z+1]==1) {
-                                Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
-                                loc2.getBlock().setType(getRandStone(random,1), false);
-                            }
-                        }
-                    }
-                }
-            }
-            else if(randDirection==3) {
-                for(int y = 0; y < rock[0].length; y++) {
-                    for(int x = -1; x < rock.length-1; x++) {
-                        for(int z = -1; z < rock[0][0].length-1; z++) {
-                            if(rock[x+1][y][z+1]==1) {
-                                Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
-                                loc2.getBlock().setType(getRandStone(random,1), false);
-                            }
+        int randDirection = random.nextInt(4);
+        if(randDirection==0) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        if(rock[x+1][y][z+1]==1) {
+                            Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()+z);
+                            loc2.getBlock().setType(getRandStone(random), false);
                         }
                     }
                 }
             }
         }
-        catch(Exception ignored) {
+        else if(randDirection==1) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        if(rock[x+1][y][z+1]==1) {
+                            Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()+z);
+                            loc2.getBlock().setType(getRandStone(random), false);
+                        }
+                    }
+                }
+            }
+        }
+        else if(randDirection==2) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        if(rock[x+1][y][z+1]==1) {
+                            Location loc2 = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y, loc.getZ()-z);
+                            loc2.getBlock().setType(getRandStone(random), false);
+                        }
+                    }
+                }
+            }
+        }
+        else if(randDirection==3) {
+            for(int y = 0; y < rock[0].length; y++) {
+                for(int x = -1; x < rock.length-1; x++) {
+                    for(int z = -1; z < rock[0][0].length-1; z++) {
+                        if(rock[x+1][y][z+1]==1) {
+                            Location loc2 = new Location(loc.getWorld(), loc.getX()-x, loc.getY()+y, loc.getZ()-z);
+                            loc2.getBlock().setType(getRandStone(random), false);
+                        }
+                    }
+                }
+            }
         }
     }
 
