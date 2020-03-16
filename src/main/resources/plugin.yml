@@ -2,7 +2,7 @@ name: DangerousCaves
 version: ${version}-${cfgVersion}
 main: com.github.evillootlye.caves.DangerousCaves
 api-version: 1.13
-authors: [Evil-Lootlye]
+authors: [Evil-Lootlye, imDaniX]
 description: ${description}
 commands:
   dangerouscaves:
