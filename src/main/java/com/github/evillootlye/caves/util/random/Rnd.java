@@ -4,6 +4,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Rnd {
 
+    public static boolean chance(double v) {
+        return nextDouble() < v;
+    }
+
     public static boolean nextBoolean() {
         return ThreadLocalRandom.current().nextBoolean();
     }

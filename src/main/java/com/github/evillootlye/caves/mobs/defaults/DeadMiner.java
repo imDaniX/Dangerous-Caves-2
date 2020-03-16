@@ -62,7 +62,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     public void onAttack(EntityDamageByEntityEvent event) {
         if(!isThis(event.getEntity()) || event.getDamage() < 1) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
-        if(dropChance > 0 && !items.isEmpty() && Rnd.nextDouble() < dropChance)
+        if(dropChance > 0 && !items.isEmpty() && Rnd.chance(dropChance))
             entity.getWorld().dropItemNaturally(
                     entity.getLocation(),
                     new ItemStack(items.get(Rnd.nextInt(items.size())))

@@ -33,9 +33,9 @@ public class CryingBat extends TickableMob implements Configurable, Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        if(cryChance > 0 && cryChance > Rnd.nextDouble())
+        if(cryChance > 0 && Rnd.chance(cryChance))
             entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
-        else if(deathChance > 0 && deathChance > Rnd.nextDouble())
+        else if(deathChance > 0 && Rnd.chance(deathChance))
             entity.damage(1000);
     }
 }

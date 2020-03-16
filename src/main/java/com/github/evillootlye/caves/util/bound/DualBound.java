@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves.util.bounds;
+package com.github.evillootlye.caves.util.bound;
 
 public class DualBound implements Bound {
     private final int xMin, xMax;

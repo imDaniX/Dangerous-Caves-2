@@ -112,7 +112,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
                 !Locations.isCave(loc) ||
-                Rnd.nextDouble() > chance)
+                !Rnd.chance(chance))
             return false;
         CustomMob mob = mobsPool.next();
         if(mob.canSpawn(type, loc)) {

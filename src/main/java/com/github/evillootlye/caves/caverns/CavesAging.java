@@ -5,9 +5,9 @@ import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
-import com.github.evillootlye.caves.util.bounds.Bound;
-import com.github.evillootlye.caves.util.bounds.DualBound;
-import com.github.evillootlye.caves.util.bounds.SingularBound;
+import com.github.evillootlye.caves.util.bound.Bound;
+import com.github.evillootlye.caves.util.bound.DualBound;
+import com.github.evillootlye.caves.util.bound.SingularBound;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -76,7 +76,7 @@ public class CavesAging implements Tickable, Configurable {
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
-                if(Rnd.nextDouble() > chance) continue;
+                if(!Rnd.chance(chance)) continue;
                 Chunk start = player.getChunk();
                 for(int x = start.getX() - radius; x <= start.getX() + radius; x++)
                 for(int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
@@ -97,7 +97,7 @@ public class CavesAging implements Tickable, Configurable {
             Block block = chunk.getBlock(x, y, z);
             if(block.getLightFromSky() > 0) break;
             Material type = block.getType();
-            if((Materials.isCave(type) || type == Material.COBBLESTONE_WALL) && Rnd.nextDouble() < agingChance) {
+            if((Materials.isCave(type) || type == Material.COBBLESTONE_WALL) && Rnd.chance(agingChance)) {
                 switch(Rnd.nextInt(3)) {
                     case 0: block.setType(Material.COBBLESTONE); break;
                     case 1: block.setType(Material.ANDESITE); break;
@@ -106,7 +106,7 @@ public class CavesAging implements Tickable, Configurable {
                         if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
                             downBlock.setType(Material.COBBLESTONE_WALL);
                 }
-                if(Rnd.nextDouble() > 0.125) {
+                if(Rnd.chance(0.125)) {
                     for(BlockFace face : FACES) {
                         Block relBlock = block.getRelative(face);
                         if (Materials.isAir(relBlock.getType())) {
@@ -119,10 +119,10 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 Block upBlock = block.getRelative(BlockFace.UP);
                 if(Materials.isAir(upBlock.getType())){
-                    if(Rnd.nextDouble() > 0.111) {
+                    if(Rnd.chance(0.111)) {
                         upBlock.setType(Rnd.nextBoolean() ? Material.BROWN_MUSHROOM : Material.RED_MUSHROOM);
-                    }
-                    if(Rnd.nextDouble() > 0.167) {
+                    } else
+                    if(Rnd.chance(0.167)) {
                         upBlock.setType(Material.STONE_BUTTON, false);
                         Switch button = (Switch) upBlock.getBlockData();
                         button.setFace(Switch.Face.FLOOR);

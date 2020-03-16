@@ -3,11 +3,14 @@
 
 version: ${cfgVersion}
 
-# NOTE: All the chances are in percents
-# NOTE: Setting chance to 0 means that you want to disable the feature
+# NOTE: Chances
+# All the chances are in percents
+# Setting chance to 0 means that you want to disable the feature
 
-# NOTE: Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
-# NOTE: "Blank worlds" doesn't means "worlds:" - use "worlds: []"
+# NOTE: Worlds
+# World names are case-sensitive
+# Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
+# "Blank worlds" doesn't means "worlds:" - use "worlds: []"
 
 #
 # Cave-related things
@@ -40,7 +43,7 @@ caverns:
     # Maximal Y where sound can be played
     y-max: 64
     # List of sounds to play - you can add more or remove some
-    # All the sounds can be found here hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+    # All the sounds can be found here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
     sounds:
       MUSIC_DRAGON:
         volume: 1
@@ -73,17 +76,17 @@ caverns:
     # Maximal Y where players can sense temperature
     y-max: 32
     # Immunity to high temperature if player has one of these items in inventory
-    # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
     cold-items:
-      - potion
-      - splash_potion
-      - snow
-      - snowball
-      - snow_block
-      - water_bucket
-      - ice
-      - frosted_ice
-      - packed_ice
+      - POTION
+      - SPLASH_POTION
+      - SNOW
+      - SNOWBALL
+      - SNOW_BLOCK
+      - WATER_BUCKET
+      - ICE
+      - FROSTED_ICE
+      - PACKED_ICE
     # Immunity to high temperature if player has fire resistance effect
     fire-resistance: true
     # Messages when player is feeling high temperature
@@ -126,24 +129,51 @@ generator:
   # Chance of custom structure generations in chunk
   chance: 50
 
+  # Maximal amount of tries to find empty space for generation
+  max-tries: 3
+
   # Worlds where generator will work
   worlds:
     - world
 
   # Items in generated chests
-  # All the materials can be found here (ignore LEGACY) hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
   chest-items:
-    - sugar
-    - torch
-    - dirt
+    - OAK_PLANKS
+    - TORCH
+    - COBWEB
+    - BONE
+    - STICK
+    - OAK_LOG
+    - WATER_BUCKET
+    - WOODEN_PICKAXE
+    - STONE_PICKAXE
+    - OAK_SAPLING
+    - COAL
+    - BEEF
+    - APPLE
+    - CHICKEN
+    - WHITE_WOOL
+    - BREAD
+    - DIRT
+    - CARROT
+    - COOKIE
+    - WOODEN_AXE
+    - STONE_AXE
+    - PAPER
+    - SUGAR_CANE
+    - SUGAR
+    - TORCH
+    - DIRT
 
-  # Structures to generate
+  # List of *default* structures to generate
+  # Larger priority - larger chance in comparison with others. Set to 0 to disable
+  # Chance formula - (structure_priority)/(total_priority)
   structures:
-    traps: true
-    pillars: true
-    boulders: true
-    buildings: true
-    skulls: true
+    traps: 1
+    pillars: 1
+    boulders: 1
+    buildings: 1
 
 #
 # Mob-related things
@@ -158,7 +188,7 @@ mobs:
     - world
 
   # Minimal and maximal Y where custom mobs can spawn
-  y-min: 0
+  y-min: 4
   y-max: 64
 
   # List of *default* custom mobs

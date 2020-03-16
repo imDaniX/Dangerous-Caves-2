@@ -7,6 +7,7 @@ import com.github.evillootlye.caves.caverns.DepthTemperature;
 import com.github.evillootlye.caves.commands.Commander;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.generator.CaveGenerator;
+import com.github.evillootlye.caves.generator.DefaultStructures;
 import com.github.evillootlye.caves.mobs.DefaultMobs;
 import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.ticks.Dynamics;
@@ -28,6 +29,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
+    private CaveGenerator generator;
 
     @Override
     public void onEnable() {
@@ -36,6 +38,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config"); cfg.create(true);
         mobsManager = new MobsManager(this); DefaultMobs.registerAll(mobsManager);
+        generator = new CaveGenerator(cfg); DefaultStructures.registerAll(generator);
 
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
@@ -56,13 +59,13 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         cfg.register(caveIns);
         cfg.register(temperature);
         if(cfg.getYml().getBoolean("generator.wait-other", false)) {
-            Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(new CaveGenerator()), 1);
-        } else cfg.register(new CaveGenerator());
+            Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
+        } else cfg.register(generator);
 
         getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg, dynamics));
 
         String cfgVersion = getDescription().getVersion().split("-")[1];
-        String oldVersion = cfg.getYml().getString("version", "");
+        String oldVersion = cfg.getYml().getString("version", "0");
         if(!cfgVersion.equals(oldVersion)) {
             getLogger().warning("Seems like your config is outdated (current " + cfgVersion + ", yours " + oldVersion + ")");
             getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + cfgVersion);
@@ -89,6 +92,10 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     public Configuration getConfiguration() {
         return cfg;
+    }
+
+    public CaveGenerator getGenerator() {
+        return generator;
     }
 
     @Override

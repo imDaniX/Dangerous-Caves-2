@@ -61,7 +61,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     @EventHandler
     public void onAttack(PlayerAttackedEvent event) {
         LivingEntity entity = event.getAttacker();
-        if (isThis(entity) && Rnd.nextDouble() < chance) {
+        if (isThis(entity) && Rnd.chance(chance)) {
             PlayerInventory inv = event.getPlayer().getInventory();
             ItemStack[] armor = inv.getArmorContents();
             for (ItemStack i2 : armor) {

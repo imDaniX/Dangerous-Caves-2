@@ -1,4 +1,4 @@
-package com.github.evillootlye.caves.util.bounds;
+package com.github.evillootlye.caves.util.bound;
 
 public class SingularBound implements Bound {
     private final int x;

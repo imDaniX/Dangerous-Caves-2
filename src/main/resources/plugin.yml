@@ -1,9 +1,9 @@
 name: DangerousCaves
-version: ${project.version}-${cfgVersion}
+version: ${version}-${cfgVersion}
 main: com.github.evillootlye.caves.DangerousCaves
 api-version: 1.13
 authors: [Evil-Lootlye]
-description: Adds and improves mechanics in caves.
+description: ${description}
 commands:
   dangerouscaves:
     aliases: [dcaves, dc]

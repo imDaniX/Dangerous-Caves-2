@@ -65,16 +65,16 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
         int cy = start.getBlockY();
         int cz = start.getBlockZ();
         Locations.loop(radius, start, (world, x, y, z) -> {
-            if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || chance < Rnd.nextDouble()) return;
+            if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || !Rnd.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
             if(Materials.isAir(block.getType())) {
-                if(fire > 0 && Rnd.nextDouble() < fire) block.setType(Material.FIRE);
+                if(fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
             } else if(block.getType() != Material.BEDROCK) {
-                if(magmaBlock > 0 && Rnd.nextDouble() < magmaBlock) {
+                if(magmaBlock > 0 && Rnd.chance(magmaBlock)) {
                     block.setType(Material.MAGMA_BLOCK);
-                } else if(obsidian > 0 && Rnd.nextDouble() < obsidian) {
+                } else if(obsidian > 0 && Rnd.chance(obsidian)) {
                     block.setType(Material.OBSIDIAN);
-                } else if(lava > 0 && Rnd.nextDouble() < lava) {
+                } else if(lava > 0 && Rnd.chance(lava)) {
                     block.setType(Material.LAVA);
                 }
             }

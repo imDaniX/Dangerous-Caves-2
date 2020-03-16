@@ -86,7 +86,11 @@ public final class AliasMethod<T> {
 
     public T next() {
         int column = Rnd.nextInt(probability.length);
-        boolean coinToss = Rnd.nextDouble() < probability[column];
+        boolean coinToss = Rnd.chance(probability[column]);
         return items.get(coinToss ? column : alias[column]);
+    }
+
+    public int size() {
+        return items.size();
     }
 }

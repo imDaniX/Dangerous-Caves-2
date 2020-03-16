@@ -60,7 +60,7 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if(explosionChance > 0 && isThis(event.getEntity()) && Rnd.nextDouble() < explosionChance)
+        if(explosionChance > 0 && isThis(event.getEntity()) && Rnd.chance(explosionChance))
             event.getDamager().getWorld().createExplosion(event.getDamager().getLocation(), 0.01f);
     }
 

@@ -60,7 +60,7 @@ public class CaveIns implements Listener, Configurable {
         if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(loc) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
-        if(chance > Rnd.nextDouble()) {
+        if(Rnd.chance(chance)) {
             Location blockLoc = block.getLocation();
             world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             player.addPotionEffect(BLINDNESS);

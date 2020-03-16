@@ -53,7 +53,7 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
         LivingEntity entity = (LivingEntity) event.getEntity();
         Entity damager = event.getDamager();
         if (Rnd.nextBoolean()) {
-            if (minionChance > 0 && Rnd.nextDouble() < minionChance)
+            if (minionChance > 0 && Rnd.chance(minionChance))
                 damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
 
             if (cobwebChance > 0) {
@@ -62,7 +62,7 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
                 entity.getEyeLocation().getBlock().setType(Material.COBWEB);
 
                 Locations.loop(3, loc, l -> {
-                    if (Rnd.nextDouble() < cobwebChance && Materials.isAir(l.getBlock().getType())) {
+                    if (Materials.isAir(l.getBlock().getType()) && Rnd.chance(cobwebChance)) {
                         l.getBlock().setType(Material.COBWEB);
                     }}
                 );
