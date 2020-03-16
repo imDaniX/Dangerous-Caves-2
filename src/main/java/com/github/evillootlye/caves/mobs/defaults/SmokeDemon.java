@@ -2,6 +2,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
+import com.github.evillootlye.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,6 +18,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
 
     private int weight;
+    private String name;
     private double radius;
 
     public SmokeDemon() {
@@ -26,6 +28,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", ""));
         radius = cfg.getInt("harm-radius", 3);
     }
 
@@ -36,6 +39,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
     }

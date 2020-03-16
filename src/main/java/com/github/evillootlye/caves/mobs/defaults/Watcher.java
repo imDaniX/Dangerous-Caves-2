@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,6 +39,7 @@ public class Watcher extends TickableMob implements Configurable, Listener {
     private static final Vector ZERO_VECTOR = new Vector(0, 0, 0);
 
     private int weight;
+    private String name;
 
     public Watcher() {
         super(EntityType.HUSK, "watcher");
@@ -46,10 +48,12 @@ public class Watcher extends TickableMob implements Configurable, Listener {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", ""));
     }
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         entity.addPotionEffect(INVISIBILITY);

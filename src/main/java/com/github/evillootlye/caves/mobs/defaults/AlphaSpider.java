@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.Locations;
 import com.github.evillootlye.caves.util.Materials;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, false, true);
 
     private int weight;
+    private String name;
     private double cobwebChance;
     private double minionChance;
 
@@ -33,12 +35,14 @@ public class AlphaSpider extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4Alpha Spider"));
         cobwebChance = cfg.getDouble("cobweb-chance", 14.29) / 100;
         minionChance = cfg.getDouble("minion-chance", 6.67) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(REGENERATION);
     }
 

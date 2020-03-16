@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Materials;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,6 +35,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     }
 
     private int weight;
+    private String name;
     private boolean torches, redTorches;
     private double dropChance;
     private List<Material> items;
@@ -46,6 +48,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
@@ -71,6 +74,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(SKULL);
         equipment.setHelmetDropChance(0);

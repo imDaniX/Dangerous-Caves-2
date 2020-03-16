@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ public class MagmaMonster extends CustomMob implements Listener, Configurable {
     }
 
     private int weight;
+    private String name;
 
     public MagmaMonster() {
         super(EntityType.ZOMBIE, "magma-monster");
@@ -49,10 +51,12 @@ public class MagmaMonster extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
     }
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(FIRE_RESISTANCE);
         entity.addPotionEffect(INVISIBILITY);
         entity.setFireTicks(Integer.MAX_VALUE);

@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private AliasMethod<CustomMob> mobsPool;
     private int yMin, yMax;
     private double chance;
+    boolean blockRename;
 
     public MobsManager(DangerousCaves plugin) {
         try {
@@ -52,6 +54,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("try-chance", 50) / 100;
+        blockRename = cfg.getBoolean("restrict-rename", false);
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
         worlds.clear();
@@ -105,6 +108,12 @@ public class MobsManager implements Listener, Tickable, Configurable {
         if(mob == null) return false;
         mob.spawn(loc);
         return true;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onInteract(PlayerInteractEntityEvent event) {
+        if(!blockRename) return;
+        if(CustomMob.isCustomMob(event.getRightClicked())) event.setCancelled(true);
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {

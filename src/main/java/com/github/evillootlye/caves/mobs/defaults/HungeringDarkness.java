@@ -3,6 +3,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -18,6 +19,7 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
     private int weight;
+    private String name;
     private double damage;
     private boolean remove;
 
@@ -28,6 +30,7 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", ""));
         damage = cfg.getDouble("damage", 200);
         remove = cfg.getBoolean("remove-on-light", true);
     }
@@ -39,6 +42,7 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.setSilent(true);
         entity.setInvulnerable(true);
         entity.setCanPickupItems(false);

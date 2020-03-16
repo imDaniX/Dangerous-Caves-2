@@ -191,19 +191,27 @@ mobs:
   y-min: 4
   y-max: 64
 
+  # Block renaming with name-tags
+  restrict-rename: false
+
   # List of *default* custom mobs
+  # To disable names just live it blank, like
+  # name: ""
   # Larger priority - larger chance in comparison with others. Set to 0 to disable
   # Chance formula - (mob_priority)/(total_priority)
   alpha-spider:
     priority: 1
+    name: "&4Alpha Spider"
     cobweb-chance: 14.29
     minion-chance: 6.67
   crying-bat:
     priority: 1
+    name: "&4Crying Bat"
     cry-chance: 3.33
-    death-chance: 20
+    death-chance: 2
   dead-miner:
     priority: 1
+    name: "&4Dead Miner"
     place-torches: true
     red-torches: false
     drop-chance: 30
@@ -214,12 +222,15 @@ mobs:
       - TORCH
   hexed-armor:
     priority: 1
+    name: "&4Hexed Armor"
   hungering-darkness:
     priority: 1
+    name: ""
     remove-on-light: true
     damage: 200
   lava-creeper:
     priority: 1
+    name: "&4Lava Creeper"
     radius: 4
     fire-touch: 10
     change-chance: 50
@@ -230,12 +241,16 @@ mobs:
       lava: 16.67
   magma-monster:
     priority: 1
+    name: "&4Magma Monster"
   smoke-demon:
     priority: 1
+    name: ""
     harm-radius: 3
   tnt-creeper:
     priority: 1
+    name: "&4TNT Creeper"
     tnt-amount: 2
     explosion-chance: 33.33
   watcher:
     priority: 1
+    name: "&4Watcher"

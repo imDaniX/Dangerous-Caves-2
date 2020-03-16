@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,6 +28,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
     private int weight;
+    private String name;
 
     private double chance;
 
@@ -37,11 +39,13 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4Hexed Armor"));
         chance = cfg.getDouble("apply-chance", 25) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
         entity.setCanPickupItems(false);

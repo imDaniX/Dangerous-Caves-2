@@ -2,6 +2,7 @@ package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.CustomMob;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ import org.bukkit.util.Vector;
 public class TNTCreeper extends CustomMob implements Configurable, Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
     private int weight;
+    private String name;
     private int tntAmount;
     private double explosionChance;
 
@@ -33,12 +35,14 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4TNT Creeper"));
         tntAmount = cfg.getInt("tnt-amount", 2);
         explosionChance = cfg.getDouble("explosion-chance", 33.33) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         Item item = entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.TNT));
         item.setCanMobPickup(false);
         item.setInvulnerable(true);

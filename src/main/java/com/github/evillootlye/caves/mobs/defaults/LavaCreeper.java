@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Locations;
 import com.github.evillootlye.caves.util.Materials;
+import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
     private int weight;
+    private String name;
     private double chance;
     private double fire, magmaBlock, obsidian, lava;
     private int fireTouch;
@@ -36,6 +38,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
+        name = Utils.clr(cfg.getString("name", "&4Lava Creeper"));
         chance = cfg.getDouble("change-chance", 50) / 100;
         fire = cfg.getDouble("blocks.fire", 33.33) / 100;
         magmaBlock = cfg.getDouble("blocks.magma_block", 25) / 100;
@@ -48,6 +51,7 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
 
     @Override
     public void setup(LivingEntity entity) {
+        if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(FIRE_RESISTANCE);
     }
 
