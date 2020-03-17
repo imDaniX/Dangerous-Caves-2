@@ -99,8 +99,12 @@ public class CavesAging implements Tickable, Configurable {
             Material type = block.getType();
             if((Materials.isCave(type) || type == Material.COBBLESTONE_WALL) && Rnd.chance(agingChance)) {
                 switch(Rnd.nextInt(3)) {
-                    case 0: block.setType(Material.COBBLESTONE); break;
-                    case 1: block.setType(Material.ANDESITE); break;
+                    case 0:
+                        block.setType(Material.COBBLESTONE);
+                        break;
+                    case 1:
+                        block.setType(Material.ANDESITE);
+                        break;
                     default:
                         Block downBlock = block.getRelative(BlockFace.DOWN);
                         if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
