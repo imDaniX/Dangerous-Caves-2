@@ -218,8 +218,8 @@ mobs:
     name: "&4Crying Bat"
     # Every ENTITY tick
     cry-chance: 3.33
-    # Every ENTITY tick
-    death-chance: 2
+    # If cry was successful. Every ENTITY tick
+    death-chance: 20
 
   dead-miner:
     priority: 1

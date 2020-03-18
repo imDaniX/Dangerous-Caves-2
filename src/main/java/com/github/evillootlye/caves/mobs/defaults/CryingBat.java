@@ -26,7 +26,7 @@ public class CryingBat extends TickableMob implements Configurable, Listener {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Crying Bat"));
         cryChance = cfg.getDouble("cry-chance", 3.33) / 100;
-        deathChance = cfg.getDouble("death-chance", 2) / 100;
+        deathChance = cfg.getDouble("death-chance", 20) / 100;
     }
 
     @Override
@@ -41,9 +41,10 @@ public class CryingBat extends TickableMob implements Configurable, Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        if(cryChance > 0 && Rnd.chance(cryChance))
+        if(cryChance > 0 && Rnd.chance(cryChance)) {
             entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
-        else if(deathChance > 0 && Rnd.chance(deathChance))
-            entity.damage(1000);
+            if(deathChance > 0 && Rnd.chance(deathChance))
+                entity.damage(1000);
+        }
     }
 }
