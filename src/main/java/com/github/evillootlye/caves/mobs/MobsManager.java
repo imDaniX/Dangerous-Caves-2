@@ -36,7 +36,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private AliasMethod<CustomMob> mobsPool;
     private int yMin, yMax;
     private double chance;
-    boolean blockRename;
+    private boolean blockRename;
 
     public MobsManager(DangerousCaves plugin) {
         try {
