@@ -29,7 +29,7 @@ public class DualBound implements Bound {
 
     @Override
     public int hashCode() {
-        return xMin * xMax * zMin * zMax * 1907;
+        return xMin >>> 15 * xMax >>> 31 * zMin >>> 15 * zMax >>> 31 * 1907;
     }
 
     @Override

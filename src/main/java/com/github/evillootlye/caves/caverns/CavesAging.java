@@ -1,5 +1,6 @@
 package com.github.evillootlye.caves.caverns;
 
+import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
@@ -19,25 +20,33 @@ import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+@Configurable.Path("caverns.aging")
 public class CavesAging implements Tickable, Configurable {
-    private static final BlockFace[] FACES = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
+    private static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST};
     private final Set<Bound> skippedChunks;
     private final Set<Material> replaceBlocks;
     private final Set<String> worlds;
+    private final Set<QueuedChunk> chunks;
 
     private int radius;
     private int y;
     private double chance;
     private double agingChance;
+    private Predicate<Block> lightLevelCheck;
+    private boolean schedule;
 
     public CavesAging() {
         skippedChunks = new HashSet<>();
         worlds = new HashSet<>();
         replaceBlocks = new HashSet<>();
+        chunks = new HashSet<>();
     }
 
     @Override
@@ -46,6 +55,17 @@ public class CavesAging implements Tickable, Configurable {
         y = Math.min(254, cfg.getInt("y-max", 80));
         chance = cfg.getDouble("chance", 50) / 100;
         agingChance = cfg.getDouble("change-chance", 25) / 100;
+        int lightLevel = cfg.getInt("max-light-level", 0);
+        if(lightLevel > 0) {
+            lightLevelCheck = (b) -> {
+                for(int x = -1; x <= 1; x++) for(int z = -1; z <= 1; z++) for(int y = -1; y <= 1; y++)
+                    if(b.getRelative(x, y, z).getLightFromBlocks() >= lightLevel) return false;
+                return true;
+            };
+        } else {
+            lightLevelCheck = (b) -> true;
+        }
+        schedule = cfg.getBoolean("schedule-changes", false);
         skippedChunks.clear();
         for(String str : cfg.getStringList("skip-chunks")) {
             String[] xzStr = str.split(" ");
@@ -72,7 +92,7 @@ public class CavesAging implements Tickable, Configurable {
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         replaceBlocks.clear();
         for(String typeStr : cfg.getStringList("replace-blocks")) {
-            Material type = Material.getMaterial(typeStr);
+            Material type = Material.getMaterial(typeStr.toUpperCase());
             if(type == null) continue;
             replaceBlocks.add(type);
         }
@@ -88,13 +108,26 @@ public class CavesAging implements Tickable, Configurable {
                 Chunk start = player.getChunk();
                 for(int x = start.getX() - radius; x <= start.getX() + radius; x++)
                 for(int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
-                    if(isAllowed(x, z)) proceedChunk(world.getChunkAt(x, z));
+                    if(isAllowed(x, z)) chunks.add(new QueuedChunk(world, x, z));
             }
         }
+        if(schedule) {
+            int timer = 2;
+            BukkitScheduler scheduler = Bukkit.getScheduler();
+            for(QueuedChunk queuedChunk : chunks) {
+                scheduler.runTaskLater(DangerousCaves.PLUGIN,
+                        () -> queuedChunk.doStuff(this::proceedChunk),
+                        timer
+                );
+                timer += 2;
+            }
+        } else {
+            chunks.forEach(q -> q.doStuff(this::proceedChunk));
+        }
+        chunks.clear();
     }
 
     private boolean isAllowed(int x, int z) {
-//      return skippedChunks.contains(new SingularBound(x, z));
         for(Bound bound : skippedChunks)
             if(bound.isInside(x, z)) return false;
         return true;
@@ -105,27 +138,28 @@ public class CavesAging implements Tickable, Configurable {
             Block block = chunk.getBlock(x, y, z);
             if(block.getLightFromSky() > 0) break;
             Material type = block.getType();
-            if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
-                switch(Rnd.nextInt(3)) {
-                    case 0:
-                        block.setType(Material.COBBLESTONE, false);
-                        break;
-                    case 1:
-                        block.setType(Material.ANDESITE, false);
-                        break;
-                    default:
-                        Block downBlock = block.getRelative(BlockFace.DOWN);
-                        if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
-                            downBlock.setType(Material.COBBLESTONE_WALL, false);
-                }
+            if(replaceBlocks.contains(type) && Rnd.chance(agingChance) && lightLevelCheck.test(block)) {
+                if(Rnd.nextBoolean())
+                    switch(Rnd.nextInt(3)) {
+                        case 0:
+                            block.setType(Material.COBBLESTONE, false);
+                            break;
+                        case 1:
+                            block.setType(Material.ANDESITE, false);
+                            break;
+                        default:
+                            Block downBlock = block.getRelative(BlockFace.DOWN);
+                            if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
+                                downBlock.setType(Material.COBBLESTONE_WALL, false);
+                    }
                 if(Rnd.chance(0.125)) {
-                    for(BlockFace face : FACES) {
+                    for(BlockFace face : HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
                         if (Materials.isAir(relBlock.getType())) {
                             relBlock.setType(Material.VINE, false);
                             MultipleFacing facing = (MultipleFacing) relBlock.getBlockData();
                             facing.setFace(face.getOppositeFace(), true);
-                            relBlock.setBlockData(facing);
+                            relBlock.setBlockData(facing, false);
                         }
                     }
                 }
@@ -138,7 +172,7 @@ public class CavesAging implements Tickable, Configurable {
                         upBlock.setType(Material.STONE_BUTTON, false);
                         Switch button = (Switch) upBlock.getBlockData();
                         button.setFace(Switch.Face.FLOOR);
-                        upBlock.setBlockData(button);
+                        upBlock.setBlockData(button, false);
                     }
                 }
             }
@@ -148,5 +182,33 @@ public class CavesAging implements Tickable, Configurable {
     @Override
     public TickLevel getTickLevel() {
         return TickLevel.WORLD;
+    }
+
+    private static class QueuedChunk {
+        private final World world;
+        private final int x;
+        private final int z;
+
+        QueuedChunk(World world, int x, int z) {
+            this.world = world;
+            this.x = x;
+            this.z = z;
+        }
+
+        void doStuff(Consumer<Chunk> run) {
+            run.accept(world.getChunkAt(x, z));
+        }
+
+        @Override
+        public int hashCode() {
+            return (x >>> 15) * (z >>> 31) * world.hashCode() * 1907;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if(!(o instanceof QueuedChunk)) return false;
+            QueuedChunk chunk = (QueuedChunk) o;
+            return chunk.x == x && chunk.z == z && chunk.world == world;
+        }
     }
 }

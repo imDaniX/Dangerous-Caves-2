@@ -34,9 +34,11 @@ public class Commander implements CommandExecutor {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));
                     return true;
                 } else if(!sender.hasPermission("dangerous.caves.command.info")) return false;
-                Location loc = ((Player)sender).getLocation();
+                Player player = (Player)sender;
+                Location loc = player.getLocation();
                 sender.sendMessage(Utils.clr("&bWorld: &f") + loc.getWorld().getName());
                 sender.sendMessage(Utils.clr("&bChunk: &f") + loc.getChunk().getX() + "," + loc.getChunk().getZ());
+                sender.sendMessage(Utils.clr("&bHand: &f") + player.getInventory().getItemInMainHand().getType());
                 break;
             case "summon":
                 if(!(sender instanceof Player)) {

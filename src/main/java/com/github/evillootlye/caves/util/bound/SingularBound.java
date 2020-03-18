@@ -16,7 +16,7 @@ public class SingularBound implements Bound {
 
     @Override
     public int hashCode() {
-        return x * z * 3343;
+        return (x >>> 15) * (z >>> 31) * 3343;
     }
 
     @Override
