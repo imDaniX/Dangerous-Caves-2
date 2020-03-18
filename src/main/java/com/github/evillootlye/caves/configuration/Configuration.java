@@ -13,12 +13,14 @@ public class Configuration {
     private final Plugin plugin;
     private final Map<Configurable, String> configurables;
     private final File file;
+    private final String version;
     private YamlConfiguration yml;
 
     public Configuration(Plugin plugin, String name) {
         this.plugin = plugin;
         configurables = new HashMap<>();
         file = new File(plugin.getDataFolder(), name + ".yml");
+        version = plugin.getDescription().getVersion().split("-")[1];
     }
 
     public void create(boolean resource) {
@@ -60,6 +62,14 @@ public class Configuration {
 
     public YamlConfiguration getYml() {
         return yml;
+    }
+
+    public void checkVersion() {
+        String oldVersion = yml.getString("version", "0");
+        if(!version.equals(oldVersion)) {
+            plugin.getLogger().warning("Seems like your config is outdated (current " + version + ", yours " + oldVersion + ")");
+            plugin.getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + version);
+        }
     }
 
     public static ConfigurationSection section(ConfigurationSection cfg, String path) {

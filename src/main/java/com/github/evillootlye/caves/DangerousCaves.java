@@ -65,12 +65,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
         getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg, dynamics));
 
-        String cfgVersion = getDescription().getVersion().split("-")[1];
-        String oldVersion = cfg.getYml().getString("version", "0");
-        if(!cfgVersion.equals(oldVersion)) {
-            getLogger().warning("Seems like your config is outdated (current " + cfgVersion + ", yours " + oldVersion + ")");
-            getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + cfgVersion);
-        }
+        cfg.checkVersion();
     }
 
     @EventHandler
