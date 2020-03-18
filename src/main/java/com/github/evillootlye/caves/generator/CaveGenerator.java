@@ -64,7 +64,10 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     public void recalculate() {
         Set<StructureGroup> structuresSet = new HashSet<>();
         structures.values().forEach(g -> {if(g.getWeight() > 0) structuresSet.add(g);});
-        structuresPool = new AliasMethod<>(structuresSet, StructureGroup::getWeight);
+        if(structuresSet.isEmpty())
+            chance = 0;
+        else
+            structuresPool = new AliasMethod<>(structuresSet, StructureGroup::getWeight);
     }
 
     public void register(StructureGroup group) {
