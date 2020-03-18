@@ -59,7 +59,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         yMax = cfg.getInt("y-max", 64);
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
-        recalculate();
+        if(chance > 0) recalculate();
     }
 
     public void recalculate() {

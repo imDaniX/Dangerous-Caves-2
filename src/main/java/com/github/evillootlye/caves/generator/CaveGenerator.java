@@ -58,7 +58,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
             if(material != null) items.add(material);
         }
         StructureGroup.setItems(items);
-        recalculate();
+        if(chance > 0) recalculate();
     }
 
     public void recalculate() {
