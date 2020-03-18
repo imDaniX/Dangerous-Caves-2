@@ -117,6 +117,16 @@ caverns:
     y-max: 80
     # Chance of block will be affected
     change-chance: 2.5
+    # List of materials that are affected by aging
+    # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    replace-blocks:
+      - STONE
+      - ANDESITE
+      - DIORITE
+      - GRANITE
+      - COBBLESTONE
+      - MOSSY_STONE
+      - COBBLESTONE_WALL
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)
     # "-1,-1" variant is allowed(just one chunk)

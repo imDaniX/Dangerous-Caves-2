@@ -26,6 +26,7 @@ import java.util.Set;
 public class CavesAging implements Tickable, Configurable {
     private static final BlockFace[] FACES = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
     private final Set<Bound> skippedChunks;
+    private final Set<Material> replaceBlocks;
     private final Set<String> worlds;
 
     private int radius;
@@ -36,6 +37,7 @@ public class CavesAging implements Tickable, Configurable {
     public CavesAging() {
         skippedChunks = new HashSet<>();
         worlds = new HashSet<>();
+        replaceBlocks = new HashSet<>();
     }
 
     @Override
@@ -68,6 +70,12 @@ public class CavesAging implements Tickable, Configurable {
         }
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+        replaceBlocks.clear();
+        for(String typeStr : cfg.getStringList("replace-blocks")) {
+            Material type = Material.getMaterial(typeStr);
+            if(type == null) continue;
+            replaceBlocks.add(type);
+        }
     }
 
     @Override
@@ -97,7 +105,7 @@ public class CavesAging implements Tickable, Configurable {
             Block block = chunk.getBlock(x, y, z);
             if(block.getLightFromSky() > 0) break;
             Material type = block.getType();
-            if((Materials.isCave(type) || type == Material.COBBLESTONE_WALL) && Rnd.chance(agingChance)) {
+            if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
                 switch(Rnd.nextInt(3)) {
                     case 0:
                         block.setType(Material.COBBLESTONE, false);
