@@ -12,6 +12,11 @@ version: ${cfgVersion}
 # Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
 # "Blank worlds" doesn't means "worlds:" - use "worlds: []"
 
+# NOTE: Ticks
+# Plugin utilizes it's own tick system which is based on vanilla one
+# WORLD tick is 6300 vanilla ticks (about 5 minutes 15 seconds)
+# ENTITY tick is 4 vanilla ticks (about 200 milliseconds)
+
 #
 # Cave-related things
 #
@@ -38,7 +43,7 @@ caverns:
     worlds:
       - world
     # Chance of sound will be played
-    # Checking every 5 minutes 15 seconds
+    # Checking every WORLD tick
     chance: 25
     # Maximal Y where sound can be played
     y-max: 64
@@ -71,7 +76,7 @@ caverns:
       - world
       - world_nether
     # Chance of player to sense high temperature
-    # Checking every 200 milliseconds
+    # Checking every ENTITY tick
     chance: 0.4
     # Maximal Y where players can sense temperature
     y-max: 32
@@ -103,7 +108,7 @@ caverns:
     worlds:
       - world
     # Chance of caves near player will be affected
-    # Checking every 5 minutes 15 seconds
+    # Checking every WORLD tick
     chance: 50
     # Radius of cave aging near player
     # In chunks (+1 where the player is)
@@ -113,7 +118,7 @@ caverns:
     # Chance of block will be affected
     change-chance: 2.5
     # List of coordinates of chunks that should be ignored
-    # To get chunk coordinates just divide your coordinates by 16 and ignore remainder
+    # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)
     # "-1,-1" variant is allowed(just one chunk)
     skip-chunks:
       - "-1,-1 1,1"
@@ -199,58 +204,90 @@ mobs:
   # name: ""
   # Larger priority - larger chance in comparison with others. Set to 0 to disable
   # Chance formula - (mob_priority)/(total_priority)
+
   alpha-spider:
     priority: 1
     name: "&4Alpha Spider"
+    # When spider is damaged
     cobweb-chance: 14.29
+    # When spider is damaged
     minion-chance: 6.67
+
   crying-bat:
     priority: 1
     name: "&4Crying Bat"
+    # Every ENTITY tick
     cry-chance: 3.33
+    # Every ENTITY tick
     death-chance: 2
+
   dead-miner:
     priority: 1
     name: "&4Dead Miner"
+    # Place torches when it's too dark?
     place-torches: true
+    # Place redstone torche instead of normal?
     red-torches: false
+    # When Dead Miner is damaged
     drop-chance: 30
+    # Materials list
     drop-items:
       - COBBLESTONE
       - DIRT
       - COAL
       - TORCH
+
   hexed-armor:
     priority: 1
     name: "&4Hexed Armor"
+    # When player is attacked
+    apply-chance: 25
+
   hungering-darkness:
     priority: 1
     name: ""
+    # Kill the entity on light?
     remove-on-light: true
+    # When player is attacked
     damage: 200
+
   lava-creeper:
     priority: 1
     name: "&4Lava Creeper"
-    radius: 4
+    # When Lava Creeper is damaged. In ticks
     fire-touch: 10
+    # Radius in blocks
+    radius: 4
+    # Chance that the block will be changed
     change-chance: 50
     block-chances:
       fire: 33.33
       magma_block: 25
       obsidian: 20
       lava: 16.67
+
   magma-monster:
     priority: 1
+    # Placing fire. Every ENTITY tick
+    fire-chance: 7.14
+    # Placing magma-blocks. Every ENTITY tick
+    magma-chance: 3.57
     name: "&4Magma Monster"
+
   smoke-demon:
     priority: 1
     name: ""
+    # Radius in blocks
     harm-radius: 3
+
   tnt-creeper:
     priority: 1
     name: "&4TNT Creeper"
+    # Amount of tnt to spawn after explosion
     tnt-amount: 2
+    # When TNT Creeper is damaged
     explosion-chance: 33.33
+
   watcher:
     priority: 1
     name: "&4Watcher"

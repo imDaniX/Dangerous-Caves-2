@@ -93,7 +93,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
         if(block.getLightLevel() > 0) return;
-        if(Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
+        if(Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
             block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH);
     }
 
