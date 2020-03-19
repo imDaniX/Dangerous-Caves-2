@@ -118,7 +118,7 @@ caverns:
     # Chance of block will be affected
     change-chance: 2.5
     # Maximal light level of block (0-15)
-    # WARNING: Can cause lags if not 0. This option check every side of block to check if there's some light
+    # WARNING: Can cause lags if not 0. This option checks every side of block to check if there's some light
     max-light-level: 0
     # Schedule all the changes instead of instant chunk change? Can boost performance
     schedule-changes: false

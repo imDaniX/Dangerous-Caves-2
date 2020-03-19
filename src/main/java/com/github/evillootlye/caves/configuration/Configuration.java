@@ -67,7 +67,7 @@ public class Configuration {
     public void checkVersion() {
         String oldVersion = yml.getString("version", "0");
         if(!version.equals(oldVersion)) {
-            plugin.getLogger().warning("Seems like your config is outdated (current " + version + ", yours " + oldVersion + ")");
+            plugin.getLogger().warning("Seems like your config is outdated (current " + version + ", your " + oldVersion + ")");
             plugin.getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + version);
         }
     }
