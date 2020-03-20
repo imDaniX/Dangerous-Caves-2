@@ -135,8 +135,16 @@ caverns:
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)
     # "-1,-1" variant is allowed(just one chunk)
+    # Worlds are case-sensitive!
+
+    # world:
+    #  - "-1,-1 1,1"
+    #  - "10,24"
+    # second_world:
+    #  - "0,0"
     skip-chunks:
-      - "-1,-1 1,1"
+      world:
+        - "-1,-1 1,1"
 
 #
 # Generator-related things

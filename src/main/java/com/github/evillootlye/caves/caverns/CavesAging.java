@@ -22,7 +22,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -30,7 +32,8 @@ import java.util.function.Predicate;
 @Configurable.Path("caverns.aging")
 public class CavesAging implements Tickable, Configurable {
     private static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST};
-    private final Set<Bound> skippedChunks;
+    private static final BlockFace[] REAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,BlockFace.UP,BlockFace.DOWN};
+    private final Map<String, Set<Bound>> skippedChunks;
     private final Set<Material> replaceBlocks;
     private final Set<String> worlds;
     private final Set<QueuedChunk> chunks;
@@ -43,7 +46,7 @@ public class CavesAging implements Tickable, Configurable {
     private boolean schedule;
 
     public CavesAging() {
-        skippedChunks = new HashSet<>();
+        skippedChunks = new HashMap<>();
         worlds = new HashSet<>();
         replaceBlocks = new HashSet<>();
         chunks = new HashSet<>();
@@ -58,38 +61,44 @@ public class CavesAging implements Tickable, Configurable {
         int lightLevel = cfg.getInt("max-light-level", 0);
         if(lightLevel > 0) {
             lightLevelCheck = (b) -> {
-                for(int x = -1; x <= 1; x++) for(int z = -1; z <= 1; z++) for(int y = -1; y <= 1; y++)
-                    if(b.getRelative(x, y, z).getLightFromBlocks() >= lightLevel) return false;
+                for(BlockFace face : REAL_FACES)
+                    if(b.getRelative(face).getLightFromBlocks() >= lightLevel) return false;
                 return true;
             };
         } else {
             lightLevelCheck = (b) -> true;
         }
         schedule = cfg.getBoolean("schedule-changes", false);
-        skippedChunks.clear();
-        for(String str : cfg.getStringList("skip-chunks")) {
-            String[] xzStr = str.split(" ");
-            String[] firstCoords = xzStr[0].split(",");
-            if(xzStr.length > 1) {
-                String[] secondCoords = xzStr[1].split(",");
-                try {
-                    Bound bound = new DualBound(
-                            Integer.parseInt(firstCoords[0]), Integer.parseInt(secondCoords[0]),
-                            Integer.parseInt(firstCoords[1]), Integer.parseInt(secondCoords[1])
-                    );
-                    skippedChunks.add(bound);
-                } catch (NumberFormatException ignored) {}
-            } else {
-                try {
-                    Bound bound = new SingularBound(
-                            Integer.parseInt(firstCoords[0]), Integer.parseInt(firstCoords[1])
-                    );
-                    skippedChunks.add(bound);
-                } catch (NumberFormatException ignored) {}
-            }
-        }
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+        skippedChunks.clear();
+        ConfigurationSection boundsCfg = cfg.getConfigurationSection("skip-chunks");
+        if(boundsCfg != null)
+        for(String worldStr : boundsCfg.getKeys(false)) {
+            Set<Bound> worldBounds = new HashSet<>();
+            for(String str : cfg.getStringList("skip-chunks")) {
+                String[] xzStr = str.split(" ");
+                String[] firstCoords = xzStr[0].split(",");
+                if(xzStr.length > 1) {
+                    String[] secondCoords = xzStr[1].split(",");
+                    try {
+                        Bound bound = new DualBound(
+                                Integer.parseInt(firstCoords[0]), Integer.parseInt(secondCoords[0]),
+                                Integer.parseInt(firstCoords[1]), Integer.parseInt(secondCoords[1])
+                        );
+                        worldBounds.add(bound);
+                    } catch (NumberFormatException ignored) {}
+                } else {
+                    try {
+                        Bound bound = new SingularBound(
+                                Integer.parseInt(firstCoords[0]), Integer.parseInt(firstCoords[1])
+                        );
+                        worldBounds.add(bound);
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+            skippedChunks.put(worldStr, worldBounds);
+        }
         replaceBlocks.clear();
         for(String typeStr : cfg.getStringList("replace-blocks")) {
             Material type = Material.getMaterial(typeStr.toUpperCase());
@@ -108,7 +117,7 @@ public class CavesAging implements Tickable, Configurable {
                 Chunk start = player.getChunk();
                 for(int x = start.getX() - radius; x <= start.getX() + radius; x++)
                 for(int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
-                    if(isAllowed(x, z)) chunks.add(new QueuedChunk(world, x, z));
+                    if(isAllowed(world, x, z)) chunks.add(new QueuedChunk(world, x, z));
             }
         }
         if(schedule) {
@@ -127,8 +136,10 @@ public class CavesAging implements Tickable, Configurable {
         chunks.clear();
     }
 
-    private boolean isAllowed(int x, int z) {
-        for(Bound bound : skippedChunks)
+    private boolean isAllowed(World world, int x, int z) {
+        Set<Bound> worldBounds = skippedChunks.get(world.getName());
+        if(worldBounds == null) return true;
+        for(Bound bound : worldBounds)
             if(bound.isInside(x, z)) return false;
         return true;
     }
