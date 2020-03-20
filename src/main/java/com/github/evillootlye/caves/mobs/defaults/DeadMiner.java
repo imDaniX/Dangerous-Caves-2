@@ -29,7 +29,6 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     private static final ItemStack SKULL = new ItemStack(Material.PLAYER_HEAD, 1);
     static {
         SkullMeta meta = (SkullMeta) SKULL.getItemMeta();
-        // TODO: PlayerProfile instead
         meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("e25dbd6c-8741-4989-aec4-919cac439932")));
         SKULL.setItemMeta(meta);
     }

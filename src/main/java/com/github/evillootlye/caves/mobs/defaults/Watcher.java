@@ -29,7 +29,6 @@ public class Watcher extends TickableMob implements Configurable, Listener {
     private static final ItemStack SKULL = new ItemStack(Material.PLAYER_HEAD, 1);
     static {
         SkullMeta meta = (SkullMeta) SKULL.getItemMeta();
-        // TODO: PlayerProfile instead
         meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("8f83cb34-120d-40e5-9981-6c75729e3659")));
         SKULL.setItemMeta(meta);
     }
