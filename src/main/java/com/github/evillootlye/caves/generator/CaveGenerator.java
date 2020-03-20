@@ -80,7 +80,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
 
     @Override
     public void populate(World world, Random random, Chunk chunk) {
-        if(chance > 0 && chance > random.nextDouble()) {
+        if(chance > random.nextDouble()) {
             Block block = null;
             int tries = 0;
             while(tries++ < maxTries && block == null) {
