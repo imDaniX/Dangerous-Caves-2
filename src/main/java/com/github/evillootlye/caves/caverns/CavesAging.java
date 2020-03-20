@@ -7,8 +7,6 @@ import com.github.evillootlye.caves.ticks.Tickable;
 import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.bound.Bound;
-import com.github.evillootlye.caves.util.bound.DualBound;
-import com.github.evillootlye.caves.util.bound.SingularBound;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -22,6 +20,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class CavesAging implements Tickable, Configurable {
     private double chance;
     private double agingChance;
     private Predicate<Block> lightLevelCheck;
-    private boolean schedule;
+    private int schedule;
 
     public CavesAging() {
         skippedChunks = new HashMap<>();
@@ -68,7 +68,7 @@ public class CavesAging implements Tickable, Configurable {
         } else {
             lightLevelCheck = (b) -> true;
         }
-        schedule = cfg.getBoolean("schedule-changes", false);
+        schedule = Math.max(cfg.getInt("schedule-timer", 0), 0);
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         skippedChunks.clear();
@@ -77,25 +77,8 @@ public class CavesAging implements Tickable, Configurable {
         for(String worldStr : boundsCfg.getKeys(false)) {
             Set<Bound> worldBounds = new HashSet<>();
             for(String str : cfg.getStringList("skip-chunks")) {
-                String[] xzStr = str.split(" ");
-                String[] firstCoords = xzStr[0].split(",");
-                if(xzStr.length > 1) {
-                    String[] secondCoords = xzStr[1].split(",");
-                    try {
-                        Bound bound = new DualBound(
-                                Integer.parseInt(firstCoords[0]), Integer.parseInt(secondCoords[0]),
-                                Integer.parseInt(firstCoords[1]), Integer.parseInt(secondCoords[1])
-                        );
-                        worldBounds.add(bound);
-                    } catch (NumberFormatException ignored) {}
-                } else {
-                    try {
-                        Bound bound = new SingularBound(
-                                Integer.parseInt(firstCoords[0]), Integer.parseInt(firstCoords[1])
-                        );
-                        worldBounds.add(bound);
-                    } catch (NumberFormatException ignored) {}
-                }
+                Bound bound = Bound.fromString(str);
+                if(bound != null) worldBounds.add(bound);
             }
             skippedChunks.put(worldStr, worldBounds);
         }
@@ -120,7 +103,7 @@ public class CavesAging implements Tickable, Configurable {
                     if(isAllowed(world, x, z)) chunks.add(new QueuedChunk(world, x, z));
             }
         }
-        if(schedule) {
+        if(schedule > 0) {
             int timer = 2;
             BukkitScheduler scheduler = Bukkit.getScheduler();
             for(QueuedChunk queuedChunk : chunks) {
@@ -196,18 +179,19 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     private static class QueuedChunk {
-        private final World world;
+        private final Reference<World> world;
         private final int x;
         private final int z;
 
         QueuedChunk(World world, int x, int z) {
-            this.world = world;
+            this.world = new WeakReference<>(world);
             this.x = x;
             this.z = z;
         }
 
         void doStuff(Consumer<Chunk> run) {
-            run.accept(world.getChunkAt(x, z));
+            World world = this.world.get();
+            if(world != null) run.accept(world.getChunkAt(x, z));
         }
 
         @Override
