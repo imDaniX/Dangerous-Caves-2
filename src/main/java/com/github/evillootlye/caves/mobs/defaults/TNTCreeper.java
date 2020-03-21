@@ -5,17 +5,14 @@ import com.github.evillootlye.caves.mobs.CustomMob;
 import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -43,10 +40,6 @@ public class TNTCreeper extends CustomMob implements Configurable, Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
-        Item item = entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.TNT));
-        item.setCanMobPickup(false);
-        item.setInvulnerable(true);
-        entity.addPassenger(item);
         entity.addPotionEffect(INCREASE_DAMAGE);
     }
 
