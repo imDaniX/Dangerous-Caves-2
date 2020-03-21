@@ -15,7 +15,6 @@ import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -97,10 +96,5 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     public CaveGenerator getGenerator() {
         return generator;
-    }
-
-    @Override
-    public FileConfiguration getConfig() {
-        return cfg.getYml();
     }
 }
