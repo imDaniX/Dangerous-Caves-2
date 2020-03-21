@@ -2,6 +2,8 @@ package com.github.evillootlye.caves.util;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -25,8 +27,9 @@ public final class Locations {
     }
 
     public static boolean isCave(Location loc) {
-        return loc.getBlock().getLightFromSky() < 1 &&
-                Materials.isCave(loc.subtract( 0, 1, 0).getBlock().getType());
+        Block block = loc.getBlock();
+        return block.getLightFromSky() < 1 &&
+                Materials.isCave(block.getRelative(BlockFace.DOWN).getType());
 
     }
 
