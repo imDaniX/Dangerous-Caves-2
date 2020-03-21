@@ -27,18 +27,18 @@ public class PillarsGroup extends StructureGroup implements Configurable {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         switch (random.nextInt(8)) {
-            case 0: {
+            case 0:
                 setType(loc, Material.POLISHED_ANDESITE);
                 setType(loc.add(0, 1, 0), randomStone(random));
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 1: {
+
+            case 1:
                 setType(loc, Material.POLISHED_ANDESITE);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 2: {
+
+            case 2:
                 setType(loc, Material.STONE_BRICKS);
                 if(random.nextBoolean()) {
                     setType(loc, Material.CRACKED_STONE_BRICKS);
@@ -50,8 +50,8 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 setType(loc.clone().add(random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 3: {
+
+            case 3:
                 setType(loc, Material.STONE_BRICKS);
                 if(random.nextBoolean()) {
                     setType(loc, Material.CRACKED_STONE_BRICKS);
@@ -66,15 +66,15 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 }
                 setType(loc.add(1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 4: {
+
+            case 4:
                 setType(loc, randomStone(random));
                 setType(loc.clone().add(random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0,1,0), Material.POLISHED_ANDESITE);
                 setType(loc.clone().add(-1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 5: {
+
+            case 5:
                 setType(loc, Material.STONE_BRICKS);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
                 if(random.nextBoolean()) {
@@ -92,8 +92,8 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 setType(loc.clone().subtract(0 , 0, 1), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 6: {
+
+            case 6:
                 setType(loc, Material.STONE_BRICKS);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
                 if(random.nextBoolean()) {
@@ -122,12 +122,11 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 setType(loc.clone().add(1, 0, 0), Material.STONE_BRICK_SLAB);
                 break;
-            }
-            case 7: {
+
+            case 7:
                 setType(loc, Material.COBBLESTONE);
                 setType(loc.add(0, 1, 0), Material.COBBLESTONE_WALL);
                 break;
-            }
         }
     }
 

@@ -30,28 +30,28 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         switch (random.nextInt(10)) {
-            case 0: {
+            default:
                 loc.getBlock().setType(Material.CHEST);
                 fillInventory(loc.getBlock());
                 break;
-            }
-            case 1: {
+
+            case 1:
                 generateStructure(random, OldStructures.chests3, loc.subtract(0, 1, 0));
                 break;
-            }
-            case 2: {
+
+            case 2:
                 generateStructure(random, OldStructures.chests2, loc.subtract(0, 1, 0));
                 break;
-            }
-            case 3: {
+
+            case 3:
                 generateStructure(random, OldStructures.chests1, loc);
                 break;
-            }
-            case 4: {
+
+            case 4:
                 setType(loc, Material.SKELETON_SKULL);
                 break;
-            }
-            case 5: {
+
+            case 5:
                 setType(loc.clone().add(1, 0, 0), Material.COBBLESTONE_SLAB);
                 setType(loc.clone().subtract(1, 0, 0), Material.COBBLESTONE_SLAB);
                 setType(loc.clone().add(0, 0, 1), Material.COBBLESTONE_SLAB);
@@ -59,8 +59,8 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                 setType(loc.clone().subtract(0, 1, 0), Material.NETHERRACK);
                 loc.getBlock().setType(Material.FIRE);
                 break;
-            }
-            case 6: {
+
+            case 6:
                 Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY()-1, loc.getZ());
                 Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY()-1, loc.getZ());
                 Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()+1);
@@ -79,19 +79,18 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                     tempL4.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE);
                 }
                 break;
-            }
-            case 7: {
+
+            case 7:
                 generateStructure(random, OldStructures.sfishs1, loc);
                 break;
-            }
-            case 8: {
+
+            case 8:
                 generateStructure(random, OldStructures.sfishs2, loc);
                 break;
-            }
-            case 9: {
+
+            case 9:
                 generateStructure(random, OldStructures.sfishs3, loc);
                 break;
-            }
         }
     }
 
@@ -106,20 +105,20 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
     private void decideBlock(Random random, int type, Location loc) {
         //1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
         switch (type) {
-            case 1: case 5: case 6: {
+            default:
                 setType(loc, Material.OAK_PLANKS);
                 break;
-            }
-            case 2: {
+
+            case 2:
                 setType(loc, Material.CHEST);
                 fillInventory(loc.getBlock());
                 break;
-            }
-            case 3: {
+
+            case 3:
                 setType(loc, Material.TORCH);
                 break;
-            }
-            case 4: {
+
+            case 4:
                 if(random.nextInt(3)==1) {
                     int choice = random.nextInt(5);
                     if(choice == 0) {
@@ -140,8 +139,8 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                     }
                 }
                 break;
-            }
-            case 7: {
+
+            case 7:
                 int typer = random.nextInt(3);
                 if(typer == 0) {
                     setType(loc, Material.STONE);
@@ -153,23 +152,23 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                     setType(loc, Material.IRON_ORE);
                 }
                 break;
-            }
-            case 8: {
+
+            case 8:
                 setType(loc, Material.SNOW_BLOCK);
                 break;
-            }
-            case 9: {
+
+            case 9:
                 setType(loc, Material.SPAWNER);
                 BlockState blockState = loc.getBlock().getState();
                 CreatureSpawner spawner = ((CreatureSpawner) blockState);
                 spawner.setSpawnedType(EntityType.SILVERFISH);
                 blockState.update();
                 break;
-            }
-            case 10: {
+
+            case 10:
                 setType(loc, Material.INFESTED_STONE);
                 break;
-            }
+
         }
     }
 

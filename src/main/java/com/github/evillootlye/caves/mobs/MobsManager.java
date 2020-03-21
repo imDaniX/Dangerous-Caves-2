@@ -34,7 +34,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private final Set<String> mobsTicked;
     private final Set<String> worlds;
     private AliasMethod<CustomMob> mobsPool;
-    private int yMin, yMax;
+    private int yMin;
+    private int yMax;
     private double chance;
     private boolean blockRename;
 

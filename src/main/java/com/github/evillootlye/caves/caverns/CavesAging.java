@@ -145,6 +145,7 @@ public class CavesAging implements Tickable, Configurable {
                             Block downBlock = block.getRelative(BlockFace.DOWN);
                             if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
                                 downBlock.setType(Material.COBBLESTONE_WALL, false);
+                            break;
                     }
                 if(Rnd.chance(0.125)) {
                     for(BlockFace face : HORIZONTAL_FACES) {
@@ -183,13 +184,13 @@ public class CavesAging implements Tickable, Configurable {
         private final int x;
         private final int z;
 
-        QueuedChunk(World world, int x, int z) {
+        private QueuedChunk(World world, int x, int z) {
             this.world = new WeakReference<>(world);
             this.x = x;
             this.z = z;
         }
 
-        void doStuff(Consumer<Chunk> run) {
+        private void doStuff(Consumer<Chunk> run) {
             World world = this.world.get();
             if(world != null) run.accept(world.getChunkAt(x, z));
         }

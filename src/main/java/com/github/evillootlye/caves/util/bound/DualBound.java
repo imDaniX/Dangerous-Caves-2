@@ -1,8 +1,11 @@
 package com.github.evillootlye.caves.util.bound;
 
 public class DualBound implements Bound {
-    private final int xMin, xMax;
-    private final int zMin, zMax;
+    private final int xMin;
+    private final int xMax;
+
+    private final int zMin;
+    private final int zMax;
 
     public DualBound(int xMin, int xMax, int zMin, int zMax) {
         if(xMin > xMax) {

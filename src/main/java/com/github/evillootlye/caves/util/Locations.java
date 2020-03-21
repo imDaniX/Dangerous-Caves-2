@@ -28,7 +28,7 @@ public final class Locations {
 
     public static boolean isCave(Location loc) {
         Block block = loc.getBlock();
-        return block.getLightFromSky() < 1 &&
+        return block.getLightFromSky() == 0 &&
                 Materials.isCave(block.getRelative(BlockFace.DOWN).getType());
 
     }

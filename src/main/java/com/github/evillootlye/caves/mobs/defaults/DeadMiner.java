@@ -25,7 +25,8 @@ import java.util.List;
 public class DeadMiner extends TickableMob implements Configurable, Listener {
     private int weight;
     private String name;
-    private boolean torches, redTorches;
+    private boolean torches;
+    private boolean redTorches;
     private double dropChance;
     private ItemStack head;
     private List<Material> items;

@@ -26,10 +26,16 @@ public class LavaCreeper extends TickableMob implements Configurable, Listener {
             Integer.MAX_VALUE, 1, false, false);
     private int weight;
     private String name;
+
     private double chance;
-    private double fire, magmaBlock, obsidian, lava;
+    private double fire;
+    private double magmaBlock;
+    private double obsidian;
+    private double lava;
+
     private int fireTouch;
-    private int radius, radiusSquared;
+    private int radius;
+    private int radiusSquared;
 
     public LavaCreeper() {
         super(EntityType.CREEPER, "lava-creeper");

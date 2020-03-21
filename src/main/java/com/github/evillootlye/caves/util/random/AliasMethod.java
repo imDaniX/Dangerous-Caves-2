@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
 /******************************************************************************
@@ -31,8 +32,9 @@ public final class AliasMethod<T> {
     private final List<T> items;
 
     public AliasMethod(Collection<T> collection, ToDoubleFunction<T> funct) {
-        if (collection == null || funct == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(funct);
+
         if (collection.isEmpty())
             throw new IllegalArgumentException("Probability vector must be nonempty.");
 
