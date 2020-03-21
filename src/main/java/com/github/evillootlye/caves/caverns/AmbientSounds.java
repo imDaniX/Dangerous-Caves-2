@@ -80,7 +80,7 @@ public class AmbientSounds implements Tickable, Configurable {
         }
 
         public void play(Player player) {
-            player.playSound(player.getLocation(), sound, SoundCategory.AMBIENT, volume, pitch);
+            player.playSound(player.getEyeLocation(), sound, SoundCategory.AMBIENT, volume, pitch);
         }
     }
 }
