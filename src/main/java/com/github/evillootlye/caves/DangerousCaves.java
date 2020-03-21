@@ -14,6 +14,7 @@ import com.github.evillootlye.caves.ticks.Dynamics;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -64,11 +65,12 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
         } else cfg.register(generator);
 
-        getCommand("dangerouscaves").setExecutor(new Commander(mobsManager, cfg, dynamics));
+        PluginCommand cmd = getCommand("dangerouscaves");
+        if(cmd != null) cmd.setExecutor(new Commander(mobsManager, cfg, dynamics));
 
         cfg.checkVersion();
 
-        Metrics metrics = new Metrics(this, 6824);
+        /*Metrics metrics = */new Metrics(this, 6824);
     }
 
     @EventHandler
