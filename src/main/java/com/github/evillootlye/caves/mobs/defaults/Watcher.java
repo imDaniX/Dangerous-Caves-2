@@ -3,10 +3,9 @@ package com.github.evillootlye.caves.mobs.defaults;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Locations;
+import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -18,20 +17,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.UUID;
-
 public class Watcher extends TickableMob implements Configurable, Listener {
-    private static final ItemStack SKULL = new ItemStack(Material.PLAYER_HEAD, 1);
-    static {
-        SkullMeta meta = (SkullMeta) SKULL.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("8f83cb34-120d-40e5-9981-6c75729e3659")));
-        SKULL.setItemMeta(meta);
-    }
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 30, 200);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 80, 2);
@@ -39,6 +29,7 @@ public class Watcher extends TickableMob implements Configurable, Listener {
 
     private int weight;
     private String name;
+    private ItemStack head;
 
     public Watcher() {
         super(EntityType.HUSK, "watcher");
@@ -48,6 +39,7 @@ public class Watcher extends TickableMob implements Configurable, Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", ""));
+        head = Materials.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="));
     }
 
     @Override
@@ -58,7 +50,7 @@ public class Watcher extends TickableMob implements Configurable, Listener {
         entity.addPotionEffect(INVISIBILITY);
 
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(SKULL);
+        equipment.setHelmet(head);
         equipment.setHelmetDropChance(0);
     }
 

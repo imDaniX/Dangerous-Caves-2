@@ -248,6 +248,9 @@ mobs:
   dead-miner:
     priority: 1
     name: "&4Dead Miner"
+    # Get your custom head here https://minecraft-heads.com/
+    # Just copy a "Value" (with =)
+    head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="
     # Place torches when it's too dark?
     place-torches: true
     # Place redstone torche instead of normal?
@@ -307,11 +310,14 @@ mobs:
   tnt-creeper:
     priority: 1
     name: "&4TNT Creeper"
-    # Amount of tnt to spawn after explosion
+    # Amount of TNT to spawn after explosion
     tnt-amount: 2
     # When TNT Creeper is damaged
     explosion-chance: 33.33
 
   watcher:
     priority: 1
+    # Get your custom head here https://minecraft-heads.com/
+    # Just copy a "Value" (with =)
+    head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
     name: "&4Watcher"

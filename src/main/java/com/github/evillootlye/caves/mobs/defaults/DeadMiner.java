@@ -5,7 +5,6 @@ import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.random.Rnd;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,25 +17,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Configurable.Path("mobs.dead-miner")
 public class DeadMiner extends TickableMob implements Configurable, Listener {
-    private static final ItemStack SKULL = new ItemStack(Material.PLAYER_HEAD, 1);
-    static {
-        SkullMeta meta = (SkullMeta) SKULL.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("e25dbd6c-8741-4989-aec4-919cac439932")));
-        SKULL.setItemMeta(meta);
-    }
-
     private int weight;
     private String name;
     private boolean torches, redTorches;
     private double dropChance;
+    private ItemStack head;
     private List<Material> items;
 
     public DeadMiner() {
@@ -51,6 +42,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
+        head = Materials.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
@@ -75,7 +67,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(SKULL);
+        equipment.setHelmet(head);
         equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rnd.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
         if(Rnd.nextBoolean())

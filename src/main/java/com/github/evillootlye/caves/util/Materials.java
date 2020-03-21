@@ -1,12 +1,15 @@
 package com.github.evillootlye.caves.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public final class Materials {
     public static final List<Material> HELMETS;
@@ -49,6 +52,14 @@ public final class Materials {
     public static final Set<Material> AIR = Collections.unmodifiableSet(EnumSet.of(
             Material.AIR, Material.CAVE_AIR, Material.VOID_AIR
     ));
+
+    @SuppressWarnings("deprecation")
+    public static ItemStack getHeadFromValue(String value) {
+        return Bukkit.getUnsafe().modifyItemStack(
+                new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:\"" + UUID.nameUUIDFromBytes(value.getBytes()) + "\",Properties:{textures:[{Value:\"" + value + "\"}]}}}"
+        );
+    }
 
     public static boolean isCave(Material material) {
         return CAVE.contains(material);
