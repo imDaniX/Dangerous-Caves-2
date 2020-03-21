@@ -99,7 +99,7 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
         int xMod = random.nextBoolean() ? -1 : 1;
         int zMod = random.nextBoolean() ? -1 : 1;
         for(int y = 0; y < rock[0].length; y++) for(int x = -1; x < rock.length-1; x++) for(int z = -1; z < rock[0][0].length-1; z++) {
-            decideBlock(random, rock[x+1][y][z+1], loc.add(xMod, 1, zMod));
+            decideBlock(random, rock[x+1][y][z+1], loc.clone().add(x * xMod, y, z * zMod));
         }
     }
 

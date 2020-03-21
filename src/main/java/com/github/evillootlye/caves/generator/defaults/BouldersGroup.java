@@ -40,7 +40,7 @@ public class BouldersGroup extends StructureGroup implements Configurable {
         int zMod = random.nextBoolean() ? -1 : 1;
         for(int y = 0; y < rock[0].length; y++) for(int x = -1; x < rock.length-1; x++) for(int z = -1; z < rock[0][0].length-1; z++)
             if(rock[x+1][y][z+1]) {
-                setType(loc.add(xMod, 1, zMod), randomStone(random));
+                setType(loc.clone().add(x * xMod, y, z*zMod), randomStone(random));
             }
     }
 
