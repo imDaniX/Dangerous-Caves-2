@@ -131,7 +131,7 @@ caverns:
       - DIORITE
       - GRANITE
       - COBBLESTONE
-      - MOSSY_STONE
+      - MOSSY_COBBLESTONE
       - COBBLESTONE_WALL
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)
@@ -253,7 +253,7 @@ mobs:
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="
     # Place torches when it's too dark?
     place-torches: true
-    # Place redstone torche instead of normal?
+    # Place redstone torches instead of normal?
     red-torches: false
     # When Dead Miner is damaged
     drop-chance: 30

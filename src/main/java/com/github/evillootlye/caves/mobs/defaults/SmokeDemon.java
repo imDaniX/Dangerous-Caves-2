@@ -12,6 +12,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+@Configurable.Path("mobs.smoke-demon")
 public class SmokeDemon extends TickableMob implements Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 120, 1);
     private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER, 120, 0);
@@ -28,7 +29,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
-        name = Utils.clr(cfg.getString("name", ""));
+        name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
         radius = cfg.getInt("harm-radius", 3);
     }
 
@@ -40,6 +41,7 @@ public class SmokeDemon extends TickableMob implements Configurable {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        entity.setCustomNameVisible(false);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
     }

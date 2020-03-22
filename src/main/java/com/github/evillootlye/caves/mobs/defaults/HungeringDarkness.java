@@ -43,6 +43,7 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        entity.setCustomNameVisible(false);
         entity.setSilent(true);
         entity.setInvulnerable(true);
         entity.setCanPickupItems(false);
