@@ -97,7 +97,7 @@ public class CavesAging implements Tickable, Configurable {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
                 if(!Rnd.chance(chance)) continue;
-                Chunk start = player.getChunk();
+                Chunk start = player.getLocation().getChunk();
                 for(int x = start.getX() - radius; x <= start.getX() + radius; x++)
                 for(int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
                     if(isAllowed(world, x, z)) chunks.add(new QueuedChunk(world, x, z));
