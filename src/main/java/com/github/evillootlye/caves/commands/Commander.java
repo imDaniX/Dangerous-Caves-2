@@ -1,5 +1,6 @@
 package com.github.evillootlye.caves.commands;
 
+import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configuration;
 import com.github.evillootlye.caves.mobs.MobsManager;
 import com.github.evillootlye.caves.ticks.Dynamics;
@@ -72,10 +73,11 @@ public class Commander implements CommandExecutor {
     }
 
     private static void help(CommandSender sender, String label) {
-        sender.sendMessage(Utils.clr("&6&lDangerousCaves by Evil-Lootlye&e (fork imDaniX)"));
-        sender.sendMessage(Utils.clr(" &a/" + label + " info &7- Get some info about your location."));
-        sender.sendMessage(Utils.clr(" &a/" + label + " summon [mob] &7- Spawn a mob on your location."));
-        sender.sendMessage(Utils.clr(" &a/" + label + " tick &7- Tick everything manually."));
-        sender.sendMessage(Utils.clr(" &a/" + label + " reload &7- Reload plugin configuration."));
+        String[] split = DangerousCaves.PLUGIN.getDescription().getVersion().split("-");
+        sender.sendMessage(Utils.clr("&6&lDangerousCaves by Evil-Lootlye&e (fork imDaniX) &7| &fv " + split[0] + " vcfg " + split[1]));
+        sender.sendMessage(Utils.clr("&a /" + label + " info &7- Get some info about your location."));
+        sender.sendMessage(Utils.clr("&a /" + label + " summon [mob] &7- Spawn a mob on your location."));
+        sender.sendMessage(Utils.clr("&a /" + label + " tick &7- Tick everything manually."));
+        sender.sendMessage(Utils.clr("&a /" + label + " reload &7- Reload plugin configuration."));
     }
 }
