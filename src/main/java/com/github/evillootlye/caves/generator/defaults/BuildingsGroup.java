@@ -31,7 +31,7 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
         Location loc = block.getLocation();
         switch (random.nextInt(10)) {
             default:
-                loc.getBlock().setType(Material.CHEST);
+                setType(loc, Material.CHEST);
                 fillInventory(loc.getBlock());
                 break;
 
@@ -57,26 +57,26 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                 setType(loc.clone().add(0, 0, 1), Material.COBBLESTONE_SLAB);
                 setType(loc.clone().subtract(0, 0, 1), Material.COBBLESTONE_SLAB);
                 setType(loc.clone().subtract(0, 1, 0), Material.NETHERRACK);
-                loc.getBlock().setType(Material.FIRE);
+                setType(loc, Material.FIRE);
                 break;
 
             case 6:
-                Location tempL1 = new Location(loc.getWorld(), loc.getX()+1, loc.getY()-1, loc.getZ());
-                Location tempL2 = new Location(loc.getWorld(), loc.getX()-1, loc.getY()-1, loc.getZ());
-                Location tempL3 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()+1);
-                Location tempL4 = new Location(loc.getWorld(), loc.getX(), loc.getY()-1, loc.getZ()-1);
+                Location tempL1 = loc.clone().add(1, -1, 0);
+                Location tempL2 = loc.clone().add(-1, -1, 0);
+                Location tempL3 = loc.clone().add(0, -1, 1);
+                Location tempL4 = loc.clone().add(0, -1, -1);
                 loc.getBlock().setType(Material.CRAFTING_TABLE);
-                if(tempL1.getBlock().getType().isSolid() && random.nextInt(3)==1) {
-                    tempL1.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE);
+                if(tempL1.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                    setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL2.getBlock().getType().isSolid() && random.nextInt(3)==1) {
-                    tempL2.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE);
+                if(tempL2.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                    setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL3.getBlock().getType().isSolid() && random.nextInt(3)==1) {
-                    tempL3.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE);
+                if(tempL3.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                    setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL4.getBlock().getType().isSolid() && random.nextInt(3)==1) {
-                    tempL4.add(0, 1, 0).getBlock().setType(Material.REDSTONE_WIRE);
+                if(tempL4.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                    setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
                 break;
 
@@ -119,37 +119,46 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                 break;
 
             case 4:
-                if(random.nextInt(3)==1) {
-                    int choice = random.nextInt(5);
-                    if(choice == 0) {
+                switch (random.nextInt(15)) {
+                    case 0:
                         setType(loc, Material.FURNACE);
-                    }
-                    else if(choice == 1) {
+                        break;
+
+                    case 1:
                         setType(loc, Material.CHEST);
                         fillInventory(loc.getBlock());
-                    }
-                    else if(choice == 2) {
+                        break;
+
+                    case 2:
                         setType(loc, Material.CRAFTING_TABLE);
-                    }
-                    else if(choice == 3) {
+                        break;
+
+                    case 3:
                         setType(loc, Material.CAULDRON);
-                    }
-                    else if(choice == 4) {
+                        break;
+
+                    case 4:
                         setType(loc, Material.ANVIL);
-                    }
+                        break;
+
+                    default:
+                        break;
                 }
                 break;
 
             case 7:
-                int typer = random.nextInt(3);
-                if(typer == 0) {
-                    setType(loc, Material.STONE);
-                }
-                else if(typer == 1) {
-                    setType(loc, Material.COAL_ORE);
-                }
-                else if(typer == 2) {
-                    setType(loc, Material.IRON_ORE);
+                switch (random.nextInt(3)) {
+                    default:
+                        setType(loc, Material.STONE);
+                        break;
+
+                    case 1:
+                        setType(loc, Material.COAL_ORE);
+                        break;
+
+                    case 2:
+                        setType(loc, Material.IRON_ORE);
+                        break;
                 }
                 break;
 

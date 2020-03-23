@@ -4,6 +4,7 @@ import com.github.evillootlye.caves.DangerousCaves;
 import com.github.evillootlye.caves.configuration.Configurable;
 import com.github.evillootlye.caves.ticks.TickLevel;
 import com.github.evillootlye.caves.ticks.Tickable;
+import com.github.evillootlye.caves.util.Locations;
 import com.github.evillootlye.caves.util.Materials;
 import com.github.evillootlye.caves.util.Utils;
 import com.github.evillootlye.caves.util.bound.Bound;
@@ -31,7 +32,6 @@ import java.util.function.Predicate;
 
 @Configurable.Path("caverns.aging")
 public class CavesAging implements Tickable, Configurable {
-    private static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST};
     private static final BlockFace[] REAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,BlockFace.UP,BlockFace.DOWN};
     private final Map<String, Set<Bound>> skippedChunks;
     private final Set<Material> replaceBlocks;
@@ -138,9 +138,11 @@ public class CavesAging implements Tickable, Configurable {
                         case 0:
                             block.setType(Material.COBBLESTONE, false);
                             break;
+
                         case 1:
                             block.setType(Material.ANDESITE, false);
                             break;
+
                         default:
                             Block downBlock = block.getRelative(BlockFace.DOWN);
                             if(Materials.isAir(downBlock.getType()) && Rnd.nextBoolean())
@@ -148,7 +150,7 @@ public class CavesAging implements Tickable, Configurable {
                             break;
                     }
                 if(Rnd.chance(0.125)) {
-                    for(BlockFace face : HORIZONTAL_FACES) {
+                    for(BlockFace face : Locations.HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
                         if (Materials.isAir(relBlock.getType())) {
                             relBlock.setType(Material.VINE, false);
@@ -162,8 +164,7 @@ public class CavesAging implements Tickable, Configurable {
                 if(Materials.isAir(upBlock.getType())){
                     if(Rnd.chance(0.111)) {
                         upBlock.setType(Rnd.nextBoolean() ? Material.BROWN_MUSHROOM : Material.RED_MUSHROOM, false);
-                    } else
-                    if(Rnd.chance(0.167)) {
+                    } else if(Rnd.chance(0.167)) {
                         upBlock.setType(Material.STONE_BUTTON, false);
                         Switch button = (Switch) upBlock.getBlockData();
                         button.setFace(Switch.Face.FLOOR);

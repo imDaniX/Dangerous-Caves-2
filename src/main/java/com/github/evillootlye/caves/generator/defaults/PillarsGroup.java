@@ -27,14 +27,9 @@ public class PillarsGroup extends StructureGroup implements Configurable {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         switch (random.nextInt(8)) {
-            case 0:
-                setType(loc, Material.POLISHED_ANDESITE);
-                setType(loc.add(0, 1, 0), randomStone(random));
-                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
-                break;
-
             case 1:
                 setType(loc, Material.POLISHED_ANDESITE);
+                setType(loc.add(0, 1, 0), randomStone(random));
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
 
@@ -126,6 +121,11 @@ public class PillarsGroup extends StructureGroup implements Configurable {
             case 7:
                 setType(loc, Material.COBBLESTONE);
                 setType(loc.add(0, 1, 0), Material.COBBLESTONE_WALL);
+                break;
+
+            default:
+                setType(loc, Material.POLISHED_ANDESITE);
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
         }
     }

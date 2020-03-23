@@ -10,6 +10,8 @@ import org.bukkit.util.Vector;
 import java.util.function.Consumer;
 
 public final class Locations {
+    public static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST};
+
     public static void loop(int radius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();
         for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)

@@ -29,14 +29,7 @@ public class TrapsGroup extends StructureGroup implements Configurable {
     public void generate(Random rnd, Chunk chunk, Block start) {
         Location loc = start.getLocation();
         switch (rnd.nextInt(9)) {
-            case 0: {
-                //for(int i = yVal ; i > 4 ; i--) {
-                while(loc.getY()>4) {
-                    setType(loc.subtract(0, 1, 0), Material.AIR);
-                }
-                break;
-            }
-            case 1: {
+            case 1:
                 while(loc.getY()>4) {
                     setType(loc.subtract(0, 1, 0), Material.AIR);
                 }
@@ -44,8 +37,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                 setType(loc.add(0, 1, 0), Material.LAVA);
                 setType(loc.add(0, 1, 0), Material.LAVA);
                 break;
-            }
-            case 2: {
+
+            case 2:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 1, 0), Material.GRAVEL);
                 setType(loc.subtract(0, 1, 0), Material.TNT);
@@ -56,8 +49,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                 setType(loc.add(0, 1, 0), Material.LAVA);
                 setType(loc.add(0, 1, 0), Material.LAVA);
                 break;
-            }
-            case 3: {
+
+            case 3:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 1, 0), Material.GRAVEL);
                 setType(loc.subtract(0, 1, 0), Material.TNT);
@@ -68,8 +61,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                 setType(loc.add(0, 1, 0), Material.COBWEB);
                 setType(loc.add(0, 1, 0), Material.COBWEB);
                 break;
-            }
-            case 4: {
+
+            case 4:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 1, 0), Material.GRAVEL);
                 setType(loc.subtract(0, 1, 0), Material.TNT);
@@ -77,8 +70,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                     setType(loc.subtract(0, 1, 0), Material.AIR);
                 }
                 break;
-            }
-            case 5: {
+
+            case 5:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 1, 0), Material.GRAVEL);
                 setType(loc.subtract(0, 1, 0), Material.TNT);
@@ -89,8 +82,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                     }
                 }
                 break;
-            }
-            case 6: {
+
+            case 6:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 2, 0), Material.TNT);
                 if(rnd.nextBoolean()) {
@@ -100,8 +93,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                     }
                 }
                 break;
-            }
-            case 7: {
+
+            case 7:
                 setType(loc, Material.TRAPPED_CHEST);
                 fillInventory(loc.getBlock());
                 setType(loc.subtract(0, 2, 0), Material.TNT);
@@ -112,13 +105,17 @@ public class TrapsGroup extends StructureGroup implements Configurable {
                     }
                 }
                 break;
-            }
-            case 8: {
+
+            case 8:
                 setType(loc, Material.STONE_PRESSURE_PLATE);
                 setType(loc.subtract(0, 1, 0), Material.DISPENSER);
                 ((Dispenser) loc.getBlock().getState()).getInventory().addItem(new ItemStack(Material.ARROW, rnd.nextInt(3) + 1));
                 break;
-            }
+
+            default:
+                while(loc.getY() > 4)
+                    setType(loc.subtract(0, 1, 0), Material.AIR);
+                break;
         }
     }
 

@@ -42,9 +42,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public MobsManager(DangerousCaves plugin) {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
-            Bukkit.getPluginManager().registerEvents(new PaperListener(), plugin);
+            Bukkit.getPluginManager().registerEvents(new PaperCreatureSpawnListener(), plugin);
         } catch (ClassNotFoundException e) {
-            Bukkit.getPluginManager().registerEvents(new SpigotListener(), plugin);
+            Bukkit.getPluginManager().registerEvents(new SpigotCreatureSpawnListener(), plugin);
         }
         this.plugin = plugin;
         mobs = new HashMap<>();
@@ -116,8 +116,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEntityEvent event) {
-        if(!blockRename) return;
-        if(CustomMob.isCustomMob(event.getRightClicked())) event.setCancelled(true);
+        if(blockRename && CustomMob.isCustomMob(event.getRightClicked())) event.setCancelled(true);
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
@@ -135,16 +134,16 @@ public class MobsManager implements Listener, Tickable, Configurable {
         return false;
     }
 
-    private class PaperListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGHEST)
+    private class PaperCreatureSpawnListener implements Listener {
+        @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(PreCreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
         }
     }
 
-    private class SpigotListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGHEST)
+    private class SpigotCreatureSpawnListener implements Listener {
+        @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(CreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
