@@ -47,18 +47,9 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 break;
 
             case 3:
-                setType(loc, Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc, random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.add(1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
                 break;
 
@@ -66,56 +57,32 @@ public class PillarsGroup extends StructureGroup implements Configurable {
                 setType(loc, randomStone(random));
                 setType(loc.clone().add(random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0,1,0), Material.POLISHED_ANDESITE);
-                setType(loc.clone().add(-1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
+                setType(loc.add(-1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
                 break;
 
             case 5:
                 setType(loc, Material.STONE_BRICKS);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().add(0, 0, 1), Material.STONE_BRICK_SLAB);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().subtract(0 , 0, 1), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
                 break;
 
             case 6:
                 setType(loc, Material.STONE_BRICKS);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().add(random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().add(1, 0, 0), Material.STONE_BRICK_SLAB);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().add(1, 0 ,0), Material.STONE_BRICK_SLAB);
-                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
-                if(random.nextBoolean()) {
-                    setType(loc, Material.CRACKED_STONE_BRICKS);
-                }
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
                 setType(loc.clone().subtract(1, 0, 0), Material.STONE_BRICK_SLAB);
                 setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
-                setType(loc.clone().add(1, 0, 0), Material.STONE_BRICK_SLAB);
+                setType(loc.add(1, 0, 0), Material.STONE_BRICK_SLAB);
                 break;
 
             case 7:

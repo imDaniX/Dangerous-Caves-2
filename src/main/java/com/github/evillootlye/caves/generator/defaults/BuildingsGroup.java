@@ -105,8 +105,8 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
     private void decideBlock(Random random, int type, Location loc) {
         //1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
         switch (type) {
-            default:
-                setType(loc, Material.OAK_PLANKS);
+            case 1:
+                if(random.nextInt(3) > 0) setType(loc, Material.OAK_PLANKS);
                 break;
 
             case 2:
@@ -146,6 +146,14 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                 }
                 break;
 
+            case 5:
+                setType(loc, Material.OAK_PLANKS);
+                break;
+
+            case 6:
+                setType(loc, Material.SPRUCE_LOG);
+                break;
+
             case 7:
                 switch (random.nextInt(3)) {
                     default:
@@ -178,6 +186,8 @@ public class BuildingsGroup extends StructureGroup implements Configurable {
                 setType(loc, Material.INFESTED_STONE);
                 break;
 
+            default:
+                break;
         }
     }
 
