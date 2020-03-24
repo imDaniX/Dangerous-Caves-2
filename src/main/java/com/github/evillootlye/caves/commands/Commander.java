@@ -74,7 +74,7 @@ public class Commander implements CommandExecutor {
 
     private static void help(CommandSender sender, String label) {
         String[] split = DangerousCaves.PLUGIN.getDescription().getVersion().split("-");
-        sender.sendMessage(Utils.clr("&6&lDangerousCaves by Evil-Lootlye&e (fork imDaniX) &7| &fv " + split[0] + " vcfg " + split[1]));
+        sender.sendMessage(Utils.clr("&6&lDangerousCaves &ev" + split[0] + " c" + split[1]));
         sender.sendMessage(Utils.clr("&a /" + label + " info &7- Get some info about your location."));
         sender.sendMessage(Utils.clr("&a /" + label + " summon [mob] &7- Spawn a mob on your location."));
         sender.sendMessage(Utils.clr("&a /" + label + " tick &7- Tick everything manually."));
