@@ -80,7 +80,7 @@ public class HexedArmor extends CustomMob implements Listener, Configurable {
     }
 
     private static ItemStack getRandom(List<Material> arr) {
-        int i = Rnd.nextInt(arr.size() + 1);
+        int i = Rnd.nextInt(arr.size());
         return i >= arr.size() ? null : enchant(new ItemStack(arr.get(i)));
     }
 

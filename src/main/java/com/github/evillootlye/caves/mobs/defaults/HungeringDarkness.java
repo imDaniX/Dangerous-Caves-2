@@ -1,10 +1,11 @@
 package com.github.evillootlye.caves.mobs.defaults;
 
 import com.github.evillootlye.caves.configuration.Configurable;
-import com.github.evillootlye.caves.mobs.CustomMob;
+import com.github.evillootlye.caves.mobs.TickableMob;
 import com.github.evillootlye.caves.util.PlayerAttackedEvent;
 import com.github.evillootlye.caves.util.Utils;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -15,7 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @Configurable.Path("mobs.hungering-darkness")
-public class HungeringDarkness extends CustomMob implements Listener, Configurable {
+public class HungeringDarkness extends TickableMob implements Listener, Configurable {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
     private int weight;
@@ -56,12 +57,10 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
 
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
-        if(!isThis(event.getEntity()) || event.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER) return;
+        if(!isThis(event.getEntity()) || event.getTarget() == null) return;
         if(event.getTarget().getLocation().getBlock().getLightLevel() > 0) {
-            if(remove) {
-                event.setCancelled(true);
-                event.getEntity().remove();
-            } else event.setCancelled(true);
+            event.setCancelled(true);
+            if(remove) event.getEntity().remove();
         }
     }
 
@@ -77,5 +76,12 @@ public class HungeringDarkness extends CustomMob implements Listener, Configurab
     @Override
     public int getWeight() {
         return weight;
+    }
+
+    @Override
+    public void tick(LivingEntity entity) {
+        if(entity.getLocation().getBlock().getLightLevel() > 0) {
+            if(remove) entity.remove();
+        } else entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CAT_PURR, 0.5f, 0);
     }
 }
