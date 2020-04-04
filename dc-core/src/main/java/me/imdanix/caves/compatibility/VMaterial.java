@@ -28,9 +28,10 @@ public enum VMaterial {
     VMaterial(String... typesStr) {
         for(String typeStr : typesStr) {
             Material type = Material.getMaterial(typeStr);
-            if(type == null) continue;
-            this.type = type;
-            return;
+            if(type != null) {
+                this.type = type;
+                return;
+            }
         }
         this.type = null;
     }

@@ -12,9 +12,10 @@ public enum VSound {
     VSound(String... soundsStr) {
         for(String soundStr : soundsStr) {
             Sound sound = Utils.getEnum(Sound.class, soundStr);
-            if(sound == null) continue;
-            this.sound = sound;
-            return;
+            if(sound != null) {
+                this.sound = sound;
+                return;
+            }
         }
         this.sound = null;
     }
