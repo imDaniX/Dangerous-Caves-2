@@ -31,7 +31,7 @@ jobs:
         run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/dangerous-caves/target/dangerous-caves*.jar
 
       - name: Copy config
-        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/dangerous-caves-core/target/classes/config.yml
+        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/dc-core/target/classes/config.yml
 
       - uses: actions/upload-artifact@master
         with:
