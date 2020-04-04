@@ -5,6 +5,7 @@ import me.imdanix.caves.caverns.CaveIns;
 import me.imdanix.caves.caverns.CavesAging;
 import me.imdanix.caves.caverns.DepthTemperature;
 import me.imdanix.caves.commands.Commander;
+import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
@@ -33,6 +34,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         DangerousCaves.PLUGIN = this;
+        Compatibility.init();
 
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config"); cfg.create(true);
