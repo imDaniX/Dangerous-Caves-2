@@ -38,27 +38,28 @@ public final class AliasMethod<T> {
         if (collection.isEmpty())
             throw new IllegalArgumentException("Probability vector must be nonempty.");
 
-        List<Double> probabilities = new ArrayList<>();
+        double[] probabilities = new double[collection.size()];
         items = new ArrayList<>();
+
         double sum = 0;
         for(T item : collection) {
             items.add(item);
             sum += funct.applyAsDouble(item);
         }
-        for(T item : items) {
-            probabilities.add(funct.applyAsDouble(item) / sum);
+        for(int i = 0; i < items.size(); i++) {
+            probabilities[i] = funct.applyAsDouble(items.get(i)) / sum;
         }
 
-        probability = new double[probabilities.size()];
-        alias = new int[probabilities.size()];
+        probability = new double[probabilities.length];
+        alias = new int[probabilities.length];
 
-        final double average = 1.0 / probabilities.size();
+        final double average = 1.0 / probabilities.length;
 
         Deque<Integer> small = new ArrayDeque<>();
         Deque<Integer> large = new ArrayDeque<>();
 
-        for (int i = 0; i < probabilities.size(); ++i) {
-            if (probabilities.get(i) >= average)
+        for (int i = 0; i < probabilities.length; ++i) {
+            if (probabilities[i] >= average)
                 large.add(i);
             else
                 small.add(i);
@@ -68,13 +69,12 @@ public final class AliasMethod<T> {
             int less = small.removeLast();
             int more = large.removeLast();
 
-            probability[less] = probabilities.get(less) * probabilities.size();
+            probability[less] = probabilities[less] * probabilities.length;
             alias[less] = more;
 
-            probabilities.set(more,
-                    (probabilities.get(more) + probabilities.get(less)) - average);
+            probabilities[more] = probabilities[more] + probabilities[less] - average;
 
-            if (probabilities.get(more) >= 1.0 / probabilities.size())
+            if (probabilities[more] >= 1.0 / probabilities.length)
                 large.add(more);
             else
                 small.add(more);
@@ -90,9 +90,5 @@ public final class AliasMethod<T> {
         int column = Rnd.nextInt(probability.length);
         boolean coinToss = Rnd.chance(probability[column]);
         return items.get(coinToss ? column : alias[column]);
-    }
-
-    public int size() {
-        return items.size();
     }
 }

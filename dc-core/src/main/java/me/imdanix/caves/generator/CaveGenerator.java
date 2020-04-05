@@ -24,8 +24,8 @@ import java.util.Set;
 
 @Configurable.Path("generator")
 public class CaveGenerator extends BlockPopulator implements Configurable {
-
     private final Configuration cfg;
+
     private double chance;
     private int maxTries;
 
@@ -41,6 +41,8 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("chance", 50) / 100;
         maxTries = cfg.getInt("max-tries", 3);
+
+        StructureGroup.setMimicChance(cfg.getDouble("mimic-chance") / 100);
 
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);

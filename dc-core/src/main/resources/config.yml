@@ -206,6 +206,9 @@ generator:
     boulders: 1
     buildings: 1
 
+  # Chance of spawning a mimic inside custom structure with chests
+  mimic-chance: 10
+
 #
 # Mob-related things
 #
@@ -232,7 +235,7 @@ mobs:
   # Chance formula - (mob_priority)/(total_priority)
 
   alpha-spider:
-    priority: 1
+    priority: 10
     name: "&4Alpha Spider"
     # When spider is damaged
     cobweb-chance: 14.29
@@ -240,7 +243,7 @@ mobs:
     minion-chance: 6.67
 
   crying-bat:
-    priority: 1
+    priority: 10
     name: "&4Crying Bat"
     # Every ENTITY tick
     cry-chance: 3.33
@@ -248,7 +251,7 @@ mobs:
     death-chance: 20
 
   dead-miner:
-    priority: 1
+    priority: 10
     name: "&4Dead Miner"
     # Get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
@@ -267,13 +270,13 @@ mobs:
       - TORCH
 
   hexed-armor:
-    priority: 1
+    priority: 10
     name: "&4Hexed Armor"
     # When player is attacked
     apply-chance: 25
 
   hungering-darkness:
-    priority: 1
+    priority: 10
     name: ""
     # Kill the entity on light?
     remove-on-light: true
@@ -281,7 +284,7 @@ mobs:
     damage: 200
 
   lava-creeper:
-    priority: 1
+    priority: 10
     name: "&4Lava Creeper"
     # When Lava Creeper is damaged. In ticks
     fire-touch: 10
@@ -296,21 +299,21 @@ mobs:
       lava: 16.67
 
   magma-monster:
-    priority: 1
+    priority: 10
+    name: "&4Magma Monster"
     # Placing fire. Every ENTITY tick
     fire-chance: 7.14
     # Placing magma-blocks. Every ENTITY tick
     magma-chance: 3.57
-    name: "&4Magma Monster"
 
   smoke-demon:
-    priority: 1
+    priority: 10
     name: ""
     # Radius in blocks
     harm-radius: 3
 
   tnt-creeper:
-    priority: 1
+    priority: 10
     name: "&4TNT Creeper"
     # Amount of TNT to spawn after explosion
     tnt-amount: 2
@@ -318,8 +321,20 @@ mobs:
     explosion-chance: 33.33
 
   watcher:
-    priority: 1
+    priority: 10
+    name: "&4Watcher"
     # Get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
-    name: "&4Watcher"
+
+  mimic:
+    priority: 0
+    name: "&4Mimic"
+    drop-items:
+      - BOOK
+      - SADDLE
+      - OAK_PLANKS
+      - TORCH
+      - COAL
+      - GOLDEN_APPLE
+      - COBWEB
