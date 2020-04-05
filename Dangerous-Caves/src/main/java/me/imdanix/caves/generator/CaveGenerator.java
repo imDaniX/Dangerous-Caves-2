@@ -1,8 +1,8 @@
 package me.imdanix.caves.generator;
 
+import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.AliasMethod;
 import org.bukkit.Bukkit;

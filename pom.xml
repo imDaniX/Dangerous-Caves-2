@@ -12,8 +12,8 @@
         <module>compatibility/preaqua</module>
         <module>compatibility/aqua</module>
         <module>compatibility/postaqua</module>
-        <module>dc-core</module>
-        <module>dangerous-caves</module>
+        <module>Dangerous-Caves</module>
+        <module>build</module>
     </modules>
     <packaging>pom</packaging>
 

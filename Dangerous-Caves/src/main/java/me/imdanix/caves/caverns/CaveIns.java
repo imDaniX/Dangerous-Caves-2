@@ -1,8 +1,8 @@
 package me.imdanix.caves.caverns;
 
+import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.Locations;
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.GameMode;

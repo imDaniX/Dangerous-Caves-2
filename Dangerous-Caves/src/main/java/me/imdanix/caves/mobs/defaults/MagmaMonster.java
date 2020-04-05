@@ -1,7 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.PlayerAttackedEvent;

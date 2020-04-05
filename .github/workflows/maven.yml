@@ -28,10 +28,10 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Copy artifact
-        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/dangerous-caves/target/DangerousCaves-*.jar
+        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/build/target/Dangerous-Caves-*.jar
 
       - name: Copy config
-        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/dc-core/target/classes/config.yml
+        run: mkdir -p ./out/ && cp -t ./out/ /home/runner/work/Dangerous-Caves-2/Dangerous-Caves-2/Dangerous-Caves/target/classes/config.yml
 
       - uses: actions/upload-artifact@master
         with:

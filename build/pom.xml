@@ -9,18 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dangerous-caves</artifactId>
+    <artifactId>build</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>dc-core</artifactId>
+            <artifactId>Dangerous-Caves</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>DangerousCaves-${subVersion}</finalName>
+        <finalName>Dangerous-Caves-${subVersion}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
