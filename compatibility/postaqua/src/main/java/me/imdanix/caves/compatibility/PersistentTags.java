@@ -7,7 +7,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
-public class PersistantTags implements TagsProvider {
+public class PersistentTags implements TagsProvider {
     private final NamespacedKey MOB_KEY = new NamespacedKey(Bukkit.getPluginManager().getPlugin("DangerousCaves"), "mob-type");
 
     @Override

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>dangerous-caves-main</artifactId>
         <groupId>me.imdanix.plugins</groupId>
-        <version>2.1.0</version>
+        <version>2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,14 +17,10 @@
             <artifactId>dc-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>preaqua</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
+        <finalName>DangerousCaves-${subVersion}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
