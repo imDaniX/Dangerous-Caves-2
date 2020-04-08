@@ -1,5 +1,6 @@
 package me.imdanix.caves.mobs;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.compatibility.Compatibility;
@@ -20,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
@@ -121,8 +123,11 @@ public class MobsManager implements Listener, Tickable, Configurable {
             if(!(entity instanceof LivingEntity)) continue;
             LivingEntity livingEntity = (LivingEntity) entity;
             String type = Compatibility.getTag(livingEntity);
-            if(type != null)
-                handle(livingEntity, (TickableMob) mobs.get(type));
+            if(type != null) {
+                CustomMob mob = mobs.get(type);
+                if(mob instanceof TickableMob)
+                    handle(livingEntity, (TickableMob) mob);
+            }
         }
     }
 
@@ -154,6 +159,13 @@ public class MobsManager implements Listener, Tickable, Configurable {
             if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
         }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onRemove(EntityRemoveFromWorldEvent event) {
+            Entity entity = event.getEntity();
+            if(entity instanceof LivingEntity)
+                unhandle((LivingEntity) entity);
+        }
     }
 
     private class SpigotEventListener implements Listener {
@@ -162,6 +174,15 @@ public class MobsManager implements Listener, Tickable, Configurable {
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
         }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onDeath(EntityDeathEvent event) {
+            unhandle(event.getEntity());
+        }
+    }
+
+    public static void unhandle(LivingEntity entity) {
+        tickingEntities.remove(entity);
     }
 
     public static void handle(LivingEntity entity, TickableMob mob) {
