@@ -3,6 +3,7 @@ package me.imdanix.caves.compatibility;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
@@ -17,8 +18,10 @@ public class PersistentTags implements TagsProvider {
 
     @Override
     public void setTag(Block block, String tag) {
-        if(!(block.getState() instanceof PersistentDataHolder)) return;
-        ((PersistentDataHolder)block.getState()).getPersistentDataContainer().set(MOB_KEY, PersistentDataType.STRING, tag);
+        BlockState state = block.getState();
+        if(!(state instanceof PersistentDataHolder)) return;
+        ((PersistentDataHolder)state).getPersistentDataContainer().set(MOB_KEY, PersistentDataType.STRING, tag);
+        state.update();
     }
 
     @Override

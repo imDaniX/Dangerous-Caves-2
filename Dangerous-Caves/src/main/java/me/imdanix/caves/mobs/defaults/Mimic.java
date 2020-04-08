@@ -17,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -101,8 +102,10 @@ public class Mimic extends TickableMob implements Configurable, Listener {
             LivingEntity entity = (LivingEntity) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.WITHER_SKELETON);
             setup(entity);
             entity.setHealth(health);
+            Player player = event.getPlayer();
             event.getPlayer().playSound(event.getPlayer().getEyeLocation(), VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
             event.getPlayer().addPotionEffect(BLINDNESS);
+            ((Monster)entity).setTarget(player);
         }
     }
 
