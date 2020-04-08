@@ -20,12 +20,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DangerousCaves extends JavaPlugin implements Listener {
-    public static Plugin PLUGIN;
-
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
@@ -33,8 +30,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        DangerousCaves.PLUGIN = this;
-        Compatibility.init();
+        Compatibility.init(this);
 
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config"); cfg.create(true);
@@ -43,7 +39,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
-        CavesAging cavesAging = new CavesAging();
+        CavesAging cavesAging = new CavesAging(this);
         DepthTemperature temperature = new DepthTemperature();
 
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -65,7 +61,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         } else cfg.register(generator);
 
         PluginCommand cmd = getCommand("dangerouscaves");
-        if(cmd != null) cmd.setExecutor(new Commander(mobsManager, cfg, dynamics));
+        if(cmd != null) cmd.setExecutor(new Commander(mobsManager, cfg, dynamics, getDescription().getVersion().split("-")));
 
         cfg.checkVersion();
 

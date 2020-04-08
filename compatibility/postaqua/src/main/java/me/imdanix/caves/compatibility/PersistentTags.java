@@ -1,15 +1,19 @@
 package me.imdanix.caves.compatibility;
 
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
 public class PersistentTags implements TagsProvider {
-    private final NamespacedKey MOB_KEY = new NamespacedKey(Bukkit.getPluginManager().getPlugin("DangerousCaves"), "mob-type");
+    private final NamespacedKey MOB_KEY;
+
+    public PersistentTags(Plugin plugin) {
+        MOB_KEY = new NamespacedKey(plugin, "mob-type");
+    }
 
     @Override
     public void setTag(LivingEntity entity, String tag) {

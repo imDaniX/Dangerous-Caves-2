@@ -1,6 +1,5 @@
 package me.imdanix.caves.commands;
 
-import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.ticks.Dynamics;
@@ -19,10 +18,14 @@ public class Commander implements CommandExecutor {
     private final Configuration cfg;
     private final Dynamics dynamics;
 
-    public Commander(MobsManager mobsManager, Configuration cfg, Dynamics dynamics) {
+    private final String[] version;
+
+    public Commander(MobsManager mobsManager, Configuration cfg, Dynamics dynamics, String[] version) {
         this.mobsManager = mobsManager;
         this.cfg = cfg;
         this.dynamics = dynamics;
+
+        this.version = version;
     }
 
     @Override
@@ -67,16 +70,20 @@ public class Commander implements CommandExecutor {
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
                 cfg.checkVersion();
                 break;
+            case "count":
+                if(!sender.hasPermission("dangerous.caves.command.count")) return false;
+                sender.sendMessage(Utils.clr("&aPlugin ticking &6" + MobsManager.handledCount() + " mobs."));
+                break;
             default: help(sender, label);
         }
         return true;
     }
 
-    private static void help(CommandSender sender, String label) {
-        String[] split = DangerousCaves.PLUGIN.getDescription().getVersion().split("-");
-        sender.sendMessage(Utils.clr("&6&lDangerousCaves &ev" + split[0] + " c" + split[1]));
+    private void help(CommandSender sender, String label) {
+        sender.sendMessage(Utils.clr("&6&lDangerousCaves &ev" + version[0] + " c" + version[1]));
         sender.sendMessage(Utils.clr("&a /" + label + " info &7- Get some info about your location."));
         sender.sendMessage(Utils.clr("&a /" + label + " summon [mob] &7- Spawn a mob on your location."));
+        sender.sendMessage(Utils.clr("&a /" + label + " count &7- Count of handled ticking mobs."));
         sender.sendMessage(Utils.clr("&a /" + label + " tick &7- Tick everything manually."));
         sender.sendMessage(Utils.clr("&a /" + label + " reload &7- Reload plugin configuration."));
     }

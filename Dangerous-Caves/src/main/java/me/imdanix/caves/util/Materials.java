@@ -1,7 +1,11 @@
 package me.imdanix.caves.util;
 
 import me.imdanix.caves.compatibility.VMaterial;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +38,28 @@ public final class Materials {
         LEGGINGS = leggings.toArray(new Material[0]);
         CHESTPLATES = chestplates.toArray(new Material[0]);
         BOOTS = boots.toArray(new Material[0]);
+    }
+
+    public static ItemStack getColored(EquipmentSlot slot, int r, int g, int b) {
+        ItemStack item;
+        switch (slot) {
+            default: return null;
+            case HEAD:
+                item = new ItemStack(Material.LEATHER_HELMET);
+                break;
+            case CHEST:
+                item = new ItemStack(Material.LEATHER_CHESTPLATE);
+                break;
+            case LEGS:
+                item = new ItemStack(Material.LEATHER_LEGGINGS);
+                break;
+            case FEET:
+                item = new ItemStack(Material.LEATHER_BOOTS);
+                break;
+        }
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setColor(Color.fromRGB(r, g, b));
+        item.setItemMeta(meta);
+        return item;
     }
 }

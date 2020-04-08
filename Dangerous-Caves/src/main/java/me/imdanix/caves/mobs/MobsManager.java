@@ -117,18 +117,20 @@ public class MobsManager implements Listener, Tickable, Configurable {
         return true;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkLoad(ChunkLoadEvent event) {
-        for(Entity entity : event.getChunk().getEntities()) {
-            if(!(entity instanceof LivingEntity)) continue;
-            LivingEntity livingEntity = (LivingEntity) entity;
-            String type = Compatibility.getTag(livingEntity);
-            if(type != null) {
-                CustomMob mob = mobs.get(type);
-                if(mob instanceof TickableMob)
-                    handle(livingEntity, (TickableMob) mob);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for(Entity entity : event.getChunk().getEntities()) {
+                if(!(entity instanceof LivingEntity)) continue;
+                LivingEntity livingEntity = (LivingEntity) entity;
+                String type = Compatibility.getTag(livingEntity);
+                if(type != null) {
+                    CustomMob mob = mobs.get(type);
+                    if(mob instanceof TickableMob)
+                        handle(livingEntity, (TickableMob) mob);
+                }
             }
-        }
+        }, 1);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -179,6 +181,10 @@ public class MobsManager implements Listener, Tickable, Configurable {
         public void onDeath(EntityDeathEvent event) {
             unhandle(event.getEntity());
         }
+    }
+
+    public static int handledCount() {
+        return tickingEntities.size();
     }
 
     public static void unhandle(LivingEntity entity) {

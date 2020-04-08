@@ -4,10 +4,10 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,8 +16,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -29,18 +29,13 @@ public class MagmaMonster extends TickableMob implements Listener, Configurable 
             Integer.MAX_VALUE, 1, false, false);
 
     private static final ItemStack CHESTPLATE;
-    private static final ItemStack BOOTS;
     private static final ItemStack LEGGINGS;
+    private static final ItemStack BOOTS;
     private static final ItemStack POWDER;
     static {
-        CHESTPLATE = new ItemStack(Material.LEATHER_CHESTPLATE);
-        LeatherArmorMeta meta = (LeatherArmorMeta) CHESTPLATE.getItemMeta();
-        meta.setColor(Color.fromRGB(252, 115, 69));
-        CHESTPLATE.setItemMeta(meta);
-        BOOTS = new ItemStack(Material.LEATHER_LEGGINGS);
-        BOOTS.setItemMeta(meta);
-        LEGGINGS = new ItemStack(Material.LEATHER_BOOTS);
-        LEGGINGS.setItemMeta(meta);
+        CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 115, 57, 34);
+        LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 115, 57, 34);
+        BOOTS = Materials.getColored(EquipmentSlot.FEET, 115, 57, 34);
         POWDER = new ItemStack(Material.BLAZE_POWDER);
     }
 
@@ -85,6 +80,8 @@ public class MagmaMonster extends TickableMob implements Listener, Configurable 
 
     @Override
     public void tick(LivingEntity entity) {
+        entity.setFireTicks(20);
+
         if(fireChance > 0 && Rnd.chance(fireChance)) {
             Block block = entity.getLocation().getBlock();
             if(Compatibility.isAir(block.getType()))

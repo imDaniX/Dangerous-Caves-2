@@ -1,31 +1,31 @@
 package me.imdanix.caves.compatibility;
 
-import me.imdanix.caves.DangerousCaves;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 public class Compatibility {
     private static MaterialsProvider materials;
     private static TagsProvider tags;
 
-    public static void init() {
+    public static void init(Plugin plugin) {
         int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1], 12);
         if(version < 13) {
             materials = new LegacyMaterials();
             tags = new EffectTags();
-            DangerousCaves.PLUGIN.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
+            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
         } else if(version == 13) {
             materials = new FlattenedMaterials();
             tags = new EffectTags();
-            DangerousCaves.PLUGIN.getLogger().info("Using FlattenedMaterials(from 1.13) with EffectTags(up to 1.13.2)");
+            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with EffectTags(up to 1.13.2)");
         } else {
             materials = new FlattenedMaterials();
-            tags = new PersistentTags();
-            DangerousCaves.PLUGIN.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
+            tags = new PersistentTags(plugin);
+            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
         }
     }
 

@@ -6,9 +6,9 @@ import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,8 +27,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -49,14 +49,9 @@ public class Mimic extends TickableMob implements Configurable, Listener {
     private static final ItemStack PLANKS;
     static {
         CHEST = new ItemStack(Material.CHEST);
-        CHESTPLATE = new ItemStack(Material.LEATHER_CHESTPLATE);
-        LeatherArmorMeta meta = (LeatherArmorMeta) CHESTPLATE.getItemMeta();
-        meta.setColor(Color.fromRGB(194, 105, 18));
-        CHESTPLATE.setItemMeta(meta);
-        LEGGINGS = new ItemStack(Material.LEATHER_BOOTS);
-        LEGGINGS.setItemMeta(meta);
-        BOOTS = new ItemStack(Material.LEATHER_LEGGINGS);
-        BOOTS.setItemMeta(meta);
+        CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 194, 105, 18);
+        LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 194, 105, 18);
+        BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
         PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
     }
 

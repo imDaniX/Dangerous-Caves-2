@@ -1,6 +1,5 @@
 package me.imdanix.caves.caverns;
 
-import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
@@ -18,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.lang.ref.Reference;
@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 @Configurable.Path("caverns.aging")
 public class CavesAging implements Tickable, Configurable {
     private static final BlockFace[] REAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,BlockFace.UP,BlockFace.DOWN};
+    private final Plugin plugin;
     private final Map<String, Set<Bound>> skippedChunks;
     private final Set<Material> replaceBlocks;
     private final Set<String> worlds;
@@ -44,7 +45,8 @@ public class CavesAging implements Tickable, Configurable {
     private Predicate<Block> lightLevelCheck;
     private int schedule;
 
-    public CavesAging() {
+    public CavesAging(Plugin plugin) {
+        this.plugin = plugin;
         skippedChunks = new HashMap<>();
         worlds = new HashSet<>();
         replaceBlocks = new HashSet<>();
@@ -106,7 +108,7 @@ public class CavesAging implements Tickable, Configurable {
             int timer = 2;
             BukkitScheduler scheduler = Bukkit.getScheduler();
             for(QueuedChunk queuedChunk : chunks) {
-                scheduler.runTaskLater(DangerousCaves.PLUGIN,
+                scheduler.runTaskLater(plugin,
                         () -> queuedChunk.doStuff(this::proceedChunk),
                         timer
                 );
