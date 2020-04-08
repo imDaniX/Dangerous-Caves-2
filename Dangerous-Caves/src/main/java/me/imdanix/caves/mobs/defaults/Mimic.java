@@ -9,6 +9,7 @@ import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -43,8 +44,8 @@ public class Mimic extends TickableMob implements Configurable, Listener {
 
     private static final ItemStack CHEST;
     private static final ItemStack CHESTPLATE;
-    private static final ItemStack BOOTS;
     private static final ItemStack LEGGINGS;
+    private static final ItemStack BOOTS;
     private static final ItemStack PLANKS;
     static {
         CHEST = new ItemStack(Material.CHEST);
@@ -52,10 +53,10 @@ public class Mimic extends TickableMob implements Configurable, Listener {
         LeatherArmorMeta meta = (LeatherArmorMeta) CHESTPLATE.getItemMeta();
         meta.setColor(Color.fromRGB(194, 105, 18));
         CHESTPLATE.setItemMeta(meta);
-        BOOTS = new ItemStack(Material.LEATHER_LEGGINGS);
-        BOOTS.setItemMeta(meta);
         LEGGINGS = new ItemStack(Material.LEATHER_BOOTS);
         LEGGINGS.setItemMeta(meta);
+        BOOTS = new ItemStack(Material.LEATHER_LEGGINGS);
+        BOOTS.setItemMeta(meta);
         PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
     }
 
@@ -83,6 +84,7 @@ public class Mimic extends TickableMob implements Configurable, Listener {
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         EntityEquipment equipment = entity.getEquipment();
+        equipment.setHelmet(CHEST);
         equipment.setItemInMainHand(PLANKS);
         equipment.setItemInOffHand(PLANKS);
         equipment.setChestplate(CHESTPLATE);    equipment.setChestplateDropChance(0);
@@ -99,13 +101,15 @@ public class Mimic extends TickableMob implements Configurable, Listener {
             if(tag == null || !tag.startsWith("mimic-")) return;
             double health = Double.parseDouble(tag.substring(6));
             event.setCancelled(true);
-            LivingEntity entity = (LivingEntity) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.WITHER_SKELETON);
+            Location loc = block.getLocation();
+            LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc.add(0.5, 0, 0.5), EntityType.WITHER_SKELETON);
             setup(entity);
             entity.setHealth(health);
             Player player = event.getPlayer();
-            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
-            event.getPlayer().addPotionEffect(BLINDNESS);
+            loc.getWorld().playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
+            player.addPotionEffect(BLINDNESS);
             ((Monster)entity).setTarget(player);
+            block.setType(Material.AIR);
         }
     }
 
@@ -131,7 +135,7 @@ public class Mimic extends TickableMob implements Configurable, Listener {
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
         if(((Monster)entity).getTarget() == null && Compatibility.isAir(block.getType())) {
-            block.setType(Material.CHEST, false);
+            block.setType(Material.CHEST);
             Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rnd.nextInt(4)]);
             Compatibility.setTag(block, "mimic-" + entity.getHealth());
             entity.remove();
