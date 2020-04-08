@@ -202,7 +202,7 @@ public class CavesAging implements Tickable, Configurable {
         public boolean equals(Object o) {
             if(!(o instanceof QueuedChunk)) return false;
             QueuedChunk chunk = (QueuedChunk) o;
-            return chunk.x == x && chunk.z == z && chunk.world == world;
+            return chunk.x == x && chunk.z == z && chunk.world.get() == world.get();
         }
     }
 }
