@@ -30,9 +30,9 @@ public final class Materials {
             }
         }
         helmets.add(VMaterial.CARVED_PUMPKIN.get());
-        HELMETS = (Material[]) helmets.toArray();
-        LEGGINGS = (Material[]) leggings.toArray();
-        CHESTPLATES = (Material[]) chestplates.toArray();
-        BOOTS = (Material[]) boots.toArray();
+        HELMETS = helmets.toArray(new Material[0]);
+        LEGGINGS = leggings.toArray(new Material[0]);
+        CHESTPLATES = chestplates.toArray(new Material[0]);
+        BOOTS = boots.toArray(new Material[0]);
     }
 }
