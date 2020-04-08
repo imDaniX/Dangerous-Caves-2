@@ -44,15 +44,19 @@ public final class Materials {
         ItemStack item;
         switch (slot) {
             default: return null;
+
             case HEAD:
                 item = new ItemStack(Material.LEATHER_HELMET);
                 break;
+
             case CHEST:
                 item = new ItemStack(Material.LEATHER_CHESTPLATE);
                 break;
+
             case LEGS:
                 item = new ItemStack(Material.LEATHER_LEGGINGS);
                 break;
+
             case FEET:
                 item = new ItemStack(Material.LEATHER_BOOTS);
                 break;

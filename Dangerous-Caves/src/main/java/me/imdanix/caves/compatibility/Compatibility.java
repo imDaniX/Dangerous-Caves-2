@@ -13,19 +13,19 @@ public class Compatibility {
     private static TagsProvider tags;
 
     public static void init(Plugin plugin) {
-        int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1], 12);
+        int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
         if(version < 13) {
+            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
             materials = new LegacyMaterials();
             tags = new EffectTags();
-            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
         } else if(version == 13) {
+            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with EffectTags(up to 1.13.2)");
             materials = new FlattenedMaterials();
             tags = new EffectTags();
-            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with EffectTags(up to 1.13.2)");
         } else {
+            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
             materials = new FlattenedMaterials();
             tags = new PersistentTags(plugin);
-            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
         }
     }
 
