@@ -1,5 +1,6 @@
 package me.imdanix.caves.generator.defaults;
 
+import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.generator.StructureGroup;
@@ -7,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -110,7 +112,8 @@ public class TrapsGroup extends StructureGroup implements Configurable {
             case 8:
                 setType(loc, VMaterial.STONE_PRESSURE_PLATE.get());
                 setType(loc.subtract(0, 1, 0), Material.DISPENSER);
-                ((Dispenser) loc.getBlock().getState()).getInventory().addItem(new ItemStack(Material.ARROW, rnd.nextInt(3) + 1));
+                Compatibility.rotate(loc.getBlock(), BlockFace.UP);
+                ((Dispenser) loc.getBlock().getState()).getInventory().addItem(new ItemStack(Material.ARROW, 3));
                 break;
 
             default:
