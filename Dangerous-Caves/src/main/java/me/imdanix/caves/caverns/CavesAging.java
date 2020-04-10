@@ -196,7 +196,8 @@ public class CavesAging implements Tickable, Configurable {
 
         @Override
         public int hashCode() {
-            return (x >>> 15) * (z >>> 31) * world.hashCode() * 1907;
+            World world = this.world.get();
+            return (x >>> 15) * (z >>> 31) * (world != null ? world.hashCode() * 1907 : 0);
         }
 
         @Override
