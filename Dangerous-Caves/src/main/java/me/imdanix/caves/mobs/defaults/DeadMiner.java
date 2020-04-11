@@ -8,6 +8,7 @@ import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -86,8 +87,10 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
         if(block.getLightLevel() > 0) return;
-        if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType()))
+        if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH);
+            block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+        }
     }
 
     @Override
