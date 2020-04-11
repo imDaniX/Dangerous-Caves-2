@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -130,6 +131,8 @@ public class Mimic extends TickableMob implements Configurable, Listener {
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
         if(((Monster)entity).getTarget() == null && Compatibility.isAir(block.getType())) {
+            for(BlockFace face : Locations.HORIZONTAL_FACES)
+                if(block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST);
             Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rnd.nextInt(4)]);
             Compatibility.setTag(block, "mimic-" + entity.getHealth());
