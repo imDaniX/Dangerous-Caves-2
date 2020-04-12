@@ -70,8 +70,7 @@ public class DeadMiner extends TickableMob implements Configurable, Listener {
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(head);
-        equipment.setHelmetDropChance(0);
+        equipment.setHelmet(head); equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rnd.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
         if(Rnd.nextBoolean())
             equipment.setChestplate(new ItemStack(Rnd.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));

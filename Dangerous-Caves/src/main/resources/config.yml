@@ -30,7 +30,9 @@ caverns:
     # Chance of cave-in while mining blocks
     # In percents
     chance: 0.25
-    # Sand-like fall. Can cause client-side lags and block drops
+    # Cuboid-shaped cave-ins
+    cuboid: false
+    # Sand-like fall. Can cause client-side lags and block drops, but looks fancy
     slow-fall: false
     # Immunity to cave-in if player has rabbit foot in inventory
     rabbit-foot: true
