@@ -92,7 +92,7 @@ public class Mimic extends TickableMob implements Configurable, Listener {
     public void onInteract(PlayerInteractEvent event) {
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if(block.getType() == Material.CHEST) {
+        if(block.getType() == Material.CHEST && !block.getRelative(BlockFace.UP).getType().isSolid()) {
             String tag = Compatibility.getTag(block);
             if(tag == null || !tag.startsWith("mimic-")) return;
             double health = Double.parseDouble(tag.substring(6));

@@ -135,12 +135,11 @@ public class CaveIns implements Listener, Configurable {
 
     private int[][] calcMap() {
         int[][] heightMap = new int[distance][distance];
-        for(int x = -radius; x <= radius; x++) {
-            for(int z = -radius; z <= radius; z++) {
-                heightMap[x+radius][z+radius] = cuboid ?
-                        distance :
-                        (((-x*x) + (-z*z))/radius + radius*2);
-            }
+        for(int x = -radius; x <= radius; x++)
+        for(int z = -radius; z <= radius; z++) {
+            heightMap[x+radius][z+radius] = cuboid ?
+                    distance :
+                    (((-x*x) + (-z*z))/radius + radius*2);
         }
         return heightMap;
     }
