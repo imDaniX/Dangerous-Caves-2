@@ -90,6 +90,7 @@ public class CaveIns implements Listener, Configurable {
                     block.setType(Material.AIR);
                 }));
             } else for(List<Block> blocks : allBlocks) {
+                if(blocks.isEmpty()) continue;
                 Block search = blocks.get(0).getRelative(BlockFace.DOWN);
 
                 if(search.getType().isSolid()) continue;
