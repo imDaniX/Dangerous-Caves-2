@@ -37,7 +37,7 @@ caverns:
     # Immunity to cave-in if player has rabbit foot in inventory
     rabbit-foot: true
     # Radius of cave-in
-    radius: 6
+    radius: 3
     # Maximal Y where cave-in may appear
     y-max: 25
 

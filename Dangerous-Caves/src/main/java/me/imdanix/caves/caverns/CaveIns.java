@@ -16,6 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.potion.PotionEffect;
@@ -63,7 +64,7 @@ public class CaveIns implements Listener, Configurable {
         heightMap = calcMap();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
         if(chance <= 0) return;
 
@@ -122,12 +123,13 @@ public class CaveIns implements Listener, Configurable {
 
             int xRel = blockLoc.getBlockX() + x;
             int zRel = blockLoc.getBlockZ() + z;
-
-            for(int y = heightMap[x][z] - pseudoRandom.next(); y > 0; y--) {
-                Block block = world.getBlockAt(xRel, yInit + (distance - y), zRel);
+            int heightMax = heightMap[x][z] - pseudoRandom.next();
+            for(int y = 0; y <= heightMax; y++) {
+                Block block = world.getBlockAt(xRel, yInit + y, zRel);
                 if(!Compatibility.isCave(block.getType())) break;
                 blocks.add(block);
             }
+
             allBlocks.add(blocks);
         }
 
@@ -142,6 +144,7 @@ public class CaveIns implements Listener, Configurable {
                     distance :
                     (((-x*x) + (-z*z))/radius + radius*2);
         }
+
         return heightMap;
     }
 
