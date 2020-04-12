@@ -126,7 +126,10 @@ public class CaveIns implements Listener, Configurable {
             int heightMax = heightMap[x][z] - pseudoRandom.next();
             for(int y = 0; y <= heightMax; y++) {
                 Block block = world.getBlockAt(xRel, yInit + y, zRel);
-                if(!Compatibility.isCave(block.getType())) break;
+                if(!Compatibility.isCave(block.getType())) {
+                    if(Compatibility.isAir(block.getType())) continue;
+                    break;
+                }
                 blocks.add(block);
             }
 
