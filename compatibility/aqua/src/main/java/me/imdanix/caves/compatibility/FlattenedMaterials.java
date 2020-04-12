@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.FaceAttachable;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +44,7 @@ public class FlattenedMaterials implements MaterialsProvider {
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
         if(data instanceof Switch) {
-            ((Switch) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
+            ((Switch) data).setFace(Switch.Face.FLOOR);
         } else if (data instanceof Directional) {
             ((Directional) data).setFacing(face);
         } else if(data instanceof MultipleFacing) {
