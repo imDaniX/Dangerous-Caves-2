@@ -1,5 +1,6 @@
 package me.imdanix.caves.commands;
 
+import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.ticks.Dynamics;
@@ -20,12 +21,16 @@ public class Commander implements CommandExecutor {
 
     private final String[] version;
 
-    public Commander(MobsManager mobsManager, Configuration cfg, Dynamics dynamics, String[] version) {
-        this.mobsManager = mobsManager;
-        this.cfg = cfg;
-        this.dynamics = dynamics;
+    public Commander(DangerousCaves plugin) {
+        this.mobsManager = plugin.getMobs();
+        this.cfg = plugin.getConfiguration();
+        this.dynamics = plugin.getDynamics();
 
-        this.version = version;
+        String version = plugin.getDescription().getVersion();
+        this.version = new String[] {
+                version.substring(0, version.indexOf("-")),
+                version.substring(version.lastIndexOf("-"+1))
+        };
     }
 
     @Override

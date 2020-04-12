@@ -61,7 +61,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         } else cfg.register(generator);
 
         PluginCommand cmd = getCommand("dangerouscaves");
-        if(cmd != null) cmd.setExecutor(new Commander(mobsManager, cfg, dynamics, getDescription().getVersion().split("-")));
+        if(cmd != null) cmd.setExecutor(new Commander(this));
 
         cfg.checkVersion();
 

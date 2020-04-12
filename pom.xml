@@ -17,8 +17,6 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>DangerousCaves</name>
-
     <description>Adds and improves mechanics in caves.</description>
     <properties>
         <cfgVersion>10</cfgVersion>
