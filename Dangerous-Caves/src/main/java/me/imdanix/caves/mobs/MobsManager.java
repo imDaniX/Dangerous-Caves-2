@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.WeakHashMap;
 @Configurable.Path("mobs")
 public class MobsManager implements Listener, Tickable, Configurable {
 
-    private static final Map<LivingEntity, TickableMob> tickingEntities = new WeakHashMap<>();
+    private static final Map<LivingEntity, TickableMob> tickingEntities = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
@@ -102,7 +103,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
             }
             mob.getValue().tick(entity);
         }
-        dead.forEach(tickingEntities::remove);
+        dead.forEach(MobsManager::unhandle);
     }
 
     @Override
