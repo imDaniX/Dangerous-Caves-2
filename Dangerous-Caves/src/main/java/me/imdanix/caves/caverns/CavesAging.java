@@ -36,7 +36,6 @@ public class CavesAging implements Tickable, Configurable {
     private final Map<String, Set<Bound>> skippedChunks;
     private final Set<Material> replaceBlocks;
     private final Set<String> worlds;
-    // TODO: Map<World, Set<QueuedChunk>> chunks
     private final Set<QueuedChunk> chunks;
 
     private int radius;

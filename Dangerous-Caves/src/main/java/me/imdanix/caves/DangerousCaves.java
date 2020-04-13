@@ -74,7 +74,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager(), event.getDamage());
             Bukkit.getPluginManager().callEvent(pEvent);
             event.setDamage(pEvent.getDamage());
-            event.setCancelled(pEvent.isCancelled());
+            if(pEvent.isCancelled()) event.setCancelled(true);
         }
     }
 

@@ -12,7 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-// TODO: Classes for each subcommand
 // TODO: TabCompleter
 public class Commander implements CommandExecutor {
     private final MobsManager mobsManager;
