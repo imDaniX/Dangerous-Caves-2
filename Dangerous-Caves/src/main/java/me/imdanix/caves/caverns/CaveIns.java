@@ -74,8 +74,7 @@ public class CaveIns implements Listener, Configurable {
                 !Compatibility.isCave(initBlock.getType())) return;
 
         Player player = event.getPlayer();
-        Location playerLoc = player.getLocation();
-        if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(playerLoc) ||
+        if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
         if(Rnd.chance(chance)) {
@@ -97,12 +96,9 @@ public class CaveIns implements Listener, Configurable {
                 if(search.getType().isSolid()) continue;
                 while(search.getY() > 2 && !search.getType().isSolid() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
 
-                int x = search.getX();
-                int y = search.getY();
-                int z = search.getZ();
                 for(Block block : blocks) {
-                    Block newBlock = world.getBlockAt(x, y++, z);
-                    newBlock.setType(block.getType());
+                    search = search.getRelative(BlockFace.UP);
+                    search.setType(block.getType());
                     block.setType(Material.AIR);
                 }
             }
