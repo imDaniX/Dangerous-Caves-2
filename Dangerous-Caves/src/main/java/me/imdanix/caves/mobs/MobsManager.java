@@ -1,7 +1,8 @@
 package me.imdanix.caves.mobs;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
@@ -21,21 +22,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import java.util.Collections;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 @Configurable.Path("mobs")
 public class MobsManager implements Listener, Tickable, Configurable {
 
-    private static final Map<LivingEntity, TickableMob> tickingEntities = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Multimap<TickableMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
 
     private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
@@ -94,16 +95,14 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @Override
     public void tick() {
-        Set<LivingEntity> dead = new HashSet<>();
-        for(Map.Entry<LivingEntity, TickableMob> mob : tickingEntities.entrySet()) {
-            LivingEntity entity = mob.getKey();
-            if(entity.isDead()) {
-                dead.add(entity);
-                continue;
-            }
-            mob.getValue().tick(entity);
+        Iterator<Map.Entry<TickableMob, Reference<LivingEntity>>> iter = tickingEntities.entries().iterator();
+        while(iter.hasNext()) {
+            Map.Entry<TickableMob, Reference<LivingEntity>> mob = iter.next();
+            LivingEntity entity = mob.getValue().get();
+            if(entity == null || entity.isDead()) {
+                iter.remove();
+            } else mob.getKey().tick(entity);
         }
-        dead.forEach(MobsManager::unhandle);
     }
 
     @Override
@@ -162,13 +161,6 @@ public class MobsManager implements Listener, Tickable, Configurable {
             if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
         }
-
-        @EventHandler(priority = EventPriority.HIGHEST)
-        public void onRemove(EntityRemoveFromWorldEvent event) {
-            Entity entity = event.getEntity();
-            if(entity instanceof LivingEntity)
-                unhandle((LivingEntity) entity);
-        }
     }
 
     private class SpigotEventListener implements Listener {
@@ -177,22 +169,13 @@ public class MobsManager implements Listener, Tickable, Configurable {
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
         }
-
-        @EventHandler(priority = EventPriority.HIGHEST)
-        public void onDeath(EntityDeathEvent event) {
-            unhandle(event.getEntity());
-        }
     }
 
     public static int handledCount() {
         return tickingEntities.size();
     }
 
-    public static void unhandle(LivingEntity entity) {
-        tickingEntities.remove(entity);
-    }
-
     public static void handle(LivingEntity entity, TickableMob mob) {
-        tickingEntities.put(entity, mob);
+        tickingEntities.put(mob, new WeakReference<>(entity));
     }
 }
