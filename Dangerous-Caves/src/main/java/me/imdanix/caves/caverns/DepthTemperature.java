@@ -4,6 +4,7 @@ import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
@@ -30,15 +31,14 @@ public class DepthTemperature implements Tickable, Configurable {
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
     private final List<String> messages;
-    private final Set<Material> coldItems;
     private final Set<String> worlds;
 
+    private Set<Material> coldItems;
     private double chance;
     private int y;
     private boolean fireRes;
 
     public DepthTemperature() {
-        coldItems = new HashSet<>();
         worlds = new HashSet<>();
         messages = new ArrayList<>();
     }
@@ -51,11 +51,7 @@ public class DepthTemperature implements Tickable, Configurable {
         fireRes = cfg.getBoolean("fire-resistance", true);
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
-        coldItems.clear();
-        for(String typeStr : cfg.getStringList("cold-items")) {
-            Material type = Utils.getEnum(Material.class, typeStr);
-            if(type != null) coldItems.add(type);
-        }
+        coldItems = Materials.getEnumSet(cfg.getStringList("cold-items"));
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
     }

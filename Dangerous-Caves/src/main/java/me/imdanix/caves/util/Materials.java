@@ -8,7 +8,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class Materials {
     public static final Material[] HELMETS;
@@ -38,6 +42,15 @@ public final class Materials {
         LEGGINGS = leggings.toArray(new Material[0]);
         CHESTPLATES = chestplates.toArray(new Material[0]);
         BOOTS = boots.toArray(new Material[0]);
+    }
+
+    public static Set<Material> getEnumSet(Collection<String> typeColl) {
+        Set<Material> materials = new HashSet<>();
+        for(String typeStr : typeColl) {
+            Material type = Material.getMaterial(typeStr.toUpperCase());
+            if(type != null) materials.add(type);
+        }
+        return materials.isEmpty() ? Collections.emptySet() : materials;
     }
 
     public static ItemStack getColored(EquipmentSlot slot, int r, int g, int b) {

@@ -24,6 +24,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -35,8 +37,9 @@ import java.util.Set;
 
 @Configurable.Path("mobs")
 public class MobsManager implements Listener, Tickable, Configurable {
-
     private static final Multimap<TickableMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
+
+    private final MetadataValue marker;
 
     private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
@@ -49,6 +52,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private boolean blockRename;
 
     public MobsManager(DangerousCaves plugin) {
+        marker = new FixedMetadataValue(plugin, new Object());
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             Bukkit.getPluginManager().registerEvents(new PaperEventListener(), plugin);
@@ -113,7 +117,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public boolean summon(String type, Location loc) {
         CustomMob mob = mobs.get(type.toLowerCase());
         if(mob == null) return false;
-        mob.spawn(loc);
+        mob.spawn(loc).setMetadata("DangerousCaves", marker);
         return true;
     }
 

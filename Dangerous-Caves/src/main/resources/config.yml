@@ -17,6 +17,12 @@ version: ${cfgVersion}
 # WORLD tick is 6300 vanilla ticks (about 5 minutes 15 seconds)
 # ENTITY tick is 4 vanilla ticks (about 200 milliseconds)
 
+# NOTE: Per-version
+# 1.13+ Materials(ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# -1.12 Materials https://helpch.at/docs/1.12.2/index.html?org/bukkit/Material.html
+# 1.13+ Sounds https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+# -1.12 Sounds https://helpch.at/docs/1.12.2/index.html?org/bukkit/Sound.html
+
 #
 # Cave-related things
 #
@@ -52,7 +58,6 @@ caverns:
     # Maximal Y where sound can be played
     y-max: 64
     # List of sounds to play - you can add more or remove some
-    # All the sounds can be found here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
     sounds:
       MUSIC_DRAGON:
         volume: 1
@@ -85,7 +90,6 @@ caverns:
     # Maximal Y where players can sense temperature
     y-max: 32
     # Immunity to high temperature if player has one of these items in inventory
-    # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
     cold-items:
       - POTION
       - SPLASH_POTION
@@ -122,20 +126,18 @@ caverns:
     # Chance of block will be affected
     change-chance: 2.5
     # Maximal light level of block (0-15)
-    # WARNING: Can cause lags if not 0. This option checks every side of block to check if there's some light
+    # WARNING: Can cause lags if > 0. This option checks every horizontal side of block to check if there's some light
     max-light-level: 0
-    # Schedule all the changes instead of instant chunk change. Can boost performance
-    # Time in ticks. 0 to disable. It's better to stay at 4 ticks.
-    schedule-timer: 0
+    # Vanilla ticks between chunk changes. Larger value - better performance, but slower process
+    # Large values(60+) are not recommended
+    schedule-timer: 4
+    # Maximal percentage of aged blocks per chunk
+    percentage: 70
     # List of materials that are affected by aging
-    # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
     replace-blocks:
       - STONE
       - ANDESITE
-      - DIORITE
-      - GRANITE
       - COBBLESTONE
-      - MOSSY_COBBLESTONE
       - COBBLESTONE_WALL
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)
@@ -170,7 +172,6 @@ generator:
     - world
 
   # Items in generated chests
-  # All the materials can be found here (ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
   chest-items:
     - OAK_PLANKS
     - TORCH
@@ -332,6 +333,7 @@ mobs:
   mimic:
     priority: 0
     name: "&4Mimic"
+    # List of dropped materials after death
     drop-items:
       - BOOK
       - SADDLE
