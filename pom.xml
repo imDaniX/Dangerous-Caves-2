@@ -19,7 +19,7 @@
 
     <description>Adds and improves mechanics in caves.</description>
     <properties>
-        <subVersion>1.3</subVersion>
+        <subVersion>1.4</subVersion>
         <cfgVersion>12</cfgVersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

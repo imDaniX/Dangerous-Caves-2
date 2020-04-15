@@ -117,7 +117,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public boolean summon(String type, Location loc) {
         CustomMob mob = mobs.get(type.toLowerCase());
         if(mob == null) return false;
-        mob.spawn(loc).setMetadata("DangerousCaves", marker);
+        spawn(mob, loc);
         return true;
     }
 
@@ -139,9 +139,12 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEntityEvent event) {
-        if(blockRename && event.getRightClicked() instanceof LivingEntity &&
-                Compatibility.getTag((LivingEntity)event.getRightClicked()) != null)
+        Entity entity = event.getRightClicked();
+        if(blockRename && entity instanceof LivingEntity &&
+                Compatibility.getTag((LivingEntity)entity) != null) {
             event.setCancelled(true);
+            ((LivingEntity)entity).setRemoveWhenFarAway(false);
+        }
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
@@ -153,10 +156,17 @@ public class MobsManager implements Listener, Tickable, Configurable {
             return false;
         CustomMob mob = mobsPool.next();
         if(mob.canSpawn(type, loc)) {
-            mob.spawn(loc);
+            spawn(mob, loc);
             return true;
         }
         return false;
+    }
+
+    private LivingEntity spawn(CustomMob mob, Location loc) {
+        LivingEntity entity = mob.spawn(loc);
+        entity.setMetadata("DangerousCaves", marker);
+        entity.setRemoveWhenFarAway(true);
+        return entity;
     }
 
     private class PaperEventListener implements Listener {
