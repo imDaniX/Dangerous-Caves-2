@@ -152,8 +152,8 @@ public class CavesAging implements Tickable, Configurable {
         for(int x = 0; x < 16; x++) for(int z = 0; z < 16; z++) for(int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
-            if(AGING_MATERIALS.contains(type)) count++;
-            if(count > maxCount) return Collections.emptySet();
+            if(AGING_MATERIALS.contains(type) && ++count > maxCount)
+                return Collections.emptySet();
 
             if(snapshot.getBlockSkyLight(x, y, z) > 0)
                 break;
