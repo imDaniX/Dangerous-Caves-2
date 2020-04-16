@@ -1,3 +1,21 @@
+/*
+ * Dangerous Caves 2 | Make your caves scary
+ * Copyright (C) 2020  imDaniX
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.Compatibility;
@@ -5,7 +23,6 @@ import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Material;
@@ -15,6 +32,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -73,9 +91,9 @@ public class MagmaMonster extends TickableMob implements Listener, Configurable 
     }
 
     @EventHandler
-    public void onAttack(PlayerAttackedEvent event) {
-        if(!isThis(event.getAttacker()) || Rnd.nextBoolean()) return;
-        event.getPlayer().setFireTicks(60);
+    public void onAttack(EntityDamageByEntityEvent event) {
+        if(!isThis(event.getDamager()) || Rnd.nextBoolean()) return;
+        event.getEntity().setFireTicks(60);
     }
 
     @Override
