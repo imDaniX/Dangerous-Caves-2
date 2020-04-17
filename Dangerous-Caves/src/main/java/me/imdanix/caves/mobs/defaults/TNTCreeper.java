@@ -18,7 +18,6 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -35,8 +34,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-@Configurable.Path("mobs.tnt-creeper")
-public class TNTCreeper extends CustomMob implements Configurable, Listener {
+public class TNTCreeper extends CustomMob implements Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
     private int weight;
     private String name;

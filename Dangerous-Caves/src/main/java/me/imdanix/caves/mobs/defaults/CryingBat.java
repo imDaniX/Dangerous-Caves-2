@@ -18,7 +18,6 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -26,10 +25,8 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Listener;
 
-@Configurable.Path("mobs.crying-bat")
-public class CryingBat extends TickableMob implements Configurable, Listener {
+public class CryingBat extends TickableMob {
     private int weight;
     private String name;
     private double cryChance;

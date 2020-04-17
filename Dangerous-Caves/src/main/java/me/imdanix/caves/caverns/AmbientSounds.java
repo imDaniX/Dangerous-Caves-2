@@ -38,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Configurable.Path("caverns.ambient")
 public class AmbientSounds implements Tickable, Configurable {
     private final List<WrappedSound> sounds;
     private final Set<String> worlds;
@@ -84,6 +83,11 @@ public class AmbientSounds implements Tickable, Configurable {
     @Override
     public TickLevel getTickLevel() {
         return TickLevel.WORLD;
+    }
+
+    @Override
+    public String getPath() {
+        return "caverns.ambient";
     }
 
     private static class WrappedSound {

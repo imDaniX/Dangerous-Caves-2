@@ -19,7 +19,6 @@
 package me.imdanix.caves.generator.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.generator.StructureGroup;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -29,8 +28,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Random;
 
-@Configurable.Path("generator.structures")
-public class PillarsGroup extends StructureGroup implements Configurable {
+public class PillarsGroup extends StructureGroup {
     private int weight;
 
     public PillarsGroup() {

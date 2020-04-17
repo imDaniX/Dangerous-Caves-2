@@ -19,12 +19,13 @@
 package me.imdanix.caves.mobs;
 
 import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-public abstract class CustomMob {
+public abstract class CustomMob implements Configurable {
     private final EntityType type;
     private final String id;
 
@@ -57,6 +58,11 @@ public abstract class CustomMob {
     }
 
     public abstract void setup(LivingEntity entity);
+
+    @Override
+    public String getPath() {
+        return "mobs." + id;
+    }
 
     public abstract int getWeight();
 }

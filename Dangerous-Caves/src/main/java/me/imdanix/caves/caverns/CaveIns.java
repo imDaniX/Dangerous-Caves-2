@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Configurable.Path("caverns.ins")
 public class CaveIns implements Listener, Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 65, 3);
     private static final PseudoRandom PSEUDO_RANDOM = new PseudoRandom(new int[]{1, 0, -1, 0, 0, 1, 0, 1, 2, 0, 2, -1, 2, -1});
@@ -163,6 +162,11 @@ public class CaveIns implements Listener, Configurable {
         }
 
         return heightMap;
+    }
+
+    @Override
+    public String getPath() {
+        return "caverns.ins";
     }
 
 }

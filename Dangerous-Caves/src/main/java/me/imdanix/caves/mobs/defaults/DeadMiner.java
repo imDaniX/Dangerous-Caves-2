@@ -20,7 +20,6 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -41,8 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-@Configurable.Path("mobs.dead-miner")
-public class DeadMiner extends TickableMob implements Configurable, Listener {
+public class DeadMiner extends TickableMob implements Listener {
     private int weight;
     private String name;
     private boolean torches;

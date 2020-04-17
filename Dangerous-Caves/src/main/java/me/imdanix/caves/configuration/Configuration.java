@@ -60,7 +60,7 @@ public class Configuration {
 
     public void register(Configurable conf) {
         if(!configurables.containsKey(conf)) {
-            String path = Configurable.getPath(conf);
+            String path = conf.getPath();
             configurables.put(conf, path);
             reload(conf, path);
         }

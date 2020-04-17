@@ -19,6 +19,7 @@
 package me.imdanix.caves.generator;
 
 import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -33,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public abstract class StructureGroup {
+public abstract class StructureGroup implements Configurable {
     private static final List<Material> chestItems = new ArrayList<>();
     private static double mimicChance;
 
@@ -48,6 +49,11 @@ public abstract class StructureGroup {
     }
 
     public abstract void generate(Random random, Chunk currentChunk, Block startBlock);
+
+    @Override
+    public String getPath() {
+        return "generator.structures";
+    }
 
     public abstract int getWeight();
 

@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-@Configurable.Path("generator")
 public class CaveGenerator extends BlockPopulator implements Configurable {
     private final Configuration cfg;
 
@@ -93,8 +92,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     public void register(StructureGroup group) {
         if(!structures.containsKey(group.getId())) {
             structures.put(group.getId(), group);
-            if(group instanceof Configurable)
-                cfg.register((Configurable)group);
+            cfg.register(group);
         }
     }
 
@@ -119,5 +117,10 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
                 return block;
         }
         return null;
+    }
+
+    @Override
+    public String getPath() {
+        return "generator";
     }
 }

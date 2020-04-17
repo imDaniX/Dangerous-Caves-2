@@ -19,7 +19,6 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.Compatibility;
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.TickableMob;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
@@ -39,8 +38,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-@Configurable.Path("mobs.watcher")
-public class Watcher extends TickableMob implements Configurable, Listener {
+public class Watcher extends TickableMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 30, 200);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 80, 2);

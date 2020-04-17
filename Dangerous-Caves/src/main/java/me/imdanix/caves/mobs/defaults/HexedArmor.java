@@ -18,7 +18,6 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.PlayerAttackedEvent;
@@ -39,8 +38,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-@Configurable.Path("mobs.hexed-armor")
-public class HexedArmor extends CustomMob implements Listener, Configurable {
+public class HexedArmor extends CustomMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
     private int weight;

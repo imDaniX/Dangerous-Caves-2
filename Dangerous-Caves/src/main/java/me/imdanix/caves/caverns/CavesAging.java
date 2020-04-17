@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-@Configurable.Path("caverns.aging")
 public class CavesAging implements Tickable, Configurable {
     private static final EnumSet<Material> AGING_MATERIALS = EnumSet.of(
             Material.COBBLESTONE, Material.STONE_BUTTON,
@@ -218,6 +217,11 @@ public class CavesAging implements Tickable, Configurable {
     @Override
     public TickLevel getTickLevel() {
         return TickLevel.WORLD;
+    }
+
+    @Override
+    public String getPath() {
+        return "caverns.aging";
     }
 
     private class DelayedChange {

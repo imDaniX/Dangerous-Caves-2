@@ -53,7 +53,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-@Configurable.Path("mobs")
 public class MobsManager implements Listener, Tickable, Configurable {
     private static final Multimap<TickableMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
 
@@ -105,11 +104,10 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getCustomType())) {
             Compatibility.cacheTag(mob.getCustomType());
+            plugin.getConfiguration().register(mob);
             mobs.put(mob.getCustomType(), mob);
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
-            if(mob instanceof Configurable)
-                plugin.getConfiguration().register((Configurable)mob);
             if(mob instanceof Tickable)
                 plugin.getDynamics().subscribe((Tickable)mob);
         }
@@ -186,6 +184,11 @@ public class MobsManager implements Listener, Tickable, Configurable {
         entity.setMetadata("DangerousCaves", marker);
         entity.setRemoveWhenFarAway(true);
         return entity;
+    }
+
+    @Override
+    public String getPath() {
+        return "mobs";
     }
 
     private class PaperEventListener implements Listener {

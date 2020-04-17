@@ -18,7 +18,6 @@
 
 package me.imdanix.caves.generator.defaults;
 
-import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.generator.StructureGroup;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -27,8 +26,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Random;
 
-@Configurable.Path("generator.structures")
-public class BouldersGroup extends StructureGroup implements Configurable {
+public class BouldersGroup extends StructureGroup {
     private int weight;
 
     public BouldersGroup() {
