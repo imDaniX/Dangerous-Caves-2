@@ -44,10 +44,10 @@ import java.util.function.ToDoubleFunction;
 
 public final class AliasMethod<T> {
 
+    private final List<T> elements;
+
     private final int[] alias;
     private final double[] probability;
-
-    private final List<T> items;
 
     public AliasMethod(Collection<T> collection, ToDoubleFunction<T> funct) {
         Objects.requireNonNull(collection);
@@ -57,15 +57,15 @@ public final class AliasMethod<T> {
             throw new IllegalArgumentException("Probability vector must be nonempty.");
 
         double[] probabilities = new double[collection.size()];
-        items = new ArrayList<>();
+        elements = new ArrayList<>();
 
         double sum = 0;
         for(T item : collection) {
-            items.add(item);
+            elements.add(item);
             sum += funct.applyAsDouble(item);
         }
-        for(int i = 0; i < items.size(); i++) {
-            probabilities[i] = funct.applyAsDouble(items.get(i)) / sum;
+        for(int i = 0; i < elements.size(); i++) {
+            probabilities[i] = funct.applyAsDouble(elements.get(i)) / sum;
         }
 
         probability = new double[probabilities.length];
@@ -107,6 +107,6 @@ public final class AliasMethod<T> {
     public T next() {
         int column = Rnd.nextInt(probability.length);
         boolean coinToss = Rnd.chance(probability[column]);
-        return items.get(coinToss ? column : alias[column]);
+        return elements.get(coinToss ? column : alias[column]);
     }
 }

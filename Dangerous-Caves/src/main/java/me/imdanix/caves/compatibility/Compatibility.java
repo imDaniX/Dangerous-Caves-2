@@ -34,6 +34,8 @@ public class Compatibility {
         int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
         if(version < 13) {
             plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
+            if(version < 12)
+                plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
             materials = new LegacyMaterials();
             tags = new EffectTags();
         } else if(version == 13) {

@@ -38,7 +38,7 @@
     </dependencies>
 
     <build>
-        <finalName>Dangerous-Caves-${version}.${subVersion}</finalName>
+        <finalName>Dangerous-Caves-${project.version}.${subVersion}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
