@@ -40,7 +40,7 @@ import org.bukkit.util.Vector;
 
 public class Watcher extends TickableMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
-    private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 30, 200);
+    private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 30, 4);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 80, 2);
     private static final Vector ZERO_VECTOR = new Vector(0, 0, 0);
 
