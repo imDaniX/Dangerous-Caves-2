@@ -52,7 +52,7 @@ public class DepthTemperature implements Tickable, Configurable {
 
     private Set<Material> coldItems;
     private double chance;
-    private int y;
+    private int yMax;
     private boolean fireRes;
 
     public DepthTemperature() {
@@ -60,11 +60,10 @@ public class DepthTemperature implements Tickable, Configurable {
         messages = new ArrayList<>();
     }
 
-
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("chance", 0.8) / 100;
-        y = cfg.getInt("y-max", 32);
+        yMax = cfg.getInt("y-max", 32);
         fireRes = cfg.getBoolean("fire-resistance", true);
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
@@ -82,10 +81,9 @@ public class DepthTemperature implements Tickable, Configurable {
                 if(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) continue;
                 if(fireRes && player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) continue;
                 Location loc = player.getLocation();
-                if(loc.getBlockY() > y || !Locations.isCave(loc)) continue;
-                if(loc.getBlock().getType() == Material.WATER || !Rnd.chance(chance)) continue;
+                if(loc.getBlockY() > yMax||loc.getBlock().getType() == Material.WATER||!Locations.isCave(loc)) continue;
 
-                if(!containsColdItem(player.getInventory())) {
+                if(Rnd.chance(chance) && !containsColdItem(player.getInventory())) {
                     player.addPotionEffect(SLOW);
                     player.addPotionEffect(SLOW_DIGGING);
                     if(!messages.isEmpty()) player.sendMessage(Rnd.randomItem(messages));
