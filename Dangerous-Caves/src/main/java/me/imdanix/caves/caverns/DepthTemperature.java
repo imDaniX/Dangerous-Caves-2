@@ -33,6 +33,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -82,22 +83,23 @@ public class DepthTemperature implements Tickable, Configurable {
                 if(fireRes && player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) continue;
                 Location loc = player.getLocation();
                 if(loc.getBlockY() > y || !Locations.isCave(loc)) continue;
-                if(loc.getBlock().getType() == Material.WATER) continue;
-                Inventory inv = player.getInventory();
-                boolean check = true;
-                for(Material item : coldItems) {
-                    if(inv.contains(item)) {
-                        check = false;
-                        break;
-                    }
-                }
-                if(check && Rnd.chance(chance)) {
+                if(loc.getBlock().getType() == Material.WATER || !Rnd.chance(chance)) continue;
+
+                if(!containsColdItem(player.getInventory())) {
                     player.addPotionEffect(SLOW);
                     player.addPotionEffect(SLOW_DIGGING);
                     if(!messages.isEmpty()) player.sendMessage(Rnd.randomItem(messages));
                 }
             }
         }
+    }
+
+    private boolean containsColdItem(Inventory inventory) {
+        for(ItemStack item : inventory.getContents()) {
+            if(item != null && coldItems.contains(item.getType()))
+                return true;
+        }
+        return false;
     }
 
     @Override
