@@ -102,7 +102,7 @@ public class DepthTemperature implements Tickable, Configurable {
 
     @Override
     public String getPath() {
-        return "caverns.aging";
+        return "caverns.temperature";
     }
 
     @Override
