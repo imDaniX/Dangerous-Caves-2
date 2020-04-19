@@ -40,6 +40,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public class DangerousCaves extends JavaPlugin implements Listener {
     private MobsManager mobsManager;
     private Dynamics dynamics;
@@ -48,6 +50,11 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        if(getDescription().getVersion().contains("SNAPSHOT")) {
+            getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
+                    "contain bugs. If you found some - report it to https://github.com/imDaniX/dangerous-caves/issues");
+        }
+
         Compatibility.init(this);
 
         dynamics = new Dynamics(this);
@@ -78,8 +85,8 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
         } else cfg.register(generator);
 
-        PluginCommand cmd = getCommand("dangerouscaves");
-        if(cmd != null) cmd.setExecutor(new Commander(this));
+        PluginCommand cmd = Objects.requireNonNull(getCommand("dangerouscaves"));
+        cmd.setExecutor(new Commander(this));
 
         cfg.checkVersion();
 
