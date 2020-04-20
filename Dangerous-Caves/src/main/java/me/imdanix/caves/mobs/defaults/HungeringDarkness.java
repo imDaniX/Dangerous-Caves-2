@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.TickableMob;
+import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
@@ -32,7 +32,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class HungeringDarkness extends TickableMob implements Listener {
+public class HungeringDarkness extends TickingMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
     private int weight;

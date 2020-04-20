@@ -22,8 +22,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-public abstract class TickableMob extends CustomMob {
-    public TickableMob(EntityType base, String id) {
+public abstract class TickingMob extends CustomMob {
+    public TickingMob(EntityType base, String id) {
         super(base, id);
     }
 

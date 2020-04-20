@@ -21,7 +21,7 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.VSound;
-import me.imdanix.caves.mobs.TickableMob;
+import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
@@ -53,7 +53,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mimic extends TickableMob implements Listener {
+public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private final List<Material> items;
     private int weight;

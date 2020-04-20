@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.TickableMob;
+import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -29,7 +29,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class SmokeDemon extends TickableMob {
+public class SmokeDemon extends TickingMob {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 120, 1);
     private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER, 120, 0);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);

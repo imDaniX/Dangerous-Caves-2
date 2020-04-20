@@ -54,7 +54,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class MobsManager implements Listener, Tickable, Configurable {
-    private static final Multimap<TickableMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
+    private static final Multimap<TickingMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
 
     private final MetadataValue marker;
 
@@ -115,9 +115,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @Override
     public void tick() {
-        Iterator<Map.Entry<TickableMob, Reference<LivingEntity>>> iter = tickingEntities.entries().iterator();
+        Iterator<Map.Entry<TickingMob, Reference<LivingEntity>>> iter = tickingEntities.entries().iterator();
         while(iter.hasNext()) {
-            Map.Entry<TickableMob, Reference<LivingEntity>> mob = iter.next();
+            Map.Entry<TickingMob, Reference<LivingEntity>> mob = iter.next();
             LivingEntity entity = mob.getValue().get();
             if(entity == null || entity.isDead()) {
                 iter.remove();
@@ -147,8 +147,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
                 if(type != null) {
                     entity.setMetadata("DangerousCaves", marker);
                     CustomMob mob = mobs.get(type);
-                    if(mob instanceof TickableMob)
-                        handle(livingEntity, (TickableMob) mob);
+                    if(mob instanceof TickingMob)
+                        handle(livingEntity, (TickingMob) mob);
                 }
             }
         }, 1);
@@ -211,7 +211,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         return tickingEntities.size();
     }
 
-    public static void handle(LivingEntity entity, TickableMob mob) {
+    public static void handle(LivingEntity entity, TickingMob mob) {
         tickingEntities.put(mob, new WeakReference<>(entity));
     }
 }
