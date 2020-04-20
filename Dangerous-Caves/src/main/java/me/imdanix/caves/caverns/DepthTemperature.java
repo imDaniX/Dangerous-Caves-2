@@ -107,6 +107,6 @@ public class DepthTemperature implements Tickable, Configurable {
 
     @Override
     public TickLevel getTickLevel() {
-        return TickLevel.ENTITY;
+        return TickLevel.PLAYER;
     }
 }

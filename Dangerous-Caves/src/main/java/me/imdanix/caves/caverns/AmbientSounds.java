@@ -82,7 +82,7 @@ public class AmbientSounds implements Tickable, Configurable {
 
     @Override
     public TickLevel getTickLevel() {
-        return TickLevel.WORLD;
+        return TickLevel.PLAYER;
     }
 
     @Override
