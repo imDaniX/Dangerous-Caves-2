@@ -44,10 +44,7 @@ public class Commander implements CommandExecutor {
         this.dynamics = plugin.getDynamics();
 
         String version = plugin.getDescription().getVersion();
-        this.version = new String[] {
-                version.substring(0, version.indexOf("-")),
-                version.substring(version.lastIndexOf("-"+1))
-        };
+        this.version = version.split(";");
     }
 
     @Override
