@@ -59,7 +59,7 @@ caverns:
       - world
     # Chance of sound will be played
     # Checking every PLAYER tick
-    chance: 3.18
+    chance: 6.35
     # Maximal Y where sound can be played
     y-max: 64
     # List of sounds to play - you can add more or remove some
