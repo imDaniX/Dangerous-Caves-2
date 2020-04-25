@@ -57,6 +57,9 @@ public class CaveIns implements Listener, Configurable {
     private boolean slowFall;
     private boolean rabbitFoot;
 
+    private boolean blastEffect;
+    private boolean blastSound;
+
     private PseudoRandom pseudoRandom;
     private int distance;
     private int[][] heightMap;
@@ -73,6 +76,10 @@ public class CaveIns implements Listener, Configurable {
         cuboid = cfg.getBoolean("cuboid", false);
         slowFall = cfg.getBoolean("slow-fall", false);
         rabbitFoot = cfg.getBoolean("rabbit-foot", true);
+
+        blastEffect = cfg.getBoolean("blast-effect", true);
+        blastSound = cfg.getBoolean("blast-sound", true);
+
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
@@ -96,8 +103,8 @@ public class CaveIns implements Listener, Configurable {
 
         if(Rnd.chance(chance)) {
             Location blockLoc = initBlock.getLocation();
-            world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-            player.addPotionEffect(BLINDNESS);
+            if(blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+            if(blastEffect) player.addPotionEffect(BLINDNESS);
 
             Set<List<Block>> allBlocks = getBlocksInRadius(blockLoc);
 

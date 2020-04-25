@@ -47,6 +47,10 @@ caverns:
     radius: 2
     # Maximal Y where cave-in may appear
     y-max: 25
+    # Give player effects on cave-in?
+    blast-effect: true
+    # Play explosion sound on cave-in?
+    blast-sound: true
 
   # Ambient sounds - special sound may be played underground
   ambient:
