@@ -51,6 +51,14 @@
                             <shadedPattern>me.imdanix.caves.metrics</shadedPattern>
                         </relocation>
                     </relocations>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/maven/**</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
                 <executions>
                     <execution>
