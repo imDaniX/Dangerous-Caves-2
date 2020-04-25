@@ -44,7 +44,7 @@ public class EffectTags implements TagsProvider {
         int thirdId = getThirdId(tag);
         entity.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Integer.MAX_VALUE, firstId, false, false));
         entity.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Integer.MAX_VALUE, secondId, false, false));
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, secondId, false, false));
+        entity.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, thirdId, false, false));
         tagsCache[firstId][secondId][thirdId] = tag;
     }
 
