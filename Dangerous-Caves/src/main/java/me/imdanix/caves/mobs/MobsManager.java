@@ -45,16 +45,15 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class MobsManager implements Listener, Tickable, Configurable {
-    private static final Multimap<TickingMob, Reference<LivingEntity>> tickingEntities = ArrayListMultimap.create();
+    private static final Multimap<TickingMob, UUID> tickingEntities = ArrayListMultimap.create();
 
     private final MetadataValue marker;
 
@@ -115,13 +114,13 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @Override
     public void tick() {
-        Iterator<Map.Entry<TickingMob, Reference<LivingEntity>>> iter = tickingEntities.entries().iterator();
+        Iterator<Map.Entry<TickingMob, UUID>> iter = tickingEntities.entries().iterator();
         while(iter.hasNext()) {
-            Map.Entry<TickingMob, Reference<LivingEntity>> mob = iter.next();
-            LivingEntity entity = mob.getValue().get();
-            if(entity == null || entity.isDead()) {
+            Map.Entry<TickingMob, UUID> mob = iter.next();
+            Entity entity = Bukkit.getEntity(mob.getValue());
+            if(entity == null) {
                 iter.remove();
-            } else mob.getKey().tick(entity);
+            } else mob.getKey().tick((LivingEntity) entity);
         }
     }
 
@@ -212,6 +211,6 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     public static void handle(LivingEntity entity, TickingMob mob) {
-        tickingEntities.put(mob, new WeakReference<>(entity));
+        tickingEntities.put(mob, entity.getUniqueId());
     }
 }
