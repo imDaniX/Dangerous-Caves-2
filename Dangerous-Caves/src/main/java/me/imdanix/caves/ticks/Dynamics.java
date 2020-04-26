@@ -47,7 +47,8 @@ public class Dynamics {
     }
 
     public void tick(TickLevel level) {
-        tickables.get(level).forEach(Tickable::tick);
+        for(Tickable tickable : tickables.get(level))
+            tickable.tick();
     }
 
 }
