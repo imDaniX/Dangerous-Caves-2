@@ -28,8 +28,8 @@ import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.AliasMethod;
 import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.WeightedPool;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -60,7 +60,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
     private final Set<String> worlds;
-    private AliasMethod<CustomMob> mobsPool;
+    private WeightedPool<CustomMob> mobsPool;
 
     private Set<EntityType> replaceTypes;
     private int yMin;
@@ -99,7 +99,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         if(mobsSet.isEmpty())
             chance = 0;
         else
-            mobsPool = new AliasMethod<>(mobsSet, CustomMob::getWeight);
+            mobsPool = new WeightedPool<>(mobsSet, CustomMob::getWeight);
     }
 
     public void register(CustomMob mob) {

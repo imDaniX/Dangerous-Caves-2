@@ -22,7 +22,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.AliasMethod;
+import me.imdanix.caves.util.random.WeightedPool;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -47,7 +47,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     private int maxTries;
 
     private final Map<String, StructureGroup> structures;
-    private AliasMethod<StructureGroup> structuresPool;
+    private WeightedPool<StructureGroup> structuresPool;
 
     public CaveGenerator(Configuration cfg) {
         this.cfg = cfg;
@@ -86,7 +86,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
         if(structuresSet.isEmpty())
             chance = 0;
         else
-            structuresPool = new AliasMethod<>(structuresSet, StructureGroup::getWeight);
+            structuresPool = new WeightedPool<>(structuresSet, StructureGroup::getWeight);
     }
 
     public void register(StructureGroup group) {
