@@ -262,6 +262,7 @@ mobs:
 
   alpha-spider:
     priority: 10
+    health: 16
     name: "&4Alpha Spider"
     # When spider is damaged
     cobweb-chance: 14.29
@@ -279,6 +280,7 @@ mobs:
   dead-miner:
     priority: 10
     name: "&4Dead Miner"
+    health: 20
     # Get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="
@@ -298,6 +300,9 @@ mobs:
   hexed-armor:
     priority: 10
     name: "&4Hexed Armor"
+    health: 20
+    # Add binding curse to armor
+    binding-curse: true
     # When player is attacked
     apply-chance: 25
 
@@ -312,6 +317,7 @@ mobs:
   lava-creeper:
     priority: 10
     name: "&4Lava Creeper"
+    health: 20
     # When Lava Creeper is damaged. In ticks
     fire-touch: 10
     # Radius in blocks
@@ -327,6 +333,7 @@ mobs:
   magma-monster:
     priority: 10
     name: "&4Magma Monster"
+    health: 20
     # If monster is extinguished it will receive damage
     extinguished-damage: false
     # Placing fire. Every ENTITY tick
@@ -337,12 +344,14 @@ mobs:
   smoke-demon:
     priority: 10
     name: ""
+    health: 20
     # Radius in blocks
     harm-radius: 3
 
   tnt-creeper:
     priority: 10
     name: "&4TNT Creeper"
+    health: 20
     # Amount of TNT to spawn after explosion
     tnt-amount: 2
     # When TNT Creeper is damaged
@@ -351,6 +360,7 @@ mobs:
   watcher:
     priority: 10
     name: "&4Watcher"
+    health: 20
     # Get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
@@ -358,6 +368,7 @@ mobs:
   mimic:
     priority: 0
     name: "&4Mimic"
+    health: 20
     # List of dropped materials after death
     drop-items:
       - BOOK

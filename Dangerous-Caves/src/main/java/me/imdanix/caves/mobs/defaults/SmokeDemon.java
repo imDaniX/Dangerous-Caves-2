@@ -36,6 +36,8 @@ public class SmokeDemon extends TickingMob {
 
     private int weight;
     private String name;
+    private double health;
+
     private double radius;
 
     public SmokeDemon() {
@@ -46,6 +48,8 @@ public class SmokeDemon extends TickingMob {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
+        health = cfg.getDouble("health", 20);
+
         radius = cfg.getInt("harm-radius", 3);
     }
 
@@ -57,6 +61,8 @@ public class SmokeDemon extends TickingMob {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.setCustomNameVisible(false);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);

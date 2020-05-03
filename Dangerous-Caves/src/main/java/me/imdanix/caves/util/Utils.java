@@ -21,6 +21,8 @@ package me.imdanix.caves.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +48,11 @@ public final class Utils {
                     worlds.add(world.getName());
             }
         } else worlds.addAll(worldsCfg);
+    }
+
+    public static void setMaxHealth(LivingEntity entity, double health) {
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        entity.setHealth(health);
     }
 
     public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {

@@ -43,6 +43,8 @@ import java.util.List;
 public class DeadMiner extends TickingMob implements Listener {
     private int weight;
     private String name;
+    private double health;
+
     private boolean torches;
     private boolean redTorches;
     private double dropChance;
@@ -58,6 +60,8 @@ public class DeadMiner extends TickingMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
+        health = cfg.getDouble("health", 20);
+
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
@@ -85,6 +89,7 @@ public class DeadMiner extends TickingMob implements Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head); equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rnd.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));

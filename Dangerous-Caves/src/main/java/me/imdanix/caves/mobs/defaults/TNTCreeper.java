@@ -38,6 +38,8 @@ public class TNTCreeper extends CustomMob implements Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
     private int weight;
     private String name;
+    private double health;
+
     private int tntAmount;
     private double explosionChance;
 
@@ -49,6 +51,8 @@ public class TNTCreeper extends CustomMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4TNT Creeper"));
+        health = cfg.getDouble("health", 20);
+
         tntAmount = cfg.getInt("tnt-amount", 2);
         explosionChance = cfg.getDouble("explosion-chance", 33.33) / 100;
     }
@@ -56,6 +60,8 @@ public class TNTCreeper extends CustomMob implements Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.addPotionEffect(INCREASE_DAMAGE);
     }
 

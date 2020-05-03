@@ -46,6 +46,8 @@ public class Watcher extends TickingMob implements Listener {
 
     private int weight;
     private String name;
+    private double health;
+
     private ItemStack head;
 
     public Watcher() {
@@ -56,12 +58,16 @@ public class Watcher extends TickingMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Watcher"));
+        health = cfg.getDouble("health", 20);
+
         head = Compatibility.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="));
     }
 
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         entity.addPotionEffect(INVISIBILITY);

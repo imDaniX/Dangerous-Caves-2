@@ -56,8 +56,10 @@ import java.util.List;
 public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private final List<Material> items;
+
     private int weight;
     private String name;
+    private double health;
 
     private static final ItemStack CHEST;
     private static final ItemStack CHESTPLATE;
@@ -81,6 +83,7 @@ public class Mimic extends TickingMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("weight", 0);
         name = Utils.clr(cfg.getString("name", "&4Mimic"));
+        health = cfg.getDouble("health", 20);
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
@@ -93,6 +96,8 @@ public class Mimic extends TickingMob implements Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         EntityEquipment equipment = entity.getEquipment();

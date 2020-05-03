@@ -41,6 +41,7 @@ public class AlphaSpider extends CustomMob implements Listener {
 
     private int weight;
     private String name;
+    private double health;
     private double cobwebChance;
     private double minionChance;
 
@@ -52,6 +53,7 @@ public class AlphaSpider extends CustomMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Alpha Spider"));
+        health = cfg.getDouble("health", 16);
         cobwebChance = cfg.getDouble("cobweb-chance", 14.29) / 100;
         minionChance = cfg.getDouble("minion-chance", 6.67) / 100;
     }
@@ -60,6 +62,7 @@ public class AlphaSpider extends CustomMob implements Listener {
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(REGENERATION);
+        Utils.setMaxHealth(entity, health);
     }
 
     @Override

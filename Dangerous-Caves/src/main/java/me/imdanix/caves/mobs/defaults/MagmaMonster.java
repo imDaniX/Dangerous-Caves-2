@@ -58,6 +58,8 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     private int weight;
     private String name;
+    private double health;
+
     private double fireChance;
     private double magmaChance;
     private boolean extinguish;
@@ -70,6 +72,8 @@ public class MagmaMonster extends TickingMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
+        health = cfg.getDouble("health", 20);
+
         fireChance = cfg.getDouble("fire-chance", 7.14) / 100;
         magmaChance = cfg.getDouble("magma-chance", 3.57) / 100;
         extinguish = cfg.getBoolean("extinguished-damage", false);
@@ -78,6 +82,8 @@ public class MagmaMonster extends TickingMob implements Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.addPotionEffect(FIRE_RESISTANCE);
         entity.addPotionEffect(INVISIBILITY);
         entity.setFireTicks(Integer.MAX_VALUE);

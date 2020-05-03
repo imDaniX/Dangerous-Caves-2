@@ -44,6 +44,7 @@ public class LavaCreeper extends TickingMob implements Listener {
             Integer.MAX_VALUE, 1, false, false);
     private int weight;
     private String name;
+    private double health;
 
     private double chance;
     private double fire;
@@ -63,6 +64,8 @@ public class LavaCreeper extends TickingMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Lava Creeper"));
+        health = cfg.getDouble("health", 20);
+
         chance = cfg.getDouble("change-chance", 50) / 100;
         fire = cfg.getDouble("blocks.fire", 33.33) / 100;
         magmaBlock = cfg.getDouble("blocks.magma_block", 25) / 100;
@@ -76,6 +79,8 @@ public class LavaCreeper extends TickingMob implements Listener {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.addPotionEffect(FIRE_RESISTANCE);
     }
 

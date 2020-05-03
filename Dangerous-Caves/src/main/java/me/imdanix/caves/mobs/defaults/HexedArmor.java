@@ -43,8 +43,10 @@ public class HexedArmor extends CustomMob implements Listener {
 
     private int weight;
     private String name;
+    private double health;
 
     private double chance;
+    private boolean binding;
 
     public HexedArmor() {
         super(EntityType.ZOMBIE, "hexed-armor");
@@ -54,12 +56,17 @@ public class HexedArmor extends CustomMob implements Listener {
     public void reload(ConfigurationSection cfg) {
         weight = cfg.getInt("priority", 1);
         name = Utils.clr(cfg.getString("name", "&4Hexed Armor"));
+        health = cfg.getDouble("health", 20);
+
+        binding = cfg.getBoolean("binding-curse", true);
         chance = cfg.getDouble("apply-chance", 25) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
+        Utils.setMaxHealth(entity, health);
+
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
@@ -93,14 +100,14 @@ public class HexedArmor extends CustomMob implements Listener {
         }
     }
 
-    private static ItemStack getRandom(Material[] arr) {
+    private ItemStack getRandom(Material[] arr) {
         int i = Rnd.nextInt(arr.length);
         return i >= arr.length ? null : enchant(new ItemStack(arr[i]));
     }
 
-    private static ItemStack enchant(ItemStack item) {
+    private ItemStack enchant(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
+        if(binding) meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
         meta.addEnchant(Enchantment.VANISHING_CURSE, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
