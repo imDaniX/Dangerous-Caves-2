@@ -69,8 +69,14 @@ public class CavesAging implements Tickable, Configurable {
     private double agingChance;
     private int schedule;
 
-    private int maxCount;
+    private double percentage;
+    // TODO: Set<Predicate<Block>> checks; // for WG, GP.. support
     private Predicate<Block> lightLevelCheck;
+
+    private boolean withVines;
+    private boolean withRocks;
+    private boolean withMushrooms;
+    private boolean withReplace;
 
     public CavesAging(Plugin plugin) {
         this.plugin = plugin;
@@ -111,8 +117,12 @@ public class CavesAging implements Tickable, Configurable {
             }
 
         replaceBlocks = Materials.getEnumSet(cfg.getStringList("replace-blocks"));
+        percentage = cfg.getDouble("percentage", 70) / 100;
 
-        maxCount = (int) (16 * 16 * (yMax - 2) * cfg.getDouble("percentage", 70) / 100) + 1;
+        withReplace = cfg.getBoolean("age-types.replace", true);
+        withRocks = cfg.getBoolean("age-types.rocks", true);
+        withMushrooms = cfg.getBoolean("age-types.mushrooms", true);
+        withVines = cfg.getBoolean("age-types.vines", true);
     }
 
     @Override
@@ -167,11 +177,16 @@ public class CavesAging implements Tickable, Configurable {
         Set<DelayedChange> changes = new HashSet<>();
 
         int count = 0;
+        int totalCount = 0;
         for(int x = 0; x < 16; x++) for(int z = 0; z < 16; z++) for(int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
-            if(AGING_MATERIALS.contains(type) && ++count > maxCount)
-                return Collections.emptySet();
+            if(Compatibility.isAir(type))
+                continue;
+
+            totalCount++;
+            if(AGING_MATERIALS.contains(type))
+                count++;
 
             if(snapshot.getBlockSkyLight(x, y, z) > 0)
                 break;
@@ -181,37 +196,39 @@ public class CavesAging implements Tickable, Configurable {
                 continue;
 
             if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
-                switch(Rnd.nextInt(6)) {
-                    case 0:
-                        changes.add(new DelayedChange(x, y, z, ChangeType.ANDESITE));
-                        break;
+                if(withReplace) {
+                    switch(Rnd.nextInt(6)) {
+                        case 0:
+                            changes.add(new DelayedChange(x, y, z, ChangeType.ANDESITE));
+                            break;
 
-                    case 1:
-                        changes.add(new DelayedChange(x, y, z, ChangeType.COBBLESTONE));
-                        break;
+                        case 1:
+                            changes.add(new DelayedChange(x, y, z, ChangeType.COBBLESTONE));
+                            break;
 
-                    case 2:
-                        if(Compatibility.isAir(snapshot.getBlockType(x, y-1, z)) && Rnd.nextBoolean())
-                            changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
-                        break;
+                        case 2:
+                            if(Compatibility.isAir(snapshot.getBlockType(x, y-1, z)) && Rnd.nextBoolean())
+                                changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
+                            break;
+                    }
                 }
 
-                if(Rnd.chance(0.125)) {
+                if(withVines && Rnd.chance(0.125)) {
                     changes.add(new DelayedChange(x, y, z, ChangeType.VINE));
                 }
 
                 if(Compatibility.isAir(snapshot.getBlockType(x, y+1, z))){
-                    if(Rnd.chance(0.111)) {
+                    if(withMushrooms && Rnd.chance(0.111)) {
                         changes.add(new DelayedChange(x, y+1, z, Rnd.nextBoolean() ?
                                 ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
-                    } else if(Rnd.chance(0.167)) {
+                    } else if(withRocks && Rnd.chance(0.167)) {
                         changes.add(new DelayedChange(x, y+1, z, ChangeType.ROCK));
                     }
                 }
             }
         }
 
-        return changes;
+        return count / (float)totalCount > percentage ? Collections.emptySet() : changes;
     }
 
     @Override

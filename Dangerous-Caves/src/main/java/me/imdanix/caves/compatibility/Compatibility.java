@@ -33,15 +33,15 @@ public class Compatibility {
     public static void init(Plugin plugin) {
         int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
         if(version < 13) {
-            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with EffectTags(up to 1.13.2)");
+            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with ScoreboardTags(up to 1.13.2)");
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
             materials = new LegacyMaterials();
-            tags = new EffectTags();
+            tags = new ScoreboardTags();
         } else if(version == 13) {
-            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with EffectTags(up to 1.13.2)");
+            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with ScoreboardTags(up to 1.13.2)");
             materials = new FlattenedMaterials();
-            tags = new EffectTags();
+            tags = new ScoreboardTags();
         } else {
             plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
             materials = new FlattenedMaterials();
@@ -50,8 +50,8 @@ public class Compatibility {
     }
 
     public static void cacheTag(String tag) {
-        if(tags instanceof EffectTags)
-            ((EffectTags) tags).cacheTag(tag);
+        if(tags instanceof ScoreboardTags)
+            ((ScoreboardTags) tags).cacheTag(tag);
     }
 
     public static boolean isAir(Material type) {

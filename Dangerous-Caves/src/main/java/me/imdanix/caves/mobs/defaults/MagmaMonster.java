@@ -26,6 +26,7 @@ import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -59,6 +60,7 @@ public class MagmaMonster extends TickingMob implements Listener {
     private String name;
     private double fireChance;
     private double magmaChance;
+    private boolean extinguish;
 
     public MagmaMonster() {
         super(EntityType.ZOMBIE, "magma-monster");
@@ -70,6 +72,7 @@ public class MagmaMonster extends TickingMob implements Listener {
         name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
         fireChance = cfg.getDouble("fire-chance", 7.14) / 100;
         magmaChance = cfg.getDouble("magma-chance", 3.57) / 100;
+        extinguish = cfg.getBoolean("extinguished-damage", false);
     }
 
     @Override
@@ -96,11 +99,14 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        entity.setFireTicks(20);
+        if(extinguish)
+                entity.damage(0.1);
+            else
+                entity.setFireTicks(20);
 
         if(fireChance > 0 && Rnd.chance(fireChance)) {
             Block block = entity.getLocation().getBlock();
-            if(Compatibility.isAir(block.getType()))
+            if(Compatibility.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
                 block.setType(Material.FIRE, false);
         }
         if(magmaChance > 0 && Rnd.chance(magmaChance)) {

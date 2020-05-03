@@ -149,6 +149,13 @@ caverns:
     # "-1,-1" variant is allowed(just one chunk)
     # Worlds are case-sensitive!
 
+    # What to do with replace-blocks?
+    age-types:
+      vines: true
+      rocks: true
+      mushrooms: true
+      replace: true
+
     # world:
     #  - "-1,-1 1,1"
     #  - "10,24"
@@ -229,12 +236,23 @@ mobs:
   worlds:
     - world
 
-  # Minimal and maximal Y where custom mobs can spawn
+  # Minimal and maximal Y coordinate where custom mobs can spawn
   y-min: 4
   y-max: 64
 
   # Block renaming with name-tags
   restrict-rename: false
+
+  # Only these mobs will be replaced
+  replace-mobs:
+    - ZOMBIE
+    - HUSK
+    - SKELETON
+    - STRAY
+    - CREEPER
+    - SPIDER
+    - WITCH
+    - ENDERMAN
 
   # List of *default* custom mobs
   # To disable names just live it blank, like
@@ -309,6 +327,8 @@ mobs:
   magma-monster:
     priority: 10
     name: "&4Magma Monster"
+    # If monster is extinguished it will receive damage
+    extinguished-damage: false
     # Placing fire. Every ENTITY tick
     fire-chance: 7.14
     # Placing magma-blocks. Every ENTITY tick

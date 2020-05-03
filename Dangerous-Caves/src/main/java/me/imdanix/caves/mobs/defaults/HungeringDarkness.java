@@ -53,7 +53,7 @@ public class HungeringDarkness extends TickingMob implements Listener {
     }
 
     @Override
-    public boolean canSpawn(EntityType type, Location location) {
+    public boolean canSpawn(Location location) {
         return location.getBlock().getLightLevel() == 0;
     }
 

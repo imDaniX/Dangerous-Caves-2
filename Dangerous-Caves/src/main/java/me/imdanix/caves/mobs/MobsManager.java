@@ -62,6 +62,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private final Set<String> worlds;
     private AliasMethod<CustomMob> mobsPool;
 
+    private Set<EntityType> replaceTypes;
     private int yMin;
     private int yMax;
     private double chance;
@@ -88,6 +89,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         yMax = cfg.getInt("y-max", 64);
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+        replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
         if(chance > 0) recalculate();
     }
 
@@ -165,13 +167,14 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
         if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
+                !replaceTypes.contains(type) ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
                 !Locations.isCave(loc) ||
                 !Rnd.chance(chance))
             return false;
         CustomMob mob = mobsPool.next();
-        if(mob.canSpawn(type, loc)) {
+        if(mob.canSpawn(loc)) {
             spawn(mob, loc);
             return true;
         }

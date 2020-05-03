@@ -26,6 +26,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+@Deprecated
 public class EffectTags implements TagsProvider {
     private static final String TAG_PREFIX = "§0§kdc-tag-";
     private final String[][][] tagsCache;

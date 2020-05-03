@@ -53,7 +53,7 @@ public abstract class CustomMob implements Configurable {
         return entity;
     }
 
-    public boolean canSpawn(EntityType type, Location loc) {
+    public boolean canSpawn(Location loc) {
         return true;
     }
 

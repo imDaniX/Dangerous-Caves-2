@@ -23,7 +23,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class Utils {
     public static String clr(String s){
@@ -42,6 +46,15 @@ public final class Utils {
                     worlds.add(world.getName());
             }
         } else worlds.addAll(worldsCfg);
+    }
+
+    public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {
+        Set<T> enums = new HashSet<>();
+        for(String enumStr : enumStrColl) {
+            T t = getEnum(clazz, enumStr.toUpperCase());
+            if(t != null) enums.add(t);
+        }
+        return enums.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(enums);
     }
 
     public static <T extends Enum<T>> T getEnum(Class<T> clazz, String name) {
