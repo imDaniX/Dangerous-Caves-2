@@ -228,7 +228,7 @@ public class CavesAging implements Tickable, Configurable {
             }
         }
 
-        return count / (float)totalCount > percentage ? Collections.emptySet() : changes;
+        return count / (float)++totalCount > percentage ? Collections.emptySet() : changes;
     }
 
     @Override
