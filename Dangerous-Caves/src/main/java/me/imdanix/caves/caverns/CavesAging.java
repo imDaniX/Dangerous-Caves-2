@@ -184,16 +184,16 @@ public class CavesAging implements Tickable, Configurable {
             if(Compatibility.isAir(type))
                 continue;
 
-            totalCount++;
-            if(AGING_MATERIALS.contains(type))
-                count++;
-
             if(snapshot.getBlockSkyLight(x, y, z) > 0)
                 break;
 
             if(lightLevel > 0 && (snapshot.getBlockEmittedLight(x, y+1, z) >= lightLevel ||
                     snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
                 continue;
+
+            totalCount++;
+            if(AGING_MATERIALS.contains(type))
+                count++;
 
             if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
                 if(withReplace) {
