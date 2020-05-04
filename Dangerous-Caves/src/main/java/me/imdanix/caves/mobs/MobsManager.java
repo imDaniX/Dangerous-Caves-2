@@ -19,7 +19,7 @@
 package me.imdanix.caves.mobs;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.compatibility.Compatibility;
@@ -53,7 +53,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MobsManager implements Listener, Tickable, Configurable {
-    private static final Multimap<TickingMob, UUID> tickingEntities = ArrayListMultimap.create();
+    private static final Multimap<TickingMob, UUID> tickingEntities = HashMultimap.create();
 
     private final MetadataValue marker;
 
