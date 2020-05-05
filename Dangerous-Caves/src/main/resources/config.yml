@@ -62,6 +62,8 @@ caverns:
     chance: 6.35
     # Maximal Y where sound can be played
     y-max: 64
+    # Play sound in random location near player. 0 to play sound on player's location
+    near: 7
     # List of sounds to play - you can add more or remove some
     sounds:
       MUSIC_DRAGON:

@@ -42,7 +42,8 @@ public class AmbientSounds implements Tickable, Configurable {
     private final List<WrappedSound> sounds;
     private final Set<String> worlds;
     private double chance;
-    private int y;
+    private double radius;
+    private int yMax;
 
     public AmbientSounds() {
         sounds = new ArrayList<>();
@@ -52,7 +53,8 @@ public class AmbientSounds implements Tickable, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("chance", 25) / 100;
-        y = cfg.getInt("y-max", 64);
+        yMax = cfg.getInt("y-max", 64);
+        radius = cfg.getDouble("near", 7);
         sounds.clear();
         for(String soundStr : Configuration.section(cfg, "sounds").getKeys(false)) {
             Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase());
@@ -74,7 +76,7 @@ public class AmbientSounds implements Tickable, Configurable {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if(loc.getBlockY() <= y && Locations.isCave(loc) && Rnd.chance(chance))
+                if(loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance))
                     Rnd.randomItem(sounds).play(player);
             }
         }
@@ -90,7 +92,7 @@ public class AmbientSounds implements Tickable, Configurable {
         return "caverns.ambient";
     }
 
-    private static class WrappedSound {
+    private class WrappedSound {
         private final Sound sound;
         private final float volume;
         private final float pitch;
@@ -102,6 +104,11 @@ public class AmbientSounds implements Tickable, Configurable {
         }
 
         public void play(Player player) {
+            Location loc = player.getEyeLocation();
+            if(radius > 0)
+                loc.add(Rnd.nextDouble(-radius, radius),
+                        Rnd.nextDouble(-radius, radius),
+                        Rnd.nextDouble(-radius, radius));
             player.playSound(player.getEyeLocation(), sound, SoundCategory.AMBIENT, volume, pitch);
         }
     }
