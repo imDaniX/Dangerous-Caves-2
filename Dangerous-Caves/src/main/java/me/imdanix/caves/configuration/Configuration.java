@@ -38,8 +38,7 @@ public class Configuration {
         this.plugin = plugin;
         configurables = new HashMap<>();
         file = new File(plugin.getDataFolder(), name + ".yml");
-        String versionPlg = plugin.getDescription().getVersion();
-        version = versionPlg.substring(versionPlg.lastIndexOf("-") + 1);
+        version = plugin.getDescription().getVersion().split(";")[1];
     }
 
     public void create(boolean resource) {
