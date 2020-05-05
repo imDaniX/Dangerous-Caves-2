@@ -31,7 +31,6 @@ import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -86,8 +85,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
         } else cfg.register(generator);
 
-        PluginCommand cmd = Objects.requireNonNull(getCommand("dangerouscaves"));
-        cmd.setExecutor(new Commander(this));
+        Objects.requireNonNull(getCommand("dangerouscaves")).setExecutor(new Commander(this));
 
         cfg.checkVersion();
 
