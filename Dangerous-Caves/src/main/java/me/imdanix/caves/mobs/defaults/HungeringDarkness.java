@@ -18,11 +18,10 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -32,7 +31,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class HungeringDarkness extends TickingMob implements Listener {
+public class HungeringDarkness extends CustomMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
     private int weight;
@@ -92,12 +91,5 @@ public class HungeringDarkness extends TickingMob implements Listener {
     @Override
     public int getWeight() {
         return weight;
-    }
-
-    @Override
-    public void tick(LivingEntity entity) {
-        if(entity.getLocation().getBlock().getLightLevel() > 0) {
-            if(remove) entity.remove();
-        } else entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CAT_PURR, 0.5f, 0);
     }
 }

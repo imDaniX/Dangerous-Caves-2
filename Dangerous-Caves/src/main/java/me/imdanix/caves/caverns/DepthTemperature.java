@@ -42,7 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO: Temperature with accumulation based on player's depth
 public class DepthTemperature implements Tickable, Configurable {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
