@@ -23,29 +23,34 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 public class Compatibility {
     private static MaterialsProvider materials;
     private static TagsProvider tags;
+    private static Messenger messenger;
 
     public static void init(Plugin plugin) {
         int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
+        boolean isBukkit = Bukkit.getName().equalsIgnoreCase("Bukkit");
+        if(isBukkit)
+            plugin.getLogger().warning("Please note that Bukkit is not supported. Prefer Spigot/Paper/Tuinity.");
         if(version < 13) {
-            plugin.getLogger().info("Using LegacyMaterials(up to 1.12.2) with ScoreboardTags(up to 1.13.2)");
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
             materials = new LegacyMaterials();
             tags = new ScoreboardTags();
+            messenger = new LegacyMessenger(isBukkit);
         } else if(version == 13) {
-            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with ScoreboardTags(up to 1.13.2)");
             materials = new FlattenedMaterials();
             tags = new ScoreboardTags();
+            messenger = new LegacyMessenger(isBukkit);
         } else {
-            plugin.getLogger().info("Using FlattenedMaterials(from 1.13) with PersistentTags(from 1.14)");
             materials = new FlattenedMaterials();
             tags = new PersistentTags(plugin);
+            messenger = new ActualMessenger();
         }
     }
 
@@ -86,4 +91,7 @@ public class Compatibility {
         return tags.getTag(block);
     }
 
+    public static void sendActionBar(Player player, String message) {
+        messenger.sendActionBar(player, message);
+    }
 }
