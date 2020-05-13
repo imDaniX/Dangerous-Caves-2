@@ -50,10 +50,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 public class MobsManager implements Listener, Tickable, Configurable {
-    private static final Multimap<TickingMob, UUID> tickingEntities = HashMultimap.create();
+    private static final Multimap<TickingMob, LivingEntity> tickingEntities = HashMultimap.create();
 
     private final MetadataValue marker;
 
@@ -116,13 +115,13 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @Override
     public void tick() {
-        Iterator<Map.Entry<TickingMob, UUID>> iter = tickingEntities.entries().iterator();
+        Iterator<Map.Entry<TickingMob, LivingEntity>> iter = tickingEntities.entries().iterator();
         while(iter.hasNext()) {
-            Map.Entry<TickingMob, UUID> mob = iter.next();
-            Entity entity = Bukkit.getEntity(mob.getValue());
-            if(entity == null) {
-                iter.remove();
-            } else mob.getKey().tick((LivingEntity) entity);
+            Map.Entry<TickingMob, LivingEntity> mob = iter.next();
+            LivingEntity entity = mob.getValue();
+            if(entity.isValid()) {
+                mob.getKey().tick(entity);
+            } else iter.remove();
         }
     }
 
@@ -214,6 +213,6 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     public static void handle(LivingEntity entity, TickingMob mob) {
-        tickingEntities.put(mob, entity.getUniqueId());
+        tickingEntities.put(mob, entity);
     }
 }
