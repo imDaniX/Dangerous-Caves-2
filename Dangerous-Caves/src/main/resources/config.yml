@@ -29,7 +29,7 @@ version: ${cfgVersion}
 #
 caverns:
 
-  # Cave-ins - blocks may fall down when mining
+  # Cave-Ins - blocks may fall down when mining
   ins:
     # List of worlds where cave-in may appear
     worlds:
@@ -52,7 +52,7 @@ caverns:
     # Play explosion sound on cave-in?
     blast-sound: true
 
-  # Ambient sounds - special sound may be played underground
+  # Ambient Sounds - special sound may be played underground
   ambient:
     # List of worlds where ambient sounds can be played
     worlds:
@@ -85,39 +85,27 @@ caverns:
         volume: 1
         pitch: 0.5
 
-  # Depth temperature - will cause player to move and dig slower
-  temperature:
-    # List of worlds where players can sense temperature
+  # Depth Anoxemia - will cause player to move and dig slower
+  anoxemia:
+    # List of worlds where players can sense anoxemia
     worlds:
       - world
       - world_nether
-    # Chance of player to sense high temperature
+    # Chance of checking the player
+    # Lower underground and fuller inventory - higher chance of activation
     # Checking every PLAYER tick
-    chance: 40
-    # Maximal Y where players can sense temperature
-    y-max: 32
-    # Immunity to high temperature if player has one of these items in inventory
-    cold-items:
-      - POTION
-      - SPLASH_POTION
-      - SNOW
-      - SNOWBALL
-      - SNOW_BLOCK
-      - WATER_BUCKET
-      - ICE
-      - FROSTED_ICE
-      - PACKED_ICE
-    # Immunity to high temperature if player has fire resistance effect
-    fire-resistance: true
+    try-chance: 40
+    # Maximal Y where players can sense lack of air
+    y-max: 42
+    # Use actionbar instead of chat to show messages
+    actionbar: true
     # Messages when player is feeling high temperature
     messages:
-      - "&cWow, it's hot down here. I better bring something to cool myself off next time."
-      - "&cIt is realllyyy hot down here."
-      - "&cI'm going to need something to cool myself off next time."
-      - "&cIs it hot in here, or is it just me?"
-      - "&cI really need some ice."
+      - "&4I really need more air..."
+      - "&4It is so stuffy down here."
+      - "&4Maybe drop some items from the inventory?"
 
-  # Caves aging - over time caves will get some vines and rocks
+  # Caves Aging - over time caves will get some vines and rocks
   aging:
     # List of worlds where aging will be processed
     worlds:

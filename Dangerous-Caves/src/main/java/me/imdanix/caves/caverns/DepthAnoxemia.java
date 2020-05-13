@@ -56,7 +56,7 @@ public class DepthAnoxemia implements Tickable, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("try-chance", 0.8) / 100;
-        yMax = cfg.getInt("y-max", 40);
+        yMax = cfg.getInt("y-max", 42);
         actionbar = cfg.getBoolean("actionbar", true);
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
