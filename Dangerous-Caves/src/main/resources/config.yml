@@ -85,8 +85,8 @@ caverns:
         volume: 1
         pitch: 0.5
 
-  # Depth Anoxemia - will cause player to move and dig slower
-  anoxemia:
+  # Depth Hypoxia - will cause player to move and dig slower
+  hypoxia:
     # List of worlds where players can sense anoxemia
     worlds:
       - world
@@ -94,7 +94,9 @@ caverns:
     # Chance of checking the player
     # Lower underground and fuller inventory - higher chance of activation
     # Checking every PLAYER tick
-    try-chance: 40
+    try-chance: 60
+    # Limit maximal chance of activation (set 100 to disable)
+    chance-limit: 90
     # Maximal Y where players can sense lack of air
     y-max: 42
     # Use actionbar instead of chat to show messages

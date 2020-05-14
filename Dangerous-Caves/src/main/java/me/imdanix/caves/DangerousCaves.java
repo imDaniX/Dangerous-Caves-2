@@ -21,7 +21,7 @@ package me.imdanix.caves;
 import me.imdanix.caves.caverns.AmbientSounds;
 import me.imdanix.caves.caverns.CaveIns;
 import me.imdanix.caves.caverns.CavesAging;
-import me.imdanix.caves.caverns.DepthAnoxemia;
+import me.imdanix.caves.caverns.DepthHypoxia;
 import me.imdanix.caves.commands.Commander;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
@@ -65,7 +65,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
         CavesAging cavesAging = new CavesAging(this);
-        DepthAnoxemia temperature = new DepthAnoxemia();
+        DepthHypoxia temperature = new DepthHypoxia();
 
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(mobsManager, this);

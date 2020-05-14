@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DepthAnoxemia implements Tickable, Configurable {
+public class DepthHypoxia implements Tickable, Configurable {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
@@ -46,16 +46,18 @@ public class DepthAnoxemia implements Tickable, Configurable {
     private List<String> messages;
     private boolean actionbar;
     private double chance;
+    private double chanceLimit;
     private int yMax;
 
-    public DepthAnoxemia() {
+    public DepthHypoxia() {
         worlds = new HashSet<>();
         messages = new ArrayList<>();
     }
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        chance = cfg.getDouble("try-chance", 0.8) / 100;
+        chance = cfg.getDouble("try-chance", 60) / 100;
+        chanceLimit = cfg.getDouble("chance-limit", 90) / 100;
         yMax = cfg.getInt("y-max", 42);
         actionbar = cfg.getBoolean("actionbar", true);
         messages.clear();
@@ -93,7 +95,7 @@ public class DepthAnoxemia implements Tickable, Configurable {
             weightChance += item.getAmount() / item.getMaxStackSize();
         }
         weightChance /= contents.length;
-        return Rnd.chance((depthChance + weightChance) / 2);
+        return Rnd.chance(Math.min((depthChance + weightChance) / 2, chanceLimit));
     }
 
     @Override
@@ -103,6 +105,6 @@ public class DepthAnoxemia implements Tickable, Configurable {
 
     @Override
     public String getPath() {
-        return "caverns.anoxemia";
+        return "caverns.hypoxia";
     }
 }
