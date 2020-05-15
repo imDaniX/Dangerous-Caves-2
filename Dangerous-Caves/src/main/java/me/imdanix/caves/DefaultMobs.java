@@ -21,6 +21,7 @@ package me.imdanix.caves;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.mobs.defaults.AlphaSpider;
+import me.imdanix.caves.mobs.defaults.CaveGolem;
 import me.imdanix.caves.mobs.defaults.CryingBat;
 import me.imdanix.caves.mobs.defaults.DeadMiner;
 import me.imdanix.caves.mobs.defaults.HexedArmor;
@@ -43,7 +44,8 @@ public enum DefaultMobs {
     LAVA_CREEPER(new LavaCreeper()),
     DEAD_MINER(new DeadMiner()),
     SMOKE_DEMON(new SmokeDemon()),
-    MIMIC(new Mimic());
+    MIMIC(new Mimic()),
+    CAVE_GOLEM(new CaveGolem());
 
     private final CustomMob custom;
 

@@ -370,3 +370,24 @@ mobs:
       - COAL
       - GOLDEN_APPLE
       - COBWEB
+
+  cave-golem:
+    priority: 3
+    health: 35
+    name: "&4Cave Golem"
+    # Give Cave Golem slowness effect
+    slowness: true
+    # When Cave Golem is attacking give player slowness, nausea and blindness effects
+    distract-attack: true
+    # Damage multiplier when Cave Golem is attacking
+    damage-modifier: 1.5
+    # Damage multiplier when player is attacking Cave Golem without pickaxe
+    nonpickaxe-modifier: 0.07
+    # These blocks will be on Cave Golem's head and will be dropped after death
+    variants:
+      - COAL_ORE
+      - IRON_ORE
+      - GOLD_ORE
+      - LAPIS_ORE
+      - DIAMOND_ORE
+      - EMERALD_ORE
