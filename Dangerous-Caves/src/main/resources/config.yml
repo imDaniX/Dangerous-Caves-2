@@ -246,6 +246,10 @@ mobs:
     - WITCH
     - ENDERMAN
 
+  # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like SAML.
+  # Not sure, but can cause memory leak, so disabled by default
+  add-metadata: false
+
   # List of *default* custom mobs
   # To disable names just live it blank, like
   # name: ""

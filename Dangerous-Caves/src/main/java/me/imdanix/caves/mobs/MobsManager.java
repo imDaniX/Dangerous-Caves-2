@@ -55,7 +55,7 @@ import java.util.UUID;
 public class MobsManager implements Listener, Tickable, Configurable {
     private static final Multimap<TickingMob, UUID> tickingEntities = HashMultimap.create();
 
-    private final MetadataValue marker;
+    private final MetadataValue MARKER;
 
     private final DangerousCaves plugin;
     private final Map<String, CustomMob> mobs;
@@ -67,9 +67,10 @@ public class MobsManager implements Listener, Tickable, Configurable {
     private int yMax;
     private double chance;
     private boolean blockRename;
+    private boolean metadata;
 
     public MobsManager(DangerousCaves plugin) {
-        marker = new FixedMetadataValue(plugin, new Object());
+        MARKER = new FixedMetadataValue(plugin, new Object());
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             Bukkit.getPluginManager().registerEvents(new PaperEventListener(), plugin);
@@ -90,6 +91,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
+        metadata = cfg.getBoolean("add-metadata", false);
         if(chance > 0) recalculate();
     }
 
@@ -146,7 +148,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
                 LivingEntity livingEntity = (LivingEntity) entity;
                 String type = Compatibility.getTag(livingEntity);
                 if(type != null) {
-                    entity.setMetadata("DangerousCaves", marker);
+                    if(metadata) entity.setMetadata("DangerousCaves", MARKER);
                     CustomMob mob = mobs.get(type);
                     if(mob instanceof TickingMob)
                         handle(livingEntity, (TickingMob) mob);
@@ -183,7 +185,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     private LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
-        entity.setMetadata("DangerousCaves", marker);
+        if(metadata) entity.setMetadata("DangerousCaves", MARKER);
         entity.setRemoveWhenFarAway(true);
         return entity;
     }
