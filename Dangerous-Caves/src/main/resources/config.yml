@@ -87,7 +87,7 @@ caverns:
 
   # Depth Hypoxia - will cause player to move and dig slower
   hypoxia:
-    # List of worlds where players can sense anoxemia
+    # List of worlds where players can sense hypoxia
     worlds:
       - world
       - world_nether
@@ -101,7 +101,7 @@ caverns:
     y-max: 42
     # Use actionbar instead of chat to show messages
     actionbar: true
-    # Messages when player is feeling high temperature
+    # Messages when player is feeling lack of air
     messages:
       - "&4I really need more air..."
       - "&4It is so stuffy down here."
