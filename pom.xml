@@ -26,9 +26,9 @@
     <artifactId>dangerous-caves-main</artifactId>
     <version>2</version>
     <modules>
-        <module>compatibility/dc-compatibility</module>
-        <module>compatibility/preaqua</module>
-        <module>compatibility/postaqua</module>
+        <module>compatibility/Compatibility</module>
+        <module>compatibility/PreAquaCompatibility</module>
+        <module>compatibility/PostAquaCompatibility</module>
         <module>Dangerous-Caves</module>
         <module>build</module>
     </modules>

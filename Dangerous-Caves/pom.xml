@@ -52,20 +52,20 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>me.imdanix.plugins</groupId>
-            <artifactId>dc-compatibility</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Compatibility</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>me.imdanix.plugins</groupId>
-            <artifactId>postaqua</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>PostAquaCompatibility</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>me.imdanix.plugins</groupId>
-            <artifactId>preaqua</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>PreAquaCompatibility</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

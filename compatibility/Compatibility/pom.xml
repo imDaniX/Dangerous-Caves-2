@@ -28,19 +28,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>postaqua</artifactId>
+    <artifactId>Compatibility</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.imdanix.plugins</groupId>
-            <artifactId>dc-compatibility</artifactId>
-            <version>2</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
