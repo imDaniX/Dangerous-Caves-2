@@ -65,12 +65,6 @@
         </dependency>
         <dependency>
             <groupId>me.imdanix.plugins</groupId>
-            <artifactId>aqua</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.imdanix.plugins</groupId>
             <artifactId>preaqua</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
