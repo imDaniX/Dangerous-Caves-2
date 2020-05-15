@@ -63,6 +63,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         actionbar = cfg.getBoolean("actionbar", true);
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
+        if(messages.isEmpty()) messages.add("");
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
     }
