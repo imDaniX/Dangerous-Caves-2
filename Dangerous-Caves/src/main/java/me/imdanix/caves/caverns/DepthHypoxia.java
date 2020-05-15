@@ -22,6 +22,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
+import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
@@ -72,8 +73,8 @@ public class DepthHypoxia implements Tickable, Configurable {
         for(World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
-                if(player.getLocation().getY() > yMax || !Rnd.chance(chance)) continue;
-                if(!checkChance(player)) continue;
+                if(!Locations.isCave(player.getLocation()) || player.getLocation().getY() > yMax) continue;
+                if(!Rnd.chance(chance) || !checkChance(player)) continue;
 
                 if(actionbar)
                     Compatibility.sendActionBar(player, Rnd.randomItem(messages));
