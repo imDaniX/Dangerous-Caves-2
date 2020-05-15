@@ -132,7 +132,8 @@ public class CaveIns implements Listener, Configurable {
     private Set<List<Block>> getBlocksInRadius(Location blockLoc) {
         Set<List<Block>> allBlocks = new HashSet<>();
 
-        blockLoc.subtract(radius, 0, radius);
+        blockLoc.subtract(radius, 2, radius);
+        if(blockLoc.getY() < 1) blockLoc.setY(1);
 
         World world = blockLoc.getWorld();
         int yInit = blockLoc.getBlockY();
