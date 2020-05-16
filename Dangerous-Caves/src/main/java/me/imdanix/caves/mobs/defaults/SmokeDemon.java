@@ -34,7 +34,6 @@ public class SmokeDemon extends TickingMob {
     private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER, 120, 0);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
 
-    private int weight;
     private String name;
     private double health;
 
@@ -45,8 +44,7 @@ public class SmokeDemon extends TickingMob {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
         health = cfg.getDouble("health", 20);
 
@@ -84,10 +82,5 @@ public class SmokeDemon extends TickingMob {
             living.addPotionEffect(BLINDNESS);
             living.addPotionEffect(WITHER);
         }
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

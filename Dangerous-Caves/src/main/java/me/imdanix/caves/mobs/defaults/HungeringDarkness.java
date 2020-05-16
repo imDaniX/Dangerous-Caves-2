@@ -34,7 +34,7 @@ import org.bukkit.potion.PotionEffectType;
 public class HungeringDarkness extends CustomMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
-    private int weight;
+
     private String name;
     private double damage;
     private boolean remove;
@@ -44,8 +44,7 @@ public class HungeringDarkness extends CustomMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", ""));
         damage = cfg.getDouble("damage", 200);
         remove = cfg.getBoolean("remove-on-light", true);
@@ -86,10 +85,5 @@ public class HungeringDarkness extends CustomMob implements Listener {
             event.setCancelled(true);
             if(remove) event.getAttacker().remove();
         } else event.setDamage(damage);
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

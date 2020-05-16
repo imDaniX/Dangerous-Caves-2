@@ -36,7 +36,7 @@ import org.bukkit.util.Vector;
 
 public class TNTCreeper extends CustomMob implements Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
-    private int weight;
+
     private String name;
     private double health;
 
@@ -48,8 +48,7 @@ public class TNTCreeper extends CustomMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4TNT Creeper"));
         health = cfg.getDouble("health", 20);
 
@@ -81,10 +80,5 @@ public class TNTCreeper extends CustomMob implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if(explosionChance > 0 && isThis(event.getEntity()) && Rnd.chance(explosionChance))
             event.getDamager().getWorld().createExplosion(event.getDamager().getLocation(), 0.01f);
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

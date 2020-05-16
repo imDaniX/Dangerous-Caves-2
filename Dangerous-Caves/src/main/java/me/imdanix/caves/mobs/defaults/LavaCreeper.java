@@ -42,7 +42,7 @@ import org.bukkit.potion.PotionEffectType;
 public class LavaCreeper extends TickingMob implements Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
-    private int weight;
+
     private String name;
     private double health;
 
@@ -61,8 +61,7 @@ public class LavaCreeper extends TickingMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Lava Creeper"));
         health = cfg.getDouble("health", 20);
 
@@ -117,10 +116,5 @@ public class LavaCreeper extends TickingMob implements Listener {
     @Override
     public void tick(LivingEntity entity) {
         entity.getWorld().spawnParticle(Particle.LAVA, entity.getLocation().add(0, 1, 0), 1, 0.3, 0.8, 0.3);
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

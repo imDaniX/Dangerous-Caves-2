@@ -56,7 +56,6 @@ public class CaveGolem extends CustomMob implements Listener {
         BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
     }
 
-    private int weight;
     private String name;
     private double health;
 
@@ -67,13 +66,12 @@ public class CaveGolem extends CustomMob implements Listener {
     private double damageModifier;
 
     public CaveGolem() {
-        super(EntityType.SKELETON, "cave-golem");
+        super(EntityType.SKELETON, "cave-golem", 3);
         this.heads = new ArrayList<>();
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
         health = cfg.getDouble("health", 20);
 
@@ -134,10 +132,5 @@ public class CaveGolem extends CustomMob implements Listener {
             }
             event.setDamage(event.getDamage() * nonPickaxe);
         }
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

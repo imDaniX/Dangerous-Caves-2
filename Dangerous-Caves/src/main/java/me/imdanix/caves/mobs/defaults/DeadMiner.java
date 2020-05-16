@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeadMiner extends TickingMob implements Listener {
-    private int weight;
     private String name;
     private double health;
 
@@ -57,8 +56,7 @@ public class DeadMiner extends TickingMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
         health = cfg.getDouble("health", 20);
 
@@ -111,10 +109,5 @@ public class DeadMiner extends TickingMob implements Listener {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
         }
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

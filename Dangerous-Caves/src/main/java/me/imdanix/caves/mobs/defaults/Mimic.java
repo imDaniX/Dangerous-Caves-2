@@ -57,7 +57,6 @@ public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private final List<Material> items;
 
-    private int weight;
     private String name;
     private double health;
 
@@ -75,13 +74,12 @@ public class Mimic extends TickingMob implements Listener {
     }
 
     public Mimic() {
-        super(EntityType.WITHER_SKELETON, "mimic");
+        super(EntityType.WITHER_SKELETON, "mimic", 0);
         items = new ArrayList<>();
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("weight", 0);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Mimic"));
         health = cfg.getDouble("health", 20);
 
@@ -159,10 +157,5 @@ public class Mimic extends TickingMob implements Listener {
             Compatibility.setTag(block, "mimic-" + entity.getHealth());
             entity.remove();
         }
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

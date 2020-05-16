@@ -41,7 +41,6 @@ import org.bukkit.potion.PotionEffectType;
 public class HexedArmor extends CustomMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
-    private int weight;
     private String name;
     private double health;
 
@@ -53,8 +52,7 @@ public class HexedArmor extends CustomMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Hexed Armor"));
         health = cfg.getDouble("health", 20);
 
@@ -76,11 +74,6 @@ public class HexedArmor extends CustomMob implements Listener {
         equipment.setChestplate(getRandom(Materials.CHESTPLATES));
         equipment.setLeggings(getRandom(Materials.LEGGINGS));
         equipment.setBoots(getRandom(Materials.BOOTS));
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 
     @EventHandler

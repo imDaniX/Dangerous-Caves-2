@@ -56,7 +56,6 @@ public class MagmaMonster extends TickingMob implements Listener {
         POWDER = new ItemStack(Material.BLAZE_POWDER);
     }
 
-    private int weight;
     private String name;
     private double health;
 
@@ -69,8 +68,7 @@ public class MagmaMonster extends TickingMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
         health = cfg.getDouble("health", 20);
 
@@ -120,10 +118,5 @@ public class MagmaMonster extends TickingMob implements Listener {
             if(block.getType() != Material.BEDROCK && Compatibility.isCave(block.getType()))
                 block.setType(VMaterial.MAGMA_BLOCK.get(), false);
         }
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 }

@@ -18,37 +18,52 @@
 
 package me.imdanix.caves.mobs;
 
+import lombok.Getter;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 public abstract class CustomMob implements Configurable {
+    @Getter
     private final EntityType type;
-    private final String id;
+    @Getter
+    private final String customType;
+    @Getter
+    private int weight;
+
+    private final int defWeight;
 
     public CustomMob(EntityType base, String id) {
         this.type = base.isAlive() ? base : EntityType.ZOMBIE;
-        this.id = id;
+        this.customType = id;
+        this.defWeight = 10;
     }
+
+    public CustomMob(EntityType base, String id, int weight) {
+        this.type = base.isAlive() ? base : EntityType.ZOMBIE;
+        this.customType = id;
+        this.defWeight = weight;
+    }
+
+    @Override
+    public final void reload(ConfigurationSection cfg) {
+        weight = cfg.getInt("priority", defWeight);
+        configure(cfg);
+    }
+
+    public abstract void configure(ConfigurationSection cfg);
 
     public final boolean isThis(Entity entity) {
-        return entity instanceof LivingEntity && id.equals(Compatibility.getTag((LivingEntity) entity));
-    }
-
-    public final EntityType getType() {
-        return type;
-    }
-
-    public final String getCustomType() {
-        return id;
+        return entity instanceof LivingEntity && customType.equals(Compatibility.getTag((LivingEntity) entity));
     }
 
     public LivingEntity spawn(Location loc) {
         LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
-        Compatibility.setTag(entity, id);
+        Compatibility.setTag(entity, customType);
         setup(entity);
         return entity;
     }
@@ -61,8 +76,6 @@ public abstract class CustomMob implements Configurable {
 
     @Override
     public String getPath() {
-        return "mobs." + id;
+        return "mobs." + customType;
     }
-
-    public abstract int getWeight();
 }

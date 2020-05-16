@@ -44,7 +44,6 @@ public class Watcher extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 80, 2);
     private static final Vector ZERO_VECTOR = new Vector(0, 0, 0);
 
-    private int weight;
     private String name;
     private double health;
 
@@ -55,8 +54,7 @@ public class Watcher extends TickingMob implements Listener {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Watcher"));
         health = cfg.getDouble("health", 20);
 
@@ -75,11 +73,6 @@ public class Watcher extends TickingMob implements Listener {
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head);
         equipment.setHelmetDropChance(0);
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 
     @EventHandler

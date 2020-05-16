@@ -27,7 +27,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 public class CryingBat extends TickingMob {
-    private int weight;
     private String name;
     private double cryChance;
     private double deathChance;
@@ -37,8 +36,7 @@ public class CryingBat extends TickingMob {
     }
 
     @Override
-    public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("priority", 1);
+    public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Crying Bat"));
         cryChance = cfg.getDouble("cry-chance", 3.33) / 100;
         deathChance = cfg.getDouble("death-chance", 20) / 100;
@@ -47,11 +45,6 @@ public class CryingBat extends TickingMob {
     @Override
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
     }
 
     @Override

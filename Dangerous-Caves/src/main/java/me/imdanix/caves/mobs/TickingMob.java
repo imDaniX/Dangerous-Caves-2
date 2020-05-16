@@ -26,6 +26,9 @@ public abstract class TickingMob extends CustomMob {
     public TickingMob(EntityType base, String id) {
         super(base, id);
     }
+    public TickingMob(EntityType base, String id, int weight) {
+        super(base, id, weight);
+    }
 
     @Override
     public LivingEntity spawn(Location loc) {
