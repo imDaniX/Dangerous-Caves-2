@@ -92,11 +92,17 @@ caverns:
       - world
       - world_nether
     # Chance of checking the player
-    # Lower underground and fuller inventory - higher chance of activation
     # Checking every PLAYER tick
     try-chance: 60
-    # Limit maximal chance of activation (set 100 to disable)
-    chance-limit: 90
+    # Formula to calculate chance of activation. Supports integers, floats, -, +, *, /, ^, (, )
+    # Result should be between 0 and 1, where 0 is 0% and 1 is 100%
+    # Depth (0-1) - depth of player, where 1 is Y 0, and 0 is y-max(from config)
+    # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe or 64 dirt)
+    # For 2.1.9 behavior use "(depth+inventory)/2"
+    chance-formula: "depth*inventory"
+    # Limit maximal and minimal chance of activation (set 100 to disable)
+    chance-min: 10
+    chance-max: 90
     # Maximal Y where players can sense lack of air
     y-max: 42
     # Use actionbar instead of chat to show messages
@@ -364,7 +370,7 @@ mobs:
   mimic:
     priority: 0
     name: "&4Mimic"
-    health: 20
+    health: 30
     # List of dropped materials after death
     drop-items:
       - BOOK

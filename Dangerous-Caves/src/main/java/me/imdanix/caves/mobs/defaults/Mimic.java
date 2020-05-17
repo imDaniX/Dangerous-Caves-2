@@ -81,7 +81,7 @@ public class Mimic extends TickingMob implements Listener {
     @Override
     public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Mimic"));
-        health = cfg.getDouble("health", 20);
+        health = cfg.getDouble("health", 30);
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
@@ -114,7 +114,7 @@ public class Mimic extends TickingMob implements Listener {
         if(block.getType() == Material.CHEST && !block.getRelative(BlockFace.UP).getType().isSolid()) {
             String tag = Compatibility.getTag(block);
             if(tag == null || !tag.startsWith("mimic-")) return;
-            double health = Double.parseDouble(tag.substring(6));
+            double health = Utils.getDouble(tag.substring(6), 30);
             event.setCancelled(true);
             Location loc = block.getLocation();
             LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc.add(0.5, 0, 0.5), EntityType.WITHER_SKELETON);

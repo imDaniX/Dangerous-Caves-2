@@ -22,6 +22,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
+import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -47,8 +48,11 @@ public class DepthHypoxia implements Tickable, Configurable {
     private List<String> messages;
     private boolean actionbar;
     private double chance;
-    private double chanceLimit;
+    private double maxChance;
+    private double minChance;
     private int yMax;
+
+    private FormulasEvaluator formula;
 
     public DepthHypoxia() {
         worlds = new HashSet<>();
@@ -58,7 +62,8 @@ public class DepthHypoxia implements Tickable, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("try-chance", 60) / 100;
-        chanceLimit = cfg.getDouble("chance-limit", 90) / 100;
+        maxChance = cfg.getDouble("chance-max", 90) / 100;
+        minChance = cfg.getDouble("chance-min", 10) / 100;
         yMax = cfg.getInt("y-max", 42);
         actionbar = cfg.getBoolean("actionbar", true);
         messages.clear();
@@ -66,11 +71,22 @@ public class DepthHypoxia implements Tickable, Configurable {
         if(messages.isEmpty()) messages.add("");
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+
+        try {
+            formula = new FormulasEvaluator(cfg.getString("chance-formula", "depth*inventory"));
+            formula.setVariable("depth", 1d);
+            formula.setVariable("inventory", 1d);
+            formula.eval();
+        } catch (Exception e) {
+            formula = new FormulasEvaluator("depth*inventory");
+            Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Depth Hypoxia formula " +
+                    "is invalid! Please fix the issue. \"depth*inventory\" formula is used instead.");
+        }
     }
 
     @Override
     public void tick() {
-        if(chance <= 0 || yMax <= 0) return;
+        if(chance <= 0 || yMax <= 0 || maxChance <= 0) return;
         for(World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
@@ -97,7 +113,9 @@ public class DepthHypoxia implements Tickable, Configurable {
             weightChance += item.getAmount() / item.getMaxStackSize();
         }
         weightChance /= contents.length;
-        return Rnd.chance(Math.min((depthChance + weightChance) / 2, chanceLimit));
+        formula.setVariable("depth", depthChance);
+        formula.setVariable("inventory", weightChance);
+        return Rnd.chance(Math.max(minChance, Math.min(maxChance, formula.eval())));
     }
 
     @Override

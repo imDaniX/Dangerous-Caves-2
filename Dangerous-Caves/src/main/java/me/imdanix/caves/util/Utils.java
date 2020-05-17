@@ -30,8 +30,12 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public final class Utils {
+    private final static Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+
     public static String clr(String s){
         return s == null ? "\u00A74Error" : ChatColor.translateAlternateColorCodes('&', s);
     }
@@ -75,5 +79,10 @@ public final class Utils {
         } catch (IllegalArgumentException e) {
             return def;
         }
+    }
+
+    public static double getDouble(String str, double def) {
+        if(!FLOAT.matcher(str).matches()) return def;
+        return Double.parseDouble(str);
     }
 }
