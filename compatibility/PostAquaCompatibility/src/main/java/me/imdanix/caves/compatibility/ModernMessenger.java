@@ -20,7 +20,7 @@ package me.imdanix.caves.compatibility;
 
 import org.bukkit.entity.Player;
 
-public class ActualMessenger implements Messenger {
+public class ModernMessenger implements Messenger {
     @Override
     public void sendActionBar(Player player, String message) {
         player.sendMessage(message);

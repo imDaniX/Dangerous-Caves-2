@@ -51,7 +51,7 @@ public class Compatibility {
         } else {
             materials = new FlattenedMaterials();
             tags = new PersistentTags(plugin);
-            messenger = new ActualMessenger();
+            messenger = new ModernMessenger();
         }
     }
 
