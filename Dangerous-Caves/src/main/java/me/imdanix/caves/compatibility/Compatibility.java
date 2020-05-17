@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+// TODO: Proper singleton for objects
 public class Compatibility {
     private static MaterialsProvider materials;
     private static TagsProvider tags;
@@ -36,7 +37,7 @@ public class Compatibility {
         int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
         boolean isBukkit = Bukkit.getName().equalsIgnoreCase("Bukkit");
         if(isBukkit)
-            plugin.getLogger().warning("Please note that Bukkit is not supported. Prefer Spigot/Paper/Tuinity.");
+            plugin.getLogger().warning("Please note that Bukkit is not supported. Prefer Spigot/Paper.");
         if(version < 13) {
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
