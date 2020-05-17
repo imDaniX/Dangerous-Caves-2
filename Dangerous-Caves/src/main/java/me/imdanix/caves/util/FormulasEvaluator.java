@@ -126,23 +126,23 @@ public class FormulasEvaluator {
      * Because of this class everything looks a bit more sh!tty... but still readable
      */
     private static final class PointerHolder {
-        final String origin;
-        int pointer;
+        private final String origin;
+        private int pointer;
 
-        PointerHolder(String origin) {
+        private PointerHolder(String origin) {
             this.origin = origin;
             this.pointer = 0;
         }
 
-        String substring(int start, int end) {
+        private String substring(int start, int end) {
             return origin.substring(start, end);
         }
 
-        char current() {
+        private char current() {
             return origin.length() > pointer ? origin.charAt(pointer) : ' ';
         }
 
-        boolean tryNext(char c) {
+        private boolean tryNext(char c) {
             if(current() == c) {
                 pointer++;
                 return true;
