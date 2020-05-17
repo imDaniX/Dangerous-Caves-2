@@ -29,9 +29,9 @@
         <module>compatibility/Compatibility</module>
         <module>compatibility/PreAquaCompatibility</module>
         <module>compatibility/PostAquaCompatibility</module>
-<!--        <module>regions/RegionManager</module>
+        <module>regions/RegionManager</module>
         <module>regions/WorldGuard6Manager</module>
-        <module>regions/WorldGuard7Manager</module>-->
+        <module>regions/WorldGuard7Manager</module>
         <module>Dangerous-Caves</module>
         <module>build</module>
     </modules>
