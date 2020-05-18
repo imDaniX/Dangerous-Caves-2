@@ -43,7 +43,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class LavaCreeper extends TickingMob implements Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
-            Integer.MAX_VALUE, 1, false, false);
+            Integer.MAX_VALUE, 0, false, false);
 
     private String name;
     private double health;
@@ -94,6 +94,7 @@ public class LavaCreeper extends TickingMob implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplosion(EntityExplodeEvent event) {
         if(!isThis(event.getEntity()) || chance <= 0) return;
+        ((LivingEntity)event.getEntity()).removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
         Location start = event.getLocation();
         int cx = start.getBlockX();
         int cy = start.getBlockY();
