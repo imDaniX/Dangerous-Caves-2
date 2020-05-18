@@ -20,6 +20,8 @@ package me.imdanix.caves.caverns;
 
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
@@ -76,7 +78,8 @@ public class AmbientSounds implements Tickable, Configurable {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if(loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance))
+                if(loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance)
+                    && Regions.INST.check(CheckType.EFFECT, loc))
                     Rnd.randomItem(sounds).play(player);
             }
         }

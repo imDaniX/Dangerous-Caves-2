@@ -46,7 +46,7 @@ public class WorldGuard7Manager implements RegionManager {
     }
 
     @Override
-    public boolean isAllowed(Check type, Location location) {
+    public boolean test(CheckType type, Location location) {
         ApplicableRegionSet set = regions.createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
         switch (type) {
             case ENTITY:

@@ -27,6 +27,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import org.bstats.bukkit.MetricsLite;
@@ -76,6 +77,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         dynamics.subscribe(cavesAging);
         dynamics.subscribe(temperature);
 
+        cfg.register(Regions.INST);
         cfg.register(mobsManager);
         cfg.register(ambient);
         cfg.register(cavesAging);

@@ -44,7 +44,7 @@ public class WorldGuard6Manager implements RegionManager {
     }
 
     @Override
-    public boolean isAllowed(Check type, Location location) {
+    public boolean test(CheckType type, Location location) {
         ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
         switch (type) {
             case ENTITY:

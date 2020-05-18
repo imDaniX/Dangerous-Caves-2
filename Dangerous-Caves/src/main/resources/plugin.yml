@@ -4,6 +4,7 @@ main: me.imdanix.caves.DangerousCaves
 api-version: "1.13"
 authors: [imDaniX, Evil-Lootlye]
 description: ${description}
+soft-depend: [WorldGuard]
 commands:
   dangerouscaves:
     aliases: [dcaves, dc]

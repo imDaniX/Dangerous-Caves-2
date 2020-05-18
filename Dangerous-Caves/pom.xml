@@ -51,6 +51,9 @@
             <version>1.7</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Compatibility -->
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Compatibility</artifactId>
@@ -66,6 +69,27 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>PreAquaCompatibility</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Regions -->
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>RegionManager</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WorldGuard6Manager</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WorldGuard7Manager</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

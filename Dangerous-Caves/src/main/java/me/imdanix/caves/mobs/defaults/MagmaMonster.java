@@ -21,6 +21,8 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -108,12 +110,18 @@ public class MagmaMonster extends TickingMob implements Listener {
             else
                 entity.setFireTicks(20);
 
-        if(fireChance > 0 && Rnd.chance(fireChance)) {
+        boolean fire, magma;
+        if(((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
+                !Regions.INST.check(CheckType.ENTITY, entity.getLocation()))
+            return;
+
+        if(fire) {
             Block block = entity.getLocation().getBlock();
             if(Compatibility.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
                 block.setType(Material.FIRE, false);
         }
-        if(magmaChance > 0 && Rnd.chance(magmaChance)) {
+
+        if(magma) {
             Block block = entity.getLocation().subtract(0, 1, 0).getBlock();
             if(block.getType() != Material.BEDROCK && Compatibility.isCave(block.getType()))
                 block.setType(VMaterial.MAGMA_BLOCK.get(), false);

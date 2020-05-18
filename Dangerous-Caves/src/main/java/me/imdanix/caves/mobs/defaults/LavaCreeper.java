@@ -21,6 +21,8 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -101,7 +103,7 @@ public class LavaCreeper extends TickingMob implements Listener {
             Block block = new Location(world, x, y, z).getBlock();
             if(Compatibility.isAir(block.getType())) {
                 if(fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
-            } else if(block.getType() != Material.BEDROCK) {
+            } else if(block.getType() != Material.BEDROCK && Regions.INST.check(CheckType.ENTITY, block.getLocation())) {
                 if(magmaBlock > 0 && Rnd.chance(magmaBlock)) {
                     block.setType(VMaterial.MAGMA_BLOCK.get());
                 } else if(obsidian > 0 && Rnd.chance(obsidian)) {

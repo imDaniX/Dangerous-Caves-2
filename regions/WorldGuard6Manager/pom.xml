@@ -30,13 +30,6 @@
 
     <artifactId>WorldGuard6Manager</artifactId>
 
-    <repositories>
-        <repository>
-            <id>sk89q-repo</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>

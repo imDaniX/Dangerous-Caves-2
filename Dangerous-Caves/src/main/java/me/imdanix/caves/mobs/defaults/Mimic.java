@@ -22,6 +22,8 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
@@ -149,7 +151,8 @@ public class Mimic extends TickingMob implements Listener {
     @Override
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
-        if(((Monster)entity).getTarget() == null && Compatibility.isAir(block.getType())) {
+        if(((Monster)entity).getTarget() == null && Compatibility.isAir(block.getType()) &&
+                Regions.INST.check(CheckType.ENTITY, entity.getLocation())) {
             for(BlockFace face : Locations.HORIZONTAL_FACES)
                 if(block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);

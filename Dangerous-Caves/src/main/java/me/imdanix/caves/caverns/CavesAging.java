@@ -21,6 +21,8 @@ package me.imdanix.caves.caverns;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
@@ -31,6 +33,7 @@ import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -70,7 +73,6 @@ public class CavesAging implements Tickable, Configurable {
     private int schedule;
 
     private double percentage;
-    // TODO: Set<Predicate<Block>> checks; // for WG, GP.. support
     private Predicate<Block> lightLevelCheck;
 
     private boolean withVines;
@@ -162,9 +164,10 @@ public class CavesAging implements Tickable, Configurable {
                 Chunk chunk = queuedChunk.getChunk(world);
                 if(!chunk.isLoaded() && !chunk.load()) return;
 
+                Location edge = chunk.getBlock(0, 0, 0).getLocation();
                 ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
                 scheduler.runTaskAsynchronously(plugin, () -> {
-                    Set<DelayedChange> changes = calculateChanges(snapshot);
+                    Set<DelayedChange> changes = calculateChanges(edge, snapshot);
                     if(changes.isEmpty()) return;
 
                     scheduler.runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
@@ -173,7 +176,7 @@ public class CavesAging implements Tickable, Configurable {
         }
     }
 
-    private Set<DelayedChange> calculateChanges(ChunkSnapshot snapshot) {
+    private Set<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot) {
         Set<DelayedChange> changes = new HashSet<>();
 
         int count = 0;
@@ -187,11 +190,15 @@ public class CavesAging implements Tickable, Configurable {
             if(snapshot.getBlockSkyLight(x, y, z) > 0)
                 break;
 
+            totalCount++;
+
+            Location current = edge.clone().add(x, 0, z);
+            current.setY(y);
             if(lightLevel > 0 && (snapshot.getBlockEmittedLight(x, y+1, z) >= lightLevel ||
-                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
+                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel) ||
+                    Regions.INST.check(CheckType.BLOCK, current))
                 continue;
 
-            totalCount++;
             if(AGING_MATERIALS.contains(type))
                 count++;
 
