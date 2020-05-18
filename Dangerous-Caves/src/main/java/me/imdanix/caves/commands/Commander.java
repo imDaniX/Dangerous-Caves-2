@@ -63,6 +63,7 @@ public class Commander implements CommandExecutor {
                 sender.sendMessage(Utils.clr("&bChunk: &f") + loc.getChunk().getX() + "," + loc.getChunk().getZ());
                 sender.sendMessage(Utils.clr("&bHand: &f") + player.getInventory().getItemInMainHand().getType());
                 break;
+
             case "summon":
                 if(!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));
@@ -78,17 +79,20 @@ public class Commander implements CommandExecutor {
                     sender.sendMessage(Utils.clr("&cThere's no mobs called " + args[1] + "!"));
                 }
                 break;
+
             case "tick":
                 if(!sender.hasPermission("dangerous.caves.command.tick")) return false;
                 for(TickLevel level : TickLevel.values()) dynamics.tick(level);
                 sender.sendMessage(Utils.clr("&aTicked every tickables."));
                 break;
+
             case "reload":
                 if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
                 cfg.checkVersion();
                 break;
+
             case "count":
                 if(!sender.hasPermission("dangerous.caves.command.count")) return false;
                 sender.sendMessage(Utils.clr("&aPlugin ticking &6" + MobsManager.handledCount() + " mobs."));

@@ -55,5 +55,12 @@
             <version>6.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <scope>system</scope>
+            <version>6.1.9</version>
+            <systemPath>${basedir}/../../libs/worldedit-bukkit-6.1.9.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

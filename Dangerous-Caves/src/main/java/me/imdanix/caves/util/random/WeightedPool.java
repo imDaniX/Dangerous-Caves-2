@@ -38,8 +38,10 @@ public final class WeightedPool<T> {
         if (collection.isEmpty())
             throw new IllegalArgumentException("Probability vector must be nonempty.");
 
-        double[] probabilities = new double[collection.size()];
-        elements = new ArrayList<>();
+        final int size = collection.size();
+
+        double[] probabilities = new double[size];
+        elements = new ArrayList<>(size);
 
         double sum = 0;
         for(T item : collection) {
@@ -50,15 +52,15 @@ public final class WeightedPool<T> {
             probabilities[i] = funct.applyAsDouble(elements.get(i)) / sum;
         }
 
-        probability = new double[probabilities.length];
-        alias = new int[probabilities.length];
+        probability = new double[size];
+        alias = new int[size];
 
-        final double average = 1.0 / probabilities.length;
+        final double average = 1.0 / size;
 
         Deque<Integer> small = new ArrayDeque<>();
         Deque<Integer> large = new ArrayDeque<>();
 
-        for (int i = 0; i < probabilities.length; ++i) {
+        for (int i = 0; i < size; ++i) {
             if (probabilities[i] >= average)
                 large.add(i);
             else
@@ -69,12 +71,12 @@ public final class WeightedPool<T> {
             int less = small.removeLast();
             int more = large.removeLast();
 
-            probability[less] = probabilities[less] * probabilities.length;
+            probability[less] = probabilities[less] * size;
             alias[less] = more;
 
             probabilities[more] = probabilities[more] + probabilities[less] - average;
 
-            if (probabilities[more] >= 1.0 / probabilities.length)
+            if (probabilities[more] >= 1.0 / size)
                 large.add(more);
             else
                 small.add(more);
@@ -88,7 +90,7 @@ public final class WeightedPool<T> {
 
     public T next() {
         int column = Rnd.nextInt(probability.length);
-        boolean coinToss = Rnd.chance(probability[column]);
+        boolean coinToss/*ToYourWitcher*/ = Rnd.chance(probability[column]);
         return elements.get(coinToss ? column : alias[column]);
     }
 }
