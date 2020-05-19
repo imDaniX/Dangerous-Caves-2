@@ -25,6 +25,20 @@ version: ${cfgVersion}
 # -1.12 Sounds https://helpch.at/docs/1.12.2/index.html?org/bukkit/Sound.html
 
 #
+# Some plugin integrations
+#
+inregration:
+  # For blocks checking
+  # Available options: worldguard, none
+  mode: none
+  # WorldGuard flags:
+  # dc-entity-grief(magma monster, lava creeper)
+  # dc-block-change(cave-ins, cave aging)
+  # dc-player-effect(ambient sounds, hypoxia)
+  # Invert flags by default
+  invert: false
+
+#
 # Cave-related things
 #
 caverns:
