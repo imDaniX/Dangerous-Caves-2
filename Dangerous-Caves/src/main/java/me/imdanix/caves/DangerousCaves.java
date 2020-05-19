@@ -50,12 +50,17 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     private CaveGenerator generator;
 
     @Override
+    public void onLoad() {
+        Regions.INST.onLoad();
+    }
+
+    @Override
     public void onEnable() {
         if(getDescription().getVersion().contains("SNAPSHOT")) {
             getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/dangerous-caves/issues");
         }
-
+        Regions.INST.onEnable();
         Compatibility.init(this);
 
         dynamics = new Dynamics(this);

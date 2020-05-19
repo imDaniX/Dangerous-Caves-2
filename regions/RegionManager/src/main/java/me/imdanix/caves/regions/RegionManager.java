@@ -22,5 +22,6 @@ import org.bukkit.Location;
 
 import java.util.function.BiPredicate;
 
-@FunctionalInterface
-public interface RegionManager extends BiPredicate<CheckType, Location> {}
+public interface RegionManager extends BiPredicate<CheckType, Location> {
+    default void onEnable() {}
+}

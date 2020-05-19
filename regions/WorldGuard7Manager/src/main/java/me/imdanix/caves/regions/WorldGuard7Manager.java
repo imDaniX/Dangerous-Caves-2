@@ -32,11 +32,10 @@ public class WorldGuard7Manager implements RegionManager {
     private static final StateFlag BLOCK_FLAG = new StateFlag("dc-block-change", true);
     private static final StateFlag EFFECT_FLAG = new StateFlag("dc-player-effect", true);
 
-    private final RegionContainer regions;
+    private RegionContainer regions;
 
     public WorldGuard7Manager() {
         WorldGuard worldGuard = WorldGuard.getInstance();
-        regions = worldGuard.getPlatform().getRegionContainer();
         try {
             FlagRegistry registry = worldGuard.getFlagRegistry();
             registry.register(ENTITY_FLAG);
@@ -57,5 +56,10 @@ public class WorldGuard7Manager implements RegionManager {
                 return set.testState(null, EFFECT_FLAG);
         }
         return true;
+    }
+
+    @Override
+    public void onEnable() {
+        regions = WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 }

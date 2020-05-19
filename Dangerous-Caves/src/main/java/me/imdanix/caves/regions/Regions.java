@@ -36,13 +36,6 @@ public enum Regions implements Configurable {
 
     Regions() {
         managers = new HashMap<>();
-        Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-        if(wg != null) {
-            if(wg.getDescription().getVersion().startsWith("6"))
-                managers.put("worldguard", new WorldGuard6Manager());
-            else
-                managers.put("worldguard", new WorldGuard7Manager());
-        }
     }
 
     public boolean check(CheckType check, Location location) {
@@ -63,5 +56,19 @@ public enum Regions implements Configurable {
     @Override
     public String getPath() {
         return "integration";
+    }
+
+    public void onLoad() {
+        Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
+        if(wg != null) {
+            if(wg.getDescription().getVersion().startsWith("6"))
+                managers.put("worldguard", new WorldGuard6Manager());
+            else
+                managers.put("worldguard", new WorldGuard7Manager());
+        }
+    }
+
+    public void onEnable() {
+        managers.values().forEach(RegionManager::onEnable);
     }
 }
