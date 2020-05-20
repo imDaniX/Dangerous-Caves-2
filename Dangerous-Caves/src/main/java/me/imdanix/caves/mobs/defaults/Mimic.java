@@ -116,7 +116,8 @@ public class Mimic extends TickingMob implements Listener {
         if(block.getType() == Material.CHEST && !block.getRelative(BlockFace.UP).getType().isSolid()) {
             String tag = Compatibility.getTag(block);
             if(tag == null || !tag.startsWith("mimic-")) return;
-            double health = Utils.getDouble(tag.substring(6), 30);
+            double health = Utils.getDouble(tag.split("-")[1], 30);
+            if(health <= 0) health = 1;
             event.setCancelled(true);
             Location loc = block.getLocation();
             LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc.add(0.5, 0, 0.5), EntityType.WITHER_SKELETON);
