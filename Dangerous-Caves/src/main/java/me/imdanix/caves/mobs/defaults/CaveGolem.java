@@ -94,10 +94,13 @@ public class CaveGolem extends CustomMob implements Listener {
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
-        equipment.setHelmet(Rnd.randomItem(heads)); equipment.setHelmetDropChance(1);
         equipment.setChestplate(CHESTPLATE);        equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);            equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);                  equipment.setBootsDropChance(0);
+        if(!heads.isEmpty()) {
+            equipment.setHelmet(Rnd.randomItem(heads));
+            equipment.setHelmetDropChance(1);
+        }
         entity.setSilent(true);
         if(slow) entity.addPotionEffect(SLOW);
     }

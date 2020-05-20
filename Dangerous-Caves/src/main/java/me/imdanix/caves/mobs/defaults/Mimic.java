@@ -141,10 +141,10 @@ public class Mimic extends TickingMob implements Listener {
         if(isThis(event.getEntity())) {
             event.setDeathSound(VSound.BLOCK_ENDER_CHEST_CLOSE.get());
             event.setDeathSoundPitch(0.2f);
-            List<ItemStack> items = event.getDrops();
-            items.clear();
-            items.add(CHEST);
-            items.add(new ItemStack(Rnd.randomItem(this.items)));
+            List<ItemStack> drops = event.getDrops();
+            drops.clear();
+            drops.add(CHEST);
+            if(!items.isEmpty()) drops.add(new ItemStack(Rnd.randomItem(items)));
         }
     }
 
