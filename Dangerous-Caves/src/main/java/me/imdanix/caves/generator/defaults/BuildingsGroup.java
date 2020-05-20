@@ -196,7 +196,7 @@ public class BuildingsGroup extends StructureGroup {
                 BlockState blockState = loc.getBlock().getState();
                 CreatureSpawner spawner = ((CreatureSpawner) blockState);
                 spawner.setSpawnedType(EntityType.SILVERFISH);
-                blockState.update();
+                blockState.update(false, false);
                 break;
 
             case 10:

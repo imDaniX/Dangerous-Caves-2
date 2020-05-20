@@ -49,7 +49,7 @@ public class ScoreboardTags implements TagsProvider {
         BlockState state = block.getState();
         if(!(state instanceof Nameable)) return;
         ((Nameable)state).setCustomName(TAG_PREFIX + tag);
-        state.update();
+        state.update(false, false);
     }
 
     public String getTag(LivingEntity entity) {

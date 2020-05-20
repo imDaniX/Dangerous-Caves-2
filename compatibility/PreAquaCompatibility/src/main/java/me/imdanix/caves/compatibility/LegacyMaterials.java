@@ -60,7 +60,7 @@ public class LegacyMaterials implements MaterialsProvider {
         } else if(data instanceof Vine) {
             ((Vine) data).putOnFace(face);
         }
-        state.update(true, true);
+        state.update(false, false);
     }
 
     @Override

@@ -69,7 +69,7 @@ public abstract class StructureGroup implements Configurable {
         if(chestItems.isEmpty()) return;
         if(!(block.getState() instanceof Container)) return;
         if(mimicChance > 0 && Rnd.chance(mimicChance)) {
-            Compatibility.setTag(block, "mimic-20");
+            Compatibility.setTag(block, "mimic-30");
             return;
         }
         Inventory inventory = ((Container)block.getState()).getInventory();
