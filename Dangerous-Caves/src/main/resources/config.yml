@@ -28,7 +28,7 @@ version: ${cfgVersion}
 #
 # Some plugin integrations
 #
-inregration:
+integration:
   # For blocks checking
   # Available options: worldguard, none
   mode: none
