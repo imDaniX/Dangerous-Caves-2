@@ -57,11 +57,6 @@ import java.util.List;
 
 public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
-    private final List<Material> items;
-
-    private String name;
-    private double health;
-
     private static final ItemStack CHEST;
     private static final ItemStack CHESTPLATE;
     private static final ItemStack LEGGINGS;
@@ -74,6 +69,11 @@ public class Mimic extends TickingMob implements Listener {
         BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
         PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
     }
+
+    private final List<Material> items;
+
+    private String name;
+    private double health;
 
     public Mimic() {
         super(EntityType.WITHER_SKELETON, "mimic", 0);
@@ -113,12 +113,13 @@ public class Mimic extends TickingMob implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if(block.getType() == Material.CHEST && !block.getRelative(BlockFace.UP).getType().isSolid()) {
+        if(block.getType() == Material.CHEST) {
             String tag = Compatibility.getTag(block);
             if(tag == null || !tag.startsWith("mimic-")) return;
+            event.setCancelled(true);
+            if(block.getRelative(BlockFace.UP).getType().isSolid()) return;
             double health = Utils.getDouble(tag.split("-")[1], 30);
             if(health <= 0) health = 1;
-            event.setCancelled(true);
             Location loc = block.getLocation();
             LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc.add(0.5, 0, 0.5), EntityType.WITHER_SKELETON);
             setup(entity);
