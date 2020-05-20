@@ -1,6 +1,7 @@
 # | DangerousCaves by Evil-Lootlye
 # | Forked by imDaniX
 
+# Version of this configuration file
 version: ${cfgVersion}
 
 # NOTE: Chances
@@ -33,7 +34,7 @@ inregration:
   mode: none
   # WorldGuard flags:
   # dc-entity-grief(magma monster, lava creeper)
-  # dc-block-change(cave-ins, cave aging)
+  # dc-block-change(cave-ins, caves aging)
   # dc-player-effect(ambient sounds, hypoxia)
   # Invert flags by default
   invert: false
@@ -233,7 +234,7 @@ generator:
     boulders: 1
     buildings: 1
 
-  # Chance of spawning a mimic inside custom structure with chests
+  # Chance of spawning a mimic inside of custom structure with chests
   mimic-chance: 10
 
 #
@@ -401,10 +402,10 @@ mobs:
     name: "&4Cave Golem"
     # Give Cave Golem slowness effect
     slowness: true
-    # When Cave Golem is attacking give player slowness, nausea and blindness effects
+    # When Cave Golem is attacking give its victim slowness, nausea and blindness effects
     distract-attack: true
     # Damage multiplier when Cave Golem is attacking
-    damage-modifier: 1.5
+    damage-modifier: 2.0
     # Damage multiplier when player is attacking Cave Golem without pickaxe
     nonpickaxe-modifier: 0.07
     # These blocks will be on Cave Golem's head and will be dropped after death

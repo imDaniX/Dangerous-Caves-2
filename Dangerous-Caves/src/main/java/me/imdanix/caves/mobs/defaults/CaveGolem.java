@@ -73,12 +73,12 @@ public class CaveGolem extends CustomMob implements Listener {
     @Override
     public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
-        health = cfg.getDouble("health", 20);
+        health = cfg.getDouble("health", 35);
 
         slow = cfg.getBoolean("slowness", true);
         distract = cfg.getBoolean("distract-attack", true);
         nonPickaxe = cfg.getDouble("nonpickaxe-modifier", 0.07);
-        damageModifier = cfg.getDouble("damage-modifier", 1.5);
+        damageModifier = cfg.getDouble("damage-modifier", 2.0);
 
         heads.clear();
         for(String typeStr : cfg.getStringList("variants")) {
