@@ -39,7 +39,7 @@
 
     <description>Adds and improves mechanics in caves.</description>
     <properties>
-        <subVersion>2.1</subVersion>
+        <subVersion>2.2-SNAPSHOT</subVersion>
         <cfgVersion>16</cfgVersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

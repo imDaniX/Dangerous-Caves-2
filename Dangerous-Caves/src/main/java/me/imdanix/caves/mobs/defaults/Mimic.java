@@ -44,6 +44,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -108,6 +109,20 @@ public class Mimic extends TickingMob implements Listener {
         equipment.setChestplate(CHESTPLATE);    equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);        equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);              equipment.setBootsDropChance(0);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+        if(block.getType() != Material.CHEST) return;
+        for(BlockFace face : Locations.HORIZONTAL_FACES) {
+            if(block.getRelative(face).getType() != Material.CHEST) continue;
+            String tag = Compatibility.getTag(block);
+            if(tag != null && tag.startsWith("mimic")) {
+                event.setBuild(false);
+                return;
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
