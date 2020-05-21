@@ -31,6 +31,7 @@ import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -115,7 +116,7 @@ public class Mimic extends TickingMob implements Listener {
         Block block = event.getClickedBlock();
         if(block.getType() == Material.CHEST) {
             String tag = Compatibility.getTag(block);
-            if(tag == null || !tag.startsWith("mimic-")) return;
+            if(tag == null || !tag.startsWith("mimic")) return;
             event.setCancelled(true);
             if(block.getRelative(BlockFace.UP).getType().isSolid()) return;
             double health = Utils.getDouble(tag.split("-")[1], 30);
@@ -125,7 +126,7 @@ public class Mimic extends TickingMob implements Listener {
             setup(entity);
             entity.setHealth(health);
             Player player = event.getPlayer();
-            loc.getWorld().playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
+            Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
             player.addPotionEffect(BLINDNESS);
             ((Monster)entity).setTarget(player);
             block.setType(Material.AIR);
@@ -135,14 +136,13 @@ public class Mimic extends TickingMob implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
-        if(isThis(entity)) entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.BLOCK_SHULKER_BOX_OPEN, 1f, 0.2f);
+        if(isThis(entity)) Locations.playSound(entity.getLocation(), Sound.BLOCK_SHULKER_BOX_OPEN, 1f, 0.2f);
     }
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
         if(isThis(event.getEntity())) {
-            event.setDeathSound(VSound.BLOCK_ENDER_CHEST_CLOSE.get());
-            event.setDeathSoundPitch(0.2f);
+            Locations.playSound(event.getEntity().getLocation(), VSound.BLOCK_ENDER_CHEST_CLOSE.get(), SoundCategory.HOSTILE, 1f, 0.2f);
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);

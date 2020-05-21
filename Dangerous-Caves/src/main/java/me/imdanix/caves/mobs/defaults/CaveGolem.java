@@ -19,6 +19,7 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
@@ -110,7 +111,7 @@ public class CaveGolem extends CustomMob implements Listener {
         if(isThis(event.getDamager())) {
             if(!(event.getEntity() instanceof LivingEntity)) return;
             LivingEntity entity = (LivingEntity) event.getEntity();
-            entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.HOSTILE, 1, 0.5f);
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.HOSTILE, 1, 0.5f);
             if(distract) {
                 entity.addPotionEffect(BLINDNESS);
                 entity.addPotionEffect(SLOW_PL);
@@ -123,7 +124,7 @@ public class CaveGolem extends CustomMob implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(isThis(event.getEntity())) {
-            event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.3f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.3f);
             if(event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
                 if(!(enEvent.getDamager() instanceof LivingEntity)) {

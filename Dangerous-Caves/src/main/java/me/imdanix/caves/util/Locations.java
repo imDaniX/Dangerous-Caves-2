@@ -20,6 +20,8 @@ package me.imdanix.caves.util;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -59,6 +61,14 @@ public final class Locations {
         Location eye = viewer.getEyeLocation();
         Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
         return toEntity.normalize().dot(eye.getDirection()) > 0.70D;
+    }
+
+    public static void playSound(Location loc, Sound sound, SoundCategory category, float volume, float pitch) {
+        loc.getWorld().playSound(loc, sound, category, volume, pitch);
+    }
+
+    public static void playSound(Location loc, Sound sound, float volume, float pitch) {
+        loc.getWorld().playSound(loc, sound, volume, pitch);
     }
 
     @FunctionalInterface

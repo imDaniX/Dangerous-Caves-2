@@ -78,7 +78,7 @@ public class Watcher extends TickingMob implements Listener {
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
         if(isThis(event.getEntity()))
-            event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1.1f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1.1f);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class Watcher extends TickingMob implements Listener {
             target.setVelocity(ZERO_VECTOR);
             target.addPotionEffect(SLOW);
             target.addPotionEffect(BLINDNESS);
-            target.getWorld().playSound(target.getEyeLocation(), Sound.ENTITY_GHAST_HURT, 1, 2);
+            Locations.playSound(target.getEyeLocation(), Sound.ENTITY_GHAST_HURT, 1, 2);
         }
     }
 }

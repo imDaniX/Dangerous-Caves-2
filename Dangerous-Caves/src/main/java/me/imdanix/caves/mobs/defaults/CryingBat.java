@@ -19,6 +19,7 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Sound;
@@ -50,7 +51,7 @@ public class CryingBat extends TickingMob {
     @Override
     public void tick(LivingEntity entity) {
         if(cryChance > 0 && Rnd.chance(cryChance)) {
-            entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
             if(deathChance > 0 && Rnd.chance(deathChance))
                 entity.damage(1000);
         }

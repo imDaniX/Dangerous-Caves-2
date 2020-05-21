@@ -23,6 +23,7 @@ import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
+import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Location;
@@ -109,7 +110,7 @@ public class DeadMiner extends TickingMob implements Listener {
         if(block.getLightLevel() > 0 || !Regions.INST.check(CheckType.ENTITY, loc)) return;
         if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
-            block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+            Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
         }
     }
 }
