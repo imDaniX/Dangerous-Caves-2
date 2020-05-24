@@ -29,6 +29,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -127,10 +128,9 @@ public class CaveGolem extends CustomMob implements Listener {
             Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.3f);
             if(event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
-                if(!(enEvent.getDamager() instanceof LivingEntity)) {
-                    LivingEntity entity = (LivingEntity) enEvent.getDamager();
-                    EntityEquipment equipment = entity.getEquipment();
-                    if(equipment != null && equipment.getItemInMainHand().getType().name().contains("PICKAXE"))
+                if(enEvent.getDamager() instanceof Player) {
+                    Player player = (Player) enEvent.getDamager();
+                    if(player.getInventory().getItemInMainHand().getType().name().contains("PICKAXE"))
                         return;
                 }
             }

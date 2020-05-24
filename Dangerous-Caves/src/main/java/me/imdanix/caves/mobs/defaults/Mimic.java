@@ -119,7 +119,7 @@ public class Mimic extends TickingMob implements Listener {
             if(block.getRelative(face).getType() != Material.CHEST) continue;
             String tag = Compatibility.getTag(block);
             if(tag != null && tag.startsWith("mimic")) {
-                event.setBuild(false);
+                event.setCancelled(true);
                 return;
             }
         }
@@ -131,7 +131,7 @@ public class Mimic extends TickingMob implements Listener {
         Block block = event.getClickedBlock();
         if(block.getType() == Material.CHEST) {
             String tag = Compatibility.getTag(block);
-            if(tag == null || !tag.startsWith("mimic")) return;
+            if(tag == null || !tag.startsWith("mimic-")) return;
             event.setCancelled(true);
             if(block.getRelative(BlockFace.UP).getType().isSolid()) return;
             double health = Utils.getDouble(tag.split("-")[1], 30);
