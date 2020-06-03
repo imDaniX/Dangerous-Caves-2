@@ -32,8 +32,6 @@ public class WorldGuard7Manager implements RegionManager {
     private static final StateFlag BLOCK_FLAG = new StateFlag("dc-block-change", true);
     private static final StateFlag EFFECT_FLAG = new StateFlag("dc-player-effect", true);
 
-    private RegionContainer regions;
-
     public WorldGuard7Manager() {
         WorldGuard worldGuard = WorldGuard.getInstance();
         try {
@@ -46,7 +44,7 @@ public class WorldGuard7Manager implements RegionManager {
 
     @Override
     public boolean test(CheckType type, Location location) {
-        ApplicableRegionSet set = regions.createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
+        ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
         switch (type) {
             case ENTITY:
                 return set.testState(null, ENTITY_FLAG);
@@ -58,8 +56,7 @@ public class WorldGuard7Manager implements RegionManager {
         return true;
     }
 
-    @Override
-    public void onEnable() {
-        regions = WorldGuard.getInstance().getPlatform().getRegionContainer();
+    private RegionContainer getContainer() {
+        return WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 }
