@@ -88,6 +88,7 @@ public class CaveGolem extends CustomMob implements Listener {
             if(type == null || !type.isBlock()) continue;
             heads.add(new ItemStack(type));
         }
+        if(heads.isEmpty()) heads.add(new ItemStack(Material.STONE));
     }
 
     @Override
@@ -96,13 +97,10 @@ public class CaveGolem extends CustomMob implements Listener {
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
+        equipment.setHelmet(Rnd.randomItem(heads)); equipment.setHelmetDropChance(1);
         equipment.setChestplate(CHESTPLATE);        equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);            equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);                  equipment.setBootsDropChance(0);
-        if(!heads.isEmpty()) {
-            equipment.setHelmet(Rnd.randomItem(heads));
-            equipment.setHelmetDropChance(1);
-        }
         entity.setSilent(true);
         if(slow) entity.addPotionEffect(SLOW);
     }
@@ -125,12 +123,12 @@ public class CaveGolem extends CustomMob implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(isThis(event.getEntity())) {
-            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.3f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.5f);
             if(event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
                 if(enEvent.getDamager() instanceof Player) {
                     Player player = (Player) enEvent.getDamager();
-                    if(player.getInventory().getItemInMainHand().getType().name().contains("PICKAXE"))
+                    if(player.getInventory().getItemInMainHand().getType().name().endsWith("PICKAXE"))
                         return;
                 }
             }
