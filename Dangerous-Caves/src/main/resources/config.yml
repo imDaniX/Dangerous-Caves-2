@@ -29,13 +29,21 @@ version: ${cfgVersion}
 # Some plugin integrations
 #
 integration:
-  # For blocks checking
-  # Available options: worldguard, none
+  # For disabling some features in specific regions
+  # Available options: worldguard, griefprevention, none
   mode: none
+
   # WorldGuard flags:
-  # dc-entity-grief(magma monster, lava creeper)
-  # dc-block-change(cave-ins, caves aging)
-  # dc-player-effect(ambient sounds, hypoxia)
+  # dc-entity-grief (magma monster, lava creeper)
+  # dc-block-change (cave-ins, caves aging)
+  # dc-player-effect (ambient sounds, hypoxia)
+
+  # GriefPrevention requires GriefPreventionFlags plugin
+  # GriefPreventionFlags flags:
+  # DCNoEntityGrief (magma monster, lava creeper)
+  # DCNoBlockChange (cave-ins, caves aging)
+  # DCNoPlayerEffect (ambient sounds, hypoxia)
+
   # Invert flags by default
   invert: false
 

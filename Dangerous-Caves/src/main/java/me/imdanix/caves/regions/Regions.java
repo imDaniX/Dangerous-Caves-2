@@ -69,6 +69,8 @@ public enum Regions implements Configurable {
     }
 
     public void onEnable() {
+        managers.put("griefprevention", new GriefPreventionManager());
+
         managers.values().forEach(RegionManager::onEnable);
     }
 }

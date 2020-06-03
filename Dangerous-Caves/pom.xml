@@ -93,5 +93,10 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.ShaneBeee</groupId>
+            <artifactId>GriefPreventionFlags</artifactId>
+            <version>5.9.0</version>
+        </dependency>
     </dependencies>
 </project>
