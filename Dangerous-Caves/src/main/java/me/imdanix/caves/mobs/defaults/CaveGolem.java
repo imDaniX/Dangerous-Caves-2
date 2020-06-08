@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
@@ -43,7 +43,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CaveGolem extends CustomMob implements Listener {
+public class CaveGolem extends AbstractMob implements Listener {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 30, 0);
     private static final PotionEffect CONFUSION = new PotionEffect(PotionEffectType.CONFUSION, 20, 0);

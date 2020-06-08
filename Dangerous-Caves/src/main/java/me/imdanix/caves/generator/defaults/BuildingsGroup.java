@@ -19,7 +19,7 @@
 package me.imdanix.caves.generator.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.generator.StructureGroup;
+import me.imdanix.caves.generator.AbstractStructure;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +31,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.Random;
 
-public class BuildingsGroup extends StructureGroup {
+public class BuildingsGroup extends AbstractStructure {
     private int weight;
 
     public BuildingsGroup() {

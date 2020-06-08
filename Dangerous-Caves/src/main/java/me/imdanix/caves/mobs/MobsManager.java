@@ -107,12 +107,13 @@ public class MobsManager implements Listener, Tickable, Configurable {
     public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getCustomType())) {
             Compatibility.cacheTag(mob.getCustomType());
-            plugin.getConfiguration().register(mob);
             mobs.put(mob.getCustomType(), mob);
+            if(mob instanceof Configurable)
+                plugin.getConfiguration().register((Configurable) mob);
             if(mob instanceof Listener)
-                Bukkit.getPluginManager().registerEvents((Listener)mob, plugin);
+                Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if(mob instanceof Tickable)
-                plugin.getDynamics().subscribe((Tickable)mob);
+                plugin.getDynamics().subscribe((Tickable) mob);
         }
     }
 

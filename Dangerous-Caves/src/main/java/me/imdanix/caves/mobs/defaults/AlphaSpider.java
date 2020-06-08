@@ -20,7 +20,7 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -37,7 +37,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class AlphaSpider extends CustomMob implements Listener {
+public class AlphaSpider extends AbstractMob implements Listener {
     private static final PotionEffect POISON = new PotionEffect(PotionEffectType.POISON, 75, 1);
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, false, true);
 

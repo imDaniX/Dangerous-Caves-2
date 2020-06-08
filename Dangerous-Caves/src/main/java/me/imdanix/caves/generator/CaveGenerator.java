@@ -59,7 +59,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
         chance = cfg.getDouble("chance", 50) / 100;
         maxTries = cfg.getInt("max-tries", 3);
 
-        StructureGroup.setMimicChance(cfg.getDouble("mimic-chance") / 100);
+        AbstractStructure.setMimicChance(cfg.getDouble("mimic-chance") / 100);
 
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
@@ -76,7 +76,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
             Material material = Material.getMaterial(materialStr.toUpperCase());
             if(material != null) items.add(material);
         }
-        StructureGroup.setItems(items);
+        AbstractStructure.setItems(items);
         if(chance > 0) recalculate();
     }
 
@@ -92,7 +92,8 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
     public void register(StructureGroup group) {
         if(!structures.containsKey(group.getId())) {
             structures.put(group.getId(), group);
-            cfg.register(group);
+            if(group instanceof Configurable)
+                cfg.register((Configurable) group);
         }
     }
 

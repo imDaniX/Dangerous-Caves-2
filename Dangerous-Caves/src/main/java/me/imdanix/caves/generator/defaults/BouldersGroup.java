@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.generator.defaults;
 
-import me.imdanix.caves.generator.StructureGroup;
+import me.imdanix.caves.generator.AbstractStructure;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -26,7 +26,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Random;
 
-public class BouldersGroup extends StructureGroup {
+public class BouldersGroup extends AbstractStructure {
     private int weight;
 
     public BouldersGroup() {
