@@ -83,20 +83,21 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>WorldGuard6Manager</artifactId>
+            <artifactId>WorldGuard6</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>WorldGuard7Manager</artifactId>
+            <artifactId>WorldGuard7</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.ShaneBeee</groupId>
-            <artifactId>GriefPreventionFlags</artifactId>
-            <version>5.9.0</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

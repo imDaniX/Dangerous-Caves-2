@@ -36,6 +36,7 @@ public enum Regions implements Configurable {
 
     Regions() {
         managers = new HashMap<>();
+        managers.put("none", (c,l) -> true);
     }
 
     public boolean check(CheckType check, Location location) {
@@ -48,9 +49,13 @@ public enum Regions implements Configurable {
         String mode = cfg.getString("mode", "none").toLowerCase();
         RegionManager manager = managers.get(mode);
         if(manager != null) {
-            current = (c,l) -> invert ^ manager.test(c, l);
-        } else
+            current = (c,l) -> invert != manager.test(c, l);
+        } else {
+            // TODO Logger util
+            Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Can't find mode \"" +
+                    mode + "\". Regions feature is disabled.");
             current = (c,l) -> true;
+        }
     }
 
     @Override
@@ -61,16 +66,22 @@ public enum Regions implements Configurable {
     public void onLoad() {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(wg != null) {
-            if(wg.getDescription().getVersion().startsWith("6"))
-                managers.put("worldguard", new WorldGuard6Manager());
-            else
-                managers.put("worldguard", new WorldGuard7Manager());
+            if(wg.getDescription().getVersion().startsWith("6")) {
+                managers.put("worldguard", new WorldGuard6FlagsManager());
+                managers.put("worldguard-flagless", new WorldGuard6Manager());
+            } else {
+                managers.put("worldguard", new WorldGuard7FlagsManager());
+                managers.put("worldguard-flagless", new WorldGuard7Manager());
+            }
         }
     }
 
     public void onEnable() {
-        if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
-            managers.put("griefprevention", new GriefPreventionManager());
+        if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+            managers.put("griefprevention-flagless", new GriefPreventionManager());
+            if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
+                managers.put("griefprevention", new GriefPreventionFlagsManager());
+        }
 
         managers.values().forEach(RegionManager::onEnable);
     }

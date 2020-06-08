@@ -30,7 +30,7 @@ version: ${cfgVersion}
 #
 integration:
   # For disabling some features in specific regions
-  # Available options: worldguard, griefprevention, none
+  # Available options: worldguard, worldguard-flagless, griefprevention, griefprevention-flagless, none
   mode: none
 
   # WorldGuard flags:
@@ -38,7 +38,7 @@ integration:
   # dc-block-change (cave-ins, caves aging)
   # dc-player-effect (ambient sounds, hypoxia)
 
-  # GriefPrevention requires GriefPreventionFlags plugin
+  # `griefprevention` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention-flagless`
   # GriefPreventionFlags flags:
   # DCNoEntityGrief (magma monster, lava creeper)
   # DCNoBlockChange (cave-ins, caves aging)
