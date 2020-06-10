@@ -56,6 +56,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
@@ -90,7 +91,7 @@ public class Mimic extends TickingMob implements Listener {
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
         for(String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase());
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if(material != null) items.add(material);
         }
     }

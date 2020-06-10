@@ -25,6 +25,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
@@ -46,7 +47,7 @@ public enum Regions implements Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         boolean invert = cfg.getBoolean("invert", false);
-        String mode = cfg.getString("mode", "none").toLowerCase();
+        String mode = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH);
         RegionManager manager = managers.get(mode);
         if(manager != null) {
             current = (c,l) -> invert != manager.test(c, l);

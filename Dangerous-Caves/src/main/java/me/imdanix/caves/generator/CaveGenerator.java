@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -73,7 +74,7 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
 
         List<String> itemsCfg = cfg.getStringList("chest-items");
         for(String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase());
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if(material != null) items.add(material);
         }
         AbstractStructure.setItems(items);

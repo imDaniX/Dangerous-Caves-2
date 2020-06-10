@@ -38,6 +38,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class AmbientSounds implements Tickable, Configurable {
@@ -59,7 +60,7 @@ public class AmbientSounds implements Tickable, Configurable {
         radius = cfg.getDouble("near", 7);
         sounds.clear();
         for(String soundStr : Configuration.section(cfg, "sounds").getKeys(false)) {
-            Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase());
+            Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase(Locale.ENGLISH));
             if(sound == null) continue;
             sounds.add(new WrappedSound(
                     sound,

@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public final class Materials {
@@ -65,7 +66,7 @@ public final class Materials {
     public static Set<Material> getEnumSet(Collection<String> typeColl) {
         Set<Material> materials = new HashSet<>();
         for(String typeStr : typeColl) {
-            Material type = Material.getMaterial(typeStr.toUpperCase());
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
             if(type != null) materials.add(type);
         }
         return materials.isEmpty() ? Collections.emptySet() : materials;

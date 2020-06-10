@@ -19,6 +19,7 @@
 package me.imdanix.caves.util;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /*
@@ -35,7 +36,7 @@ public class FormulasEvaluator {
 
     public FormulasEvaluator(String expression) {
         this.variables = new HashMap<>();
-        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase()));
+        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase(Locale.ENGLISH)));
     }
 
     public void setVariable(String variable, Double value) {

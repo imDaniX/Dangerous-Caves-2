@@ -48,6 +48,7 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -135,7 +136,7 @@ public class MobsManager implements Listener, Tickable, Configurable {
     }
 
     public boolean summon(String type, Location loc) {
-        CustomMob mob = mobs.get(type.toLowerCase());
+        CustomMob mob = mobs.get(type.toLowerCase(Locale.ENGLISH));
         if(mob == null) return false;
         spawn(mob, loc);
         return true;

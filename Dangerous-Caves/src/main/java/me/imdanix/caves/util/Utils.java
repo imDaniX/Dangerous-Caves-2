@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -63,7 +64,7 @@ public final class Utils {
     public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {
         Set<T> enums = new HashSet<>();
         for(String enumStr : enumStrColl) {
-            T t = getEnum(clazz, enumStr.toUpperCase());
+            T t = getEnum(clazz, enumStr.toUpperCase(Locale.ENGLISH));
             if(t != null) enums.add(t);
         }
         return enums.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(enums);

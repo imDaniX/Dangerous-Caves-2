@@ -42,6 +42,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CaveGolem extends AbstractMob implements Listener {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0);
@@ -84,7 +85,7 @@ public class CaveGolem extends AbstractMob implements Listener {
 
         heads.clear();
         for(String typeStr : cfg.getStringList("variants")) {
-            Material type = Material.getMaterial(typeStr.toUpperCase());
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
             if(type == null || !type.isBlock()) continue;
             heads.add(new ItemStack(type));
         }

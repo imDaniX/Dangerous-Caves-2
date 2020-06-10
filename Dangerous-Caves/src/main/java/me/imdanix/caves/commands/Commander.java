@@ -30,6 +30,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 // TODO: TabCompleter
 public class Commander implements CommandExecutor {
     private final MobsManager mobsManager;
@@ -51,7 +53,7 @@ public class Commander implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length < 1) {
             help(sender, label);
-        } else switch (args[0].toLowerCase()) {
+        } else switch (args[0].toLowerCase(Locale.ENGLISH)) {
             case "info":
                 if(!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));

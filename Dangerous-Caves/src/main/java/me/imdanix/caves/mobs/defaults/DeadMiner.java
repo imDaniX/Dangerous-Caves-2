@@ -43,6 +43,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DeadMiner extends TickingMob implements Listener {
     private String name;
@@ -74,7 +75,7 @@ public class DeadMiner extends TickingMob implements Listener {
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
         for(String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase());
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if(material != null) items.add(material);
         }
     }
