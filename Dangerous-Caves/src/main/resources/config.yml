@@ -44,7 +44,7 @@ integration:
   # DCNoBlockChange (cave-ins, caves aging)
   # DCNoPlayerEffect (ambient sounds, hypoxia)
 
-  # Invert flags by default
+  # Invert checks by default
   invert: false
 
 #
@@ -120,10 +120,10 @@ caverns:
     # Formula to calculate chance of activation. Supports integers, floats, -, +, *, /, ^, (, )
     # Result should be between 0 and 1, where 0 is 0% and 1 is 100%
     # Depth (0-1) - depth of player, where 1 is Y 0, and 0 is y-max(from config)
-    # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe or 64 dirt)
+    # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe, 16 ender pearls or 64 dirt)
     # For 2.1.9 behavior use "(depth+inventory)/2"
     chance-formula: "depth*inventory"
-    # Limit maximal and minimal chance of activation (set 100 to disable)
+    # Limit maximal and minimal chance of activation. Set `chance-max` 100 to disable
     chance-min: 10
     chance-max: 90
     # Maximal Y where players can sense lack of air
@@ -285,6 +285,8 @@ mobs:
   # Larger priority - larger chance in comparison with others. Set to 0 to disable
   # Chance formula - (mob_priority)/(total_priority)
 
+  # Alpha Spider
+  # Spawns cave-spiders as minions and covers player in cobweb
   alpha-spider:
     priority: 10
     health: 16
@@ -294,6 +296,8 @@ mobs:
     # When spider is damaged
     minion-chance: 6.67
 
+  # Crying Bat
+  # Just screams and eventually dies
   crying-bat:
     priority: 10
     name: "&4Crying Bat"
@@ -302,6 +306,8 @@ mobs:
     # If cry was successful. Every ENTITY tick
     death-chance: 20
 
+  # Dead Miner
+  # Placing torches when it's too dark and drops some items when damaged
   dead-miner:
     priority: 10
     name: "&4Dead Miner"
@@ -311,6 +317,8 @@ mobs:
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="
     # Place torches when it's too dark?
     place-torches: true
+    # Don't place torches if Dead Miner has player as a target
+    without-target: false
     # Place redstone torches instead of normal?
     red-torches: false
     # When Dead Miner is damaged
@@ -322,6 +330,8 @@ mobs:
       - COAL
       - TORCH
 
+  # Hexed Armor
+  # When attacks gives player all its armor
   hexed-armor:
     priority: 10
     name: "&4Hexed Armor"
@@ -331,14 +341,20 @@ mobs:
     # When player is attacked
     apply-chance: 25
 
+  # Hungering Darkness
+  # Spawns in the dark and kills player if there's no light
   hungering-darkness:
     priority: 10
     name: ""
     # Kill the entity on light?
-    remove-on-light: true
+    remove-on-light: false
+    # Is night vision effect considered as light?
+    night-vision: false
     # When player is attacked
     damage: 200
 
+  # Lava Creeper
+  # When blows up creates a crater with magma, obsidian and lava
   lava-creeper:
     priority: 10
     name: "&4Lava Creeper"
@@ -355,6 +371,8 @@ mobs:
       obsidian: 20
       lava: 16.67
 
+  # Magma Monster
+  # Leaves a trail of magma on its way
   magma-monster:
     priority: 10
     name: "&4Magma Monster"
@@ -366,6 +384,8 @@ mobs:
     # Placing magma-blocks. Every ENTITY tick
     magma-chance: 3.57
 
+  # Smoke Demon
+  # Creates a smoke and gives wither effect
   smoke-demon:
     priority: 10
     name: ""
@@ -373,6 +393,8 @@ mobs:
     # Radius in blocks
     harm-radius: 3
 
+  # TNT Creeper
+  # Spawns additional TNT when explodes
   tnt-creeper:
     priority: 10
     name: "&4TNT Creeper"
@@ -382,6 +404,8 @@ mobs:
     # When TNT Creeper is damaged
     explosion-chance: 33.33
 
+  # Watcher
+  # Just jumpscares a player
   watcher:
     priority: 10
     name: "&4Watcher"
@@ -390,6 +414,8 @@ mobs:
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
 
+  # Mimic
+  # Becomes a chest when it has no target
   mimic:
     priority: 0
     name: "&4Mimic"
@@ -404,6 +430,8 @@ mobs:
       - GOLDEN_APPLE
       - COBWEB
 
+  # Cave Golem
+  # Has strong attack, can be damaged only with pickaxe, drops its head on death
   cave-golem:
     priority: 3
     health: 35

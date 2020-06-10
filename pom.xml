@@ -35,13 +35,14 @@
         <module>regions/GriefPrevention</module>
         <module>Dangerous-Caves</module>
         <module>build</module>
+<!--        <module>regions/Residence</module>-->
     </modules>
     <packaging>pom</packaging>
 
     <description>Adds and improves mechanics in caves.</description>
     <properties>
         <subVersion>2.3-SNAPSHOT</subVersion>
-        <cfgVersion>16</cfgVersion>
+        <cfgVersion>17</cfgVersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>

@@ -23,8 +23,10 @@ import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -38,6 +40,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private String name;
     private double damage;
     private boolean remove;
+    private boolean vision;
 
     public HungeringDarkness() {
         super(EntityType.HUSK, "hungering-darkness");
@@ -47,7 +50,8 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", ""));
         damage = cfg.getDouble("damage", 200);
-        remove = cfg.getBoolean("remove-on-light", true);
+        remove = cfg.getBoolean("remove-on-light", false);
+        vision = cfg.getBoolean("night-vision", false);
     }
 
     @Override
@@ -71,8 +75,13 @@ public class HungeringDarkness extends AbstractMob implements Listener {
 
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
-        if(!isThis(event.getEntity()) || event.getTarget() == null) return;
-        if(event.getTarget().getLocation().getBlock().getLightLevel() > 0) {
+        Entity target = event.getTarget();
+        if(!isThis(event.getEntity()) || target == null) return;
+        if(target.getLocation().getBlock().getLightLevel() > 0 && (
+                !vision ||
+                !(target instanceof LivingEntity) ||
+                ((LivingEntity)target).hasPotionEffect(PotionEffectType.NIGHT_VISION)
+            )) {
             event.setCancelled(true);
             if(remove) event.getEntity().remove();
         }
@@ -81,7 +90,11 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     @EventHandler
     public void onAttack(PlayerAttackedEvent event) {
         if(!isThis(event.getAttacker())) return;
-        if(event.getPlayer().getLocation().getBlock().getLightLevel() > 0) {
+        Player player = event.getPlayer();
+        if(player.getLocation().getBlock().getLightLevel() > 0 && (
+                !vision ||
+                player.hasPotionEffect(PotionEffectType.NIGHT_VISION)
+            )) {
             event.setCancelled(true);
             if(remove) event.getAttacker().remove();
         } else event.setDamage(damage);

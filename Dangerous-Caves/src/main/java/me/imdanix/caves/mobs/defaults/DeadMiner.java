@@ -34,6 +34,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -47,6 +48,7 @@ public class DeadMiner extends TickingMob implements Listener {
     private String name;
     private double health;
 
+    private boolean withoutTarget;
     private boolean torches;
     private boolean redTorches;
     private double dropChance;
@@ -63,6 +65,7 @@ public class DeadMiner extends TickingMob implements Listener {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
         health = cfg.getDouble("health", 20);
 
+        withoutTarget = cfg.getBoolean("without-target", false);
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
@@ -107,7 +110,10 @@ public class DeadMiner extends TickingMob implements Listener {
         if(!torches) return;
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
-        if(block.getLightLevel() > 0 || !Regions.INST.check(CheckType.ENTITY, loc)) return;
+        if(block.getLightLevel() > 0 ||
+                (withoutTarget && ((Monster)entity).getTarget() != null) ||
+                !Regions.INST.check(CheckType.ENTITY, loc))
+            return;
         if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
