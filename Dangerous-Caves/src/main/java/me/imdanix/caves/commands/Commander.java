@@ -66,6 +66,8 @@ public class Commander implements CommandExecutor {
                 sender.sendMessage(Utils.clr("&bHand: &f") + player.getInventory().getItemInMainHand().getType());
                 break;
 
+            // TODO: "debug"
+
             case "summon":
                 if(!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));

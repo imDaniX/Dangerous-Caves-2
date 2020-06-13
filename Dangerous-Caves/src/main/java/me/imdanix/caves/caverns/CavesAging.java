@@ -72,6 +72,8 @@ public class CavesAging implements Tickable, Configurable {
     private double agingChance;
     private int schedule;
 
+    private double torchRemove;
+
     private double percentage;
     private Predicate<Block> lightLevelCheck;
 
@@ -104,6 +106,7 @@ public class CavesAging implements Tickable, Configurable {
             lightLevelCheck = (b) -> true;
         }
         schedule = Math.max(cfg.getInt("schedule-timer", 4), 1);
+        torchRemove = cfg.getDouble("torch-remove-chance", 40) / 100;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         skippedChunks.clear();
@@ -202,7 +205,10 @@ public class CavesAging implements Tickable, Configurable {
             if(AGING_MATERIALS.contains(type))
                 count++;
 
-            if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
+            if(torchRemove > 0 && type == Material.TORCH) {
+                if(Rnd.chance(torchRemove))
+                    changes.add(new DelayedChange(x, y, z, ChangeType.TORCH_AIR));
+            } else if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
                 if(withReplace) {
                     switch(Rnd.nextInt(6)) {
                         case 0:
@@ -307,12 +313,17 @@ public class CavesAging implements Tickable, Configurable {
                     if(!replaceBlocks.contains(type)) return;
                     block.setType(VMaterial.ANDESITE.get(), false);
                     break;
+
+                case TORCH_AIR:
+                    if(type != Material.TORCH) return;
+                    block.setType(Material.AIR, false);
+                    break;
             }
         }
     }
     
     private enum ChangeType {
-        VINE, RED_MUSHROOM, BROWN_MUSHROOM, ROCK, STALAGMITE, COBBLESTONE, ANDESITE
+        VINE, RED_MUSHROOM, BROWN_MUSHROOM, ROCK, STALAGMITE, COBBLESTONE, ANDESITE, TORCH_AIR
     }
 
     private static class QueuedChunk {
