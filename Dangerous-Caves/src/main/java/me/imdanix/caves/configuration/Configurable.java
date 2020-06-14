@@ -21,7 +21,15 @@ package me.imdanix.caves.configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 public interface Configurable {
+    /**
+     * Reload object on config reload
+     * @param cfg Related configuration section
+     */
     void reload(ConfigurationSection cfg);
 
+    /**
+     * Get path for this object in configuration
+     * @return Object's configuration section path
+     */
     String getPath();
 }

@@ -22,7 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-public abstract class TickingMob extends AbstractMob {
+public abstract class TickingMob extends AbstractMob implements CustomMob.Ticking {
     public TickingMob(EntityType base, String id) {
         super(base, id);
     }
@@ -37,6 +37,4 @@ public abstract class TickingMob extends AbstractMob {
         MobsManager.handle(entity, this);
         return entity;
     }
-
-    public abstract void tick(LivingEntity entity);
 }

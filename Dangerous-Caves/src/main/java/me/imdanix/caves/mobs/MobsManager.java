@@ -53,8 +53,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Manages custom mob spawning and registering
+ */
 public class MobsManager implements Listener, Tickable, Configurable {
-    private static final Multimap<TickingMob, UUID> tickingEntities = HashMultimap.create();
+    private static final Multimap<CustomMob.Ticking, UUID> tickingEntities = HashMultimap.create();
 
     private final MetadataValue MARKER;
 
@@ -96,6 +99,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
         if(chance > 0) recalculate();
     }
 
+    /**
+     * Recalculate mobs spawn chances
+     */
     public void recalculate() {
         Set<CustomMob> mobsSet = new HashSet<>();
         mobs.values().forEach(m -> {if(m.getWeight() > 0) mobsSet.add(m);});
@@ -105,6 +111,10 @@ public class MobsManager implements Listener, Tickable, Configurable {
             mobsPool = new WeightedPool<>(mobsSet, CustomMob::getWeight);
     }
 
+    /**
+     * Register a new custom mob
+     * @param mob Mob to register
+     */
     public void register(CustomMob mob) {
         if(!mobs.containsKey(mob.getCustomType())) {
             Compatibility.cacheTag(mob.getCustomType());
@@ -120,9 +130,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     @Override
     public void tick() {
-        Iterator<Map.Entry<TickingMob, UUID>> iter = tickingEntities.entries().iterator();
+        Iterator<Map.Entry<CustomMob.Ticking, UUID>> iter = tickingEntities.entries().iterator();
         while(iter.hasNext()) {
-            Map.Entry<TickingMob, UUID> mob = iter.next();
+            Map.Entry<CustomMob.Ticking, UUID> mob = iter.next();
             Entity entity = Bukkit.getEntity(mob.getValue());
             if(entity == null) {
                 iter.remove();
@@ -135,6 +145,12 @@ public class MobsManager implements Listener, Tickable, Configurable {
         return TickLevel.ENTITY;
     }
 
+    /**
+     * Try to summon a new mob
+     * @param type Type of mob to summon
+     * @param loc Where to summon
+     * @return Is summoning was successful
+     */
     public boolean summon(String type, Location loc) {
         CustomMob mob = mobs.get(type.toLowerCase(Locale.ENGLISH));
         if(mob == null) return false;
@@ -153,8 +169,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
                 if(type != null) {
                     if(metadata) entity.setMetadata("DangerousCaves", MARKER);
                     CustomMob mob = mobs.get(type);
-                    if(mob instanceof TickingMob)
-                        handle(livingEntity, (TickingMob) mob);
+                    if(mob instanceof CustomMob.Ticking)
+                        handle(livingEntity, (CustomMob.Ticking) mob);
                 }
             }
         }, 1);
@@ -188,6 +204,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
 
     private LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
+        mob.setup(entity);
+        Compatibility.setTag(entity, mob.getCustomType());
         if(metadata) entity.setMetadata("DangerousCaves", MARKER);
         entity.setRemoveWhenFarAway(true);
         return entity;
@@ -214,11 +232,20 @@ public class MobsManager implements Listener, Tickable, Configurable {
         }
     }
 
+    /**
+     * Get count of handled mobs
+     * @return Count of handled mobs
+     */
     public static int handledCount() {
         return tickingEntities.size();
     }
 
-    public static void handle(LivingEntity entity, TickingMob mob) {
+    /**
+     * Handle a new ticking mob
+     * @param entity Entity to handle
+     * @param mob Related custom mob
+     */
+    public static void handle(LivingEntity entity, CustomMob.Ticking mob) {
         tickingEntities.put(mob, entity.getUniqueId());
     }
 }
