@@ -40,7 +40,7 @@ public class BuildingsGroup extends AbstractStructure {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        weight = cfg.getInt("buildings");
+        weight = cfg.getInt("buildings", 1);
     }
 
     @Override

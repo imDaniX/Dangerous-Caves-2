@@ -81,6 +81,10 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
         if(chance > 0) recalculate();
     }
 
+
+    /**
+     * Recalculate structure groups spawn chances
+     */
     public void recalculate() {
         Set<StructureGroup> structuresSet = new HashSet<>();
         structures.values().forEach(g -> {if(g.getWeight() > 0) structuresSet.add(g);});
@@ -90,6 +94,10 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
             structuresPool = new WeightedPool<>(structuresSet, StructureGroup::getWeight);
     }
 
+    /**
+     * Register a new structure group
+     * @param group Group to register
+     */
     public void register(StructureGroup group) {
         if(!structures.containsKey(group.getId())) {
             structures.put(group.getId(), group);
