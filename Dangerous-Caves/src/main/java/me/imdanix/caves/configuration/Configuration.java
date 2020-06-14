@@ -24,29 +24,33 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Configuration {
     private final Plugin plugin;
-    private final Map<Configurable, String> configurables;
+    private final Set<Configurable> configurables;
     private final File file;
     private final String version;
     private YamlConfiguration yml;
 
     public Configuration(Plugin plugin, String name) {
         this.plugin = plugin;
-        configurables = new HashMap<>();
+        configurables = new HashSet<>();
         file = new File(plugin.getDataFolder(), name + ".yml");
         version = plugin.getDescription().getVersion().split(";")[1];
     }
 
+    /**
+     * Create a new file
+     * @param resource Copy from jar?
+     */
     public void create(boolean resource) {
         file.getParentFile().mkdirs();
         if(!file.exists()) {
-            if(resource)
+            if(resource) {
                 plugin.saveResource(file.getName(), false);
-            else {
+            } else {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -57,27 +61,37 @@ public class Configuration {
         yml = YamlConfiguration.loadConfiguration(file);
     }
 
+    /**
+     * Register and reload new configurable object for this configuration
+     * @param conf Object to register
+     */
     public void register(Configurable conf) {
-        if(!configurables.containsKey(conf)) {
-            String path = conf.getPath();
-            configurables.put(conf, path);
-            reload(conf, path);
+        if(!configurables.contains(conf)) {
+            configurables.add(conf);
+            reload(conf);
         }
     }
 
+    /**
+     * Reload configuration and all its configurable objects
+     */
     public void reloadYml() {
         yml = YamlConfiguration.loadConfiguration(file);
-        configurables.entrySet().forEach(this::reload);
+        configurables.forEach(this::reload);
     }
 
-    private void reload(Map.Entry<Configurable, String> entry) {
-        reload(entry.getKey(), entry.getValue());
+    /**
+     * Reload configurable object
+     * @param conf Object to reload
+     */
+    public void reload(Configurable conf) {
+        conf.reload(conf.getPath().isEmpty() ? yml : section(yml, conf.getPath()));
     }
 
-    public void reload(Configurable conf, String path) {
-        conf.reload(path.isEmpty() ? yml : section(yml, path));
-    }
-
+    /**
+     * Get origin of this configuration
+     * @return Origin YAML of this configuration
+     */
     public YamlConfiguration getYml() {
         return yml;
     }
