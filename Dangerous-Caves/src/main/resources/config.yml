@@ -14,7 +14,7 @@ version: ${cfgVersion}
 # "Blank worlds" doesn't means "worlds:" - use "worlds: []"
 
 # NOTE: Ticks
-# Plugin utilizes it's own tick system which is based on vanilla one
+# Plugin utilizes its own tick system which is based on vanilla one
 # WORLD tick is 6300 vanilla ticks (about 5 minutes 15 seconds)
 # PLAYER tick is 800 vanilla ticks (about 40 seconds)
 # ENTITY tick is 4 vanilla ticks (about 200 milliseconds)
