@@ -33,15 +33,15 @@
         <module>regions/WorldGuard6</module>
         <module>regions/WorldGuard7</module>
         <module>regions/GriefPrevention</module>
+    <!--<module>regions/Residence</module>-->
         <module>Dangerous-Caves</module>
         <module>build</module>
-<!--        <module>regions/Residence</module>-->
     </modules>
     <packaging>pom</packaging>
 
     <description>Adds and improves mechanics in caves.</description>
     <properties>
-        <subVersion>2.3-SNAPSHOT</subVersion>
+        <subVersion>2.3</subVersion>
         <cfgVersion>17</cfgVersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
