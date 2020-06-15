@@ -40,6 +40,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,7 @@ public class DeadMiner extends TickingMob implements Listener {
     private double dropChance;
     private ItemStack head;
     private List<Material> items;
+    private PotionEffect cooldownEffect;
 
     public DeadMiner() {
         super(EntityType.ZOMBIE, "dead-miner");
@@ -77,6 +80,13 @@ public class DeadMiner extends TickingMob implements Listener {
         for(String materialStr : itemsCfg) {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if(material != null) items.add(material);
+        }
+
+        int cooldown = cfg.getInt("torches-cooldown", 12);
+        if(cooldown <= 0) {
+            cooldownEffect = null;
+        } else {
+            cooldownEffect = new PotionEffect(PotionEffectType.CONFUSION, cooldown*20, 0, true, false);
         }
     }
 
@@ -108,7 +118,7 @@ public class DeadMiner extends TickingMob implements Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        if(!torches) return;
+        if(!torches || entity.hasPotionEffect(PotionEffectType.CONFUSION)) return;
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
         if(block.getLightLevel() > 0 ||
@@ -118,6 +128,8 @@ public class DeadMiner extends TickingMob implements Listener {
         if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+            if(cooldownEffect != null)
+                entity.addPotionEffect(cooldownEffect);
         }
     }
 }
