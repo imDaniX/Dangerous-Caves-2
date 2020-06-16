@@ -18,6 +18,7 @@
 
 package me.imdanix.caves.regions;
 
+import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,17 +28,17 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiPredicate;
 
-public enum Regions implements Configurable {
+public enum Regions implements Manager<RegionManager>, Configurable {
     INST;
+    private final RegionManager NONE = (c, l) -> true;
 
     private final Map<String, RegionManager> managers;
-    private BiPredicate<CheckType, Location> current;
+    private RegionManager current;
 
     Regions() {
         managers = new HashMap<>();
-        managers.put("none", (c,l) -> true);
+        managers.put("none", NONE);
     }
 
     public boolean check(CheckType check, Location location) {
@@ -55,7 +56,7 @@ public enum Regions implements Configurable {
             // TODO Logger util
             Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Can't find mode \"" +
                     mode + "\". Regions feature is disabled.");
-            current = (c,l) -> true;
+            current = NONE;
         }
     }
 
@@ -85,5 +86,14 @@ public enum Regions implements Configurable {
         }
 
         managers.values().forEach(RegionManager::onEnable);
+    }
+
+    @Override
+    public boolean register(RegionManager regionManager) {
+        if(!managers.containsKey(regionManager.getName())) {
+            managers.put(regionManager.getName(), regionManager);
+            return true;
+        }
+        return false;
     }
 }

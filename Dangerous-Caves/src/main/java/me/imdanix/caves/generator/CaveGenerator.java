@@ -18,6 +18,7 @@
 
 package me.imdanix.caves.generator;
 
+import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
@@ -41,7 +42,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class CaveGenerator extends BlockPopulator implements Configurable {
+public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
     private final Configuration cfg;
 
     private double chance;
@@ -98,12 +99,13 @@ public class CaveGenerator extends BlockPopulator implements Configurable {
      * Register a new structure group
      * @param group Group to register
      */
-    public void register(StructureGroup group) {
-        if(!structures.containsKey(group.getId())) {
-            structures.put(group.getId(), group);
-            if(group instanceof Configurable)
-                cfg.register((Configurable) group);
-        }
+    @Override
+    public boolean register(StructureGroup group) {
+        if(structures.containsKey(group.getId())) return false;
+        structures.put(group.getId(), group);
+        if(group instanceof Configurable)
+            cfg.register((Configurable) group);
+        return true;
     }
 
     @Override

@@ -16,16 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions;
+package me.imdanix.caves;
 
-import org.bukkit.Location;
-
-import java.util.function.BiPredicate;
-
-public interface RegionManager extends BiPredicate<CheckType, Location> {
-    default void onEnable() {}
-
-    default String getName() {
-        return "none";
-    }
+public interface Manager<T> {
+    boolean register(T t);
+    // TODO: Unregister?
 }

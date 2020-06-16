@@ -22,6 +22,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import me.imdanix.caves.DangerousCaves;
+import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.ticks.TickLevel;
@@ -56,7 +57,7 @@ import java.util.UUID;
 /**
  * Manages custom mob spawning and registering
  */
-public class MobsManager implements Listener, Tickable, Configurable {
+public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Configurable {
     private static final Multimap<CustomMob.Ticking, UUID> tickingEntities = HashMultimap.create();
 
     private final MetadataValue MARKER;
@@ -115,7 +116,8 @@ public class MobsManager implements Listener, Tickable, Configurable {
      * Register a new custom mob
      * @param mob Mob to register
      */
-    public void register(CustomMob mob) {
+    @Override
+    public boolean register(CustomMob mob) {
         if(!mobs.containsKey(mob.getCustomType())) {
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
@@ -125,7 +127,9 @@ public class MobsManager implements Listener, Tickable, Configurable {
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if(mob instanceof Tickable)
                 plugin.getDynamics().subscribe((Tickable) mob);
+            return true;
         }
+        return false;
     }
 
     @Override
