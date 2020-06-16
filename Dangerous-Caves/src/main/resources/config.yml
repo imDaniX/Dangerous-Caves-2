@@ -1,4 +1,4 @@
-# | DangerousCaves by Evil-Lootlye
+# | Dangerous Caves by Evil-Lootlye
 # | Forked by imDaniX
 
 # Version of this configuration file
@@ -191,7 +191,7 @@ caverns:
 #
 generator:
 
-  # Force DangerousCaves' generator to wait for other plugins (other generators)
+  # Force Dangerous Caves' generator to wait for other plugins (other generators)
   wait-other: false
 
   # Chance of custom structure generations in chunk
