@@ -71,6 +71,7 @@ public class CavesAging implements Tickable, Configurable {
     private double chance;
     private double agingChance;
     private int schedule;
+    private boolean forceLoad;
 
     private double torchRemove;
 
@@ -106,6 +107,7 @@ public class CavesAging implements Tickable, Configurable {
             lightLevelCheck = (b) -> true;
         }
         schedule = Math.max(cfg.getInt("schedule-timer", 4), 1);
+        forceLoad = cfg.getBoolean("force-load", true);
         torchRemove = cfg.getDouble("torch-remove-chance", 40) / 100;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
@@ -165,7 +167,7 @@ public class CavesAging implements Tickable, Configurable {
                 World world = worldRef.get();
                 if(world == null) return;
                 Chunk chunk = queuedChunk.getChunk(world);
-                if(!chunk.isLoaded() && !chunk.load()) return;
+                if(!chunk.isLoaded() && forceLoad && !chunk.load()) return;
 
                 Location edge = chunk.getBlock(0, 0, 0).getLocation();
                 ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
