@@ -28,7 +28,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Compatibility</artifactId>
+    <artifactId>compatibility</artifactId>
 
     <dependencies>
         <dependency>

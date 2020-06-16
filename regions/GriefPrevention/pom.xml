@@ -28,7 +28,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>GriefPrevention</artifactId>
+    <artifactId>griefprevention</artifactId>
 
     <dependencies>
         <dependency>
@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>RegionManager</artifactId>
+            <artifactId>regionmanager</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -56,19 +56,19 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Compatibility</artifactId>
+            <artifactId>compatibility</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>PostAquaCompatibility</artifactId>
+            <artifactId>compatibility-postaqua</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>PreAquaCompatibility</artifactId>
+            <artifactId>compatibility-preaqua</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -77,25 +77,25 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>RegionManager</artifactId>
+            <artifactId>regionmanager</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>WorldGuard6</artifactId>
+            <artifactId>worldguard6</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>WorldGuard7</artifactId>
+            <artifactId>worldguard7</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>GriefPrevention</artifactId>
+            <artifactId>griefprevention</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

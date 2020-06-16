@@ -28,7 +28,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>PostAquaCompatibility</artifactId>
+    <artifactId>compatibility-postaqua</artifactId>
 
     <dependencies>
         <dependency>
@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Compatibility</artifactId>
+            <artifactId>compatibility</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

@@ -126,7 +126,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if(mob instanceof Tickable)
-                plugin.getDynamics().subscribe((Tickable) mob);
+                plugin.getDynamics().register((Tickable) mob);
             return true;
         }
         return false;
