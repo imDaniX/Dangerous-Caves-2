@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Dangerous-Caves</artifactId>
+            <artifactId>dangerous-caves</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
