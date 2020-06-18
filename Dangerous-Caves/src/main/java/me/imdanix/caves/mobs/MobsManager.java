@@ -155,11 +155,19 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      * @param loc Where to summon
      * @return Is summoning was successful
      */
-    public boolean summon(String type, Location loc) {
+    public LivingEntity spawn(String type, Location loc) {
         CustomMob mob = mobs.get(type.toLowerCase(Locale.ENGLISH));
-        if(mob == null) return false;
-        spawn(mob, loc);
-        return true;
+        if(mob == null) return null;
+        return spawn(mob, loc);
+    }
+
+    public LivingEntity spawn(CustomMob mob, Location loc) {
+        LivingEntity entity = mob.spawn(loc);
+        mob.setup(entity);
+        Compatibility.setTag(entity, mob.getCustomType());
+        if(metadata) entity.setMetadata("DangerousCaves", MARKER);
+        entity.setRemoveWhenFarAway(true);
+        return entity;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -204,15 +212,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             return true;
         }
         return false;
-    }
-
-    private LivingEntity spawn(CustomMob mob, Location loc) {
-        LivingEntity entity = mob.spawn(loc);
-        mob.setup(entity);
-        Compatibility.setTag(entity, mob.getCustomType());
-        if(metadata) entity.setMetadata("DangerousCaves", MARKER);
-        entity.setRemoveWhenFarAway(true);
-        return entity;
     }
 
     @Override

@@ -68,7 +68,7 @@ public class Commander implements CommandExecutor {
 
             // TODO: "debug"
 
-            case "summon":
+            case "summon": case "spawn":
                 if(!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));
                     return true;
@@ -77,7 +77,7 @@ public class Commander implements CommandExecutor {
                     sender.sendMessage(Utils.clr("&cYou should specify a mob to summon!"));
                     return true;
                 }
-                if(mobsManager.summon(args[1], ((Player)sender).getLocation())) {
+                if(mobsManager.spawn(args[1], ((Player)sender).getLocation()) != null) {
                     sender.sendMessage(Utils.clr("&aMob " + args[1] + " was successfully summoned."));
                 } else {
                     sender.sendMessage(Utils.clr("&cThere's no mobs called " + args[1] + "!"));
@@ -90,7 +90,7 @@ public class Commander implements CommandExecutor {
                 sender.sendMessage(Utils.clr("&aTicked every tickables."));
                 break;
 
-            case "reload":
+            case "reload": case "r":
                 if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
@@ -99,8 +99,9 @@ public class Commander implements CommandExecutor {
 
             case "count":
                 if(!sender.hasPermission("dangerous.caves.command.count")) return false;
-                sender.sendMessage(Utils.clr("&aPlugin ticking &6" + MobsManager.handledCount() + " mobs."));
+                sender.sendMessage(Utils.clr("&aPlugin is ticking &6" + MobsManager.handledCount() + " mobs."));
                 break;
+
             default: help(sender, label);
         }
         return true;
