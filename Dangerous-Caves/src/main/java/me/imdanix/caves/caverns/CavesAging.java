@@ -161,7 +161,7 @@ public class CavesAging implements Tickable, Configurable {
 
     private void proceedChunks(Reference<World> worldRef, Set<QueuedChunk> chunks) {
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        int timer = 0;
+        int timer = schedule;
         for(QueuedChunk queuedChunk : chunks) {
             scheduler.runTaskLater(plugin, () -> {
                 World world = worldRef.get();
