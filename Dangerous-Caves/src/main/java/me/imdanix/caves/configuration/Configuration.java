@@ -18,6 +18,7 @@
 
 package me.imdanix.caves.configuration;
 
+import me.imdanix.caves.Manager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Configuration {
+public class Configuration implements Manager<Configurable> {
     private final Plugin plugin;
     private final Set<Configurable> configurables;
     private final File file;
@@ -65,11 +66,14 @@ public class Configuration {
      * Register and reload new configurable object for this configuration
      * @param conf Object to register
      */
-    public void register(Configurable conf) {
+    @Override
+    public boolean register(Configurable conf) {
         if(!configurables.contains(conf)) {
             configurables.add(conf);
             reload(conf);
+            return true;
         }
+        return false;
     }
 
     /**

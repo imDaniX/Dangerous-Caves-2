@@ -69,7 +69,7 @@ public class TNTCreeper extends AbstractMob implements Listener {
         if(!isThis(event.getEntity())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
         entity.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-        Location loc = entity.getLocation();
+        Location loc = event.getLocation();
         for(int i = 0; i < tntAmount; i++) {
             Entity tnt = entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
             tnt.setVelocity(new Vector(Rnd.nextDouble(2) - 1, 0.3, Rnd.nextDouble(2) - 1));

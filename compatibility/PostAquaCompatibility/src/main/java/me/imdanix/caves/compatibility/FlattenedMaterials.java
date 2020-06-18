@@ -58,6 +58,7 @@ public class FlattenedMaterials implements MaterialsProvider {
         return CAVE.contains(type);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();

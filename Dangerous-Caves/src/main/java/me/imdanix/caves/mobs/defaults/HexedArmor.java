@@ -82,9 +82,9 @@ public class HexedArmor extends AbstractMob implements Listener {
         if (isThis(entity) && Rnd.chance(chance)) {
             PlayerInventory inv = event.getPlayer().getInventory();
             ItemStack[] armor = inv.getArmorContents();
-            for (ItemStack i2 : armor) {
-                if (i2 != null && i2.getType() != Material.AIR) {
-                    entity.getWorld().dropItemNaturally(entity.getLocation(), i2);
+            for (ItemStack item : armor) {
+                if (item != null && item.getType() != Material.AIR) {
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
                 }
             }
             inv.setArmorContents(entity.getEquipment().getArmorContents());
