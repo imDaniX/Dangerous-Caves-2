@@ -111,7 +111,7 @@ public class CaveGolem extends AbstractMob implements Listener {
         if(isThis(event.getDamager())) {
             if(!(event.getEntity() instanceof LivingEntity)) return;
             LivingEntity entity = (LivingEntity) event.getEntity();
-            Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.HOSTILE, 1, 0.5f);
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.HOSTILE, 2, 0.5f);
             if(distract) {
                 entity.addPotionEffect(BLINDNESS);
                 entity.addPotionEffect(SLOW_PL);
@@ -124,7 +124,7 @@ public class CaveGolem extends AbstractMob implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(isThis(event.getEntity())) {
-            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 1, 1.5f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 2, 0.6f);
             if(event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
                 if(enEvent.getDamager() instanceof Player) {
