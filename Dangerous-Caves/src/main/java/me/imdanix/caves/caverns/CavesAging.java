@@ -197,11 +197,11 @@ public class CavesAging implements Tickable, Configurable {
 
             totalCount++;
 
-            Location current = edge.clone().add(x, 0, z);
-            current.setY(y);
             if(lightLevel > 0 && (snapshot.getBlockEmittedLight(x, y+1, z) >= lightLevel ||
-                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel) ||
-                    Regions.INST.check(CheckType.BLOCK, current))
+                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
+                continue;
+
+            if(!Regions.INST.check(CheckType.BLOCK, edge.clone().add(x, 0, z).add(0, y, 0)))
                 continue;
 
             if(AGING_MATERIALS.contains(type))
