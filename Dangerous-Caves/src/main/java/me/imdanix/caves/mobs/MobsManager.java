@@ -21,10 +21,11 @@ package me.imdanix.caves.mobs;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import me.imdanix.caves.DangerousCaves;
 import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.configuration.Configuration;
+import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
@@ -45,6 +46,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,7 +64,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
     private final MetadataValue MARKER;
 
-    private final DangerousCaves plugin;
+    private final Plugin plugin;
+    private final Configuration config;
+    private final Dynamics dynamics;
+
     private final Map<String, CustomMob> mobs;
     private final Set<String> worlds;
     private WeightedPool<CustomMob> mobsPool;
@@ -74,7 +79,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean blockRename;
     private boolean metadata;
 
-    public MobsManager(DangerousCaves plugin) {
+    public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
         MARKER = new FixedMetadataValue(plugin, new Object());
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
@@ -83,6 +88,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             Bukkit.getPluginManager().registerEvents(new SpigotEventListener(), plugin);
         }
         this.plugin = plugin;
+        this.config = config;
+        this.dynamics = dynamics;
         mobs = new HashMap<>();
         worlds = new HashSet<>();
     }
@@ -122,11 +129,11 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
             if(mob instanceof Configurable)
-                plugin.getConfiguration().register((Configurable) mob);
+                config.register((Configurable) mob);
             if(mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if(mob instanceof Tickable)
-                plugin.getDynamics().register((Tickable) mob);
+                dynamics.register((Tickable) mob);
             return true;
         }
         return false;

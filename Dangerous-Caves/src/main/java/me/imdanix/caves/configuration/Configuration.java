@@ -31,15 +31,17 @@ import java.util.Set;
 public class Configuration implements Manager<Configurable> {
     private final Plugin plugin;
     private final Set<Configurable> configurables;
+    private final String name;
     private final File file;
     private final String version;
     private YamlConfiguration yml;
 
-    public Configuration(Plugin plugin, String name) {
+    public Configuration(Plugin plugin, String name, String version) {
         this.plugin = plugin;
+        this.name = name;
         configurables = new HashSet<>();
         file = new File(plugin.getDataFolder(), name + ".yml");
-        version = plugin.getDescription().getVersion().split(";")[1];
+        this.version = version;
     }
 
     /**
@@ -68,7 +70,7 @@ public class Configuration implements Manager<Configurable> {
      */
     @Override
     public boolean register(Configurable conf) {
-        if(!configurables.contains(conf)) {
+        if(!configurables.contains(conf) && conf.getName().equals(name)) {
             configurables.add(conf);
             reload(conf);
             return true;
@@ -98,6 +100,14 @@ public class Configuration implements Manager<Configurable> {
      */
     public YamlConfiguration getYml() {
         return yml;
+    }
+
+    /**
+     * Get name of this configuration
+     * @return Name of configuration
+     */
+    public String getName() {
+        return name;
     }
 
     public void checkVersion() {

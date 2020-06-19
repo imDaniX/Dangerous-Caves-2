@@ -64,8 +64,8 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         Compatibility.init(this);
 
         dynamics = new Dynamics(this);
-        cfg = new Configuration(this, "config"); cfg.create(true);
-        mobsManager = new MobsManager(this); DefaultMobs.registerAll(mobsManager);
+        cfg = new Configuration(this, "config", getDescription().getVersion().split(";")[1]); cfg.create(true);
+        mobsManager = new MobsManager(this, cfg, dynamics); DefaultMobs.registerAll(mobsManager);
         generator = new CaveGenerator(cfg); DefaultStructures.registerAll(generator);
 
         AmbientSounds ambient = new AmbientSounds();

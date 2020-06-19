@@ -32,4 +32,12 @@ public interface Configurable {
      * @return Object's configuration section path
      */
     String getPath();
+
+    /**
+     * Get name of configuration for this object
+     * @return Name of required configuration
+     */
+    default String getName() {
+        return "config";
+    }
 }
