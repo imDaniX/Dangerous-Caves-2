@@ -34,13 +34,15 @@ import java.util.Set;
 import java.util.UUID;
 
 public class LegacyMaterials implements MaterialsProvider {
+
     private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
             Material.STONE,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.WOOD, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK
+            Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICK,
+            Material.ENDER_STONE
     ));
 
     public boolean isAir(Material type) {

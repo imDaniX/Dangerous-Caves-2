@@ -35,13 +35,14 @@ import java.util.UUID;
 
 public class FlattenedMaterials implements MaterialsProvider {
 
-    private final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
+    private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
             Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS
+            Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS,
+            Material.END_STONE
     ));
 
     private final Set<Material> AIR = Collections.unmodifiableSet(EnumSet.of(

@@ -91,7 +91,7 @@ caverns:
     sounds:
       MUSIC_DRAGON:
         volume: 1
-        pitch: 0
+        pitch: 0.5
       MUSIC_NETHER:
         volume: 1
         pitch: 0.5

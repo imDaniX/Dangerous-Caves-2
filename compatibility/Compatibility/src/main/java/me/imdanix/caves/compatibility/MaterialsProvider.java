@@ -24,6 +24,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 public interface MaterialsProvider {
+    // TODO: Both can be replaced with VMaterials
     boolean isAir(Material type);
 
     boolean isCave(Material type);
