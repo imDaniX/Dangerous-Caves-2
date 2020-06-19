@@ -123,7 +123,7 @@ public class DeadMiner extends TickingMob implements Listener {
         Block block = loc.getBlock();
         if(block.getLightLevel() > 0 ||
                 (withoutTarget && ((Monster)entity).getTarget() != null) ||
-                !Regions.INST.check(CheckType.ENTITY, loc))
+                !Regions.INSTANCE.check(CheckType.ENTITY, loc))
             return;
         if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);

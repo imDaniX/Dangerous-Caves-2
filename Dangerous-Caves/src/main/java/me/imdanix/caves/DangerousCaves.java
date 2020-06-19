@@ -51,7 +51,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
     @Override
     public void onLoad() {
-        Regions.INST.onLoad();
+        Regions.INSTANCE.onLoad();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
             getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/dangerous-caves/issues");
         }
-        Regions.INST.onEnable();
+        Regions.INSTANCE.onEnable();
         Compatibility.init(this);
 
         dynamics = new Dynamics(this);
@@ -82,7 +82,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         dynamics.register(cavesAging);
         dynamics.register(temperature);
 
-        cfg.register(Regions.INST);
+        cfg.register(Regions.INSTANCE);
         cfg.register(mobsManager);
         cfg.register(ambient);
         cfg.register(cavesAging);

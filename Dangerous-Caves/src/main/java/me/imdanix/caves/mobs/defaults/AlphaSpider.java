@@ -81,7 +81,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
 
                 Locations.loop(3, loc, l -> {
                     if (Compatibility.isAir(l.getBlock().getType()) && Rnd.chance(cobwebChance) &&
-                            Regions.INST.check(CheckType.ENTITY, l)) {
+                            Regions.INSTANCE.check(CheckType.ENTITY, l)) {
                         l.getBlock().setType(VMaterial.COBWEB.get());
                     }}
                 );

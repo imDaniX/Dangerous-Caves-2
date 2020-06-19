@@ -112,7 +112,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
         boolean fire, magma;
         if(((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
-                !Regions.INST.check(CheckType.ENTITY, entity.getLocation()))
+                !Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation()))
             return;
 
         if(fire) {

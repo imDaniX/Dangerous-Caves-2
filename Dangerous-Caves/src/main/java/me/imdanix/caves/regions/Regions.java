@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public enum Regions implements Manager<RegionManager>, Configurable {
-    INST;
+    INSTANCE;
     private final RegionManager NONE = (c, l) -> true;
 
     private final Map<String, RegionManager> managers;

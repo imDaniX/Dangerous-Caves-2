@@ -105,7 +105,7 @@ public class LavaCreeper extends TickingMob implements Listener {
             Block block = new Location(world, x, y, z).getBlock();
             if(Compatibility.isAir(block.getType())) {
                 if(fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
-            } else if(block.getType() != Material.BEDROCK && Regions.INST.check(CheckType.ENTITY, block.getLocation())) {
+            } else if(block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                 if(magmaBlock > 0 && Rnd.chance(magmaBlock)) {
                     block.setType(VMaterial.MAGMA_BLOCK.get());
                 } else if(obsidian > 0 && Rnd.chance(obsidian)) {

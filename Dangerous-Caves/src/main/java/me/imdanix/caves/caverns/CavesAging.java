@@ -201,7 +201,7 @@ public class CavesAging implements Tickable, Configurable {
                     snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
                 continue;
 
-            if(!Regions.INST.check(CheckType.BLOCK, edge.clone().add(x, 0, z).add(0, y, 0)))
+            if(!Regions.INSTANCE.check(CheckType.BLOCK, edge.clone().add(x, 0, z).add(0, y, 0)))
                 continue;
 
             if(AGING_MATERIALS.contains(type))
