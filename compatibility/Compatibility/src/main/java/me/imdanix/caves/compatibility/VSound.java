@@ -20,8 +20,6 @@ package me.imdanix.caves.compatibility;
 
 import org.bukkit.Sound;
 
-import java.util.Locale;
-
 public enum VSound {
     ENTITY_ZOMBIE_BREAK_WOODEN_DOOR("ENTITY_ZOMBIE_BREAK_WOODEN_DOOR", "ENTITY_ZOMBIE_BREAK_DOOR_WOOD"),
     BLOCK_ENDER_CHEST_CLOSE("BLOCK_ENDER_CHEST_CLOSE", "BLOCK_ENDERCHEST_CLOSE");
@@ -32,7 +30,7 @@ public enum VSound {
         Sound sound = null;
         for(String soundStr : soundsStr) {
             try {
-                sound = Sound.valueOf(soundStr.toUpperCase(Locale.ENGLISH));
+                sound = Sound.valueOf(soundStr);
                 break;
             } catch (IllegalArgumentException ignored) {}
         }
