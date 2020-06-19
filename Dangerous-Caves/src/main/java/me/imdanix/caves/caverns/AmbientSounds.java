@@ -74,7 +74,7 @@ public class AmbientSounds implements Tickable, Configurable {
 
     @Override
     public void tick() {
-        if(chance <= 0) return;
+        if(chance <= 0 || sounds.isEmpty()) return;
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
