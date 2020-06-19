@@ -18,8 +18,9 @@
 
 package me.imdanix.caves.compatibility;
 
-import me.imdanix.caves.util.Utils;
 import org.bukkit.Sound;
+
+import java.util.Locale;
 
 public enum VSound {
     ENTITY_ZOMBIE_BREAK_WOODEN_DOOR("ENTITY_ZOMBIE_BREAK_WOODEN_DOOR", "ENTITY_ZOMBIE_BREAK_DOOR_WOOD"),
@@ -28,14 +29,14 @@ public enum VSound {
     private final Sound sound;
 
     VSound(String... soundsStr) {
+        Sound sound = null;
         for(String soundStr : soundsStr) {
-            Sound sound = Utils.getEnum(Sound.class, soundStr);
-            if(sound != null) {
-                this.sound = sound;
-                return;
-            }
+            try {
+                sound = Sound.valueOf(soundStr.toUpperCase(Locale.ENGLISH));
+                break;
+            } catch (IllegalArgumentException ignored) {}
         }
-        this.sound = null;
+        this.sound = sound;
     }
 
     public Sound get() {
