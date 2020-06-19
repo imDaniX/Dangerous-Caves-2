@@ -94,7 +94,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
 
         Objects.requireNonNull(getCommand("dangerouscaves")).setExecutor(new Commander(this));
 
-        cfg.checkVersion();
+        cfg.checkVersion(true);
 
         new MetricsLite(this, 6824);
     }

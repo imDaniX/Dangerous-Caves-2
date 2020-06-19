@@ -110,12 +110,21 @@ public class Configuration implements Manager<Configurable> {
         return name;
     }
 
-    public void checkVersion() {
+    /**
+     * Compare version of configuration with version in the file
+     * @param message Throw default warning if versions don't match?
+     * @return Are versions equal
+     */
+    public boolean checkVersion(boolean message) {
+        if(yml == null)
+            throw new IllegalStateException("Configuration file is not created yet.");
         String oldVersion = yml.getString("version", "0");
-        if(!version.equals(oldVersion)) {
+        if(version.equals(oldVersion)) return true;
+        if(message) {
             plugin.getLogger().warning("Seems like your config is outdated (current " + version + ", your " + oldVersion + ")");
             plugin.getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + version);
         }
+        return false;
     }
 
     public static ConfigurationSection section(ConfigurationSection cfg, String path) {

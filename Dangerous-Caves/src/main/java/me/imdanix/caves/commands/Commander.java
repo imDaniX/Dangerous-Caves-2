@@ -94,7 +94,7 @@ public class Commander implements CommandExecutor {
                 if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
-                cfg.checkVersion();
+                cfg.checkVersion(true);
                 break;
 
             case "count":
