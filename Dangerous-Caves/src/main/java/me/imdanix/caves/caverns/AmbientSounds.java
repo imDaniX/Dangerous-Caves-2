@@ -68,13 +68,14 @@ public class AmbientSounds implements Tickable, Configurable {
                     cfg.getDouble("pitch", 0.5)
             ));
         }
+        if(sounds.isEmpty()) chance = 0;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
     }
 
     @Override
     public void tick() {
-        if(chance <= 0 || sounds.isEmpty()) return;
+        if(chance <= 0) return;
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
@@ -101,7 +102,7 @@ public class AmbientSounds implements Tickable, Configurable {
         private final float volume;
         private final float pitch;
 
-        private WrappedSound(Sound sound, double volume, double pitch) {
+        public WrappedSound(Sound sound, double volume, double pitch) {
             this.sound = sound;
             this.volume = (float) volume;
             this.pitch = (float) pitch;
