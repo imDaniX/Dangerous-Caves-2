@@ -299,7 +299,7 @@ mobs:
   # Crying Bat
   # Just screams and eventually dies
   crying-bat:
-    priority: 10
+    priority: 9
     name: "&4Crying Bat"
     # Every ENTITY tick
     cry-chance: 3.33
@@ -454,3 +454,7 @@ mobs:
       - LAPIS_ORE
       - DIAMOND_ORE
       - EMERALD_ORE
+
+  advanced-enderman:
+    priority: 5
+    health: 45

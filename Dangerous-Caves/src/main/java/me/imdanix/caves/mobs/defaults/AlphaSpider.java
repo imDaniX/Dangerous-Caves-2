@@ -47,7 +47,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
     private double minionChance;
 
     public AlphaSpider() {
-        super(EntityType.SPIDER, "alpha-spider");
+        super(EntityType.SPIDER, "alpha-spider", 9);
     }
 
     @Override

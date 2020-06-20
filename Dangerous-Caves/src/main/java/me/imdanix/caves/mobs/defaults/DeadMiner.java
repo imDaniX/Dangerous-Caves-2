@@ -60,7 +60,7 @@ public class DeadMiner extends TickingMob implements Listener {
     private PotionEffect cooldownEffect;
 
     public DeadMiner() {
-        super(EntityType.ZOMBIE, "dead-miner");
+        super(EntityType.ZOMBIE, "dead-miner", 10);
         items = new ArrayList<>();
     }
 

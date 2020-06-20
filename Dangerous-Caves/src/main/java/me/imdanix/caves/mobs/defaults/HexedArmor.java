@@ -48,7 +48,7 @@ public class HexedArmor extends AbstractMob implements Listener {
     private boolean binding;
 
     public HexedArmor() {
-        super(EntityType.ZOMBIE, "hexed-armor");
+        super(EntityType.ZOMBIE, "hexed-armor", 6);
     }
 
     @Override

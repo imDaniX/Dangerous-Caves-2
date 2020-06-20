@@ -27,8 +27,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-import java.util.Locale;
-
 public abstract class AbstractMob implements CustomMob, Configurable {
     @Getter
     private final EntityType type;
@@ -38,12 +36,6 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     private int weight;
 
     private final int defWeight;
-
-    public AbstractMob(EntityType base, String id) {
-        this.type = base.isAlive() ? base : EntityType.ZOMBIE;
-        this.customType = id.toLowerCase(Locale.ENGLISH);
-        this.defWeight = 10;
-    }
 
     public AbstractMob(EntityType base, String id, int weight) {
         this.type = base.isAlive() ? base : EntityType.ZOMBIE;

@@ -43,7 +43,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private boolean vision;
 
     public HungeringDarkness() {
-        super(EntityType.HUSK, "hungering-darkness");
+        super(EntityType.HUSK, "hungering-darkness", 8);
     }
 
     @Override

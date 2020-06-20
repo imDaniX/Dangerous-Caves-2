@@ -33,7 +33,7 @@ public class CryingBat extends TickingMob {
     private double deathChance;
 
     public CryingBat() {
-        super(EntityType.BAT, "crying-bat");
+        super(EntityType.BAT, "crying-bat", 9);
     }
 
     @Override

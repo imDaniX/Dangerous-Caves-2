@@ -44,7 +44,7 @@ public class TNTCreeper extends AbstractMob implements Listener {
     private double explosionChance;
 
     public TNTCreeper() {
-        super(EntityType.CREEPER, "tnt-creeper");
+        super(EntityType.CREEPER, "tnt-creeper", 9);
     }
 
     @Override

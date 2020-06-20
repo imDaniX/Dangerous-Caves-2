@@ -59,7 +59,7 @@ public class LavaCreeper extends TickingMob implements Listener {
     private int radiusSquared;
 
     public LavaCreeper() {
-        super(EntityType.CREEPER, "lava-creeper");
+        super(EntityType.CREEPER, "lava-creeper", 6);
     }
 
     @Override
