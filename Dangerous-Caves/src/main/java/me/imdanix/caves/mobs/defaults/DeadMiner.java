@@ -67,7 +67,7 @@ public class DeadMiner extends TickingMob implements Listener {
     @Override
     public void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
-        health = cfg.getDouble("health", 20);
+        health = cfg.getDouble("health", 22);
 
         withoutTarget = cfg.getBoolean("without-target", false);
         torches = cfg.getBoolean("place-torches", true);

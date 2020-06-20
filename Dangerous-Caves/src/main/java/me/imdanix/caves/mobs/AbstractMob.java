@@ -59,6 +59,7 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     @Override
     public LivingEntity spawn(Location loc) {
         LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
+        // TODO: health and name
         setup(entity);
         return entity;
     }
