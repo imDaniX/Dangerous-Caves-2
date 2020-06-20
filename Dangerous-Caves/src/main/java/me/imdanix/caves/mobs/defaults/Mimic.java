@@ -162,7 +162,7 @@ public class Mimic extends TickingMob implements Listener {
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);
-            if(!items.isEmpty()) drops.add(new ItemStack(Rnd.randomItem(items)));
+            if(!items.isEmpty()) drops.add(new ItemStack(Rnd.randomElement(items)));
         }
     }
 

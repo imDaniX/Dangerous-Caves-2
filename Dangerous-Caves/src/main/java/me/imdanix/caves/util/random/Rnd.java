@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Rnd {
 
-    public static <T> T randomItem(List<T> list) {
+    public static <T> T randomElement(List<T> list) {
         return list.get(Rnd.nextInt(list.size()));
     }
 

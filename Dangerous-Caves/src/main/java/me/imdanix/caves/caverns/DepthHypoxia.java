@@ -97,9 +97,9 @@ public class DepthHypoxia implements Tickable, Configurable {
                 if(!Locations.isCave(loc) || loc.getY() > yMax) continue;
                 if(!Rnd.chance(chance) || !checkChance(player) || !Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
                 if(actionbar) {
-                    Compatibility.sendActionBar(player, Rnd.randomItem(messages));
+                    Compatibility.sendActionBar(player, Rnd.randomElement(messages));
                 } else {
-                    player.sendMessage(Rnd.randomItem(messages));
+                    player.sendMessage(Rnd.randomElement(messages));
                 }
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);

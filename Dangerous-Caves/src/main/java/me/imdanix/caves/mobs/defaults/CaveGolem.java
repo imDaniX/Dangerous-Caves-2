@@ -98,7 +98,7 @@ public class CaveGolem extends AbstractMob implements Listener {
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
-        equipment.setHelmet(Rnd.randomItem(heads)); equipment.setHelmetDropChance(1);
+        equipment.setHelmet(Rnd.randomElement(heads)); equipment.setHelmetDropChance(1);
         equipment.setChestplate(CHESTPLATE);        equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);            equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);                  equipment.setBootsDropChance(0);

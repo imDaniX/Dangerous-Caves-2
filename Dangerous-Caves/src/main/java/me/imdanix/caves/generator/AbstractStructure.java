@@ -71,7 +71,7 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
         Inventory inventory = ((Container)block.getState()).getInventory();
         int itemsCount = Rnd.nextInt(10) + 2;
         while(itemsCount-- > 0) {
-            Material material = Rnd.randomItem(chestItems);
+            Material material = Rnd.randomElement(chestItems);
             inventory.setItem(
                     Rnd.nextInt(inventory.getSize()),
                     new ItemStack(material, material.getMaxStackSize() > 1 ? Rnd.nextInt(3) + 1 : 1)

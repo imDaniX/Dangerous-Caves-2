@@ -97,7 +97,7 @@ public class DeadMiner extends TickingMob implements Listener {
         if(dropChance > 0 && !items.isEmpty() && Rnd.chance(dropChance))
             entity.getWorld().dropItemNaturally(
                     entity.getLocation(),
-                    new ItemStack(Rnd.randomItem(items))
+                    new ItemStack(Rnd.randomElement(items))
             );
     }
 
