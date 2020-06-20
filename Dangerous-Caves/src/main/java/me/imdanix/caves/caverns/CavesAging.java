@@ -207,8 +207,8 @@ public class CavesAging implements Tickable, Configurable {
             if(AGING_MATERIALS.contains(type))
                 count++;
 
-            if(torchRemove > 0 && type == Material.TORCH) {
-                if(Rnd.chance(torchRemove))
+            if(type == Material.TORCH) {
+                if(torchRemove > 0 && Rnd.chance(torchRemove))
                     changes.add(new DelayedChange(x, y, z, ChangeType.TORCH_AIR));
             } else if(replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
                 if(withReplace) {
