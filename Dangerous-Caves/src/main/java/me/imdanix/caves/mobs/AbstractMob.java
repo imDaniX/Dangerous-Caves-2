@@ -18,7 +18,6 @@
 
 package me.imdanix.caves.mobs;
 
-import lombok.Getter;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Location;
@@ -30,11 +29,8 @@ import org.bukkit.entity.LivingEntity;
 import java.util.Locale;
 
 public abstract class AbstractMob implements CustomMob, Configurable {
-    @Getter
     private final EntityType type;
-    @Getter
     private final String customType;
-    @Getter
     private int weight;
 
     private final int defWeight;
@@ -43,6 +39,21 @@ public abstract class AbstractMob implements CustomMob, Configurable {
         this.type = base.isAlive() ? base : EntityType.ZOMBIE;
         this.customType = id.toLowerCase(Locale.ENGLISH);
         this.defWeight = weight;
+    }
+
+    @Override
+    public EntityType getType() {
+        return type;
+    }
+
+    @Override
+    public String getCustomType() {
+        return customType;
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @Override

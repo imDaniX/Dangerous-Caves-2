@@ -58,7 +58,7 @@ public class DangerousCaves extends JavaPlugin implements Listener {
     public void onEnable() {
         if(getDescription().getVersion().contains("SNAPSHOT")) {
             getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
-                    "contain bugs. If you found some - report it to https://github.com/imDaniX/dangerous-caves/issues");
+                    "contain bugs. If you found some - report it to https://github.com/imDaniX/Вangerous-Сaves-2/issues");
         }
         Regions.INSTANCE.onEnable();
         Compatibility.init(this);

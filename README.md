@@ -1,4 +1,4 @@
-# DangerousCaves
+# Dangerous Caves
 
 [![Java CI](https://github.com/imDaniX/dangerous-caves/workflows/Java%20CI/badge.svg)](https://github.com/imDaniX/dangerous-caves/actions) [![JitPack](https://jitpack.io/v/imDaniX/Dangerous-Caves-2.svg)](https://jitpack.io/#imDaniX/Dangerous-Caves-2) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e5c72a1133c14e5b8ed80770f736bf2e)](https://www.codacy.com/manual/imDaniX/dangerous-caves)
 
