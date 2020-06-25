@@ -74,6 +74,7 @@ public abstract class AbstractMob implements CustomMob, Configurable {
         LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
         // TODO: health and name
         setup(entity);
+        Compatibility.setTag(entity, customType);
         return entity;
     }
 
