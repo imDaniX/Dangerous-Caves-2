@@ -169,8 +169,15 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         return spawn(mob, loc);
     }
 
+    /**
+     * Try to summon a new mob
+     * @param mob Type of mob to summon
+     * @param loc Where to summon
+     * @return Is summoning was successful
+     */
     public LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
+        Compatibility.setTag(entity, mob.getCustomType());
         if(metadata) entity.setMetadata("DangerousCaves", MARKER);
         entity.setRemoveWhenFarAway(true);
         return entity;
