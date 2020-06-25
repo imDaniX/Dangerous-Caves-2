@@ -116,7 +116,7 @@ public class CavesAging implements Tickable, Configurable {
         if(boundsCfg != null)
             for(String worldStr : boundsCfg.getKeys(false)) {
                 Set<Bound> worldBounds = new HashSet<>();
-                for(String str : cfg.getStringList("skip-chunks")) {
+                for(String str : boundsCfg.getStringList(worldStr)) {
                     Bound bound = Bound.fromString(str);
                     if(bound != null) worldBounds.add(bound);
                 }
