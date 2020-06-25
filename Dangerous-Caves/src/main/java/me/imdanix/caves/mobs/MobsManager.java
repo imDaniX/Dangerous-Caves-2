@@ -34,6 +34,7 @@ import me.imdanix.caves.util.random.Rnd;
 import me.imdanix.caves.util.random.WeightedPool;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -198,10 +199,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEntityEvent event) {
         Entity entity = event.getRightClicked();
-        if(blockRename && entity instanceof LivingEntity &&
-                Compatibility.getTag((LivingEntity)entity) != null) {
+        Material item = event.getPlayer().getInventory().getItem(event.getHand()).getType();
+        if(blockRename && item == Material.NAME_TAG &&
+                entity instanceof LivingEntity && Compatibility.isTagged((LivingEntity)entity)) {
             event.setCancelled(true);
-            ((LivingEntity)entity).setRemoveWhenFarAway(false);
         }
     }
 

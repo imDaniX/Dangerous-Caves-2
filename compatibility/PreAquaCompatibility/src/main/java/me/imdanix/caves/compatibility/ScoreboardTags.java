@@ -40,11 +40,13 @@ public class ScoreboardTags implements TagsProvider {
         tags.add(tag);
     }
 
+    @Override
     public void setTag(LivingEntity entity, String tag) {
         entity.addScoreboardTag(DC_TAG);
         entity.addScoreboardTag(tag);
     }
 
+    @Override
     public void setTag(Block block, String tag) {
         BlockState state = block.getState();
         if(!(state instanceof Nameable)) return;
@@ -52,6 +54,7 @@ public class ScoreboardTags implements TagsProvider {
         state.update(false, false);
     }
 
+    @Override
     public String getTag(LivingEntity entity) {
         Set<String> entityTags = entity.getScoreboardTags();
 
@@ -67,6 +70,12 @@ public class ScoreboardTags implements TagsProvider {
         return null;
     }
 
+    @Override
+    public boolean isTagged(LivingEntity entity) {
+        return entity.getScoreboardTags().contains(DC_TAG);
+    }
+
+    @Override
     public String getTag(Block block) {
         BlockState state = block.getState();
         if(!(state instanceof Nameable)) return null;
