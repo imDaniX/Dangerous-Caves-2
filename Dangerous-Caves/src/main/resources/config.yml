@@ -454,7 +454,3 @@ mobs:
       - LAPIS_ORE
       - DIAMOND_ORE
       - EMERALD_ORE
-
-  advanced-enderman:
-    priority: 5
-    health: 45
