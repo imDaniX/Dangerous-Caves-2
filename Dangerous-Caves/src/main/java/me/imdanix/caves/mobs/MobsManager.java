@@ -45,6 +45,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -204,7 +205,9 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEntityEvent event) {
         Entity entity = event.getRightClicked();
-        Material item = event.getPlayer().getInventory().getItem(event.getHand()).getType();
+        Material item = event.getHand() == EquipmentSlot.HAND ?
+                event.getPlayer().getInventory().getItemInMainHand().getType() :
+                event.getPlayer().getInventory().getItemInOffHand().getType();
         if(blockRename && item == Material.NAME_TAG &&
                 entity instanceof LivingEntity && Compatibility.isTagged((LivingEntity)entity)) {
             event.setCancelled(true);
