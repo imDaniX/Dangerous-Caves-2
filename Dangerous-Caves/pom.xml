@@ -65,6 +65,7 @@
             <artifactId>compatibility-postaqua</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -86,18 +87,21 @@
             <artifactId>worldguard6</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>worldguard7</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>griefprevention</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>
