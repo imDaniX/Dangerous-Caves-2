@@ -20,7 +20,7 @@ version: ${cfgVersion}
 # ENTITY tick is 4 vanilla ticks (about 200 milliseconds)
 
 # NOTE: Per-version
-# 1.13+ Materials(ignore LEGACY) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# 1.13+ Materials(ignore LEGACY) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 # -1.12 Materials https://helpch.at/docs/1.12.2/index.html?org/bukkit/Material.html
 # 1.13+ Sounds https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
 # -1.12 Sounds https://helpch.at/docs/1.12.2/index.html?org/bukkit/Sound.html
