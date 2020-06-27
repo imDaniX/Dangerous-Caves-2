@@ -50,6 +50,10 @@
                             <pattern>org.bstats</pattern>
                             <shadedPattern>me.imdanix.caves.metrics</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.papermc.lib</pattern>
+                            <shadedPattern>me.imdanix.caves.paperlib</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
