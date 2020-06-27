@@ -37,7 +37,7 @@ public class Compatibility {
         int version = PaperLib.getMinecraftVersion();
         boolean isBukkit = !PaperLib.isSpigot();
         if(isBukkit)
-            plugin.getLogger().warning("Please note that Bukkit is not supported. Prefer Spigot or Paper.");
+            PaperLib.suggestPaper(plugin);
         if(version < 13) {
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
