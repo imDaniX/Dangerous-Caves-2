@@ -18,6 +18,7 @@
 
 package me.imdanix.caves.caverns;
 
+import io.papermc.lib.PaperLib;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
@@ -41,7 +42,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -160,25 +160,29 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     private void proceedChunks(Reference<World> worldRef, Set<QueuedChunk> chunks) {
-        BukkitScheduler scheduler = Bukkit.getScheduler();
         int timer = schedule;
         for(QueuedChunk queuedChunk : chunks) {
-            scheduler.runTaskLater(plugin, () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 World world = worldRef.get();
                 if(world == null) return;
                 Chunk chunk = queuedChunk.getChunk(world);
-                if(!chunk.isLoaded() && forceLoad && !chunk.load()) return;
-
-                Location edge = chunk.getBlock(0, 0, 0).getLocation();
-                ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
-                scheduler.runTaskAsynchronously(plugin, () -> {
-                    Set<DelayedChange> changes = calculateChanges(edge, snapshot);
-                    if(changes.isEmpty()) return;
-
-                    scheduler.runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
-                });
+                if(!chunk.isLoaded()) {
+                    if(forceLoad)
+                        PaperLib.getChunkAtAsync(world, queuedChunk.x, queuedChunk.z).thenAccept(this::proceedChunk);
+                } else proceedChunk(chunk);
             }, (timer += schedule));
         }
+    }
+
+    private void proceedChunk(Chunk chunk) {
+        Location edge = chunk.getBlock(0, 0, 0).getLocation();
+        ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Set<DelayedChange> changes = calculateChanges(edge, snapshot);
+            if(changes.isEmpty()) return;
+
+            Bukkit.getScheduler().runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
+        });
     }
 
     private Set<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot) {
