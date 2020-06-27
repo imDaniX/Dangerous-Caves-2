@@ -21,6 +21,7 @@ package me.imdanix.caves.mobs;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import io.papermc.lib.PaperLib;
 import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
@@ -83,12 +84,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
     public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
         MARKER = new FixedMetadataValue(plugin, new Object());
-        try {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
+        if(PaperLib.isPaper())
             Bukkit.getPluginManager().registerEvents(new PaperEventListener(), plugin);
-        } catch (ClassNotFoundException e) {
+        else
             Bukkit.getPluginManager().registerEvents(new SpigotEventListener(), plugin);
-        }
         this.plugin = plugin;
         this.config = config;
         this.dynamics = dynamics;

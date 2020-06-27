@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.compatibility;
 
-import org.bukkit.Bukkit;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -34,8 +34,8 @@ public class Compatibility {
     private static Messenger messenger;
 
     public static void init(Plugin plugin) {
-        int version = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
-        boolean isBukkit = Bukkit.getName().equalsIgnoreCase("Bukkit");
+        int version = PaperLib.getMinecraftVersion();
+        boolean isBukkit = !PaperLib.isSpigot();
         if(isBukkit)
             plugin.getLogger().warning("Please note that Bukkit is not supported. Prefer Spigot or Paper.");
         if(version < 13) {
