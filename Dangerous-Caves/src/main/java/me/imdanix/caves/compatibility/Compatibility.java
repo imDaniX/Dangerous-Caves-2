@@ -40,7 +40,7 @@ public class Compatibility {
             PaperLib.suggestPaper(plugin);
         if(version < 13) {
             if(version < 12)
-                plugin.getLogger().warning("Please note that versions before 1.12 are not really supported.");
+                plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
             materials = new LegacyMaterials();
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
@@ -49,7 +49,7 @@ public class Compatibility {
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else {
-            materials = new FlattenedMaterials();
+            materials = version > 15 ? new NetherUpdateMaterials() : new FlattenedMaterials();
             tags = new PersistentTags(plugin);
             messenger = new ModernMessenger();
         }

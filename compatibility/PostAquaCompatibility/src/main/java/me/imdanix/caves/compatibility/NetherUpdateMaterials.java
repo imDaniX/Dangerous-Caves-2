@@ -22,56 +22,66 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.FaceAttachable;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Directional;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Vine;
 
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class LegacyMaterials implements MaterialsProvider {
+public class NetherUpdateMaterials implements MaterialsProvider {
 
     private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
-            Material.STONE,
+            Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.WOOD, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK,
-            Material.ENDER_STONE
+            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK,
+            Material.SOUL_SAND, Material.SOUL_SOIL, Material.NETHERRACK,
+            Material.END_STONE
     ));
 
+    private final Set<Material> AIR = Collections.unmodifiableSet(EnumSet.of(
+            Material.AIR, Material.CAVE_AIR, Material.VOID_AIR
+    ));
+
+    @Override
     public boolean isAir(Material type) {
-        return type == Material.AIR;
+        return AIR.contains(type);
     }
 
+    @Override
     public boolean isCave(Material type) {
         return CAVE.contains(type);
     }
 
     @Override
     public void rotate(Block block, BlockFace face) {
-        BlockState state = block.getState();
-        MaterialData data = state.getData();
-        if(data instanceof Directional) {
-            ((Directional) data).setFacingDirection(face);
-        } else if(data instanceof Vine) {
-            ((Vine) data).putOnFace(face);
+        BlockData data = block.getBlockData();
+        if(data instanceof FaceAttachable) {
+            ((FaceAttachable) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
+        } else if (data instanceof Directional) {
+            ((Directional) data).setFacing(face);
+        } else if(data instanceof MultipleFacing) {
+            ((MultipleFacing) data).setFace(face, true);
         }
-        state.update(false, false);
+        block.setBlockData(data, false);
     }
 
-    @Override
     @SuppressWarnings("deprecation")
+    @Override
     public ItemStack getHeadFromValue(String value) {
+        UUID id = UUID.nameUUIDFromBytes(value.getBytes());
+        int less = (int) id.getLeastSignificantBits();
+        int most = (int) id.getMostSignificantBits();
         return Bukkit.getUnsafe().modifyItemStack(
-                new ItemStack(Material.SKULL_ITEM, 1, (short) 3),
-                "{SkullOwner:{Id:\"" + UUID.nameUUIDFromBytes(value.getBytes()) + "\",Properties:{textures:[{Value:\"" + value + "\"}]}}}"
+                new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:[I;" + less + "," + (less >> 17) + "," + most + "," + (most >> 17) + "]," +
+                        "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
     }
 }
-

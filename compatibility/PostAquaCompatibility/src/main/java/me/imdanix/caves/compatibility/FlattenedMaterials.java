@@ -41,7 +41,7 @@ public class FlattenedMaterials implements MaterialsProvider {
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK, Material.NETHER_BRICKS,
+            Material.SOUL_SAND, Material.NETHERRACK,
             Material.END_STONE
     ));
 
@@ -78,7 +78,8 @@ public class FlattenedMaterials implements MaterialsProvider {
     public ItemStack getHeadFromValue(String value) {
         return Bukkit.getUnsafe().modifyItemStack(
                 new ItemStack(Material.PLAYER_HEAD),
-                "{SkullOwner:{Id:\"" + UUID.nameUUIDFromBytes(value.getBytes()) + "\",Properties:{textures:[{Value:\"" + value + "\"}]}}}"
+                "{SkullOwner:{Id:\"" + UUID.nameUUIDFromBytes(value.getBytes()) + "\"," +
+                        "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
     }
 }
