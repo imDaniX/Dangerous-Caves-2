@@ -84,17 +84,20 @@ public class MagmaMonster extends TickingMob implements Listener {
         if(!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
-        entity.addPotionEffect(FIRE_RESISTANCE);
-        entity.addPotionEffect(INVISIBILITY);
         entity.setFireTicks(Integer.MAX_VALUE);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
+
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(POWDER);
         equipment.setItemInOffHand(POWDER);
+        equipment.setHelmet(null);
         equipment.setChestplate(CHESTPLATE);    equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);        equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);              equipment.setBootsDropChance(0);
+
+        entity.addPotionEffect(FIRE_RESISTANCE);
+        entity.addPotionEffect(INVISIBILITY);
     }
 
     @EventHandler
@@ -110,7 +113,8 @@ public class MagmaMonster extends TickingMob implements Listener {
             else
                 entity.setFireTicks(20);
 
-        boolean fire, magma;
+        boolean fire;
+        boolean magma;
         if(((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
                 !Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation()))
             return;

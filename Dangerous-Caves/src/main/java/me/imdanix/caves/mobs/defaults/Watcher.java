@@ -71,8 +71,10 @@ public class Watcher extends TickingMob implements Listener {
         entity.addPotionEffect(INVISIBILITY);
 
         EntityEquipment equipment = entity.getEquipment();
-        equipment.setHelmet(head);
-        equipment.setHelmetDropChance(0);
+        equipment.setHelmet(head);      equipment.setHelmetDropChance(0);
+        equipment.setChestplate(null);
+        equipment.setLeggings(null);
+        equipment.setBoots(null);
     }
 
     @EventHandler
