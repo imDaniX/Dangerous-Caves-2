@@ -74,7 +74,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>compatibility-preaqua</artifactId>
+            <artifactId>compatibility-legacy</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

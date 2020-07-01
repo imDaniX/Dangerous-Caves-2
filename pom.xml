@@ -27,7 +27,7 @@
     <version>2</version>
     <modules>
         <module>compatibility/Compatibility</module>
-        <module>compatibility/PreAquaCompatibility</module>
+        <module>compatibility/LegacyCompatibility</module>
         <module>compatibility/PostAquaCompatibility</module>
         <module>regions/RegionManager</module>
         <module>regions/WorldGuard6</module>
