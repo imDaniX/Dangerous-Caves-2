@@ -43,7 +43,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private boolean vision;
 
     public HungeringDarkness() {
-        super(EntityType.HUSK, "hungering-darkness", 8);
+        super(EntityType.VEX, "hungering-darkness", 8);
     }
 
     @Override
@@ -63,10 +63,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     public void setup(LivingEntity entity) {
         if(!name.isEmpty()) entity.setCustomName(name);
         entity.setCustomNameVisible(false);
-        entity.setSilent(true);
         entity.setInvulnerable(true);
-        entity.setCanPickupItems(false);
-        entity.setCustomNameVisible(false);
         entity.setCollidable(false);
 
         entity.addPotionEffect(INVISIBILITY);
