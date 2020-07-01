@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 public class LegacyMessenger implements Messenger {
     private final boolean useChat;
 
-    // TODO: Reflection for Bukkit
     public LegacyMessenger(boolean useChat) {
         this.useChat = useChat;
     }
