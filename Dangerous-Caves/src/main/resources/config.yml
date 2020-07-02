@@ -63,16 +63,16 @@ caverns:
     # Cuboid-shaped cave-ins
     cuboid: false
     # Sand-like fall. Can cause client-side lags and block drops, but looks fancy
-    slow-fall: false
-    # Immunity to cave-in if player has rabbit foot in inventory
+    slow-fall: true
+    # Immunity to cave-ins if player has rabbit foot in inventory
     rabbit-foot: true
-    # Radius of cave-in
+    # Radius of cave-ins
     radius: 2
-    # Maximal Y where cave-in may appear
+    # Maximal Y where cave-ins may appear
     y-max: 25
-    # Give player effects on cave-in?
+    # Give player effects on cave-ins?
     blast-effect: true
-    # Play explosion sound on cave-in?
+    # Play explosion sound on cave-ins?
     blast-sound: true
 
   # Ambient Sounds - special sound may be played underground
@@ -280,10 +280,13 @@ mobs:
   add-metadata: false
 
   # List of *default* custom mobs
-  # To disable names just live it blank, like
-  # name: ""
-  # Larger priority - larger chance in comparison with others. Set to 0 to disable
-  # Chance formula - (mob_priority)/(total_priority)
+
+  # To disable mob's name just leave it blank, like
+  #   name: ""
+  # Larger priority - larger chance to spawn in comparison with others.
+  # Set priority to 0 to disable mob, like
+  #   priority: 0
+  # Spawn chance formula - (mob_priority)/(total_priority)
 
   # Alpha Spider
   # Spawns cave-spiders as minions and covers player in cobweb
@@ -396,7 +399,7 @@ mobs:
     harm-radius: 3
 
   # TNT Creeper
-  # Spawns additional TNT when explodes and creates small explosion when damaged
+  # Spawns additional TNTs when explodes and creates small explosion when damaged
   tnt-creeper:
     priority: 9
     name: "&4TNT Creeper"
