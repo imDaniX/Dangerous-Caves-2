@@ -55,7 +55,9 @@ public interface CustomMob {
      * Setup some mob settings (effects, equipment etc.)
      * @param entity Entity to setup
      */
-    default void setup(LivingEntity entity) {}
+    default void setup(LivingEntity entity) {
+        // Sometimes we just don't need to do so
+    }
 
     /**
      * Get base type of custom mob

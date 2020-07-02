@@ -261,6 +261,9 @@ mobs:
   y-min: 4
   y-max: 64
 
+  # (Paper only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
+  use-prespawn: true
+
   # Block renaming with name-tags
   restrict-rename: false
 

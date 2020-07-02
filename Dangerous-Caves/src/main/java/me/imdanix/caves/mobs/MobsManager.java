@@ -42,6 +42,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -82,12 +83,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean blockRename;
     private boolean metadata;
 
+    private Listener spawnListener;
+
     public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
         MARKER = new FixedMetadataValue(plugin, new Object());
-        if(PaperLib.isPaper())
-            Bukkit.getPluginManager().registerEvents(new PaperEventListener(), plugin);
-        else
-            Bukkit.getPluginManager().registerEvents(new SpigotEventListener(), plugin);
         this.plugin = plugin;
         this.config = config;
         this.dynamics = dynamics;
@@ -101,6 +100,27 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         blockRename = cfg.getBoolean("restrict-rename", false);
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
+
+        if(cfg.getBoolean("use-prespawn", true) && PaperLib.isPaper()) {
+            if(spawnListener == null) {
+                spawnListener = new PaperSpawnListener();
+                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+            } else if(!(spawnListener instanceof PaperSpawnListener)) {
+                HandlerList.unregisterAll(spawnListener);
+                spawnListener = new PaperSpawnListener();
+                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+            }
+        } else {
+            if(spawnListener == null) {
+                spawnListener = new SpigotSpawnListener();
+                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+            } else if(!(spawnListener instanceof SpigotSpawnListener)) {
+                HandlerList.unregisterAll(spawnListener);
+                spawnListener = new SpigotSpawnListener();
+                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+            }
+        }
+
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
@@ -234,7 +254,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         return "mobs";
     }
 
-    private class PaperEventListener implements Listener {
+    private class PaperSpawnListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(PreCreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
@@ -242,7 +262,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         }
     }
 
-    private class SpigotEventListener implements Listener {
+    private class SpigotSpawnListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(CreatureSpawnEvent event) {
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
