@@ -33,7 +33,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class NetherUpdateMaterials implements MaterialsProvider {
+public class NetherMaterials implements MaterialsProvider {
 
     private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
             Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,

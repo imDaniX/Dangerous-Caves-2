@@ -49,7 +49,7 @@ public class Compatibility {
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else {
-            materials = version > 15 ? new NetherUpdateMaterials() : new FlattenedMaterials();
+            materials = version > 15 ? new NetherMaterials() : new FlattenedMaterials();
             tags = new PersistentTags(plugin);
             messenger = new ModernMessenger();
         }
