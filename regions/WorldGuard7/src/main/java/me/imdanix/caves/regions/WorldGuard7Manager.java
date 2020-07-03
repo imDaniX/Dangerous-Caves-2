@@ -28,7 +28,7 @@ public class WorldGuard7Manager implements RegionManager {
     @Override
     public boolean test(CheckType checkType, Location location) {
         ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
-        return set.size() < 2;
+        return set.size() == 0;
     }
 
     private RegionContainer getContainer() {
