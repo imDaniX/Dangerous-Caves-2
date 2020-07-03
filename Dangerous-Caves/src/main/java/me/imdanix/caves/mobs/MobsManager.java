@@ -55,7 +55,6 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -177,6 +176,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         return TickLevel.ENTITY;
     }
 
+    public CustomMob getMob(String type) {
+        return mobs.get(type);
+    }
+
     /**
      * Try to summon a new mob
      * @param type Type of mob to summon
@@ -184,7 +187,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      * @return Is summoning was successful
      */
     public LivingEntity spawn(String type, Location loc) {
-        CustomMob mob = mobs.get(type.toLowerCase(Locale.ENGLISH));
+        CustomMob mob = mobs.get(type);
         if(mob == null) return null;
         return spawn(mob, loc);
     }

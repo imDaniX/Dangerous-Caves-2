@@ -92,6 +92,10 @@ public class Compatibility {
         return tags.isTagged(entity);
     }
 
+    public static boolean isTagged(LivingEntity entity, String tag) {
+        return tags.isTagged(entity, tag);
+    }
+
     public static String getTag(Block block) {
         return tags.getTag(block);
     }
