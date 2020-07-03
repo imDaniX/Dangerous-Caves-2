@@ -25,38 +25,51 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public enum Regions implements Manager<RegionManager>, Configurable {
     INSTANCE;
     private final RegionManager NONE = (c, l) -> true;
 
     private final Map<String, RegionManager> managers;
-    private RegionManager current;
+    private final List<RegionManager> current;
 
     Regions() {
         managers = new HashMap<>();
         managers.put("none", NONE);
+        current = new ArrayList<>();
     }
 
     public boolean check(CheckType check, Location location) {
-        return current.test(check, location);
+        for(RegionManager regions : current) {
+            if(!regions.test(check, location))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public void reload(ConfigurationSection cfg) {
+        // TODO Logger util
+        Logger logger = Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger();
+
         boolean invert = cfg.getBoolean("invert", false);
-        String mode = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH);
-        RegionManager manager = managers.get(mode);
-        if(manager != null) {
-            current = (c,l) -> invert != manager.test(c, l);
-        } else {
-            // TODO Logger util
-            Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Can't find mode \"" +
-                    mode + "\". Regions feature is disabled.");
-            current = NONE;
+
+        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",");
+        if(modes.length == 0) {
+            current.add(NONE);
+        } else for(String mode : modes) {
+            RegionManager manager = managers.get(mode);
+            if(manager != null) {
+                current.add((c,l) -> invert != manager.test(c, l));
+            } else {
+                logger.warning("Can't find mode \"" + mode + "\".");
+            }
         }
     }
 
@@ -69,20 +82,20 @@ public enum Regions implements Manager<RegionManager>, Configurable {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(wg != null) {
             if(wg.getDescription().getVersion().startsWith("6")) {
-                managers.put("worldguard", new WorldGuard6FlagsManager());
-                managers.put("worldguard-flagless", new WorldGuard6Manager());
+                managers.put("worldguard-flags", new WorldGuard6FlagsManager());
+                managers.put("worldguard", new WorldGuard6Manager());
             } else {
-                managers.put("worldguard", new WorldGuard7FlagsManager());
-                managers.put("worldguard-flagless", new WorldGuard7Manager());
+                managers.put("worldguard-flags", new WorldGuard7FlagsManager());
+                managers.put("worldguard", new WorldGuard7Manager());
             }
         }
     }
 
     public void onEnable() {
         if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            managers.put("griefprevention-flagless", new GriefPreventionManager());
+            managers.put("griefprevention", new GriefPreventionManager());
             if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
-                managers.put("griefprevention", new GriefPreventionFlagsManager());
+                managers.put("griefprevention-flags", new GriefPreventionFlagsManager());
         }
 
         managers.values().forEach(RegionManager::onEnable);

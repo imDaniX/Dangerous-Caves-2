@@ -30,15 +30,15 @@ version: ${cfgVersion}
 #
 integration:
   # For disabling some features in specific regions
-  # Available options: worldguard, worldguard-flagless, griefprevention, griefprevention-flagless, none
+  # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
+  # If you have several plugins, you can use multiple checks by dividing modes by comma without spaces
+  # mode: worldguard,griefprevention
   mode: none
-
   # WorldGuard flags:
   # dc-entity-grief (magma monster, lava creeper)
   # dc-block-change (cave-ins, caves aging)
   # dc-player-effect (ambient sounds, hypoxia)
-
-  # `griefprevention` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention-flagless`
+  # `griefprevention-flags` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention`
   # GriefPreventionFlags flags:
   # DCNoEntityGrief (magma monster, lava creeper)
   # DCNoBlockChange (cave-ins, caves aging)
