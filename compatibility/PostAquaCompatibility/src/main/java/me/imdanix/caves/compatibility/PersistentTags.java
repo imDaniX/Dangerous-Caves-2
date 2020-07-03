@@ -57,6 +57,12 @@ public class PersistentTags implements TagsProvider {
     }
 
     @Override
+    public boolean isTagged(LivingEntity entity, String tag) {
+        String entityTag = getTag(entity);
+        return tag.equals(entityTag);
+    }
+
+    @Override
     public String getTag(Block block) {
         if(!(block.getState() instanceof PersistentDataHolder)) return null;
         return ((PersistentDataHolder)block.getState()).getPersistentDataContainer().get(MOB_KEY, PersistentDataType.STRING);

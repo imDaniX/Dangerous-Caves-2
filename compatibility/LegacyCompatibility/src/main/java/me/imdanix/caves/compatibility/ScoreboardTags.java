@@ -76,6 +76,11 @@ public class ScoreboardTags implements TagsProvider {
     }
 
     @Override
+    public boolean isTagged(LivingEntity entity, String tag) {
+        return entity.getScoreboardTags().contains(tag);
+    }
+
+    @Override
     public String getTag(Block block) {
         BlockState state = block.getState();
         if(!(state instanceof Nameable)) return null;

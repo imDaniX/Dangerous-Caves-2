@@ -30,5 +30,7 @@ public interface TagsProvider {
 
     boolean isTagged(LivingEntity entity);
 
+    boolean isTagged(LivingEntity entity, String tag);
+
     String getTag(Block block);
 }
