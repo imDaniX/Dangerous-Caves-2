@@ -62,7 +62,6 @@ public class DepthHypoxia implements Tickable, Configurable {
     public DepthHypoxia() {
         worlds = new HashSet<>();
         messages = new ArrayList<>();
-        formula = new FormulasEvaluator("0");
     }
 
     @Override
