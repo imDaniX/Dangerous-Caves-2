@@ -24,6 +24,6 @@ import org.bukkit.Location;
 public class GriefPreventionManager implements RegionManager {
     @Override
     public boolean test(CheckType checkType, Location location) {
-        return GriefPrevention.instance.dataStore.getClaimAt(location, false, null) != null;
+        return GriefPrevention.instance.dataStore.getClaimAt(location, false, null) == null;
     }
 }
