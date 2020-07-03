@@ -97,11 +97,6 @@ public class Commander implements CommandExecutor {
                 cfg.checkVersion(true);
                 break;
 
-            case "count":
-                if(!sender.hasPermission("dangerous.caves.command.count")) return false;
-                sender.sendMessage(Utils.clr("&aPlugin is ticking &6" + MobsManager.handledCount() + " mobs."));
-                break;
-
             default: help(sender, label);
         }
         return true;
@@ -110,8 +105,7 @@ public class Commander implements CommandExecutor {
     private void help(CommandSender sender, String label) {
         sender.sendMessage(Utils.clr("&6&lDangerousCaves&e v" + version[0] + " c" + version[1]));
         sender.sendMessage(Utils.clr("&a /" + label + " info &7- Get some info about your location."));
-        sender.sendMessage(Utils.clr("&a /" + label + " summon [mob] &7- Spawn a mob on your location."));
-        sender.sendMessage(Utils.clr("&a /" + label + " count &7- Count of handled ticking mobs."));
+        sender.sendMessage(Utils.clr("&a /" + label + " summon <mob> &7- Spawn a mob on your location."));
         sender.sendMessage(Utils.clr("&a /" + label + " tick &7- Tick everything manually."));
         sender.sendMessage(Utils.clr("&a /" + label + " reload &7- Reload plugin configuration."));
     }
