@@ -113,7 +113,6 @@ caverns:
     # List of worlds where players can sense hypoxia
     worlds:
       - world
-      - world_nether
     # Chance of checking the player
     # Checking every PLAYER tick
     try-chance: 60
@@ -130,7 +129,7 @@ caverns:
     y-max: 42
     # Use actionbar instead of chat to show messages
     actionbar: true
-    # Messages when player is feeling lack of air
+    # Messages when player is feeling lack of air. You can use %player placeholder
     messages:
       - "&4I really need more air..."
       - "&4It is so stuffy down here."

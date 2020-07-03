@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Set;
 
 public class DepthHypoxia implements Tickable, Configurable {
+    // TODO PAPI placeholders
+
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
@@ -71,10 +73,8 @@ public class DepthHypoxia implements Tickable, Configurable {
         actionbar = cfg.getBoolean("actionbar", true);
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
-        if(messages.isEmpty()) messages.add("");
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
-
         try {
             formula = new FormulasEvaluator(cfg.getString("chance-formula", "depth*inventory"));
             formula.setVariable("depth", 1d);
@@ -89,6 +89,7 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     @Override
     public void tick() {
+        // TODO Just make one boolean on reload
         if(chance <= 0 || yMax <= 0 || maxChance <= 0) return;
         for(World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
@@ -96,13 +97,15 @@ public class DepthHypoxia implements Tickable, Configurable {
                 Location loc = player.getLocation();
                 if(!Locations.isCave(loc) || loc.getY() > yMax) continue;
                 if(!Rnd.chance(chance) || !checkChance(player) || !Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
-                if(actionbar) {
-                    Compatibility.sendActionBar(player, Rnd.randomElement(messages));
-                } else {
-                    player.sendMessage(Rnd.randomElement(messages));
-                }
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
+                if(messages.isEmpty()) continue;
+                String text = Rnd.randomElement(messages).replace("%player", player.getName());
+                if(actionbar) {
+                    Compatibility.sendActionBar(player, text);
+                } else {
+                    player.sendMessage(text);
+                }
             }
         }
     }
