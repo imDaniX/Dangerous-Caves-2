@@ -140,13 +140,9 @@ public class CaveIns implements Listener, Configurable {
         World world = blockLoc.getWorld();
         int yInit = blockLoc.getBlockY();
 
-        for(int x = 0; x < distance; x++)
-        for(int z = 0; z < distance; z++) {
+        for(int x = 0; x < distance; x++) for(int z = 0; z < distance; z++) {
             int xRel = blockLoc.getBlockX() + x;
             int zRel = blockLoc.getBlockZ() + z;
-
-            if(world.getBlockAt(xRel, yInit - 1, zRel).getType().isSolid())
-                continue;
 
             List<Block> blocks = new ArrayList<>();
 

@@ -60,7 +60,7 @@ caverns:
     # Chance of cave-in while mining blocks
     # In percents
     chance: 0.25
-    # Cuboid-shaped cave-ins
+    # Cuboid-shaped cave-ins. Doesn't affect performance
     cuboid: false
     # Sand-like fall. Can cause client-side lags and block drops, but looks fancy
     slow-fall: true
