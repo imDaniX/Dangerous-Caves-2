@@ -89,10 +89,11 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     public void recalculate() {
         Set<StructureGroup> structuresSet = new HashSet<>();
         structures.values().forEach(g -> {if(g.getWeight() > 0) structuresSet.add(g);});
-        if(structuresSet.isEmpty())
+        if(structuresSet.isEmpty()) {
             chance = 0;
-        else
+        } else {
             structuresPool = new WeightedPool<>(structuresSet, StructureGroup::getWeight);
+        }
     }
 
     /**
@@ -103,6 +104,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     public boolean register(StructureGroup group) {
         if(structures.containsKey(group.getId())) return false;
         structures.put(group.getId(), group);
+        structuresPool.add(group, group.getWeight());
         if(group instanceof Configurable)
             cfg.register((Configurable) group);
         return true;

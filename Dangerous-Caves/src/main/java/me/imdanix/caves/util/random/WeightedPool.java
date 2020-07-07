@@ -1,96 +1,39 @@
 package me.imdanix.caves.util.random;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
 
-/******************************************************************************
- * File: AliasMethod.java
- * Author: Keith Schwarz (htiek@cs.stanford.edu)
- *
- * An implementation of the alias method implemented using Vose's algorithm.
- * The alias method allows for efficient sampling of random values from a
- * discrete probability distribution (i.e. rolling a loaded die) in O(1) time
- * each after O(n) preprocessing time.
- *
- * For a complete writeup on the alias method, including the intuition and
- * important proofs, please see the article "Darts, Dice, and Coins: Smpling
- * from a Discrete Distribution" at
- *
- *                 http://www.keithschwarz.com/darts-dice-coins/
+/**
+ * Weighted collection class based off DarkSeraphim's answer
+ * https://www.spigotmc.org/threads/probability.449617/#post-3868549
  */
-
-public final class WeightedPool<T> {
-
+public class WeightedPool<T> {
     private final List<T> elements;
 
-    private final int[] alias;
-    private final double[] probability;
+    public WeightedPool() {
+        elements = new ArrayList<>();
+    }
 
-    public WeightedPool(Collection<T> collection, ToDoubleFunction<T> funct) {
+    public WeightedPool(Collection<T> collection, ToIntFunction<T> funct) {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(funct);
-
         if (collection.isEmpty())
             throw new IllegalArgumentException("Probability vector must be nonempty.");
 
-        final int size = collection.size();
+        elements = new ArrayList<>();
+        collection.forEach(t -> add(t, funct.applyAsInt(t)));
 
-        double[] probabilities = new double[size];
-        elements = new ArrayList<>(size);
+    }
 
-        double sum = 0;
-        for(T item : collection) {
-            elements.add(item);
-            sum += funct.applyAsDouble(item);
-        }
-        for(int i = 0; i < elements.size(); i++) {
-            probabilities[i] = funct.applyAsDouble(elements.get(i)) / sum;
-        }
-
-        probability = new double[size];
-        alias = new int[size];
-
-        final double average = 1.0 / size;
-
-        Deque<Integer> small = new ArrayDeque<>();
-        Deque<Integer> large = new ArrayDeque<>();
-
-        for (int i = 0; i < size; ++i) {
-            if (probabilities[i] >= average)
-                large.add(i);
-            else
-                small.add(i);
-        }
-
-        while (!small.isEmpty() && !large.isEmpty()) {
-            int less = small.removeLast();
-            int more = large.removeLast();
-
-            probability[less] = probabilities[less] * size;
-            alias[less] = more;
-
-            probabilities[more] = probabilities[more] + probabilities[less] - average;
-
-            if (probabilities[more] >= 1.0 / size)
-                large.add(more);
-            else
-                small.add(more);
-        }
-
-        while (!small.isEmpty())
-            probability[small.removeLast()] = 1.0;
-        while (!large.isEmpty())
-            probability[large.removeLast()] = 1.0;
+    public void add(T element, int weight) {
+        for(int i = 0; i < weight; i++)
+            this.elements.add(element);
     }
 
     public T next() {
-        int column = Rnd.nextInt(probability.length);
-        boolean coinToss/*ToYourWitcher*/ = Rnd.chance(probability[column]);
-        return elements.get(coinToss ? column : alias[column]);
+        return this.elements.get(Rnd.nextInt(this.elements.size()));
     }
 }

@@ -146,6 +146,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     @Override
     public boolean register(CustomMob mob) {
         if(!mobs.containsKey(mob.getCustomType())) {
+            mobsPool.add(mob, mob.getWeight());
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
             if(mob instanceof Configurable)
@@ -271,14 +272,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
         }
-    }
-
-    /**
-     * Get count of handled mobs
-     * @return Count of handled mobs
-     */
-    public static int handledCount() {
-        return tickingEntities.size();
     }
 
     /**
