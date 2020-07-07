@@ -8,5 +8,5 @@ softdepend: [WorldGuard, GriefPrevention, GriefPreventionFlags]
 commands:
   dangerouscaves:
     aliases: [dcaves, dc]
-    usage: "/<command> [info|summon|tick|reload]"
+    usage: "/<command> [info|summon|kill|tick|reload]"
     permission: dangerous.caves.command

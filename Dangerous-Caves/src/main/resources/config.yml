@@ -31,8 +31,8 @@ version: ${cfgVersion}
 integration:
   # For disabling some features in specific regions
   # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
-  # If you have several plugins, you can use multiple checks by dividing modes by comma without spaces
-  # mode: worldguard,griefprevention
+  # If you have several plugins, you can use multiple checks by separate modes by comma without spaces
+  # mode: worldguard-flags,griefprevention
   mode: none
   # WorldGuard flags:
   # dc-entity-grief (magma monster, lava creeper)
