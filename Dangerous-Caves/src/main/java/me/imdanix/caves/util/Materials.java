@@ -66,15 +66,20 @@ public final class Materials {
     }
 
     private static final Set<Material> CAVE = new Materials.SetBuilder(
-            Material.STONE, Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
+            Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK,
+            Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK
+            Material.DIRT, Material.GRAVEL,
+            Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE
     ).with(
-            "ANDESITE", "DIORITE", "GRANITE", "SOUL_SOIL", "NETHER_GOLD_ORE"
+            "ANDESITE", "DIORITE", "GRANITE",
+            "SOUL_SOIL", "BLACKSTONE", "BASALT",
+            "NETHER_GOLD_ORE", "GILDED_BLACKSTONE"
     ).with(
-            or("OAK_PLANKS", "WOOD"), or("END_STONE", "ENDER_STONE")
+            or("OAK_PLANKS", "WOOD"),
+            or("END_STONE", "ENDER_STONE"),
+            or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
     ).build();
 
     private static final Set<Material> AIR = new Materials.SetBuilder(
@@ -89,9 +94,9 @@ public final class Materials {
         return CAVE.contains(type);
     }
 
-    public static Set<Material> getSet(Collection<String> typeColl) {
+    public static Set<Material> getSet(Collection<String> types) {
         Set<Material> materials = new HashSet<>();
-        for(String typeStr : typeColl) {
+        for(String typeStr : types) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
             if(type != null) materials.add(type);
         }
@@ -125,8 +130,8 @@ public final class Materials {
         return item;
     }
 
-    public static Material or(String... typesStr) {
-        for(String typeStr : typesStr) {
+    public static Material or(String... types) {
+        for(String typeStr : types) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
             if(type != null) return type;
         }
