@@ -31,7 +31,7 @@ version: ${cfgVersion}
 integration:
   # For disabling some features in specific regions
   # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
-  # If you have several plugins, you can use multiple checks by separate modes by comma without spaces
+  # If you have several plugins, you can use multiple checks - separate modes by comma without spaces
   # mode: worldguard-flags,griefprevention
   mode: none
   # WorldGuard flags:
@@ -54,10 +54,10 @@ caverns:
 
   # Cave-Ins - blocks may fall down when mining
   ins:
-    # List of worlds where cave-in may appear
+    # List of worlds where cave-ins may appear
     worlds:
       - world
-    # Chance of cave-in while mining blocks
+    # Chance of cave-ins while mining blocks
     # In percents
     chance: 0.25
     # Cuboid-shaped cave-ins. Doesn't affect performance
@@ -261,7 +261,7 @@ mobs:
   y-max: 64
 
   # (Paper only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
-  use-prespawn: true
+  use-prespawn: false
 
   # Block renaming with name-tags
   restrict-rename: false
