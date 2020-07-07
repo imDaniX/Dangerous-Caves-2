@@ -30,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class Materials1_16 implements MaterialsProvider {
+public class v1_16Materials implements MaterialsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();

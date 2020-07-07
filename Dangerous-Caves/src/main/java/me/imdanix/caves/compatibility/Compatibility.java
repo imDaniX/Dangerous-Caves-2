@@ -40,15 +40,15 @@ public class Compatibility {
         if(version < 13) {
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
-            materials = new MaterialsLegacy();
+            materials = new LegacyMaterials();
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else if(version == 13) {
-            materials = new Materials1_13();
+            materials = new v1_13Materials();
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else {
-            materials = version > 15 ? new Materials1_16() : new Materials1_13();
+            materials = version > 15 ? new v1_16Materials() : new v1_13Materials();
             tags = new PersistentTags(plugin);
             messenger = new ModernMessenger();
         }

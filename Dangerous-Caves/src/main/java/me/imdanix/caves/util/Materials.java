@@ -72,19 +72,19 @@ public final class Materials {
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL,
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE
-    ).with(
+        ).with(
             "ANDESITE", "DIORITE", "GRANITE",
             "SOUL_SOIL", "BLACKSTONE", "BASALT",
             "NETHER_GOLD_ORE", "GILDED_BLACKSTONE"
-    ).with(
+        ).with(
             or("OAK_PLANKS", "WOOD"),
             or("END_STONE", "ENDER_STONE"),
             or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
-    ).build();
+        ).build();
 
     private static final Set<Material> AIR = new Materials.SetBuilder(
             "AIR", "CAVE_AIR", "VOID_AIR"
-    ).build();
+        ).build();
 
     public static boolean isAir(Material type) {
         return AIR.contains(type);
