@@ -26,8 +26,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +65,31 @@ public final class Materials {
         BOOTS = boots.toArray(new Material[0]);
     }
 
-    public static Set<Material> getEnumSet(Collection<String> typeColl) {
+    private static final Set<Material> CAVE = new Materials.SetBuilder(
+            Material.STONE, Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
+            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
+            Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
+            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.BEDROCK,
+            Material.SOUL_SAND, Material.NETHERRACK
+    ).with(
+            "ANDESITE", "DIORITE", "GRANITE", "SOUL_SOIL", "NETHER_GOLD_ORE"
+    ).with(
+            or("OAK_PLANKS", "WOOD"), or("END_STONE", "ENDER_STONE")
+    ).build();
+
+    private static final Set<Material> AIR = new Materials.SetBuilder(
+            "AIR", "CAVE_AIR", "VOID_AIR"
+    ).build();
+
+    public static boolean isAir(Material type) {
+        return AIR.contains(type);
+    }
+
+    public static boolean isCave(Material type) {
+        return CAVE.contains(type);
+    }
+
+    public static Set<Material> getSet(Collection<String> typeColl) {
         Set<Material> materials = new HashSet<>();
         for(String typeStr : typeColl) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
@@ -97,5 +123,48 @@ public final class Materials {
         meta.setColor(Color.fromRGB(r, g, b));
         item.setItemMeta(meta);
         return item;
+    }
+
+    public static Material or(String... typesStr) {
+        for(String typeStr : typesStr) {
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
+            if(type != null) return type;
+        }
+        return null;
+    }
+
+    public static class SetBuilder {
+        private final Set<Material> materials;
+
+        public SetBuilder() {
+            materials = new HashSet<>();
+        }
+
+        public SetBuilder(Material... types) {
+            materials = new HashSet<>();
+            with(types);
+        }
+
+        public SetBuilder(String... types) {
+            materials = new HashSet<>();
+            with(types);
+        }
+
+        public SetBuilder with(String... types) {
+            materials.addAll(Materials.getSet(Arrays.asList(types)));
+            return this;
+        }
+
+        public SetBuilder with(Material... types) {
+            for(Material type : types) {
+                if(type != null)
+                    materials.add(type);
+            }
+            return this;
+        }
+
+        public EnumSet<Material> build() {
+            return EnumSet.copyOf(materials);
+        }
     }
 }

@@ -18,12 +18,12 @@
 
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Location;
@@ -80,7 +80,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
                 entity.getEyeLocation().getBlock().setType(VMaterial.COBWEB.get());
 
                 Locations.loop(3, loc, l -> {
-                    if (Compatibility.isAir(l.getBlock().getType()) && Rnd.chance(cobwebChance) &&
+                    if (Materials.isAir(l.getBlock().getType()) && Rnd.chance(cobwebChance) &&
                             Regions.INSTANCE.check(CheckType.ENTITY, l)) {
                         l.getBlock().setType(VMaterial.COBWEB.get());
                     }}

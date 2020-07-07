@@ -123,7 +123,7 @@ public class CavesAging implements Tickable, Configurable {
                 skippedChunks.put(worldStr, worldBounds);
             }
 
-        replaceBlocks = Materials.getEnumSet(cfg.getStringList("replace-blocks"));
+        replaceBlocks = EnumSet.copyOf(Materials.getSet(cfg.getStringList("replace-blocks")));
         percentage = cfg.getDouble("percentage", 70) / 100;
 
         withReplace = cfg.getBoolean("age-types.replace", true);
@@ -193,7 +193,7 @@ public class CavesAging implements Tickable, Configurable {
         for(int x = 0; x < 16; x++) for(int z = 0; z < 16; z++) for(int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
-            if(Compatibility.isAir(type))
+            if(Materials.isAir(type))
                 continue;
 
             totalCount++;
@@ -226,7 +226,7 @@ public class CavesAging implements Tickable, Configurable {
                             break;
 
                         case 2:
-                            if(Compatibility.isAir(snapshot.getBlockType(x, y-1, z)) && Rnd.nextBoolean())
+                            if(Materials.isAir(snapshot.getBlockType(x, y-1, z)) && Rnd.nextBoolean())
                                 changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
                             break;
                     }
@@ -236,7 +236,7 @@ public class CavesAging implements Tickable, Configurable {
                     changes.add(new DelayedChange(x, y, z, ChangeType.VINE));
                 }
 
-                if(Compatibility.isAir(snapshot.getBlockType(x, y+1, z))){
+                if(Materials.isAir(snapshot.getBlockType(x, y+1, z))){
                     if(withMushrooms && Rnd.chance(0.111)) {
                         changes.add(new DelayedChange(x, y+1, z, Rnd.nextBoolean() ?
                                 ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
@@ -282,7 +282,7 @@ public class CavesAging implements Tickable, Configurable {
                     if(!replaceBlocks.contains(type)) return;
                     for(BlockFace face : Locations.HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
-                        if (Compatibility.isAir(relBlock.getType())) {
+                        if (Materials.isAir(relBlock.getType())) {
                             relBlock.setType(Material.VINE, false);
                             Compatibility.rotate(relBlock, face.getOppositeFace());
                         }
@@ -290,23 +290,23 @@ public class CavesAging implements Tickable, Configurable {
                     break;
 
                 case RED_MUSHROOM:
-                    if(!Compatibility.isAir(type) || !Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                    if(!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
                     block.setType(Material.RED_MUSHROOM, false);
                     break;
 
                 case BROWN_MUSHROOM:
-                    if(!Compatibility.isAir(type) || !Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                    if(!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
                     break;
 
                 case ROCK:
-                    if(!Compatibility.isAir(type) || !Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                    if(!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
                     block.setType(Material.STONE_BUTTON, false);
                     Compatibility.rotate(block, BlockFace.UP);
                     break;
 
                 case STALAGMITE:
-                    if(!Compatibility.isAir(type)) return;
+                    if(!Materials.isAir(type)) return;
                     block.setType(VMaterial.COBBLESTONE_WALL.get(), false);
                     break;
 

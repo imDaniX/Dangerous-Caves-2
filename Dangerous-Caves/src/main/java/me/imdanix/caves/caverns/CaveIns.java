@@ -18,11 +18,11 @@
 
 package me.imdanix.caves.caverns;
 
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.PseudoRandom;
 import me.imdanix.caves.util.random.Rnd;
@@ -97,7 +97,7 @@ public class CaveIns implements Listener, Configurable {
         Block initBlock = event.getBlock();
         World world = initBlock.getWorld();
         if(initBlock.getY() > yMax || !worlds.contains(world.getName()) ||
-                !Compatibility.isCave(initBlock.getType())) return;
+                !Materials.isCave(initBlock.getType())) return;
 
         Player player = event.getPlayer();
         if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
@@ -149,8 +149,8 @@ public class CaveIns implements Listener, Configurable {
             int heightMax = heightMap[x][z] - pseudoRandom.next();
             for(int y = 0; y <= heightMax; y++) {
                 Block block = world.getBlockAt(xRel, yInit + y, zRel);
-                if(!Compatibility.isCave(block.getType())) {
-                    if(Compatibility.isAir(block.getType())) continue;
+                if(!Materials.isCave(block.getType())) {
+                    if(Materials.isAir(block.getType())) continue;
                     break;
                 }
                 blocks.add(block);

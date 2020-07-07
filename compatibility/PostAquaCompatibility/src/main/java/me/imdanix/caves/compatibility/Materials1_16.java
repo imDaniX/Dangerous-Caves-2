@@ -24,47 +24,18 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.FaceAttachable;
 import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
 import java.util.UUID;
 
-public class FlattenedMaterials implements MaterialsProvider {
-
-    private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
-            Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE,
-            Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
-            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
-            Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.OAK_PLANKS, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK,
-            Material.END_STONE
-    ));
-
-    private final Set<Material> AIR = Collections.unmodifiableSet(EnumSet.of(
-            Material.AIR, Material.CAVE_AIR, Material.VOID_AIR
-    ));
-
-    @Override
-    public boolean isAir(Material type) {
-        return AIR.contains(type);
-    }
-
-    @Override
-    public boolean isCave(Material type) {
-        return CAVE.contains(type);
-    }
-
-    @SuppressWarnings("deprecation")
+public class Materials1_16 implements MaterialsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
-        if(data instanceof Switch) {
-            ((Switch) data).setFace(Switch.Face.FLOOR);
+        if(data instanceof FaceAttachable) {
+            ((FaceAttachable) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
         } else if (data instanceof Directional) {
             ((Directional) data).setFacing(face);
         } else if(data instanceof MultipleFacing) {
@@ -76,9 +47,12 @@ public class FlattenedMaterials implements MaterialsProvider {
     @SuppressWarnings("deprecation")
     @Override
     public ItemStack getHeadFromValue(String value) {
+        UUID id = UUID.nameUUIDFromBytes(value.getBytes());
+        int less = (int) id.getLeastSignificantBits();
+        int most = (int) id.getMostSignificantBits();
         return Bukkit.getUnsafe().modifyItemStack(
                 new ItemStack(Material.PLAYER_HEAD),
-                "{SkullOwner:{Id:\"" + UUID.nameUUIDFromBytes(value.getBytes()) + "\"," +
+                "{SkullOwner:{Id:[I;" + less*most + "," + (less >> 17) + "," + most/less + "," + (most >> 17) + "]," +
                         "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
     }

@@ -28,31 +28,9 @@ import org.bukkit.material.Directional;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Vine;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
 import java.util.UUID;
 
-public class LegacyMaterials implements MaterialsProvider {
-
-    private static final Set<Material> CAVE = Collections.unmodifiableSet(EnumSet.of(
-            Material.STONE,
-            Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
-            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
-            Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL, Material.OBSIDIAN, Material.WOOD, Material.BEDROCK,
-            Material.SOUL_SAND, Material.NETHERRACK,
-            Material.ENDER_STONE
-    ));
-
-    public boolean isAir(Material type) {
-        return type == Material.AIR;
-    }
-
-    public boolean isCave(Material type) {
-        return CAVE.contains(type);
-    }
-
+public class MaterialsLegacy implements MaterialsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockState state = block.getState();

@@ -19,7 +19,6 @@
 package me.imdanix.caves.compatibility;
 
 import io.papermc.lib.PaperLib;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
@@ -41,15 +40,15 @@ public class Compatibility {
         if(version < 13) {
             if(version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
-            materials = new LegacyMaterials();
+            materials = new MaterialsLegacy();
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else if(version == 13) {
-            materials = new FlattenedMaterials();
+            materials = new Materials1_13();
             tags = new ScoreboardTags();
             messenger = new LegacyMessenger(isBukkit);
         } else {
-            materials = version > 15 ? new NetherMaterials() : new FlattenedMaterials();
+            materials = version > 15 ? new Materials1_16() : new Materials1_13();
             tags = new PersistentTags(plugin);
             messenger = new ModernMessenger();
         }
@@ -58,14 +57,6 @@ public class Compatibility {
     public static void cacheTag(String tag) {
         if(tags instanceof ScoreboardTags)
             ((ScoreboardTags) tags).cacheTag(tag);
-    }
-
-    public static boolean isAir(Material type) {
-        return materials.isAir(type);
-    }
-
-    public static boolean isCave(Material type) {
-        return materials.isCave(type);
     }
 
     public static ItemStack getHeadFromValue(String value) {

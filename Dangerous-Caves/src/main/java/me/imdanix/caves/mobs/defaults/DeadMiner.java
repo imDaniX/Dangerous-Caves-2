@@ -24,6 +24,7 @@ import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import org.bukkit.Location;
@@ -125,7 +126,7 @@ public class DeadMiner extends TickingMob implements Listener {
                 (withoutTarget && ((Monster)entity).getTarget() != null) ||
                 !Regions.INSTANCE.check(CheckType.ENTITY, loc))
             return;
-        if(Compatibility.isAir(block.getType()) && Compatibility.isCave(block.getRelative(BlockFace.DOWN).getType())) {
+        if(Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
             if(cooldownEffect != null)
