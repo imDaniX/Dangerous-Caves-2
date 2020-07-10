@@ -18,13 +18,11 @@ public class WeightedPool<T> {
     }
 
     public WeightedPool(Collection<T> collection, ToIntFunction<T> funct) {
-        Objects.requireNonNull(collection);
-        Objects.requireNonNull(funct);
-        if (collection.isEmpty())
-            throw new IllegalArgumentException("Probability vector must be nonempty.");
-
         elements = new ArrayList<>();
-        collection.forEach(t -> add(t, funct.applyAsInt(t)));
+        if(!collection.isEmpty()) {
+            Objects.requireNonNull(funct);
+            collection.forEach(t -> add(t, funct.applyAsInt(t)));
+        }
 
     }
 

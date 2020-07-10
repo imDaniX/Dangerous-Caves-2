@@ -45,6 +45,8 @@ import java.util.Set;
 public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
     private final Configuration cfg;
 
+    private boolean disabled;
+
     private double chance;
     private int maxTries;
 
@@ -66,10 +68,13 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
+        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && maxTries > 0 && !worlds.isEmpty());
+        if(!disabled) recalculate();
+
         for(World world : Bukkit.getWorlds()) {
             List<BlockPopulator> populators = world.getPopulators();
             populators.remove(this);
-            if(chance > 0 && worlds.contains(world.getName())) populators.add(this);
+            if(!disabled && worlds.contains(world.getName())) populators.add(this);
         }
         List<Material> items = new ArrayList<>();
 
@@ -79,18 +84,17 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
             if(material != null) items.add(material);
         }
         AbstractStructure.setItems(items);
-        if(chance > 0) recalculate();
     }
 
 
     /**
      * Recalculate structure groups spawn chances
      */
-    public void recalculate() {
+    private void recalculate() {
         Set<StructureGroup> structuresSet = new HashSet<>();
         structures.values().forEach(g -> {if(g.getWeight() > 0) structuresSet.add(g);});
         if(structuresSet.isEmpty()) {
-            chance = 0;
+            disabled = true;
         } else {
             structuresPool = new WeightedPool<>(structuresSet, StructureGroup::getWeight);
         }

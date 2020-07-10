@@ -51,6 +51,8 @@ public class CaveIns implements Listener, Configurable {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 65, 3);
     private static final PseudoRandom PSEUDO_RANDOM = new PseudoRandom(new int[]{1, 0, -1, 0, 0, 1, 0, 1, 2, 0, 2, -1, 2, -1});
 
+    private boolean disabled;
+
     private final Set<String> worlds;
     private double chance;
     private int yMax;
@@ -74,7 +76,7 @@ public class CaveIns implements Listener, Configurable {
     public void reload(ConfigurationSection cfg) {
         chance = cfg.getDouble("chance", 0.25) / 100;
         yMax = cfg.getInt("y-max", 25);
-        radius = cfg.getInt("radius", 6);
+        radius = Math.max(cfg.getInt("radius", 6), 1);
         cuboid = cfg.getBoolean("cuboid", false);
         slowFall = cfg.getBoolean("slow-fall", false);
         rabbitFoot = cfg.getBoolean("rabbit-foot", true);
@@ -88,11 +90,13 @@ public class CaveIns implements Listener, Configurable {
         pseudoRandom = cuboid ? PseudoRandom.ZERO_PSEUDO_RANDOM : PSEUDO_RANDOM;
         distance = radius*2 + 1;
         heightMap = calcMap();
+
+        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && !worlds.isEmpty());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        if(chance <= 0) return;
+        if(disabled) return;
 
         Block initBlock = event.getBlock();
         World world = initBlock.getWorld();

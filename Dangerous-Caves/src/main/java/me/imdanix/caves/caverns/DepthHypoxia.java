@@ -50,6 +50,8 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     private final Set<String> worlds;
 
+    private boolean disabled;
+
     private List<String> messages;
     private boolean actionbar;
     private double chance;
@@ -85,12 +87,15 @@ public class DepthHypoxia implements Tickable, Configurable {
             Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Depth Hypoxia formula " +
                     "is invalid! Please fix the issue. \"depth*inventory\" formula is used instead.");
         }
+
+        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && minChance > 0 &&
+                !worlds.isEmpty());
     }
 
     @Override
     public void tick() {
-        // TODO Just make one boolean on reload
-        if(chance <= 0 || yMax <= 0 || maxChance <= 0) return;
+        if(disabled) return;
+
         for(World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {

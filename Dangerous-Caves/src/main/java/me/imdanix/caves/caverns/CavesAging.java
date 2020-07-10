@@ -64,6 +64,8 @@ public class CavesAging implements Tickable, Configurable {
     private final Map<String, Set<Bound>> skippedChunks;
     private final Set<String> worlds;
 
+    private boolean disabled;
+
     private Set<Material> replaceBlocks;
     private int lightLevel;
     private int radius;
@@ -123,18 +125,23 @@ public class CavesAging implements Tickable, Configurable {
                 skippedChunks.put(worldStr, worldBounds);
             }
 
-        replaceBlocks = EnumSet.copyOf(Materials.getSet(cfg.getStringList("replace-blocks")));
+        replaceBlocks = Materials.getSet(cfg.getStringList("replace-blocks"));
+        replaceBlocks = replaceBlocks.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(replaceBlocks);
         percentage = cfg.getDouble("percentage", 70) / 100;
 
         withReplace = cfg.getBoolean("age-types.replace", true);
         withRocks = cfg.getBoolean("age-types.rocks", true);
         withMushrooms = cfg.getBoolean("age-types.mushrooms", true);
         withVines = cfg.getBoolean("age-types.vines", true);
+
+        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && agingChance > 0 &&
+                percentage > 0 && lightLevel < 17 && !replaceBlocks.isEmpty() && !worlds.isEmpty() &&
+                (withVines || withMushrooms || withRocks || withReplace));
     }
 
     @Override
     public void tick() {
-        if(chance <= 0) return;
+        if(disabled) return;
 
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;

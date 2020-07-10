@@ -65,6 +65,8 @@ import java.util.UUID;
 public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Configurable {
     private static final Multimap<CustomMob.Ticking, UUID> tickingEntities = HashMultimap.create();
 
+    private boolean disabled;
+
     private final MetadataValue MARKER;
 
     private final Plugin plugin;
@@ -100,6 +102,16 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
 
+        worlds.clear();
+        Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+        replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
+
+        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && yMin > 0 && yMax > 0 &&
+                !worlds.isEmpty() && !replaceTypes.isEmpty());
+        recalculate();
+
+        metadata = cfg.getBoolean("add-metadata", false);
+
         if(cfg.getBoolean("use-prespawn", true) && PaperLib.isPaper()) {
             if(spawnListener == null) {
                 spawnListener = new PaperSpawnListener();
@@ -119,22 +131,16 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
             }
         }
-
-        worlds.clear();
-        Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
-        replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
-        metadata = cfg.getBoolean("add-metadata", false);
-        if(chance > 0) recalculate();
     }
 
     /**
      * Recalculate mobs spawn chances
      */
-    public void recalculate() {
+    private void recalculate() {
         Set<CustomMob> mobsSet = new HashSet<>();
         mobs.values().forEach(m -> {if(m.getWeight() > 0) mobsSet.add(m);});
         if(mobsSet.isEmpty())
-            chance = 0;
+            disabled = true;
         else
             mobsPool = new WeightedPool<>(mobsSet, CustomMob::getWeight);
     }
@@ -238,7 +244,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
-        if(chance <= 0 || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
+        if(disabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 !replaceTypes.contains(type) ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||

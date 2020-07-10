@@ -6,7 +6,6 @@ version: ${cfgVersion}
 
 # NOTE: Chances
 # All the chances are in percents
-# Setting chance to 0 means that you want to disable the feature
 
 # NOTE: Worlds
 # World names are case-sensitive
@@ -54,6 +53,7 @@ caverns:
 
   # Cave-Ins - blocks may fall down when mining
   ins:
+    enabled: true
     # List of worlds where cave-ins may appear
     worlds:
       - world
@@ -77,6 +77,7 @@ caverns:
 
   # Ambient Sounds - special sound may be played underground
   ambient:
+    enabled: true
     # List of worlds where ambient sounds can be played
     worlds:
       - world
@@ -110,6 +111,7 @@ caverns:
 
   # Depth Hypoxia - will cause player to move and dig slower
   hypoxia:
+    enabled: true
     # List of worlds where players can sense hypoxia
     worlds:
       - world
@@ -137,6 +139,7 @@ caverns:
 
   # Caves Aging - over time caves will get some vines and rocks
   aging:
+    enabled: true
     # List of worlds where aging will be processed
     worlds:
       - world
@@ -189,6 +192,7 @@ caverns:
 # Generator-related things
 #
 generator:
+  enabled: true
 
   # Force Dangerous Caves' generator to wait for other plugins (other generators)
   wait-other: false
@@ -248,6 +252,7 @@ generator:
 # Mob-related things
 #
 mobs:
+  enabled: true
 
   # Chance of spawning custom mob instead of vanilla one
   try-chance: 25

@@ -42,6 +42,8 @@ import java.util.Locale;
 import java.util.Set;
 
 public class AmbientSounds implements Tickable, Configurable {
+    private boolean disabled;
+
     private final List<WrappedSound> sounds;
     private final Set<String> worlds;
     private double chance;
@@ -71,11 +73,14 @@ public class AmbientSounds implements Tickable, Configurable {
         if(sounds.isEmpty()) chance = 0;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
+
+        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && !worlds.isEmpty());
     }
 
     @Override
     public void tick() {
-        if(chance <= 0) return;
+        if(disabled) return;
+
         for(World world : Bukkit.getWorlds()) {
             if(!worlds.contains(world.getName())) continue;
             for(Player player : world.getPlayers()) {
