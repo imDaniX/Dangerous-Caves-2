@@ -18,7 +18,7 @@
 
 package me.imdanix.caves;
 
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.mobs.defaults.AlphaSpider;
 import me.imdanix.caves.mobs.defaults.CaveGolem;
@@ -47,9 +47,9 @@ public enum DefaultMobs {
     MIMIC(new Mimic()),
     CAVE_GOLEM(new CaveGolem());
 
-    private final AbstractMob custom;
+    private final CustomMob custom;
 
-    DefaultMobs(AbstractMob mob) {
+    DefaultMobs(CustomMob mob) {
         this.custom = mob;
     }
 
