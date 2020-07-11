@@ -16,10 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions;
+package me.imdanix.caves.regions.worldguard;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.RegionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

@@ -16,8 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions;
+package me.imdanix.caves.regions.griefprevention;
 
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.RegionManager;
 import me.ryanhamshire.GPFlags.Flag;
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;

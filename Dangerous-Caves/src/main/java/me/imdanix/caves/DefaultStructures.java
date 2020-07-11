@@ -18,8 +18,8 @@
 
 package me.imdanix.caves;
 
-import me.imdanix.caves.generator.AbstractStructure;
 import me.imdanix.caves.generator.CaveGenerator;
+import me.imdanix.caves.generator.StructureGroup;
 import me.imdanix.caves.generator.defaults.BouldersGroup;
 import me.imdanix.caves.generator.defaults.BuildingsGroup;
 import me.imdanix.caves.generator.defaults.PillarsGroup;
@@ -31,9 +31,9 @@ public enum DefaultStructures {
     PILLARS(new PillarsGroup()),
     TRAPS(new TrapsGroup());
 
-    private final AbstractStructure group;
+    private final StructureGroup group;
 
-    DefaultStructures(AbstractStructure group) {
+    DefaultStructures(StructureGroup group) {
         this.group = group;
     }
 

@@ -29,21 +29,13 @@ import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
-import me.imdanix.caves.util.PlayerAttackedEvent;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-public class DangerousCaves extends JavaPlugin implements Listener {
+public class DangerousCaves extends JavaPlugin {
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
@@ -73,7 +65,6 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         CavesAging cavesAging = new CavesAging(this);
         DepthHypoxia temperature = new DepthHypoxia();
 
-        Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(mobsManager, this);
         Bukkit.getPluginManager().registerEvents(caveIns, this);
 
@@ -97,16 +88,6 @@ public class DangerousCaves extends JavaPlugin implements Listener {
         cfg.checkVersion(true);
 
         new MetricsLite(this, 6824);
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onEntityAttack(EntityDamageByEntityEvent event) {
-        if(event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
-            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager(), event.getDamage());
-            Bukkit.getPluginManager().callEvent(pEvent);
-            event.setDamage(pEvent.getDamage());
-            if(pEvent.isCancelled()) event.setCancelled(true);
-        }
     }
 
     public MobsManager getMobs() {

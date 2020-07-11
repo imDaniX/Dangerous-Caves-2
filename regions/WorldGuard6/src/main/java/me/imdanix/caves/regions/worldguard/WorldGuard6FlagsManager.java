@@ -16,25 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions;
+package me.imdanix.caves.regions.worldguard;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.RegionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public class WorldGuard7FlagsManager implements RegionManager {
+public class WorldGuard6FlagsManager implements RegionManager {
     private static final StateFlag ENTITY_FLAG = new StateFlag("dc-entity-grief", true);
     private static final StateFlag BLOCK_FLAG = new StateFlag("dc-block-change", true);
     private static final StateFlag EFFECT_FLAG = new StateFlag("dc-player-effect", true);
 
-    public WorldGuard7FlagsManager() {
+    private final WorldGuardPlugin worldGuard;
+
+    public WorldGuard6FlagsManager() {
+        worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
+        FlagRegistry registry = worldGuard.getFlagRegistry();
         try {
-            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             registry.register(ENTITY_FLAG);
             registry.register(BLOCK_FLAG);
             registry.register(EFFECT_FLAG);
@@ -43,7 +47,7 @@ public class WorldGuard7FlagsManager implements RegionManager {
 
     @Override
     public boolean test(CheckType type, Location location) {
-        ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
+        ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
         switch (type) {
             case ENTITY:
                 return set.testState(null, ENTITY_FLAG);
@@ -53,9 +57,5 @@ public class WorldGuard7FlagsManager implements RegionManager {
                 return set.testState(null, EFFECT_FLAG);
         }
         return true;
-    }
-
-    private RegionContainer getContainer() {
-        return WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 }

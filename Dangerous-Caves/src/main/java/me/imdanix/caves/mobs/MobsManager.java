@@ -30,6 +30,7 @@ import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
 import me.imdanix.caves.util.random.WeightedPool;
@@ -40,11 +41,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -229,6 +232,16 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 }
             }
         }, 1);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEntityAttack(EntityDamageByEntityEvent event) {
+        if(event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
+            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager(), event.getDamage());
+            Bukkit.getPluginManager().callEvent(pEvent);
+            event.setDamage(pEvent.getDamage());
+            if(pEvent.isCancelled()) event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
