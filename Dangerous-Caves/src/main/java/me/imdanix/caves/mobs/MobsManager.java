@@ -106,7 +106,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
 
-        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && yMin > 0 && yMax > 0 &&
+        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && yMax > 0 && yMax >= yMin &&
                 !worlds.isEmpty() && !replaceTypes.isEmpty());
         recalculate();
 
