@@ -66,7 +66,7 @@ public enum Regions implements Manager<RegionManager>, Configurable {
 
         boolean invert = cfg.getBoolean("invert", false);
 
-        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s?");
+        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
         if(modes.length == 0) {
             current.add(NONE);
         } else for(String mode : modes) {

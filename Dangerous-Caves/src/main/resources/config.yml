@@ -30,7 +30,7 @@ version: ${cfgVersion}
 integration:
   # For disabling some features in specific regions
   # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
-  # If you have several plugins, you can use multiple checks - separate modes by comma without spaces
+  # If you have several plugins, you can use multiple checks - just separate modes with comma
   # mode: worldguard-flags,griefprevention
   mode: none
   # WorldGuard flags:
