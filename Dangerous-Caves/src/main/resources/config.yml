@@ -28,23 +28,25 @@ version: ${cfgVersion}
 # Some plugin integrations
 #
 integration:
-  # For disabling some features in specific regions
-  # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
-  # If you have several plugins, you can use multiple checks - just separate modes with comma
-  # mode: worldguard-flags,griefprevention
-  mode: none
-  # WorldGuard flags:
-  # dc-entity-grief (magma monster, lava creeper)
-  # dc-block-change (cave-ins, caves aging)
-  # dc-player-effect (ambient sounds, hypoxia)
-  # `griefprevention-flags` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention`
-  # GriefPreventionFlags flags:
-  # DCNoEntityGrief (magma monster, lava creeper)
-  # DCNoBlockChange (cave-ins, caves aging)
-  # DCNoPlayerEffect (ambient sounds, hypoxia)
 
-  # Invert checks by default
-  invert: false
+  # For disabling features in specific regions
+  protection:
+    # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
+    # If you have several plugins, you can use multiple checks - just separate modes with comma
+    # mode: worldguard-flags,griefprevention
+    mode: none
+    # WorldGuard flags:
+    # dc-entity-grief (magma monster, lava creeper)
+    # dc-block-change (cave-ins, caves aging)
+    # dc-player-effect (ambient sounds, hypoxia)
+    # `griefprevention-flags` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention`
+    # GriefPreventionFlags flags:
+    # DCNoEntityGrief (magma monster, lava creeper)
+    # DCNoBlockChange (cave-ins, caves aging)
+    # DCNoPlayerEffect (ambient sounds, hypoxia)
+
+    # Invert checks by default
+    invert: false
 
 #
 # Cave-related things

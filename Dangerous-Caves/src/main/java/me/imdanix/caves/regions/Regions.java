@@ -81,7 +81,7 @@ public enum Regions implements Manager<RegionManager>, Configurable {
 
     @Override
     public String getPath() {
-        return "integration";
+        return "integration.protection";
     }
 
     public void onLoad() {
