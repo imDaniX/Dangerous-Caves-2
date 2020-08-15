@@ -97,6 +97,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         this.dynamics = dynamics;
         mobs = new HashMap<>();
         worlds = new HashSet<>();
+        mobsPool = new WeightedPool<>();
         if(lockListener = (PaperLib.getMinecraftVersion() < 16 || !PaperLib.isPaper())) {
             spawnListener = new SpigotSpawnListener();
             Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
