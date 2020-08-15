@@ -87,6 +87,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean blockRename;
     private boolean metadata;
 
+    private boolean lockListener;
     private Listener spawnListener;
 
     public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
@@ -96,6 +97,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         this.dynamics = dynamics;
         mobs = new HashMap<>();
         worlds = new HashSet<>();
+        if(lockListener = (PaperLib.getMinecraftVersion() < 16 || !PaperLib.isPaper())) {
+            spawnListener = new SpigotSpawnListener();
+            Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+        }
     }
 
     @Override
@@ -114,24 +119,25 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         recalculate();
 
         metadata = cfg.getBoolean("add-metadata", false);
-
-        if(cfg.getBoolean("use-prespawn", true) && PaperLib.isPaper()) {
-            if(spawnListener == null) {
-                spawnListener = new PaperSpawnListener();
-                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-            } else if(!(spawnListener instanceof PaperSpawnListener)) {
-                HandlerList.unregisterAll(spawnListener);
-                spawnListener = new PaperSpawnListener();
-                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-            }
-        } else {
-            if(spawnListener == null) {
-                spawnListener = new SpigotSpawnListener();
-                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-            } else if(!(spawnListener instanceof SpigotSpawnListener)) {
-                HandlerList.unregisterAll(spawnListener);
-                spawnListener = new SpigotSpawnListener();
-                Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+        if(!lockListener) {
+            if(cfg.getBoolean("use-prespawn", true)) {
+                if(spawnListener == null) {
+                    spawnListener = new PaperSpawnListener();
+                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+                } else if(!(spawnListener instanceof PaperSpawnListener)) {
+                    HandlerList.unregisterAll(spawnListener);
+                    spawnListener = new PaperSpawnListener();
+                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+                }
+            } else {
+                if(spawnListener == null) {
+                    spawnListener = new SpigotSpawnListener();
+                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+                } else if(!(spawnListener instanceof SpigotSpawnListener)) {
+                    HandlerList.unregisterAll(spawnListener);
+                    spawnListener = new SpigotSpawnListener();
+                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
+                }
             }
         }
     }
