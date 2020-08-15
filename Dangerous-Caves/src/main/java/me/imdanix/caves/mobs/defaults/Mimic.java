@@ -145,6 +145,7 @@ public class Mimic extends TickingMob implements Listener {
         String tag = Compatibility.getTag(block);
         if(tag == null || !tag.startsWith("mimic")) return false;
         if(block.getRelative(BlockFace.UP).getType().isSolid()) return true;
+        block.setType(Material.AIR);
         double health = Utils.getDouble(tag.substring(0, 6), this.health);
         if(health <= 0) health = 1;
         Location loc = block.getLocation();
@@ -153,7 +154,6 @@ public class Mimic extends TickingMob implements Listener {
         Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
         player.addPotionEffect(BLINDNESS);
         ((Monster)entity).setTarget(player);
-        block.setType(Material.AIR);
         return true;
     }
 
