@@ -101,7 +101,8 @@ public class DepthHypoxia implements Tickable, Configurable {
             for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
                 if(!Locations.isCave(loc) || loc.getY() > yMax) continue;
-                if(!Rnd.chance(chance) || !checkChance(player) || !Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
+                if(!Rnd.chance(chance) || !Rnd.chance(getChance(player))) continue;
+                if(!Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
                 if(messages.isEmpty()) continue;
@@ -115,7 +116,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         }
     }
 
-    private boolean checkChance(Player player) {
+    public double getChance(Player player) {
         double depthChance = (yMax - player.getLocation().getY()) / yMax;
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();
@@ -126,7 +127,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         weightChance /= contents.length;
         formula.setVariable("depth", depthChance);
         formula.setVariable("inventory", weightChance);
-        return Rnd.chance(Math.max(minChance, Math.min(maxChance, formula.eval())));
+        return Math.max(minChance, Math.min(maxChance, formula.eval()));
     }
 
     @Override

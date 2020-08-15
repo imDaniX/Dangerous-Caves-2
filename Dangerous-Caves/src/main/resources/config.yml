@@ -52,6 +52,16 @@ integration:
     # Invert checks by default
     invert: false
 
+  # For displaying some data from the plugin
+  placeholders:
+    # %dangerouscaves_hypoxia_chance%
+    hypoxia-chance:
+      enabled: false
+      # Cache player chances instead of calculating it every time placeholder is used (recommended)
+      cache: true
+      # Delay between cache processes. In ticks (1 tick - 50 milliseconds)
+      cache-delay: 100
+
 #
 # Cave-related things
 #
