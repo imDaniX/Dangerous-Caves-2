@@ -50,11 +50,11 @@ public class WorldGuard6FlagsManager implements RegionManager {
         ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
         switch (type) {
             case ENTITY:
-                return set.testState(null, ENTITY_FLAG);
+                return !set.testState(null, ENTITY_FLAG);
             case BLOCK:
-                return set.testState(null, BLOCK_FLAG);
+                return !set.testState(null, BLOCK_FLAG);
             case EFFECT:
-                return set.testState(null, EFFECT_FLAG);
+                return !set.testState(null, EFFECT_FLAG);
         }
         return true;
     }

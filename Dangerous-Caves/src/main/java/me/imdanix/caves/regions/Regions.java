@@ -115,7 +115,8 @@ public enum Regions implements Manager<RegionManager>, Configurable {
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
-            managers.put("lands", new LandsManager());
+            managers.put("lands", new LandsManager(true));
+            managers.put("lands-effectless", new LandsManager(false));
         }
 
         managers.values().forEach(RegionManager::onEnable);

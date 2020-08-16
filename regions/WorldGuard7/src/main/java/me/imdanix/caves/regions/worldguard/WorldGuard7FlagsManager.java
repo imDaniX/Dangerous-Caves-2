@@ -48,11 +48,11 @@ public class WorldGuard7FlagsManager implements RegionManager {
         ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
         switch (type) {
             case ENTITY:
-                return set.testState(null, ENTITY_FLAG);
+                return !set.testState(null, ENTITY_FLAG);
             case BLOCK:
-                return set.testState(null, BLOCK_FLAG);
+                return !set.testState(null, BLOCK_FLAG);
             case EFFECT:
-                return set.testState(null, EFFECT_FLAG);
+                return !set.testState(null, EFFECT_FLAG);
         }
         return true;
     }

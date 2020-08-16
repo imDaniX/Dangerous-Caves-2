@@ -9,8 +9,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class LandsManager implements RegionManager {
-
     private LandsIntegration landsIntegration;
+    private final boolean effect;
+
+    public LandsManager(boolean effect) {
+        this.effect = effect;
+    }
 
     @Override
     public void onEnable() {
@@ -19,7 +23,7 @@ public class LandsManager implements RegionManager {
 
     @Override
     public String getName() {
-        return "lands";
+        return effect ? "lands" : "lands-effectless";
     }
 
     @Override
@@ -38,7 +42,7 @@ public class LandsManager implements RegionManager {
                 return area.hasLandSetting(LandSetting.LEAF_DECAY);
             }
             case EFFECT: {
-                return true;
+                return effect;
             }
             default: {
                 return false;

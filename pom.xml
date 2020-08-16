@@ -33,10 +33,10 @@
         <module>regions/WorldGuard6</module>
         <module>regions/WorldGuard7</module>
         <module>regions/GriefPrevention</module>
+        <module>regions/Lands</module>
     <!--<module>regions/Residence</module>-->
         <module>Dangerous-Caves</module>
         <module>build</module>
-        <module>regions/Lands</module>
     </modules>
     <packaging>pom</packaging>
 

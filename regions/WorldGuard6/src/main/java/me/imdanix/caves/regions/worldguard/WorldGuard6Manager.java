@@ -31,9 +31,10 @@ public class WorldGuard6Manager implements RegionManager {
     public WorldGuard6Manager() {
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
     }
+
     @Override
     public boolean test(CheckType checkType, Location location) {
         ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
-        return set.size() < 2;
+        return set.size() == 0;
     }
 }
