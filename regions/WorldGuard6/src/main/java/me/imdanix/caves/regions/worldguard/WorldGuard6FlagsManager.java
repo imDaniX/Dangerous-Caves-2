@@ -46,6 +46,11 @@ public class WorldGuard6FlagsManager implements RegionManager {
     }
 
     @Override
+    public String getName() {
+        return "worldguard-flags";
+    }
+
+    @Override
     public boolean test(CheckType type, Location location) {
         ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
         switch (type) {

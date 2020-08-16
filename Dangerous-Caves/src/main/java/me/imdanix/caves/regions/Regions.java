@@ -98,25 +98,25 @@ public enum Regions implements Manager<RegionManager>, Configurable {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(wg != null) {
             if(wg.getDescription().getVersion().startsWith("6")) {
-                managers.put("worldguard-flags", new WorldGuard6FlagsManager());
-                managers.put("worldguard", new WorldGuard6Manager());
+                register(new WorldGuard6FlagsManager());
+                register(new WorldGuard6Manager());
             } else {
-                managers.put("worldguard-flags", new WorldGuard7FlagsManager());
-                managers.put("worldguard", new WorldGuard7Manager());
+                register(new WorldGuard7FlagsManager());
+                register(new WorldGuard7Manager());
             }
         }
     }
 
     public void onEnable() {
         if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            managers.put("griefprevention", new GriefPreventionManager());
+            register(new GriefPreventionManager());
             if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
-                managers.put("griefprevention-flags", new GriefPreventionFlagsManager());
+                register( new GriefPreventionFlagsManager());
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
-            managers.put("lands", new LandsManager(true));
-            managers.put("lands-effectless", new LandsManager(false));
+            register(new LandsManager(true));
+            register(new LandsManager(false));
         }
 
         managers.values().forEach(RegionManager::onEnable);

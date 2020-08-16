@@ -44,6 +44,11 @@ public class WorldGuard7FlagsManager implements RegionManager {
     }
 
     @Override
+    public String getName() {
+        return "worldguard-flags";
+    }
+
+    @Override
     public boolean test(CheckType type, Location location) {
         ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
         switch (type) {

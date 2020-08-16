@@ -44,6 +44,11 @@ public class GriefPreventionFlagsManager implements RegionManager {
     }
 
     @Override
+    public String getName() {
+        return "griefprevention-flags";
+    }
+
+    @Override
     public boolean test(CheckType checkType, Location location) {
         Flag flag;
         switch (checkType) {

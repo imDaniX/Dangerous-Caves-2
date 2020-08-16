@@ -33,6 +33,11 @@ public class WorldGuard7Manager implements RegionManager {
         return set.size() == 0;
     }
 
+    @Override
+    public String getName() {
+        return "worldguard";
+    }
+
     private RegionContainer getContainer() {
         return WorldGuard.getInstance().getPlatform().getRegionContainer();
     }

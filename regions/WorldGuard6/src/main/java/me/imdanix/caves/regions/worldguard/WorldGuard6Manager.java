@@ -33,6 +33,11 @@ public class WorldGuard6Manager implements RegionManager {
     }
 
     @Override
+    public String getName() {
+        return "worldguard";
+    }
+
+    @Override
     public boolean test(CheckType checkType, Location location) {
         ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
         return set.size() == 0;
