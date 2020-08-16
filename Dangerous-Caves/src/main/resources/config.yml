@@ -31,7 +31,7 @@ integration:
 
   # For disabling features in specific regions
   protection:
-    # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, none
+    # Available options: worldguard, worldguard-flags, griefprevention, griefprevention-flags, lands, lands-effectless none
     # If you have several plugins, you can use multiple checks - just separate modes with comma
     # mode: worldguard-flags,griefprevention
     mode: none
@@ -44,6 +44,10 @@ integration:
     # DCNoEntityGrief (magma monster, lava creeper)
     # DCNoBlockChange (cave-ins, caves aging)
     # DCNoPlayerEffect (ambient sounds, hypoxia)
+    # Lands settings:
+    # ENTITY_GRIEFING (magma monster, lava creeper)
+    # LEAF_DECAY (cave-ins, caves aging)
+    # `lands-effectless` (ambient sounds, hypoxia)
 
     # Invert checks by default
     invert: false
