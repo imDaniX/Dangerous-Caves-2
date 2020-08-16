@@ -56,6 +56,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     public CaveGenerator(Configuration cfg) {
         this.cfg = cfg;
         structures = new HashMap<>();
+        this.structuresPool = new WeightedPool<>();
     }
 
     @Override

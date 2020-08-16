@@ -22,6 +22,7 @@ import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionFlagsManager;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionManager;
+import me.imdanix.caves.regions.lands.LandsManager;
 import me.imdanix.caves.regions.worldguard.WorldGuard6FlagsManager;
 import me.imdanix.caves.regions.worldguard.WorldGuard6Manager;
 import me.imdanix.caves.regions.worldguard.WorldGuard7FlagsManager;
@@ -111,6 +112,10 @@ public enum Regions implements Manager<RegionManager>, Configurable {
             managers.put("griefprevention", new GriefPreventionManager());
             if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
                 managers.put("griefprevention-flags", new GriefPreventionFlagsManager());
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
+            managers.put("lands", new LandsManager());
         }
 
         managers.values().forEach(RegionManager::onEnable);
