@@ -96,6 +96,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         this.dynamics = dynamics;
         mobs = new HashMap<>();
         worlds = new HashSet<>();
+        this.mobsPool = new WeightedPool<>();
     }
 
     @Override
