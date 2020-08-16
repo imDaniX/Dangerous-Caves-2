@@ -16,30 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions.worldguard;
+package me.imdanix.caves.regions.griefprevention;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import me.imdanix.caves.regions.CheckType;
-import me.imdanix.caves.regions.RegionManager;
-import org.bukkit.Bukkit;
+import me.imdanix.caves.regions.RegionProtector;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Location;
 
-public class WorldGuard6Manager implements RegionManager {
-    private final WorldGuardPlugin worldGuard;
-
-    public WorldGuard6Manager() {
-        worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-    }
+public class GriefPreventionProtector implements RegionProtector {
 
     @Override
     public String getName() {
-        return "worldguard";
+        return "griefprevention";
     }
 
     @Override
     public boolean test(CheckType checkType, Location location) {
-        ApplicableRegionSet set = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
-        return set.size() == 0;
+        return GriefPrevention.instance.dataStore.getClaimAt(location, false, null) == null;
     }
 }

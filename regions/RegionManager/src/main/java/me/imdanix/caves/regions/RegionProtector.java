@@ -16,22 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.regions.griefprevention;
+package me.imdanix.caves.regions;
 
-import me.imdanix.caves.regions.CheckType;
-import me.imdanix.caves.regions.RegionManager;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Location;
 
-public class GriefPreventionManager implements RegionManager {
+import java.util.function.BiPredicate;
 
-    @Override
-    public String getName() {
-        return "griefprevention";
+public interface RegionProtector extends BiPredicate<CheckType, Location> {
+    /**
+     * Called on plugin enable
+     */
+    default void onEnable() {}
+
+    /**
+     * Get name of this region manager to use it in testing
+     * @return Name of this region manager
+     */
+    default String getName() {
+        return "none";
     }
 
+    /**
+     * Check possibility of certain action in the location
+     * @param type Type of action to test
+     * @param location Location to test
+     * @return Is action allowed here
+     */
     @Override
-    public boolean test(CheckType checkType, Location location) {
-        return GriefPrevention.instance.dataStore.getClaimAt(location, false, null) == null;
-    }
+    boolean test(CheckType type, Location location);
 }

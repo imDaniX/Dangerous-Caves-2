@@ -19,7 +19,7 @@
 package me.imdanix.caves.regions.griefprevention;
 
 import me.imdanix.caves.regions.CheckType;
-import me.imdanix.caves.regions.RegionManager;
+import me.imdanix.caves.regions.RegionProtector;
 import me.ryanhamshire.GPFlags.Flag;
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
@@ -31,7 +31,7 @@ import org.bukkit.Location;
 import java.util.Arrays;
 import java.util.List;
 
-public class GriefPreventionFlagsManager implements RegionManager {
+public class GriefPreventionFlagsProtector implements RegionProtector {
     private static final List<FlagDefinition.FlagType> FLAG_TYPES = Arrays.asList(FlagDefinition.FlagType.values());
     private final FlagDefinition entityFlag = new EntityGriefFlagDefinition();
     private final FlagDefinition blockFlag = new BlockChangeFlagDefinition();

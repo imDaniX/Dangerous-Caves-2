@@ -26,15 +26,15 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.imdanix.caves.regions.CheckType;
-import me.imdanix.caves.regions.RegionManager;
+import me.imdanix.caves.regions.RegionProtector;
 import org.bukkit.Location;
 
-public class WorldGuard7FlagsManager implements RegionManager {
+public class WorldGuard7FlagsProtector implements RegionProtector {
     private static final StateFlag ENTITY_FLAG = new StateFlag("dc-entity-grief", true);
     private static final StateFlag BLOCK_FLAG = new StateFlag("dc-block-change", true);
     private static final StateFlag EFFECT_FLAG = new StateFlag("dc-player-effect", true);
 
-    public WorldGuard7FlagsManager() {
+    public WorldGuard7FlagsProtector() {
         try {
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             registry.register(ENTITY_FLAG);

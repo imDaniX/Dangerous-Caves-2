@@ -20,13 +20,13 @@ package me.imdanix.caves.regions;
 
 import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
-import me.imdanix.caves.regions.griefprevention.GriefPreventionFlagsManager;
-import me.imdanix.caves.regions.griefprevention.GriefPreventionManager;
-import me.imdanix.caves.regions.lands.LandsManager;
-import me.imdanix.caves.regions.worldguard.WorldGuard6FlagsManager;
-import me.imdanix.caves.regions.worldguard.WorldGuard6Manager;
-import me.imdanix.caves.regions.worldguard.WorldGuard7FlagsManager;
-import me.imdanix.caves.regions.worldguard.WorldGuard7Manager;
+import me.imdanix.caves.regions.griefprevention.GriefPreventionFlagsProtector;
+import me.imdanix.caves.regions.griefprevention.GriefPreventionProtector;
+import me.imdanix.caves.regions.lands.LandsProtector;
+import me.imdanix.caves.regions.worldguard.WorldGuard6FlagsProtector;
+import me.imdanix.caves.regions.worldguard.WorldGuard6Protector;
+import me.imdanix.caves.regions.worldguard.WorldGuard7FlagsProtector;
+import me.imdanix.caves.regions.worldguard.WorldGuard7Protector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,21 +39,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public enum Regions implements Manager<RegionManager>, Configurable {
+public enum Regions implements Manager<RegionProtector>, Configurable {
     INSTANCE;
-    private final RegionManager NONE = (c, l) -> true;
+    private final RegionProtector NONE = (c, l) -> true;
 
-    private final Map<String, RegionManager> managers;
-    private final List<RegionManager> current;
+    private final Map<String, RegionProtector> protectors;
+    private final List<RegionProtector> current;
 
     Regions() {
-        managers = new HashMap<>();
-        managers.put("none", NONE);
+        protectors = new HashMap<>();
+        protectors.put("none", NONE);
         current = new ArrayList<>();
     }
 
     public boolean check(CheckType check, Location location) {
-        for(RegionManager regions : current) {
+        for(RegionProtector regions : current) {
             if(!regions.test(check, location))
                 return false;
         }
@@ -80,7 +80,7 @@ public enum Regions implements Manager<RegionManager>, Configurable {
         if(modes.length == 0) {
             current.add(NONE);
         } else for(String mode : modes) {
-            RegionManager manager = managers.get(mode);
+            RegionProtector manager = protectors.get(mode);
             if(manager != null) {
                 current.add((c,l) -> invert != manager.test(c, l));
             } else {
@@ -98,34 +98,34 @@ public enum Regions implements Manager<RegionManager>, Configurable {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(wg != null) {
             if(wg.getDescription().getVersion().startsWith("6")) {
-                register(new WorldGuard6FlagsManager());
-                register(new WorldGuard6Manager());
+                register(new WorldGuard6FlagsProtector());
+                register(new WorldGuard6Protector());
             } else {
-                register(new WorldGuard7FlagsManager());
-                register(new WorldGuard7Manager());
+                register(new WorldGuard7FlagsProtector());
+                register(new WorldGuard7Protector());
             }
         }
     }
 
     public void onEnable() {
         if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            register(new GriefPreventionManager());
+            register(new GriefPreventionProtector());
             if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
-                register( new GriefPreventionFlagsManager());
+                register( new GriefPreventionFlagsProtector());
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
-            register(new LandsManager(true));
-            register(new LandsManager(false));
+            register(new LandsProtector(true));
+            register(new LandsProtector(false));
         }
 
-        managers.values().forEach(RegionManager::onEnable);
+        protectors.values().forEach(RegionProtector::onEnable);
     }
 
     @Override
-    public boolean register(RegionManager regionManager) {
-        if(!managers.containsKey(regionManager.getName())) {
-            managers.put(regionManager.getName(), regionManager);
+    public boolean register(RegionProtector regionProtector) {
+        if(!protectors.containsKey(regionProtector.getName())) {
+            protectors.put(regionProtector.getName(), regionProtector);
             return true;
         }
         return false;

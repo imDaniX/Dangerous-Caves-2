@@ -4,15 +4,15 @@ import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Area;
 import me.angeschossen.lands.api.land.enums.LandSetting;
 import me.imdanix.caves.regions.CheckType;
-import me.imdanix.caves.regions.RegionManager;
+import me.imdanix.caves.regions.RegionProtector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public class LandsManager implements RegionManager {
+public class LandsProtector implements RegionProtector {
     private LandsIntegration landsIntegration;
     private final boolean effect;
 
-    public LandsManager(boolean effect) {
+    public LandsProtector(boolean effect) {
         this.effect = effect;
     }
 
