@@ -27,6 +27,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
+import me.imdanix.caves.mobs.defaults.Mimic;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
 import org.bstats.bukkit.MetricsLite;
@@ -57,8 +58,12 @@ public class DangerousCaves extends JavaPlugin {
 
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config", getDescription().getVersion().split(";")[1]); cfg.create(true);
-        mobsManager = new MobsManager(this, cfg, dynamics); DefaultMobs.registerAll(mobsManager);
-        generator = new CaveGenerator(cfg); DefaultStructures.registerAll(generator);
+        mobsManager = new MobsManager(this, cfg, dynamics);
+        generator = new CaveGenerator(cfg);
+        DefaultMobs.registerAll(mobsManager);
+        // TODO: Remove this workaround
+        mobsManager.register(new Mimic(mobsManager));
+        DefaultStructures.registerAll(generator);
 
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();

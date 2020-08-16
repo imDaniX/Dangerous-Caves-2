@@ -21,6 +21,7 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.VSound;
+import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -40,6 +41,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -73,13 +75,15 @@ public class Mimic extends TickingMob implements Listener {
         PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
     }
 
+    private final MobsManager mobsManager;
     private final List<Material> items;
 
     private String name;
     private double health;
 
-    public Mimic() {
+    public Mimic(MobsManager mobsManager) {
         super(EntityType.WITHER_SKELETON, "mimic", 0);
+        this.mobsManager = mobsManager;
         items = new ArrayList<>();
     }
 
@@ -116,10 +120,10 @@ public class Mimic extends TickingMob implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
         if(block.getType() != Material.CHEST) return;
+        Player player = event.getPlayer();
         for(BlockFace face : Locations.HORIZONTAL_FACES) {
-            if(block.getRelative(face).getType() != Material.CHEST) continue;
-            String tag = Compatibility.getTag(block);
-            if(tag != null && tag.startsWith("mimic")) {
+            Block rel = block.getRelative(face);
+            if(rel.getType() == Material.CHEST && openMimic(rel,player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -130,23 +134,27 @@ public class Mimic extends TickingMob implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if(block.getType() == Material.CHEST) {
-            String tag = Compatibility.getTag(block);
-            if(tag == null || !tag.startsWith("mimic-")) return;
+        if(block.getType() == Material.CHEST && openMimic(block, event.getPlayer())) {
+            event.setUseItemInHand(Event.Result.DENY);
+            event.setUseInteractedBlock(Event.Result.DENY);
             event.setCancelled(true);
-            if(block.getRelative(BlockFace.UP).getType().isSolid()) return;
-            double health = Utils.getDouble(tag.split("-")[1], 30);
-            if(health <= 0) health = 1;
-            Location loc = block.getLocation();
-            LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc.add(0.5, 0, 0.5), EntityType.WITHER_SKELETON);
-            setup(entity);
-            entity.setHealth(health);
-            Player player = event.getPlayer();
-            Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
-            player.addPotionEffect(BLINDNESS);
-            ((Monster)entity).setTarget(player);
-            block.setType(Material.AIR);
         }
+    }
+
+    private boolean openMimic(Block block, Player player) {
+        String tag = Compatibility.getTag(block);
+        if(tag == null || !tag.startsWith("mimic")) return false;
+        if(block.getRelative(BlockFace.UP).getType().isSolid()) return true;
+        block.setType(Material.AIR);
+        double health = Utils.getDouble(tag.substring(0, 6), this.health);
+        if(health <= 0) health = 1;
+        Location loc = block.getLocation();
+        LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));
+        entity.setHealth(health);
+        Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
+        player.addPotionEffect(BLINDNESS);
+        ((Monster)entity).setTarget(player);
+        return true;
     }
 
     @EventHandler
