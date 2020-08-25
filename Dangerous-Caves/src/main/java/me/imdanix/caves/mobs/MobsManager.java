@@ -61,6 +61,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * Manages custom mob spawning and registering
@@ -86,6 +87,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private double chance;
     private boolean blockRename;
     private boolean metadata;
+    private Predicate<Location> lightCheck;
 
     private boolean lockListener;
     private Listener spawnListener;
@@ -110,6 +112,13 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         blockRename = cfg.getBoolean("restrict-rename", false);
         yMin = cfg.getInt("y-min", 0);
         yMax = cfg.getInt("y-max", 64);
+
+        int maxLight = cfg.getInt("max-light-level", 16);
+        if (maxLight < 16) {
+            lightCheck = (l) -> l.getBlock().getLightLevel() <= Math.max(0, maxLight);
+        } else {
+            lightCheck = (l) -> true;
+        }
 
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
@@ -266,6 +275,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
         if(disabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 !replaceTypes.contains(type) ||
+                !lightCheck.test(loc) ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
                 !Locations.isCave(loc) ||

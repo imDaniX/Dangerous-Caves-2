@@ -272,10 +272,14 @@ mobs:
   y-max: 64
 
   # (Paper only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
+  # Disabled for 1.16+
   use-prespawn: false
 
   # Block renaming with name-tags
   restrict-rename: false
+
+  # Maximal light level where mobs can spawn. Vanilla level for monsters is 7. Set to 16 or more to disable
+  max-light-level: 16
 
   # Only these mobs will be replaced
   replace-mobs:
