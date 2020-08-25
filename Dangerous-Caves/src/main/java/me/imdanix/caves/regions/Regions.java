@@ -65,17 +65,8 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
         // TODO Logger util
         Logger logger = Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger();
 
-        boolean invert;
-        String[] modes;
-        if(cfg.isString("protection.mode")) {
-            invert = cfg.getBoolean("protection.invert", false);
-            modes = cfg.getString("protection.mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
-        } else {
-            invert = cfg.getBoolean("invert", false);
-            modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
-            logger.warning("Please check latest changes in the config regarding WG and GP protections. It should " +
-                    "be moved into a new section of the config. It will no longer work in the next update.");
-        }
+        boolean invert = cfg.getBoolean("invert", false);;
+        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
 
         if(modes.length == 0) {
             current.add(NONE);
@@ -91,7 +82,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
 
     @Override
     public String getPath() {
-        return "integration";
+        return "integration.protection";
     }
 
     public void onLoad() {
