@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class LandsProtector implements RegionProtector {
-    private LandsIntegration landsIntegration;
+    private static LandsIntegration landsIntegration;
     private final boolean effect;
 
     public LandsProtector(boolean effect) {
@@ -18,7 +18,8 @@ public class LandsProtector implements RegionProtector {
 
     @Override
     public void onEnable() {
-        this.landsIntegration = new LandsIntegration(Bukkit.getPluginManager().getPlugin("DangerousCaves"));
+        if (landsIntegration != null) return;
+        landsIntegration = new LandsIntegration(Bukkit.getPluginManager().getPlugin("DangerousCaves"));
     }
 
     @Override
