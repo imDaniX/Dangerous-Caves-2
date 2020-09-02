@@ -26,7 +26,9 @@ public interface RegionProtector extends BiPredicate<CheckType, Location> {
     /**
      * Called on plugin enable
      */
-    default void onEnable() {}
+    default void onEnable() {
+        // Not needed by default
+    }
 
     /**
      * Get name of this region manager to use it in testing

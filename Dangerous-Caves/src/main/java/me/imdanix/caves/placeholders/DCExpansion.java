@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.ToDoubleFunction;
@@ -32,13 +33,13 @@ import java.util.function.ToDoubleFunction;
  * This class will be registered through the register-method in the
  * plugins onEnable-method.
  */
-public class DCavesExpansion extends PlaceholderExpansion {
+public class DCExpansion extends PlaceholderExpansion {
 
     private final DepthHypoxia hypoxia;
 
     private ToDoubleFunction<Player> currentHypoxia;
 
-    public DCavesExpansion(DepthHypoxia hypoxia) {
+    public DCExpansion(DepthHypoxia hypoxia) {
         this.hypoxia = hypoxia;
     }
 
@@ -69,8 +70,8 @@ public class DCavesExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier){
-        if(player == null) return "";
-        switch(identifier.toLowerCase()) {
+        if (player == null) return "0.0%";
+        switch (identifier.toLowerCase(Locale.ENGLISH)) {
             case "hypoxia_chance":
                 return Math.floor(currentHypoxia.applyAsDouble(player)*10000)/100 + "%";
             default:
