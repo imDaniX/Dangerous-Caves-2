@@ -19,29 +19,12 @@
 package me.imdanix.caves.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.imdanix.caves.caverns.DepthHypoxia;
+import me.imdanix.caves.Manager;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.ToDoubleFunction;
 
-/**
- * This class will be registered through the register-method in the
- * plugins onEnable-method.
- */
-public class DCExpansion extends PlaceholderExpansion {
-
-    private final DepthHypoxia hypoxia;
-
-    private ToDoubleFunction<Player> currentHypoxia;
-
-    public DCExpansion(DepthHypoxia hypoxia) {
-        this.hypoxia = hypoxia;
-    }
+public class DCExpansion extends PlaceholderExpansion implements Manager<Placeholder> {
 
     @Override
     public boolean persist(){
@@ -70,30 +53,15 @@ public class DCExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier){
-        if (player == null) return "0.0%";
+        if (player == null) return "0.0";
         switch (identifier.toLowerCase(Locale.ENGLISH)) {
-            case "hypoxia_chance":
-                return Math.floor(currentHypoxia.applyAsDouble(player)*10000)/100 + "%";
             default:
                 return null;
         }
     }
 
-    private class HypoxiaCacher extends BukkitRunnable implements ToDoubleFunction<Player> {
-        private final Map<UUID, Double> cache;
-
-        public HypoxiaCacher() {
-            cache = new HashMap<>();
-        }
-
-        @Override
-        public void run() {
-
-        }
-
-        @Override
-        public double applyAsDouble(Player player) {
-            return cache.computeIfAbsent(player.getUniqueId(), u -> hypoxia.getChance(player));
-        }
+    @Override
+    public boolean register(Placeholder placeholder) {
+        return false;
     }
 }

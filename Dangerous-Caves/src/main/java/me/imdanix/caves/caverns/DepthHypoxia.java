@@ -20,6 +20,7 @@ package me.imdanix.caves.caverns;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.placeholders.Placeholder;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
@@ -138,5 +139,20 @@ public class DepthHypoxia implements Tickable, Configurable {
     @Override
     public String getPath() {
         return "caverns.hypoxia";
+    }
+
+
+
+    private class HypoxiaChancePlaceholder implements Placeholder {
+
+        @Override
+        public String getName() {
+            return "hypoxia_chance";
+        }
+
+        @Override
+        public String getValue(Player player) {
+            return null;
+        }
     }
 }
