@@ -25,6 +25,7 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
+import me.imdanix.caves.util.DoubleBiConsumer;
 import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
@@ -41,7 +42,10 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
 
 public class DepthHypoxia implements Tickable, Configurable {
     // TODO PAPI placeholders
@@ -50,6 +54,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
     private final Set<String> worlds;
+    private final HypoxiaChancePlaceholder placeholder;
 
     private boolean disabled;
 
@@ -65,6 +70,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     public DepthHypoxia() {
         worlds = new HashSet<>();
         messages = new ArrayList<>();
+        placeholder = new HypoxiaChancePlaceholder();
     }
 
     @Override
@@ -101,9 +107,14 @@ public class DepthHypoxia implements Tickable, Configurable {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if(!Locations.isCave(loc) || loc.getY() > yMax) continue;
-                if(!Rnd.chance(chance) || !Rnd.chance(getChance(player))) continue;
-                if(!Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
+                double hypoxiaChance;
+                if(!Locations.isCave(loc) || loc.getY() > yMax ||
+                        !Rnd.chance(chance) || !Rnd.chance(hypoxiaChance = getChance(player)) ||
+                        !Regions.INSTANCE.check(CheckType.EFFECT, loc)) {
+                    placeholder.removePlayer(player);
+                    continue;
+                }
+                placeholder.cachePlayer(hypoxiaChance, player);
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
                 if(messages.isEmpty()) continue;
@@ -117,7 +128,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         }
     }
 
-    public double getChance(Player player) {
+    private double getChance(Player player) {
         double depthChance = (yMax - player.getLocation().getY()) / yMax;
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();
@@ -141,9 +152,43 @@ public class DepthHypoxia implements Tickable, Configurable {
         return "caverns.hypoxia";
     }
 
+    public Placeholder getPlaceholder() {
+        return placeholder;
+    }
 
+    private class HypoxiaChancePlaceholder implements Placeholder, Configurable {
+        private final Map<Player, String> chances;
+        private DoubleBiConsumer<Player> cache;
+        private Consumer<Player> remove;
 
-    private class HypoxiaChancePlaceholder implements Placeholder {
+        public HypoxiaChancePlaceholder() {
+            chances = new WeakHashMap<>();
+        }
+
+        @Override
+        public void reload(ConfigurationSection cfg) {
+            if (cfg.getBoolean("enabled")) {
+                cache = (d,p) -> chances.put(p, Double.toString(Math.floor(d * 10000) / 100));
+                remove = p -> chances.remove(p);
+            } else {
+                chances.clear();
+                cache = (d,p) -> {};
+                remove = p -> {};
+            }
+        }
+
+        public void cachePlayer(double chance, Player player) {
+            cache.accept(chance, player);
+        }
+
+        public void removePlayer(Player player) {
+            remove.accept(player);
+        }
+
+        @Override
+        public String getPath() {
+            return "integration.placeholders.hypoxia-chance";
+        }
 
         @Override
         public String getName() {
@@ -152,7 +197,7 @@ public class DepthHypoxia implements Tickable, Configurable {
 
         @Override
         public String getValue(Player player) {
-            return null;
+            return chances.getOrDefault(player, "0.0");
         }
     }
 }

@@ -27,7 +27,7 @@ import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
-import me.imdanix.caves.mobs.defaults.Mimic;
+import me.imdanix.caves.placeholders.DCExpansion;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
 import org.bstats.bukkit.MetricsLite;
@@ -61,14 +61,18 @@ public class DangerousCaves extends JavaPlugin {
         mobsManager = new MobsManager(this, cfg, dynamics);
         generator = new CaveGenerator(cfg);
         DefaultMobs.registerAll(mobsManager);
-        // TODO: Remove this workaround
-        mobsManager.register(new Mimic(mobsManager));
         DefaultStructures.registerAll(generator);
 
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
         CavesAging cavesAging = new CavesAging(this);
-        DepthHypoxia temperature = new DepthHypoxia();
+        DepthHypoxia hypoxia = new DepthHypoxia();
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            DCExpansion expansion = new DCExpansion(cfg);
+            expansion.register(hypoxia.getPlaceholder());
+            expansion.register();
+        }
 
         Bukkit.getPluginManager().registerEvents(mobsManager, this);
         Bukkit.getPluginManager().registerEvents(caveIns, this);
@@ -76,14 +80,14 @@ public class DangerousCaves extends JavaPlugin {
         dynamics.register(mobsManager);
         dynamics.register(ambient);
         dynamics.register(cavesAging);
-        dynamics.register(temperature);
+        dynamics.register(hypoxia);
 
         cfg.register(Regions.INSTANCE);
         cfg.register(mobsManager);
         cfg.register(ambient);
         cfg.register(cavesAging);
         cfg.register(caveIns);
-        cfg.register(temperature);
+        cfg.register(hypoxia);
         if(cfg.getYml().getBoolean("generator.wait-other", false)) {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
         } else cfg.register(generator);

@@ -52,9 +52,9 @@ integration:
     # Invert checks by default
     invert: false
 
-  # For displaying some data from the plugin
+  # PlaceholderAPI required. For displaying some data from the plugin.
   placeholders:
-    # %dangerouscaves_hypoxia_chance% - a change to get Hypoxia, scales from 0 to 100
+    # %dangerouscaves_hypoxia_chance% - a chance to get Hypoxia, scales from 0 to 100
     hypoxia-chance:
       enabled: false
 

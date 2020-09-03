@@ -16,24 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.placeholders;
+package me.imdanix.caves.util;
 
-import org.bukkit.entity.Player;
-
-public interface Placeholder {
-    Placeholder EMPTY = new Placeholder() {
-        @Override
-        public String getName() {
-            return null;
-        }
-
-        @Override
-        public String getValue(Player player) {
-            return null;
-        }
-    };
-
-    String getName();
-
-    String getValue(Player player);
+@FunctionalInterface
+public interface DoubleBiConsumer<T> {
+    void accept(double d, T t);
 }

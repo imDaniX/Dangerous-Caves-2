@@ -20,11 +20,22 @@ package me.imdanix.caves.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.imdanix.caves.Manager;
+import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.configuration.Configuration;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DCExpansion extends PlaceholderExpansion implements Manager<Placeholder> {
+    private final Map<String, Placeholder> placeholders;
+    private final Configuration cfg;
+
+    public DCExpansion(Configuration cfg) {
+        this.placeholders = new HashMap<>();
+        this.cfg = cfg;
+    }
 
     @Override
     public boolean persist(){
@@ -52,16 +63,19 @@ public class DCExpansion extends PlaceholderExpansion implements Manager<Placeho
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String identifier){
-        if (player == null) return "0.0";
-        switch (identifier.toLowerCase(Locale.ENGLISH)) {
-            default:
-                return null;
-        }
+    public String onPlaceholderRequest(Player player, String identifier) {
+        return placeholders.getOrDefault(identifier.toLowerCase(Locale.ENGLISH), Placeholder.EMPTY).getValue(player);
     }
 
     @Override
     public boolean register(Placeholder placeholder) {
+        if (!placeholders.containsKey(placeholder.getName())) {
+            placeholders.put(placeholder.getName(), placeholder);
+            if (placeholder instanceof Configurable) {
+                cfg.register((Configurable)placeholder);
+            }
+            return true;
+        }
         return false;
     }
 }
