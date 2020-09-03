@@ -36,7 +36,6 @@
         <module>regions/Lands</module>
     <!--<module>regions/Residence</module>-->
         <module>Dangerous-Caves</module>
-        <module>build</module>
     </modules>
     <packaging>pom</packaging>
 
