@@ -61,6 +61,8 @@ integration:
       # Set to 0 if you want to update it only on PLAYER tick
       # Setting to 20 or lower is not recommended
       schedule: 200
+      # Count try-chance in final result
+      respect-try-chance: true
 
 #
 # Cave-related things

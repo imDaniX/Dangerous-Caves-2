@@ -20,12 +20,12 @@ package me.imdanix.caves.caverns;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.placeholders.Placeholder;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
-import me.imdanix.caves.util.DoubleBiConsumer;
 import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
@@ -47,15 +47,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class DepthHypoxia implements Tickable, Configurable {
-    // TODO PAPI placeholders
-
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
     private final Plugin plugin;
+    private final Configuration config;
 
     private final Set<String> worlds;
     private final HypoxiaChancePlaceholder placeholder;
@@ -70,9 +69,11 @@ public class DepthHypoxia implements Tickable, Configurable {
     private int yMax;
 
     private FormulasEvaluator formula;
+    private Predicate<Player> condition;
 
-    public DepthHypoxia(Plugin plugin) {
+    public DepthHypoxia(Plugin plugin, Configuration config) {
         this.plugin = plugin;
+        this.config = config;
         worlds = new HashSet<>();
         messages = new ArrayList<>();
         placeholder = new HypoxiaChancePlaceholder();
@@ -100,6 +101,9 @@ public class DepthHypoxia implements Tickable, Configurable {
                     "is invalid! Please fix the issue. \"depth*inventory\" formula is used instead.");
         }
 
+        config.reload(placeholder);
+        condition = placeholder.isEnabled() ? this::checkConditionsPH : this::checkConditions;
+
         disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && minChance > 0 &&
                 !worlds.isEmpty());
     }
@@ -111,7 +115,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         for (World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
-                if (!checkConditions(player)) continue;
+                if (!condition.test(player)) continue;
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
                 if (messages.isEmpty()) continue;
@@ -127,6 +131,13 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     private boolean checkConditions(Player player) {
         Location loc = player.getLocation();
+        return Locations.isCave(loc) && loc.getY() <= yMax &&
+                Rnd.chance(chance) && Rnd.chance(getChance(player)) &&
+                Regions.INSTANCE.check(CheckType.EFFECT, loc);
+    }
+
+    private boolean checkConditionsPH(Player player) {
+        Location loc = player.getLocation();
         if (!Locations.isCave(loc) || loc.getY() > yMax) {
             placeholder.removePlayer(player);
             return false;
@@ -134,10 +145,10 @@ public class DepthHypoxia implements Tickable, Configurable {
         if (Rnd.chance(chance)) {
             double hypoxiaChance;
             boolean check = Rnd.chance(hypoxiaChance = getChance(player));
-            placeholder.cachePlayer(hypoxiaChance*chance, player);
+            placeholder.cachePlayer(hypoxiaChance, player);
             return check && Regions.INSTANCE.check(CheckType.EFFECT, loc);
         } else {
-            placeholder.cachePlayer(getChance(player)*chance, player);
+            placeholder.cachePlayer(getChance(player), player);
             return false;
         }
     }
@@ -172,9 +183,9 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     private class HypoxiaChancePlaceholder implements Placeholder, Configurable {
         private final Map<Player, String> chances;
-        private DoubleBiConsumer<Player> cache;
-        private Consumer<Player> remove;
+        private boolean enabled;
         private BukkitTask task;
+        private boolean tryChance;
 
         public HypoxiaChancePlaceholder() {
             chances = new WeakHashMap<>();
@@ -182,32 +193,32 @@ public class DepthHypoxia implements Tickable, Configurable {
 
         @Override
         public void reload(ConfigurationSection cfg) {
-            if (cfg.getBoolean("enabled")) {
-                int schedule = cfg.getInt("schedule");
+            enabled = cfg.getBoolean("enabled", false);
+            if (task != null) {
+                task.cancel();
+                task = null;
+            }
+            if (enabled) {
+                tryChance = cfg.getBoolean("respect-try-chance", true);
+                int schedule = cfg.getInt("schedule", 200);
                 if (schedule <= 0) {
                     task = Bukkit.getScheduler().runTaskTimer(plugin, () ->
                             Bukkit.getOnlinePlayers().forEach(DepthHypoxia.this::checkConditions),
                             schedule, schedule);
                 }
-                cache = (d,p) -> chances.put(p, Double.toString(Math.floor(d * 10000) / 100));
-                remove = chances::remove;
-            } else {
-                if (task != null) {
-                    task.cancel();
-                    task = null;
-                }
-                chances.clear();
-                cache = (d,p) -> {};
-                remove = p -> {};
             }
         }
 
+        public boolean isEnabled() {
+            return enabled;
+        }
+
         public void cachePlayer(double hypoxiaChance, Player player) {
-            cache.accept(hypoxiaChance * chance, player);
+            chances.put(player, Double.toString(Math.floor(hypoxiaChance * (tryChance ? 10000 * chance : 10000)) / 100));
         }
 
         public void removePlayer(Player player) {
-            remove.accept(player);
+            chances.remove(player);
         }
 
         @Override
