@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 // TODO: Proper singleton for objects?
-public class Compatibility {
+public final class Compatibility {
     private static MaterialsProvider materials;
     private static TagsProvider tags;
     private static Messenger messenger;

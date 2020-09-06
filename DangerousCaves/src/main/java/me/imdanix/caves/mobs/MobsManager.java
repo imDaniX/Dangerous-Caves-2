@@ -173,6 +173,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
             //config.register(mob);
+            config.reload(mob);
             if (mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if (mob instanceof Tickable)

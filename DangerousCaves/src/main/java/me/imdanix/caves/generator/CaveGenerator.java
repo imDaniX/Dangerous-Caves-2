@@ -111,6 +111,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         if (structures.containsKey(group.getId())) return false;
         structures.put(group.getId(), group);
         structuresPool.add(group, group.getWeight());
+        config.reload(group);
         //cfg.register(group);
         return true;
     }
