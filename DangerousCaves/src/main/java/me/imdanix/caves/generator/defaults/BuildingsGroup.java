@@ -84,16 +84,16 @@ public class BuildingsGroup extends AbstractStructure {
                 Location tempL3 = Locations.add(loc, 0, -1, 1);
                 Location tempL4 = Locations.add(loc, 0, -1, -1);
                 loc.getBlock().setType(VMaterial.CRAFTING_TABLE.get());
-                if(tempL1.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                if (tempL1.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL2.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                if (tempL2.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL3.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                if (tempL3.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                if(tempL4.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
+                if (tempL4.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
                 break;
@@ -115,7 +115,7 @@ public class BuildingsGroup extends AbstractStructure {
     private void generateStructure(Random random, int[][][] rock, Location loc) {
         int xMod = random.nextBoolean() ? -1 : 1;
         int zMod = random.nextBoolean() ? -1 : 1;
-        for(int y = 0; y < rock[0].length; y++) for(int x = -1; x < rock.length-1; x++) for(int z = -1; z < rock[0][0].length-1; z++) {
+        for (int y = 0; y < rock[0].length; y++) for (int x = -1; x < rock.length-1; x++) for (int z = -1; z < rock[0][0].length-1; z++) {
             decideBlock(random, rock[x+1][y][z+1], Locations.add(loc, x * xMod, y, z * zMod));
         }
     }
@@ -124,7 +124,7 @@ public class BuildingsGroup extends AbstractStructure {
         //1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
         switch (type) {
             case 1:
-                if(random.nextBoolean()) setType(loc, VMaterial.OAK_PLANKS.get());
+                if (random.nextBoolean()) setType(loc, VMaterial.OAK_PLANKS.get());
                 break;
 
             case 2:

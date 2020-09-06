@@ -58,7 +58,7 @@ public class SmokeDemon extends TickingMob {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.setCustomNameVisible(false);
@@ -68,7 +68,7 @@ public class SmokeDemon extends TickingMob {
 
     @Override
     public void tick(LivingEntity entity) {
-        if(entity.getLocation().getBlock().getLightLevel() >= 12) {
+        if (entity.getLocation().getBlock().getLightLevel() >= 12) {
             entity.remove();
             return;
         }
@@ -77,7 +77,7 @@ public class SmokeDemon extends TickingMob {
     }
 
     private static void harm(Entity entity) {
-        if(entity instanceof LivingEntity && entity.getLocation().getBlock().getLightLevel() < 12) {
+        if (entity instanceof LivingEntity && entity.getLocation().getBlock().getLightLevel() < 12) {
             LivingEntity living = (LivingEntity) entity;
             living.addPotionEffect(BLINDNESS);
             living.addPotionEffect(WITHER);

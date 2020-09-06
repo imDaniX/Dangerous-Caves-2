@@ -54,7 +54,7 @@ public enum DefaultMobs {
     }
 
     public static void registerAll(MobsManager manager) {
-        for(DefaultMobs mob : DefaultMobs.values())
+        for (DefaultMobs mob : DefaultMobs.values())
             manager.register(mob.custom);
         manager.register(new Mimic(manager));
     }

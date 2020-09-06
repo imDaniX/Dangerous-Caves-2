@@ -44,9 +44,9 @@ public enum VMaterial {
     private final Material type;
 
     VMaterial(String... typesStr) {
-        for(String typeStr : typesStr) {
+        for (String typeStr : typesStr) {
             Material type = Material.getMaterial(typeStr);
-            if(type != null) {
+            if (type != null) {
                 this.type = type;
                 return;
             }

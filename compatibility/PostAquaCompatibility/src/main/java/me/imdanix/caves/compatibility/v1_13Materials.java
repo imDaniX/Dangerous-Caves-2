@@ -35,11 +35,11 @@ public class v1_13Materials implements MaterialsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
-        if(data instanceof Switch) {
+        if (data instanceof Switch) {
             ((Switch) data).setFace(Switch.Face.FLOOR);
         } else if (data instanceof Directional) {
             ((Directional) data).setFacing(face);
-        } else if(data instanceof MultipleFacing) {
+        } else if (data instanceof MultipleFacing) {
             ((MultipleFacing) data).setFace(face, true);
         }
         block.setBlockData(data, false);

@@ -34,11 +34,11 @@ public class v1_16Materials implements MaterialsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
-        if(data instanceof FaceAttachable) {
+        if (data instanceof FaceAttachable) {
             ((FaceAttachable) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
         } else if (data instanceof Directional) {
             ((Directional) data).setFacing(face);
-        } else if(data instanceof MultipleFacing) {
+        } else if (data instanceof MultipleFacing) {
             ((MultipleFacing) data).setFace(face, true);
         }
         block.setBlockData(data, false);

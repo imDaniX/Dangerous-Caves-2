@@ -53,8 +53,8 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
     }
 
     public boolean check(CheckType check, Location location) {
-        for(RegionProtector regions : current) {
-            if(!regions.test(check, location))
+        for (RegionProtector regions : current) {
+            if (!regions.test(check, location))
                 return false;
         }
         return true;
@@ -68,11 +68,11 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
         boolean invert = cfg.getBoolean("invert", false);
         String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
 
-        if(modes.length == 0) {
+        if (modes.length == 0) {
             current.add(NONE);
-        } else for(String mode : modes) {
+        } else for (String mode : modes) {
             RegionProtector manager = protectors.get(mode);
-            if(manager != null) {
+            if (manager != null) {
                 current.add((c,l) -> invert != manager.test(c, l));
             } else {
                 logger.warning("Can't find mode \"" + mode + "\".");
@@ -87,8 +87,8 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
 
     public void onLoad() {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-        if(wg != null) {
-            if(wg.getDescription().getVersion().startsWith("6")) {
+        if (wg != null) {
+            if (wg.getDescription().getVersion().startsWith("6")) {
                 register(new WorldGuard6FlagsProtector());
                 register(new WorldGuard6Protector());
             } else {
@@ -99,9 +99,9 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
     }
 
     public void onEnable() {
-        if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
             register(new GriefPreventionProtector());
-            if(Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
+            if (Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
                 register( new GriefPreventionFlagsProtector());
         }
 
@@ -115,7 +115,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
 
     @Override
     public boolean register(RegionProtector regionProtector) {
-        if(!protectors.containsKey(regionProtector.getName())) {
+        if (!protectors.containsKey(regionProtector.getName())) {
             protectors.put(regionProtector.getName(), regionProtector);
             return true;
         }

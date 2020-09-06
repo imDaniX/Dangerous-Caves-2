@@ -78,13 +78,13 @@ public class DeadMiner extends TickingMob implements Listener {
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
-        for(String materialStr : itemsCfg) {
+        for (String materialStr : itemsCfg) {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
-            if(material != null) items.add(material);
+            if (material != null) items.add(material);
         }
 
         int cooldown = cfg.getInt("torches-cooldown", 12);
-        if(cooldown <= 0) {
+        if (cooldown <= 0) {
             cooldownEffect = null;
         } else {
             cooldownEffect = new PotionEffect(PotionEffectType.CONFUSION, cooldown*20, 0, true, false);
@@ -93,9 +93,9 @@ public class DeadMiner extends TickingMob implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
-        if(!isThis(event.getEntity()) || event.getDamage() < 1) return;
+        if (!isThis(event.getEntity()) || event.getDamage() < 1) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
-        if(dropChance > 0 && !items.isEmpty() && Rnd.chance(dropChance))
+        if (dropChance > 0 && !items.isEmpty() && Rnd.chance(dropChance))
             entity.getWorld().dropItemNaturally(
                     entity.getLocation(),
                     new ItemStack(Rnd.randomElement(items))
@@ -104,32 +104,32 @@ public class DeadMiner extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head); equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rnd.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
-        if(Rnd.nextBoolean())
+        if (Rnd.nextBoolean())
             equipment.setChestplate(new ItemStack(Rnd.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
-        if(Rnd.nextBoolean())
+        if (Rnd.nextBoolean())
             equipment.setBoots(new ItemStack(Rnd.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
-        if(torches) equipment.setItemInOffHand(new ItemStack(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH));
+        if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH));
         entity.setCanPickupItems(false);
     }
 
     @Override
     public void tick(LivingEntity entity) {
-        if(!torches || entity.hasPotionEffect(PotionEffectType.CONFUSION)) return;
+        if (!torches || entity.hasPotionEffect(PotionEffectType.CONFUSION)) return;
         Location loc = entity.getLocation();
         Block block = loc.getBlock();
-        if(block.getLightLevel() > 0 ||
+        if (block.getLightLevel() > 0 ||
                 (withoutTarget && ((Monster)entity).getTarget() != null) ||
                 !Regions.INSTANCE.check(CheckType.ENTITY, loc))
             return;
-        if(Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
+        if (Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
-            if(cooldownEffect != null)
+            if (cooldownEffect != null)
                 entity.addPotionEffect(cooldownEffect);
         }
     }

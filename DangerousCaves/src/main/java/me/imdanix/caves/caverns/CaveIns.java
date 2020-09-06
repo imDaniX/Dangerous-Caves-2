@@ -96,37 +96,37 @@ public class CaveIns implements Listener, Configurable {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        if(disabled) return;
+        if (disabled) return;
 
         Block initBlock = event.getBlock();
         World world = initBlock.getWorld();
-        if(initBlock.getY() > yMax || !worlds.contains(world.getName()) ||
+        if (initBlock.getY() > yMax || !worlds.contains(world.getName()) ||
                 !Materials.isCave(initBlock.getType())) return;
 
         Player player = event.getPlayer();
-        if(player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
+        if (player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
-        if(!Regions.INSTANCE.check(CheckType.BLOCK, initBlock.getLocation()) && Rnd.chance(chance)) {
+        if (!Regions.INSTANCE.check(CheckType.BLOCK, initBlock.getLocation()) && Rnd.chance(chance)) {
             Location blockLoc = initBlock.getLocation();
-            if(blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-            if(blastEffect) player.addPotionEffect(BLINDNESS);
+            if (blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+            if (blastEffect) player.addPotionEffect(BLINDNESS);
 
             Set<List<Block>> allBlocks = getBlocksInRadius(blockLoc);
 
-            if(slowFall) {
+            if (slowFall) {
                 allBlocks.forEach(l -> l.forEach(block -> {
                     world.spawnFallingBlock(block.getLocation(), block.getState().getData());
                     block.setType(Material.AIR);
                 }));
-            } else for(List<Block> blocks : allBlocks) {
-                if(blocks.isEmpty()) continue;
+            } else for (List<Block> blocks : allBlocks) {
+                if (blocks.isEmpty()) continue;
                 Block search = blocks.get(0).getRelative(BlockFace.DOWN);
 
-                if(search.getType().isSolid()) continue;
+                if (search.getType().isSolid()) continue;
                 while(search.getY() > 0 && !search.getType().isSolid() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
 
-                for(Block block : blocks) {
+                for (Block block : blocks) {
                     search = search.getRelative(BlockFace.UP);
                     search.setType(block.getType());
                     block.setType(Material.AIR);
@@ -139,22 +139,22 @@ public class CaveIns implements Listener, Configurable {
         Set<List<Block>> allBlocks = new HashSet<>();
 
         blockLoc.subtract(radius, 2, radius);
-        if(blockLoc.getY() < 1) blockLoc.setY(1);
+        if (blockLoc.getY() < 1) blockLoc.setY(1);
 
         World world = blockLoc.getWorld();
         int yInit = blockLoc.getBlockY();
 
-        for(int x = 0; x < distance; x++) for(int z = 0; z < distance; z++) {
+        for (int x = 0; x < distance; x++) for (int z = 0; z < distance; z++) {
             int xRel = blockLoc.getBlockX() + x;
             int zRel = blockLoc.getBlockZ() + z;
 
             List<Block> blocks = new ArrayList<>();
 
             int heightMax = heightMap[x][z] - pseudoRandom.next();
-            for(int y = 0; y <= heightMax; y++) {
+            for (int y = 0; y <= heightMax; y++) {
                 Block block = world.getBlockAt(xRel, yInit + y, zRel);
-                if(!Materials.isCave(block.getType())) {
-                    if(Materials.isAir(block.getType())) continue;
+                if (!Materials.isCave(block.getType())) {
+                    if (Materials.isAir(block.getType())) continue;
                     break;
                 }
                 blocks.add(block);
@@ -168,8 +168,8 @@ public class CaveIns implements Listener, Configurable {
 
     private int[][] calcMap() {
         int[][] heightMap = new int[distance][distance];
-        for(int x = -radius; x <= radius; x++)
-        for(int z = -radius; z <= radius; z++) {
+        for (int x = -radius; x <= radius; x++)
+        for (int z = -radius; z <= radius; z++) {
             heightMap[x+radius][z+radius] = cuboid ?
                     distance :
                     (((-x*x) + (-z*z))/radius + radius*2);

@@ -45,14 +45,14 @@ public class CryingBat extends TickingMob {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
     }
 
     @Override
     public void tick(LivingEntity entity) {
-        if(cryChance > 0 && Rnd.chance(cryChance)) {
+        if (cryChance > 0 && Rnd.chance(cryChance)) {
             Locations.playSound(entity.getLocation(), Sound.ENTITY_WOLF_WHINE, 1, (float) (1.4 + Rnd.nextDouble(0.6)));
-            if(deathChance > 0 && Rnd.chance(deathChance))
+            if (deathChance > 0 && Rnd.chance(deathChance))
                 entity.damage(1000);
         }
     }

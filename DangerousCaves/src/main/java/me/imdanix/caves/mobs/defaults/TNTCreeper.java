@@ -58,7 +58,7 @@ public class TNTCreeper extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.addPotionEffect(INCREASE_DAMAGE);
@@ -66,11 +66,11 @@ public class TNTCreeper extends AbstractMob implements Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
-        if(!isThis(event.getEntity())) return;
+        if (!isThis(event.getEntity())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
         entity.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         Location loc = event.getLocation();
-        for(int i = 0; i < tntAmount; i++) {
+        for (int i = 0; i < tntAmount; i++) {
             Entity tnt = entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
             tnt.setVelocity(new Vector(Rnd.nextDouble(2) - 1, 0.3, Rnd.nextDouble(2) - 1));
         }
@@ -78,7 +78,7 @@ public class TNTCreeper extends AbstractMob implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if(explosionChance > 0 && isThis(event.getEntity()) && Rnd.chance(explosionChance))
+        if (explosionChance > 0 && isThis(event.getEntity()) && Rnd.chance(explosionChance))
             event.getDamager().getWorld().createExplosion(event.getDamager().getLocation(), 0.01f);
     }
 }

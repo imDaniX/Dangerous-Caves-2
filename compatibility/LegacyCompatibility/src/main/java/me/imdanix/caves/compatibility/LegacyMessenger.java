@@ -30,7 +30,7 @@ public class LegacyMessenger implements Messenger {
     }
     @Override
     public void sendActionBar(Player player, String message) {
-        if(useChat)
+        if (useChat)
             player.sendMessage(message);
         else
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));

@@ -60,14 +60,14 @@ public class AlphaSpider extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(REGENERATION);
         Utils.setMaxHealth(entity, health);
     }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if(!isThis(event.getDamager())) return;
+        if (!isThis(event.getDamager())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
         Entity damager = event.getDamager();
         if (Rnd.nextBoolean()) {

@@ -38,7 +38,7 @@ public enum DefaultStructures {
     }
 
     public static void registerAll(CaveGenerator generator) {
-        for(DefaultStructures struct : DefaultStructures.values())
+        for (DefaultStructures struct : DefaultStructures.values())
             generator.register(struct.group);
     }
 }

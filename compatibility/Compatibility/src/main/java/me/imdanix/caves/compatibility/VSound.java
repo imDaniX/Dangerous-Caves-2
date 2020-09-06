@@ -28,7 +28,7 @@ public enum VSound {
 
     VSound(String... soundsStr) {
         Sound sound = null;
-        for(String soundStr : soundsStr) {
+        for (String soundStr : soundsStr) {
             try {
                 sound = Sound.valueOf(soundStr);
                 break;

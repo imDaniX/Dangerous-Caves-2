@@ -62,7 +62,7 @@ public class HexedArmor extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.addPotionEffect(INVISIBILITY);
@@ -100,7 +100,7 @@ public class HexedArmor extends AbstractMob implements Listener {
 
     private ItemStack enchant(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        if(binding) meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
+        if (binding) meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
         meta.addEnchant(Enchantment.VANISHING_CURSE, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);

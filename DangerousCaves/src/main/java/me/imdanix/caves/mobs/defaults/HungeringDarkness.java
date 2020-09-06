@@ -61,7 +61,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         entity.setCustomNameVisible(false);
         entity.setInvulnerable(true);
         entity.setCollidable(false);
@@ -73,27 +73,27 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
         Entity target = event.getTarget();
-        if(!isThis(event.getEntity()) || target == null) return;
-        if(target.getLocation().getBlock().getLightLevel() > 0 && (
+        if (!isThis(event.getEntity()) || target == null) return;
+        if (target.getLocation().getBlock().getLightLevel() > 0 && (
                 !vision ||
                 !(target instanceof LivingEntity) ||
                 ((LivingEntity)target).hasPotionEffect(PotionEffectType.NIGHT_VISION)
             )) {
             event.setCancelled(true);
-            if(remove) event.getEntity().remove();
+            if (remove) event.getEntity().remove();
         }
     }
 
     @EventHandler
     public void onAttack(PlayerAttackedEvent event) {
-        if(!isThis(event.getAttacker())) return;
+        if (!isThis(event.getAttacker())) return;
         Player player = event.getPlayer();
-        if(player.getLocation().getBlock().getLightLevel() > 0 && (
+        if (player.getLocation().getBlock().getLightLevel() > 0 && (
                 !vision ||
                 player.hasPotionEffect(PotionEffectType.NIGHT_VISION)
             )) {
             event.setCancelled(true);
-            if(remove) event.getAttacker().remove();
+            if (remove) event.getAttacker().remove();
         } else event.setDamage(damage);
     }
 }

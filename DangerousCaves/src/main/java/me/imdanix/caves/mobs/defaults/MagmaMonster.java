@@ -80,7 +80,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.setFireTicks(Integer.MAX_VALUE);
@@ -101,32 +101,32 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
-        if(!isThis(event.getDamager()) || Rnd.nextBoolean()) return;
+        if (!isThis(event.getDamager()) || Rnd.nextBoolean()) return;
         event.getEntity().setFireTicks(60);
     }
 
     @Override
     public void tick(LivingEntity entity) {
-        if(extinguish)
+        if (extinguish)
                 entity.damage(0.1);
             else
                 entity.setFireTicks(20);
 
         boolean fire;
         boolean magma;
-        if(((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
+        if (((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
                 !Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation()))
             return;
 
-        if(fire) {
+        if (fire) {
             Block block = entity.getLocation().getBlock();
-            if(Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
+            if (Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
                 block.setType(Material.FIRE, false);
         }
 
-        if(magma) {
+        if (magma) {
             Block block = entity.getLocation().subtract(0, 1, 0).getBlock();
-            if(block.getType() != Material.BEDROCK && Materials.isCave(block.getType()))
+            if (block.getType() != Material.BEDROCK && Materials.isCave(block.getType()))
                 block.setType(VMaterial.MAGMA_BLOCK.get(), false);
         }
     }

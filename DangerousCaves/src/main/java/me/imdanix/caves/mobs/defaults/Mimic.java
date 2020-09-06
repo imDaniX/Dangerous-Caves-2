@@ -94,15 +94,15 @@ public class Mimic extends TickingMob implements Listener {
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
-        for(String materialStr : itemsCfg) {
+        for (String materialStr : itemsCfg) {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
-            if(material != null) items.add(material);
+            if (material != null) items.add(material);
         }
     }
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.setSilent(true);
@@ -119,11 +119,11 @@ public class Mimic extends TickingMob implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
-        if(block.getType() != Material.CHEST) return;
+        if (block.getType() != Material.CHEST) return;
         Player player = event.getPlayer();
-        for(BlockFace face : Locations.HORIZONTAL_FACES) {
+        for (BlockFace face : Locations.HORIZONTAL_FACES) {
             Block rel = block.getRelative(face);
-            if(rel.getType() == Material.CHEST && openMimic(rel,player)) {
+            if (rel.getType() == Material.CHEST && openMimic(rel,player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -132,9 +132,9 @@ public class Mimic extends TickingMob implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event) {
-        if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if(block.getType() == Material.CHEST && openMimic(block, event.getPlayer())) {
+        if (block.getType() == Material.CHEST && openMimic(block, event.getPlayer())) {
             event.setUseItemInHand(Event.Result.DENY);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setCancelled(true);
@@ -143,11 +143,11 @@ public class Mimic extends TickingMob implements Listener {
 
     private boolean openMimic(Block block, Player player) {
         String tag = Compatibility.getTag(block);
-        if(tag == null || !tag.startsWith("mimic")) return false;
-        if(block.getRelative(BlockFace.UP).getType().isSolid()) return true;
+        if (tag == null || !tag.startsWith("mimic")) return false;
+        if (block.getRelative(BlockFace.UP).getType().isSolid()) return true;
         block.setType(Material.AIR);
         double health = Utils.getDouble(tag.substring(0, 6), this.health);
-        if(health <= 0) health = 1;
+        if (health <= 0) health = 1;
         Location loc = block.getLocation();
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));
         entity.setHealth(health);
@@ -160,27 +160,27 @@ public class Mimic extends TickingMob implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
-        if(isThis(entity)) Locations.playSound(entity.getLocation(), Sound.BLOCK_SHULKER_BOX_OPEN, 1f, 0.2f);
+        if (isThis(entity)) Locations.playSound(entity.getLocation(), Sound.BLOCK_SHULKER_BOX_OPEN, 1f, 0.2f);
     }
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if(isThis(event.getEntity())) {
+        if (isThis(event.getEntity())) {
             Locations.playSound(event.getEntity().getLocation(), VSound.BLOCK_ENDER_CHEST_CLOSE.get(), SoundCategory.HOSTILE, 1f, 0.2f);
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);
-            if(!items.isEmpty()) drops.add(new ItemStack(Rnd.randomElement(items)));
+            if (!items.isEmpty()) drops.add(new ItemStack(Rnd.randomElement(items)));
         }
     }
 
     @Override
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
-        if(((Monster)entity).getTarget() == null && Materials.isAir(block.getType()) &&
+        if (((Monster)entity).getTarget() == null && Materials.isAir(block.getType()) &&
                 Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation())) {
-            for(BlockFace face : Locations.HORIZONTAL_FACES)
-                if(block.getRelative(face).getType() == Material.CHEST) return;
+            for (BlockFace face : Locations.HORIZONTAL_FACES)
+                if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
             Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rnd.nextInt(4)]);
             Compatibility.setTag(block, "mimic-" + entity.getHealth());

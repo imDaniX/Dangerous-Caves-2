@@ -35,7 +35,6 @@ public final class Locations {
 
     /**
      * Creates new Location instance and adds coordinates
-     *
      * @param loc Initial location
      * @param x   X to add
      * @param y   Y to add
@@ -48,7 +47,6 @@ public final class Locations {
 
     /**
      * Creates new Location instance and subtracts coordinates
-     *
      * @param loc Initial location
      * @param x   X to subtract
      * @param y   Y to subtract
@@ -61,17 +59,17 @@ public final class Locations {
 
     public static void loop(int radius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();
-        for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
-        for(int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
-        for(int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
+        for (int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
+        for (int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
+        for (int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
             loop.accept(new Location(world, x, y, z));
     }
 
     public static void loop(int radius, Location start, LocationConsumer loop) {
         World world = start.getWorld();
-        for(int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
-        for(int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
-        for(int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
+        for (int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
+        for (int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
+        for (int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
             loop.accept(world, x, y, z);
     }
 

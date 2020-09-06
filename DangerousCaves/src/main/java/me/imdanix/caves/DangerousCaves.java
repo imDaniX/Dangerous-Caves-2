@@ -49,7 +49,7 @@ public class DangerousCaves extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if(getDescription().getVersion().contains("SNAPSHOT")) {
+        if (getDescription().getVersion().contains("SNAPSHOT")) {
             getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/Dangerous-Сaves-2/issues");
         }
@@ -68,7 +68,7 @@ public class DangerousCaves extends JavaPlugin {
         CavesAging cavesAging = new CavesAging(this);
         DepthHypoxia hypoxia = new DepthHypoxia();
 
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             DCExpansion expansion = new DCExpansion(cfg);
             expansion.register(hypoxia.getPlaceholder());
             expansion.register();
@@ -88,7 +88,7 @@ public class DangerousCaves extends JavaPlugin {
         cfg.register(cavesAging);
         cfg.register(caveIns);
         cfg.register(hypoxia);
-        if(cfg.getYml().getBoolean("generator.wait-other", false)) {
+        if (cfg.getYml().getBoolean("generator.wait-other", false)) {
             Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
         } else cfg.register(generator);
 

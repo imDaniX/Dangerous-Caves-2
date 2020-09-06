@@ -50,8 +50,8 @@ public class Configuration implements Manager<Configurable> {
      */
     public void create(boolean resource) {
         file.getParentFile().mkdirs();
-        if(!file.exists()) {
-            if(resource) {
+        if (!file.exists()) {
+            if (resource) {
                 plugin.saveResource(file.getName(), false);
             } else {
                 try {
@@ -70,7 +70,7 @@ public class Configuration implements Manager<Configurable> {
      */
     @Override
     public boolean register(Configurable conf) {
-        if(!configurables.contains(conf) && conf.getName().equals(name)) {
+        if (!configurables.contains(conf) && conf.getName().equals(name)) {
             configurables.add(conf);
             reload(conf);
             return true;
@@ -116,11 +116,11 @@ public class Configuration implements Manager<Configurable> {
      * @return Are versions equal
      */
     public boolean checkVersion(boolean message) {
-        if(yml == null)
+        if (yml == null)
             throw new IllegalStateException("Configuration file is not created yet.");
         String oldVersion = yml.getString("version", "0");
-        if(version.equals(oldVersion)) return true;
-        if(message) {
+        if (version.equals(oldVersion)) return true;
+        if (message) {
             plugin.getLogger().warning("Seems like your config is outdated (current " + version + ", your " + oldVersion + ")");
             plugin.getLogger().warning("Please check latest changes, and if everything is good, change your version in config.yml to " + version);
         }

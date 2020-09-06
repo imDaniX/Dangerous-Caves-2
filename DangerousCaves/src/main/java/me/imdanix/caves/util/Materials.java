@@ -96,9 +96,9 @@ public final class Materials {
 
     public static Set<Material> getSet(Collection<String> types) {
         Set<Material> materials = new HashSet<>();
-        for(String typeStr : types) {
+        for (String typeStr : types) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
-            if(type != null) materials.add(type);
+            if (type != null) materials.add(type);
         }
         return materials.isEmpty() ? Collections.emptySet() : materials;
     }
@@ -131,9 +131,9 @@ public final class Materials {
     }
 
     public static Material or(String... types) {
-        for(String typeStr : types) {
+        for (String typeStr : types) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
-            if(type != null) return type;
+            if (type != null) return type;
         }
         return null;
     }
@@ -161,8 +161,8 @@ public final class Materials {
         }
 
         public SetBuilder with(Material... types) {
-            for(Material type : types) {
-                if(type != null)
+            for (Material type : types) {
+                if (type != null)
                     materials.add(type);
             }
             return this;

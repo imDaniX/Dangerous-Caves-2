@@ -79,7 +79,7 @@ public class LavaCreeper extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.addPotionEffect(FIRE_RESISTANCE);
@@ -87,13 +87,13 @@ public class LavaCreeper extends TickingMob implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
-        if(fireTouch <= 0 || !isThis(event.getEntity())) return;
+        if (fireTouch <= 0 || !isThis(event.getEntity())) return;
         event.getDamager().setFireTicks(fireTouch);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplosion(EntityExplodeEvent event) {
-        if(!isThis(event.getEntity()) || chance <= 0) return;
+        if (!isThis(event.getEntity()) || chance <= 0) return;
         ((LivingEntity)event.getEntity()).removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
         Location start = event.getLocation();
         int cx = start.getBlockX();
@@ -101,16 +101,16 @@ public class LavaCreeper extends TickingMob implements Listener {
         int cz = start.getBlockZ();
         start.getWorld().spawnParticle(Particle.FLAME, cx, cy+1, cz, 20, 0, 0, 0, 2);
         Locations.loop(radius, start, (world, x, y, z) -> {
-            if(((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || !Rnd.chance(chance)) return;
+            if (((cx - x)^2 + (cy - y)^2 + (cz - z)^2) > radiusSquared || !Rnd.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
-            if(Materials.isAir(block.getType())) {
-                if(fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
-            } else if(block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
-                if(magmaBlock > 0 && Rnd.chance(magmaBlock)) {
+            if (Materials.isAir(block.getType())) {
+                if (fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
+            } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
+                if (magmaBlock > 0 && Rnd.chance(magmaBlock)) {
                     block.setType(VMaterial.MAGMA_BLOCK.get());
-                } else if(obsidian > 0 && Rnd.chance(obsidian)) {
+                } else if (obsidian > 0 && Rnd.chance(obsidian)) {
                     block.setType(Material.OBSIDIAN);
-                } else if(lava > 0 && Rnd.chance(lava)) {
+                } else if (lava > 0 && Rnd.chance(lava)) {
                     block.setType(Material.LAVA);
                 }
             }

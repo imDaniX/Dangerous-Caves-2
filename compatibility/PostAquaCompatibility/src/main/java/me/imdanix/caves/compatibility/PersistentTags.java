@@ -41,7 +41,7 @@ public class PersistentTags implements TagsProvider {
     @Override
     public void setTag(Block block, String tag) {
         BlockState state = block.getState();
-        if(!(state instanceof PersistentDataHolder)) return;
+        if (!(state instanceof PersistentDataHolder)) return;
         ((PersistentDataHolder)state).getPersistentDataContainer().set(MOB_KEY, PersistentDataType.STRING, tag);
         state.update(false, false);
     }
@@ -64,7 +64,7 @@ public class PersistentTags implements TagsProvider {
 
     @Override
     public String getTag(Block block) {
-        if(!(block.getState() instanceof PersistentDataHolder)) return null;
+        if (!(block.getState() instanceof PersistentDataHolder)) return null;
         return ((PersistentDataHolder)block.getState()).getPersistentDataContainer().get(MOB_KEY, PersistentDataType.STRING);
     }
 }

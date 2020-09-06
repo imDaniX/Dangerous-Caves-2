@@ -94,9 +94,9 @@ public class TrapsGroup extends AbstractStructure {
                 setType(loc, VMaterial.STONE_PRESSURE_PLATE.get());
                 setType(loc.subtract(0, 1, 0), Material.GRAVEL);
                 setType(loc.subtract(0, 1, 0), Material.TNT);
-                if(rnd.nextBoolean()) {
+                if (rnd.nextBoolean()) {
                     setType(loc.add(0, 0, 1), Material.TNT);
-                    if(rnd.nextBoolean()) {
+                    if (rnd.nextBoolean()) {
                         setType(loc.add(1, 0, 0), Material.TNT);
                     }
                 }
@@ -105,9 +105,9 @@ public class TrapsGroup extends AbstractStructure {
             case 6:
                 setType(loc, VMaterial.STONE_PRESSURE_PLATE.get());
                 setType(loc.subtract(0, 2, 0), Material.TNT);
-                if(rnd.nextBoolean()) {
+                if (rnd.nextBoolean()) {
                     setType(loc.add(0, 0, 1), Material.TNT);
-                    if(rnd.nextBoolean()) {
+                    if (rnd.nextBoolean()) {
                         setType(loc.add(1, 0, 0), Material.TNT);
                     }
                 }
@@ -117,9 +117,9 @@ public class TrapsGroup extends AbstractStructure {
                 setType(loc, Material.TRAPPED_CHEST);
                 fillInventory(loc.getBlock());
                 setType(loc.subtract(0, 2, 0), Material.TNT);
-                if(rnd.nextBoolean()) {
+                if (rnd.nextBoolean()) {
                     setType(loc.add(0, 0, 1), Material.TNT);
-                    if(rnd.nextBoolean()) {
+                    if (rnd.nextBoolean()) {
                         setType(loc.add(1, 0, 0), Material.TNT);
                     }
                 }

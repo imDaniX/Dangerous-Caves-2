@@ -35,9 +35,9 @@ public class LegacyMaterials implements MaterialsProvider {
     public void rotate(Block block, BlockFace face) {
         BlockState state = block.getState();
         MaterialData data = state.getData();
-        if(data instanceof Directional) {
+        if (data instanceof Directional) {
             ((Directional) data).setFacingDirection(face);
-        } else if(data instanceof Vine) {
+        } else if (data instanceof Vine) {
             ((Vine) data).putOnFace(face);
         }
         state.update(false, false);

@@ -62,12 +62,12 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
     }
 
     public static void fillInventory(Block block) {
-        if(!(block.getState() instanceof Container)) return;
-        if(mimicChance > 0 && Rnd.chance(mimicChance)) {
+        if (!(block.getState() instanceof Container)) return;
+        if (mimicChance > 0 && Rnd.chance(mimicChance)) {
             Compatibility.setTag(block, "mimic-30");
             return;
         }
-        if(chestItems.isEmpty()) return;
+        if (chestItems.isEmpty()) return;
         Inventory inventory = ((Container)block.getState()).getInventory();
         int itemsCount = Rnd.nextInt(10) + 2;
         while(itemsCount-- > 0) {

@@ -101,14 +101,14 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     @Override
     public void tick() {
-        if(disabled) return;
+        if (disabled) return;
 
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
                 double hypoxiaChance;
-                if(!Locations.isCave(loc) || loc.getY() > yMax ||
+                if (!Locations.isCave(loc) || loc.getY() > yMax ||
                         !Rnd.chance(chance) || !Rnd.chance(hypoxiaChance = getChance(player)) ||
                         !Regions.INSTANCE.check(CheckType.EFFECT, loc)) {
                     placeholder.removePlayer(player);
@@ -117,9 +117,9 @@ public class DepthHypoxia implements Tickable, Configurable {
                 placeholder.cachePlayer(hypoxiaChance, player);
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
-                if(messages.isEmpty()) continue;
+                if (messages.isEmpty()) continue;
                 String text = Rnd.randomElement(messages).replace("%player", player.getName());
-                if(actionbar) {
+                if (actionbar) {
                     Compatibility.sendActionBar(player, text);
                 } else {
                     player.sendMessage(text);
@@ -132,8 +132,8 @@ public class DepthHypoxia implements Tickable, Configurable {
         double depthChance = (yMax - player.getLocation().getY()) / yMax;
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();
-        for(ItemStack item : contents) {
-            if(item == null) continue;
+        for (ItemStack item : contents) {
+            if (item == null) continue;
             weightChance += item.getAmount() / item.getMaxStackSize();
         }
         weightChance /= contents.length;

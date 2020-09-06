@@ -26,14 +26,14 @@ public class DualBound implements Bound {
     private final int zMax;
 
     public DualBound(int xMin, int xMax, int zMin, int zMax) {
-        if(xMin > xMax) {
+        if (xMin > xMax) {
             this.xMin = xMax;
             this.xMax = xMin;
         } else {
             this.xMin = xMin;
             this.xMax = xMax;
         }
-        if(zMin > zMax) {
+        if (zMin > zMax) {
             this.zMin = zMax;
             this.zMax = zMin;
         } else {
@@ -44,8 +44,7 @@ public class DualBound implements Bound {
 
     @Override
     public boolean isInside(int x, int z) {
-        return xMin >= x && x <= xMax &&
-                zMin >= z && z <= zMax;
+        return (xMin >= x && x <= xMax) && (zMin >= z && z <= zMax);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class DualBound implements Bound {
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof DualBound)) return false;
+        if (!(object instanceof DualBound)) return false;
         DualBound b = (DualBound) object;
         return (xMin == b.xMin && xMax == b.xMax) && (zMin == b.zMax && zMax == b.zMax);
     }

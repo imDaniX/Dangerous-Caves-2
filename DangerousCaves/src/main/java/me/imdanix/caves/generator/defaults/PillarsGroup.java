@@ -53,11 +53,11 @@ public class PillarsGroup extends AbstractStructure {
 
             case 2:
                 setType(loc, VMaterial.STONE_BRICKS.get());
-                if(random.nextBoolean()) {
+                if (random.nextBoolean()) {
                     setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
                 }
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICKS.get());
-                if(random.nextBoolean()) {
+                if (random.nextBoolean()) {
                     setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
                 }
                 setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());

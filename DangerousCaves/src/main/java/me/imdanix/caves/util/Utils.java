@@ -46,25 +46,25 @@ public final class Utils {
     }
 
     public static void fillWorlds(List<String> worldsCfg, Collection<String> worlds) {
-        if(worldsCfg.isEmpty()) {
-            for(World world : Bukkit.getWorlds()) {
-                if(world.getEnvironment() == World.Environment.NORMAL)
+        if (worldsCfg.isEmpty()) {
+            for (World world : Bukkit.getWorlds()) {
+                if (world.getEnvironment() == World.Environment.NORMAL)
                     worlds.add(world.getName());
             }
         } else worlds.addAll(worldsCfg);
     }
 
     public static void setMaxHealth(LivingEntity entity, double health) {
-        if(health <= 0) return;
+        if (health <= 0) return;
         entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
         entity.setHealth(health);
     }
 
     public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {
         Set<T> enums = new HashSet<>();
-        for(String enumStr : enumStrColl) {
+        for (String enumStr : enumStrColl) {
             T t = getEnum(clazz, enumStr.toUpperCase(Locale.ENGLISH));
-            if(t != null) enums.add(t);
+            if (t != null) enums.add(t);
         }
         return enums.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(enums);
     }
@@ -82,7 +82,7 @@ public final class Utils {
     }
 
     public static double getDouble(String str, double def) {
-        if(!FLOAT.matcher(str).matches()) return def;
+        if (!FLOAT.matcher(str).matches()) return def;
         return Double.parseDouble(str);
     }
 }

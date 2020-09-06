@@ -39,7 +39,7 @@ public class SingularBound implements Bound {
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof SingularBound)) return false;
+        if (!(object instanceof SingularBound)) return false;
         SingularBound b = (SingularBound) object;
         return x == b.x && z == b.z;
     }

@@ -49,7 +49,7 @@ public class ScoreboardTags implements TagsProvider {
     @Override
     public void setTag(Block block, String tag) {
         BlockState state = block.getState();
-        if(!(state instanceof Nameable)) return;
+        if (!(state instanceof Nameable)) return;
         ((Nameable)state).setCustomName(TAG_PREFIX + tag);
         state.update(false, false);
     }
@@ -58,13 +58,13 @@ public class ScoreboardTags implements TagsProvider {
     public String getTag(LivingEntity entity) {
         Set<String> entityTags = entity.getScoreboardTags();
 
-        if(entityTags.contains(DC_TAG)) {
-            if(entityTags.size() > tags.size()) {
-                for(String tag : tags)
-                    if(entityTags.contains(tag)) return tag;
+        if (entityTags.contains(DC_TAG)) {
+            if (entityTags.size() > tags.size()) {
+                for (String tag : tags)
+                    if (entityTags.contains(tag)) return tag;
             } else {
-                for(String tag : entityTags)
-                    if(tags.contains(tag)) return tag;
+                for (String tag : entityTags)
+                    if (tags.contains(tag)) return tag;
             }
         }
         return null;
@@ -83,7 +83,7 @@ public class ScoreboardTags implements TagsProvider {
     @Override
     public String getTag(Block block) {
         BlockState state = block.getState();
-        if(!(state instanceof Nameable)) return null;
+        if (!(state instanceof Nameable)) return null;
         String name = ((Nameable) state).getCustomName();
         return name != null && name.startsWith(TAG_PREFIX) ? name.substring(TAG_PREFIX.length()) : null;
     }

@@ -50,12 +50,12 @@ public class FormulasEvaluator {
     private Expression thirdImportance(PointerHolder holder) {
         Expression x = secondImportance(holder);
         while(true) {
-            if(holder.tryNext('+')) {
+            if (holder.tryNext('+')) {
                 Expression a = x;
                 Expression b = secondImportance(holder);
                 x = () -> a.eval() + b.eval();
             } else
-            if(holder.tryNext('-')) {
+            if (holder.tryNext('-')) {
                 Expression a = x;
                 Expression b = secondImportance(holder);
                 x = () -> a.eval() - b.eval();
@@ -67,17 +67,17 @@ public class FormulasEvaluator {
     private Expression secondImportance(PointerHolder holder) {
         Expression x = firstImportance(holder);
         while(true) {
-            if(holder.tryNext('*')) {
+            if (holder.tryNext('*')) {
                 Expression a = x;
                 Expression b = firstImportance(holder);
                 x = () -> a.eval() * b.eval();
             } else
-            if(holder.tryNext('/')) {
+            if (holder.tryNext('/')) {
                 Expression a = x;
                 Expression b = firstImportance(holder);
                 x = () -> a.eval() / b.eval();
             } else
-            if(holder.tryNext('%')) {
+            if (holder.tryNext('%')) {
                 Expression a = x;
                 Expression b = firstImportance(holder);
                 x = () -> a.eval() % b.eval();
@@ -87,29 +87,29 @@ public class FormulasEvaluator {
     }
 
     private Expression firstImportance(PointerHolder holder) {
-        if(holder.tryNext('-')) { // "-5", "--5"..
+        if (holder.tryNext('-')) { // "-5", "--5"..
             Expression a = firstImportance(holder);
             return () -> -a.eval();
         }
-        if(holder.tryNext('+')) // "+5", "++5"..
+        if (holder.tryNext('+')) // "+5", "++5"..
             return firstImportance(holder);
         Expression x = ZERO;
         int start = holder.pointer;
-        if(holder.tryNext('(')) {
+        if (holder.tryNext('(')) {
             x = thirdImportance(holder);
             holder.tryNext(')');
-        } else if(isNumberChar(holder.current())) {
+        } else if (isNumberChar(holder.current())) {
             while(isNumberChar(holder.current())) holder.pointer++;
             double a = Double.parseDouble(holder.substring(start, holder.pointer));
             x = () -> a;
-        } else if(isWordChar(holder.current())) {
+        } else if (isWordChar(holder.current())) {
             holder.pointer++;
             while(isWordChar(holder.current()) || isNumberChar(holder.current())) holder.pointer++;
             String str = holder.substring(start, holder.pointer);
             x = () -> variables.get(str);
         }
 
-        if(holder.tryNext('^')) {
+        if (holder.tryNext('^')) {
             Expression a = x;
             Expression b = firstImportance(holder);
             x = () -> Math.pow(a.eval(), b.eval());
@@ -144,7 +144,7 @@ public class FormulasEvaluator {
         }
 
         private boolean tryNext(char c) {
-            if(current() == c) {
+            if (current() == c) {
                 pointer++;
                 return true;
             }

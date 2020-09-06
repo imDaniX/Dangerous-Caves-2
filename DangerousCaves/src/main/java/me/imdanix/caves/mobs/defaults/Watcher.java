@@ -63,7 +63,7 @@ public class Watcher extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if(!name.isEmpty()) entity.setCustomName(name);
+        if (!name.isEmpty()) entity.setCustomName(name);
         Utils.setMaxHealth(entity, health);
 
         entity.setSilent(true);
@@ -79,15 +79,15 @@ public class Watcher extends TickingMob implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
-        if(isThis(event.getEntity()))
+        if (isThis(event.getEntity()))
             Locations.playSound(event.getEntity().getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1.1f);
     }
 
     @Override
     public void tick(LivingEntity entity) {
         LivingEntity target = ((Monster)entity).getTarget();
-        if(target instanceof Player) {
-            if(Locations.isLookingAt(target, entity)) return;
+        if (target instanceof Player) {
+            if (Locations.isLookingAt(target, entity)) return;
             Location loc = target.getLocation().add(target.getLocation().getDirection());
             loc.setYaw(-loc.getYaw());
             entity.teleport(loc);

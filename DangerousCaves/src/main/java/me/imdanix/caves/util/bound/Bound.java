@@ -24,7 +24,7 @@ public interface Bound {
     static Bound fromString(String boundStr) {
         String[] xzStr = boundStr.split(" ");
         String[] firstCoords = xzStr[0].split(",");
-        if(xzStr.length > 1) {
+        if (xzStr.length > 1) {
             String[] secondCoords = xzStr[1].split(",");
             try {
                 return new DualBound(

@@ -57,14 +57,14 @@ public class Commander implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             help(sender, label);
         } else switch (args[0].toLowerCase(Locale.ENGLISH)) {
             case "info":
-                if(!(sender instanceof Player)) {
+                if (!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));
                     return true;
-                } else if(!sender.hasPermission("dangerous.caves.command.info")) return false;
+                } else if (!sender.hasPermission("dangerous.caves.command.info")) return false;
                 Player player = (Player)sender;
                 Location loc = player.getLocation();
                 sender.sendMessage(Utils.clr("&bWorld: &f") + loc.getWorld().getName());
@@ -75,16 +75,16 @@ public class Commander implements CommandExecutor {
             // TODO: "debug"
 
             case "summon": case "spawn":
-                if(!(sender instanceof Player)) {
+                if (!(sender instanceof Player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from console!"));
                     return true;
-                } else if(!sender.hasPermission("dangerous.caves.command.summon")) return false;
-                if(args.length < 2) {
+                } else if (!sender.hasPermission("dangerous.caves.command.summon")) return false;
+                if (args.length < 2) {
                     sender.sendMessage(Utils.clr("&cYou should specify mobs type to summon!"));
                     return true;
                 }
                 String mob = args[1].toLowerCase(Locale.ENGLISH);
-                if(mobsManager.spawn(mob, ((Player)sender).getLocation()) != null) {
+                if (mobsManager.spawn(mob, ((Player)sender).getLocation()) != null) {
                     sender.sendMessage(Utils.clr("&aMob " + mob + " was successfully summoned."));
                 } else {
                     sender.sendMessage(Utils.clr("&cThere's no mobs type called " + mob + "!"));
@@ -92,14 +92,14 @@ public class Commander implements CommandExecutor {
                 break;
 
             case "kill":
-                if(!sender.hasPermission("dangerous.caves.command.kill")) return false;
-                if(args.length < 2) {
+                if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
+                if (args.length < 2) {
                     killAll(LivingEntity::remove);
                     sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs."));
                 } else {
                     String type = args[1].toLowerCase(Locale.ENGLISH);
-                    if(mobsManager.getMob(type) == null) {
-                        killAll(entity -> {if(Compatibility.isTagged(entity, type)) entity.remove();});
+                    if (mobsManager.getMob(type) == null) {
+                        killAll(entity -> {if (Compatibility.isTagged(entity, type)) entity.remove();});
                         sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs " + type + "."));
                     } else {
                         sender.sendMessage(Utils.clr("&cThere's no mobs type called " + type + "!"));
@@ -108,13 +108,13 @@ public class Commander implements CommandExecutor {
                 break;
 
             case "tick":
-                if(!sender.hasPermission("dangerous.caves.command.tick")) return false;
-                for(TickLevel level : TickLevel.values()) dynamics.tick(level);
+                if (!sender.hasPermission("dangerous.caves.command.tick")) return false;
+                for (TickLevel level : TickLevel.values()) dynamics.tick(level);
                 sender.sendMessage(Utils.clr("&aTicked every tickables."));
                 break;
 
             case "reload": case "r":
-                if(!sender.hasPermission("dangerous.caves.command.reload")) return false;
+                if (!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
                 cfg.checkVersion(true);
@@ -126,10 +126,10 @@ public class Commander implements CommandExecutor {
     }
 
     private static void killAll(Consumer<LivingEntity> kill) {
-        for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
-            if(!(entity instanceof LivingEntity)) continue;
+        for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) {
+            if (!(entity instanceof LivingEntity)) continue;
             LivingEntity living = (LivingEntity) entity;
-            if(Compatibility.isTagged(living))
+            if (Compatibility.isTagged(living))
                 kill.accept(living);
         }
     }

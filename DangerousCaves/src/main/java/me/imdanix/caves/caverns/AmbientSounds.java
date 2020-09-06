@@ -61,16 +61,16 @@ public class AmbientSounds implements Tickable, Configurable {
         yMax = cfg.getInt("y-max", 64);
         radius = cfg.getDouble("near", 7);
         sounds.clear();
-        for(String soundStr : Configuration.section(cfg, "sounds").getKeys(false)) {
+        for (String soundStr : Configuration.section(cfg, "sounds").getKeys(false)) {
             Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase(Locale.ENGLISH));
-            if(sound == null) continue;
+            if (sound == null) continue;
             sounds.add(new WrappedSound(
                     sound,
                     cfg.getDouble("volume", 1),
                     cfg.getDouble("pitch", 0.5)
             ));
         }
-        if(sounds.isEmpty()) chance = 0;
+        if (sounds.isEmpty()) chance = 0;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
@@ -79,13 +79,13 @@ public class AmbientSounds implements Tickable, Configurable {
 
     @Override
     public void tick() {
-        if(disabled) return;
+        if (disabled) return;
 
-        for(World world : Bukkit.getWorlds()) {
-            if(!worlds.contains(world.getName())) continue;
-            for(Player player : world.getPlayers()) {
+        for (World world : Bukkit.getWorlds()) {
+            if (!worlds.contains(world.getName())) continue;
+            for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if(loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance)
+                if (loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance)
                     && Regions.INSTANCE.check(CheckType.EFFECT, loc))
                     Rnd.randomElement(sounds).play(player);
             }
@@ -115,7 +115,7 @@ public class AmbientSounds implements Tickable, Configurable {
 
         public void play(Player player) {
             Location loc = player.getEyeLocation();
-            if(radius > 0)
+            if (radius > 0)
                 loc.add(Rnd.nextDouble(-radius, radius),
                         Rnd.nextDouble(-radius, radius),
                         Rnd.nextDouble(-radius, radius));
