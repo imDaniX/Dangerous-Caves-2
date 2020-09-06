@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.imdanix.plugins</groupId>
-    <artifactId>dangerous-caves-main</artifactId>
+    <artifactId>dangerouscaves-parent</artifactId>
     <version>2</version>
     <modules>
         <module>compatibility/Compatibility</module>
@@ -35,11 +35,11 @@
         <module>regions/GriefPrevention</module>
         <module>regions/Lands</module>
     <!--<module>regions/Residence</module>-->
-        <module>Dangerous-Caves</module>
+        <module>DangerousCaves</module>
     </modules>
     <packaging>pom</packaging>
 
-    <description>Adds and improves mechanics in caves.</description>
+    <description>Adds and improves mechanics in caves</description>
     <properties>
         <subVersion>2.10-SNAPSHOT</subVersion>
         <cfgVersion>21</cfgVersion>

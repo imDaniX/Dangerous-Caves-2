@@ -32,5 +32,5 @@ jobs:
         with:
           name: Dangerous Caves
           path: |
-            Dangerous-Caves/target/Dangerous-Caves-*.jar
-            Dangerous-Caves/target/classes/config.yml
+            DangerousCaves/target/Dangerous-Caves-*.jar
+            DangerousCaves/target/classes/config.yml

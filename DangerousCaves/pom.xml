@@ -21,13 +21,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dangerous-caves-main</artifactId>
+        <artifactId>dangerouscaves-parent</artifactId>
         <groupId>me.imdanix.plugins</groupId>
         <version>2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dangerous-caves</artifactId>
+    <artifactId>dangerouscaves</artifactId>
 
     <build>
         <resources>
@@ -128,25 +128,25 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>worldguard6</artifactId>
+            <artifactId>regions-worldguard6</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>worldguard7</artifactId>
+            <artifactId>regions-worldguard7</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>griefprevention</artifactId>
+            <artifactId>regions-griefprevention</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>lands</artifactId>
+            <artifactId>regions-lands</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
