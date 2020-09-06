@@ -63,6 +63,8 @@ integration:
       schedule: 200
       # Count try-chance in final result
       respect-try-chance: true
+      # Calculate chance on join too
+      calculate-on-join: true
 
 #
 # Cave-related things

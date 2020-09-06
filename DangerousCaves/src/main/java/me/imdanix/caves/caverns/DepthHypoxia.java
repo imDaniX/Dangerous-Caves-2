@@ -35,6 +35,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -186,6 +189,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         private boolean enabled;
         private BukkitTask task;
         private boolean tryChance;
+        private Listener joinListener;
 
         public HypoxiaChancePlaceholder() {
             chances = new WeakHashMap<>();
@@ -198,13 +202,25 @@ public class DepthHypoxia implements Tickable, Configurable {
                 task.cancel();
                 task = null;
             }
+            if (joinListener != null) {
+                PlayerJoinEvent.getHandlerList().unregister(joinListener);
+                joinListener = null;
+            }
             if (enabled) {
                 tryChance = cfg.getBoolean("respect-try-chance", true);
                 int schedule = cfg.getInt("schedule", 200);
-                if (schedule <= 0) {
+                if (schedule > 0) {
                     task = Bukkit.getScheduler().runTaskTimer(plugin, () ->
                             Bukkit.getOnlinePlayers().forEach(DepthHypoxia.this::checkConditionsPH),
                             schedule, schedule);
+                }
+                if (cfg.getBoolean("calculate-on-join", true)) {
+                    Bukkit.getPluginManager().registerEvents(joinListener = new Listener() {
+                        @EventHandler
+                        public void onJoin(PlayerJoinEvent event) {
+                            checkConditionsPH(event.getPlayer());
+                        }
+                    }, plugin);
                 }
             }
         }
