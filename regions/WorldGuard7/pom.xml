@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>regions-regionmanager</artifactId>
+            <artifactId>regionmanager</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
