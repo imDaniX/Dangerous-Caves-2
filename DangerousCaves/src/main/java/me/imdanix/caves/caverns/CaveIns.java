@@ -179,7 +179,7 @@ public class CaveIns implements Listener, Configurable {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "caverns.ins";
     }
 

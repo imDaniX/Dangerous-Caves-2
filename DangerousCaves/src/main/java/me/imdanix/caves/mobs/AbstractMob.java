@@ -77,7 +77,7 @@ public abstract class AbstractMob implements CustomMob {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "mobs." + customType;
     }
 }

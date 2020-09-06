@@ -70,7 +70,7 @@ public class Configuration implements Manager<Configurable> {
      */
     @Override
     public boolean register(Configurable conf) {
-        if (!configurables.contains(conf) && conf.getName().equals(name)) {
+        if (!configurables.contains(conf) && conf.getConfigName().equals(name)) {
             configurables.add(conf);
             reload(conf);
             return true;
@@ -91,7 +91,7 @@ public class Configuration implements Manager<Configurable> {
      * @param conf Object to reload
      */
     public void reload(Configurable conf) {
-        conf.reload(conf.getPath().isEmpty() ? yml : section(yml, conf.getPath()));
+        conf.reload(conf.getConfigPath().isEmpty() ? yml : section(yml, conf.getConfigPath()));
     }
 
     /**

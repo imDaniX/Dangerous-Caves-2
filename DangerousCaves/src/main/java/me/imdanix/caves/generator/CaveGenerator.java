@@ -128,7 +128,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "generator";
     }
 

@@ -24,7 +24,7 @@ import java.util.Map;
 
 /*
    All the code is inspired by Boann's answer on https://stackoverflow.com/questions/3422673
-   You can use this code however you want to
+   You can use this code how ever you want to
 
    Shorted version of https://github.com/imDaniX/EzMath/blob/master/src/me/imdanix/math/FormulasEvaluator.java
 */

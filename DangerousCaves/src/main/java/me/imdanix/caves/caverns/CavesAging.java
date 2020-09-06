@@ -264,7 +264,7 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "caverns.aging";
     }
 

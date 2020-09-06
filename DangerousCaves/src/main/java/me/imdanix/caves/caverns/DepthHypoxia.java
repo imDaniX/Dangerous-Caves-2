@@ -36,8 +36,10 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,6 +55,8 @@ public class DepthHypoxia implements Tickable, Configurable {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, 120, 1);
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
+    private final Plugin plugin;
+
     private final Set<String> worlds;
     private final HypoxiaChancePlaceholder placeholder;
 
@@ -67,7 +71,8 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     private FormulasEvaluator formula;
 
-    public DepthHypoxia() {
+    public DepthHypoxia(Plugin plugin) {
+        this.plugin = plugin;
         worlds = new HashSet<>();
         messages = new ArrayList<>();
         placeholder = new HypoxiaChancePlaceholder();
@@ -106,15 +111,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         for (World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
-                Location loc = player.getLocation();
-                double hypoxiaChance;
-                if (!Locations.isCave(loc) || loc.getY() > yMax ||
-                        !Rnd.chance(chance) || !Rnd.chance(hypoxiaChance = getChance(player)) ||
-                        !Regions.INSTANCE.check(CheckType.EFFECT, loc)) {
-                    placeholder.removePlayer(player);
-                    continue;
-                }
-                placeholder.cachePlayer(hypoxiaChance, player);
+                if (!checkConditions(player)) continue;
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
                 if (messages.isEmpty()) continue;
@@ -125,6 +122,23 @@ public class DepthHypoxia implements Tickable, Configurable {
                     player.sendMessage(text);
                 }
             }
+        }
+    }
+
+    private boolean checkConditions(Player player) {
+        Location loc = player.getLocation();
+        if (!Locations.isCave(loc) || loc.getY() > yMax) {
+            placeholder.removePlayer(player);
+            return false;
+        }
+        if (Rnd.chance(chance)) {
+            double hypoxiaChance;
+            boolean check = Rnd.chance(hypoxiaChance = getChance(player));
+            placeholder.cachePlayer(hypoxiaChance*chance, player);
+            return check && Regions.INSTANCE.check(CheckType.EFFECT, loc);
+        } else {
+            placeholder.cachePlayer(getChance(player)*chance, player);
+            return false;
         }
     }
 
@@ -148,7 +162,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "caverns.hypoxia";
     }
 
@@ -160,6 +174,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         private final Map<Player, String> chances;
         private DoubleBiConsumer<Player> cache;
         private Consumer<Player> remove;
+        private BukkitTask task;
 
         public HypoxiaChancePlaceholder() {
             chances = new WeakHashMap<>();
@@ -168,17 +183,27 @@ public class DepthHypoxia implements Tickable, Configurable {
         @Override
         public void reload(ConfigurationSection cfg) {
             if (cfg.getBoolean("enabled")) {
+                int schedule = cfg.getInt("schedule");
+                if (schedule <= 0) {
+                    task = Bukkit.getScheduler().runTaskTimer(plugin, () ->
+                            Bukkit.getOnlinePlayers().forEach(DepthHypoxia.this::checkConditions),
+                            schedule, schedule);
+                }
                 cache = (d,p) -> chances.put(p, Double.toString(Math.floor(d * 10000) / 100));
-                remove = p -> chances.remove(p);
+                remove = chances::remove;
             } else {
+                if (task != null) {
+                    task.cancel();
+                    task = null;
+                }
                 chances.clear();
                 cache = (d,p) -> {};
                 remove = p -> {};
             }
         }
 
-        public void cachePlayer(double chance, Player player) {
-            cache.accept(chance, player);
+        public void cachePlayer(double hypoxiaChance, Player player) {
+            cache.accept(hypoxiaChance * chance, player);
         }
 
         public void removePlayer(Player player) {
@@ -186,7 +211,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         }
 
         @Override
-        public String getPath() {
+        public String getConfigPath() {
             return "integration.placeholders.hypoxia-chance";
         }
 

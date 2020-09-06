@@ -57,6 +57,10 @@ integration:
     # %dangerouscaves_hypoxia_chance% - a chance to get Hypoxia, scales from 0 to 100
     hypoxia-chance:
       enabled: false
+      # Time in ticks between updates
+      # Set to 0 if you want to update it only on PLAYER tick
+      # Setting to 20 or lower is not recommended
+      schedule: 200
 
 #
 # Cave-related things
@@ -135,8 +139,9 @@ caverns:
     # Depth (0-1) - depth of player, where 1 is Y 0, and 0 is y-max(from config)
     # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe, 16 ender pearls or 64 dirt)
     # For 2.1.9 behavior use "(depth+inventory)/2"
+    # For original-like behavior just use "1" and set try-chance to 40
     chance-formula: "depth*inventory"
-    # Limit maximal and minimal chance of activation. Set `chance-max` 100 to disable
+    # Limit maximal and minimal chance of activation
     chance-min: 10
     chance-max: 90
     # Maximal Y where players can sense lack of air
@@ -169,8 +174,8 @@ caverns:
     # WARNING: Can cause lags if > 0. This option checks every horizontal side of block to check if there's some light
     max-light-level: 0
     # Vanilla ticks between chunk changes. Larger value - better performance, but slower process
-    # Large values(60+) are not recommended
-    schedule-timer: 4
+    # Large values(80+) are not recommended
+    schedule-timer: 10
     # Force chunk loading if chunk was unloaded during scheduled aging. Disable if it's too intensive for your server
     force-load: true
     # Maximal percentage of aged blocks per chunk

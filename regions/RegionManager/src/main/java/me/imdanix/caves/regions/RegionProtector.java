@@ -22,6 +22,7 @@ import org.bukkit.Location;
 
 import java.util.function.BiPredicate;
 
+@FunctionalInterface
 public interface RegionProtector extends BiPredicate<CheckType, Location> {
     /**
      * Called on plugin enable

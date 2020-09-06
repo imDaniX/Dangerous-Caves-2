@@ -31,13 +31,13 @@ public interface Configurable {
      * Get path for this object in configuration
      * @return Object's configuration section path
      */
-    String getPath();
+    String getConfigPath();
 
     /**
      * Get name of configuration for this object
      * @return Name of required configuration
      */
-    default String getName() {
+    default String getConfigName() {
         return "config";
     }
 }

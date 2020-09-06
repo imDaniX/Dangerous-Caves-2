@@ -98,7 +98,7 @@ public class AmbientSounds implements Tickable, Configurable {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "caverns.ambient";
     }
 

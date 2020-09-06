@@ -287,7 +287,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "mobs";
     }
 

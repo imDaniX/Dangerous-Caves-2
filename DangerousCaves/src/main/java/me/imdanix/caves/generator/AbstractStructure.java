@@ -48,7 +48,7 @@ public abstract class AbstractStructure implements StructureGroup {
     }
 
     @Override
-    public String getPath() {
+    public String getConfigPath() {
         return "generator.structures";
     }
 
