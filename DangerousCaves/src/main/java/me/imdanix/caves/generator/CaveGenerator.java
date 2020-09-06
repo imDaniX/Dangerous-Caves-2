@@ -43,7 +43,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
-    private final Configuration cfg;
+    private final Configuration config;
 
     private boolean disabled;
 
@@ -53,8 +53,8 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     private final Map<String, StructureGroup> structures;
     private WeightedPool<StructureGroup> structuresPool;
 
-    public CaveGenerator(Configuration cfg) {
-        this.cfg = cfg;
+    public CaveGenerator(Configuration config) {
+        this.config = config;
         structures = new HashMap<>();
         this.structuresPool = new WeightedPool<>();
     }
@@ -93,7 +93,10 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
      */
     private void recalculate() {
         structuresPool = new WeightedPool<>();
-        structures.values().forEach(g -> structuresPool.add(g, g.getWeight()));
+        structures.values().forEach(g -> {
+            config.reload(g);
+            structuresPool.add(g, g.getWeight());
+        });
         if (structuresPool.isEmpty()) {
             disabled = true;
         }
@@ -108,8 +111,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         if (structures.containsKey(group.getId())) return false;
         structures.put(group.getId(), group);
         structuresPool.add(group, group.getWeight());
-        if (group instanceof Configurable)
-            cfg.register((Configurable) group);
+        //cfg.register(group);
         return true;
     }
 

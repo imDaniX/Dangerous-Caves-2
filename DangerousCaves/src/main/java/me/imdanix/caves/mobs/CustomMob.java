@@ -18,6 +18,7 @@
 
 package me.imdanix.caves.mobs;
 
+import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -26,7 +27,7 @@ import org.bukkit.entity.LivingEntity;
 /**
  * Main interface for mobs
  */
-public interface CustomMob {
+public interface CustomMob extends Configurable {
 
     /**
      * Check if provided entity is this custom mob

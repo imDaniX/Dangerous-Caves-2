@@ -18,12 +18,13 @@
 
 package me.imdanix.caves.generator;
 
+import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 
 import java.util.Random;
 
-public interface StructureGroup {
+public interface StructureGroup extends Configurable {
 
     /**
      * Get id of structure group
