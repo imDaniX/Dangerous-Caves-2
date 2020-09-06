@@ -91,14 +91,15 @@ public class FormulasEvaluator {
             Expression a = firstImportance(holder);
             return () -> -a.eval();
         }
-        if (holder.tryNext('+')) // "+5", "++5"..
-            return firstImportance(holder);
+        while (holder.tryNext('+')); // "+5", "++5"..
+
         Expression x = ZERO;
         int start = holder.pointer;
         if (holder.tryNext('(')) {
             x = thirdImportance(holder);
             holder.tryNext(')');
         } else if (isNumberChar(holder.current())) {
+            holder.pointer++;
             while(isNumberChar(holder.current())) holder.pointer++;
             double a = Double.parseDouble(holder.substring(start, holder.pointer));
             x = () -> a;

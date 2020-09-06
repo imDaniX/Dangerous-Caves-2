@@ -295,7 +295,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     /**
      * Handle a new ticking mob
      * @param entity Entity to handle
-     * @param mob    Related custom mob
+     * @param mob Related custom mob
      */
     public static void handle(LivingEntity entity, CustomMob.Ticking mob) {
         tickingEntities.put(mob, entity.getUniqueId());
