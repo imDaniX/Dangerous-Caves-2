@@ -203,7 +203,7 @@ public class DepthHypoxia implements Tickable, Configurable {
                 int schedule = cfg.getInt("schedule", 200);
                 if (schedule <= 0) {
                     task = Bukkit.getScheduler().runTaskTimer(plugin, () ->
-                            Bukkit.getOnlinePlayers().forEach(DepthHypoxia.this::checkConditions),
+                            Bukkit.getOnlinePlayers().forEach(DepthHypoxia.this::checkConditionsPH),
                             schedule, schedule);
                 }
             }
