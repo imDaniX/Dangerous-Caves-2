@@ -20,6 +20,7 @@ package me.imdanix.caves.generator.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.generator.AbstractStructure;
+import me.imdanix.caves.util.Locations;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -69,19 +70,19 @@ public class BuildingsGroup extends AbstractStructure {
                 break;
 
             case 5:
-                setType(loc.clone().add(1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
-                setType(loc.clone().subtract(1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
-                setType(loc.clone().add(0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
-                setType(loc.clone().subtract(0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
-                setType(loc.clone().subtract(0, 1, 0), Material.NETHERRACK);
+                setType(Locations.add(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
+                setType(Locations.subtract(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
+                setType(Locations.add(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
+                setType(Locations.subtract(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
+                setType(Locations.subtract(loc, 0, 1, 0), Material.NETHERRACK);
                 setType(loc, Material.FIRE);
                 break;
 
             case 6:
-                Location tempL1 = loc.clone().add(1, -1, 0);
-                Location tempL2 = loc.clone().add(-1, -1, 0);
-                Location tempL3 = loc.clone().add(0, -1, 1);
-                Location tempL4 = loc.clone().add(0, -1, -1);
+                Location tempL1 = Locations.add(loc, 1, -1, 0);
+                Location tempL2 = Locations.add(loc, -1, -1, 0);
+                Location tempL3 = Locations.add(loc, 0, -1, 1);
+                Location tempL4 = Locations.add(loc, 0, -1, -1);
                 loc.getBlock().setType(VMaterial.CRAFTING_TABLE.get());
                 if(tempL1.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
@@ -115,7 +116,7 @@ public class BuildingsGroup extends AbstractStructure {
         int xMod = random.nextBoolean() ? -1 : 1;
         int zMod = random.nextBoolean() ? -1 : 1;
         for(int y = 0; y < rock[0].length; y++) for(int x = -1; x < rock.length-1; x++) for(int z = -1; z < rock[0][0].length-1; z++) {
-            decideBlock(random, rock[x+1][y][z+1], loc.clone().add(x * xMod, y, z * zMod));
+            decideBlock(random, rock[x+1][y][z+1], Locations.add(loc, x * xMod, y, z * zMod));
         }
     }
 

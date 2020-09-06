@@ -20,6 +20,7 @@ package me.imdanix.caves.generator.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.generator.AbstractStructure;
+import me.imdanix.caves.util.Locations;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,7 +60,7 @@ public class PillarsGroup extends AbstractStructure {
                 if(random.nextBoolean()) {
                     setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
                 }
-                setType(loc.clone().add(random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
                 break;
 
@@ -72,7 +73,7 @@ public class PillarsGroup extends AbstractStructure {
 
             case 4:
                 setType(loc, randomStone(random));
-                setType(loc.clone().add(random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0,1,0), VMaterial.POLISHED_ANDESITE.get());
                 setType(loc.add(-1, 0, random.nextInt(2)), VMaterial.STONE_BRICK_SLAB.get());
                 break;
@@ -81,23 +82,23 @@ public class PillarsGroup extends AbstractStructure {
                 setType(loc, VMaterial.STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().add(0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, 0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().subtract(0 , 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.subtract(loc, 0 , 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
                 break;
 
             case 6:
                 setType(loc, VMaterial.STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().add(random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().add(1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().add(1, 0 ,0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, 1, 0 ,0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.clone().subtract(1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.subtract(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 break;

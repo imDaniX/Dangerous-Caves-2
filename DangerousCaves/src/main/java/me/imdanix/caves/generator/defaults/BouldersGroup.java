@@ -19,6 +19,7 @@
 package me.imdanix.caves.generator.defaults;
 
 import me.imdanix.caves.generator.AbstractStructure;
+import me.imdanix.caves.util.Locations;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -56,7 +57,7 @@ public class BouldersGroup extends AbstractStructure {
         int zMod = random.nextBoolean() ? -1 : 1;
         for(int y = 0; y < rock[0].length; y++) for(int x = -1; x < rock.length-1; x++) for(int z = -1; z < rock[0][0].length-1; z++)
             if(rock[x+1][y][z+1]) {
-                setType(loc.clone().add(x * xMod, y, z*zMod), randomStone(random));
+                setType(Locations.add(loc, x * xMod, y, z*zMod), randomStone(random));
             }
     }
 
