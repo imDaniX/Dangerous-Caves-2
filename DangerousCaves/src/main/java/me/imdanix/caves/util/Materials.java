@@ -70,12 +70,14 @@ public final class Materials {
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL,
-            Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE
+            Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
+            Material.RAIL, Material.TORCH, Material.CHEST
         ).with(
             "ANDESITE", "DIORITE", "GRANITE",
             "SOUL_SOIL", "BLACKSTONE", "BASALT",
             "NETHER_GOLD_ORE", "GILDED_BLACKSTONE"
         ).with(
+            or("SPAWNER", "MOB_SPAWNER"),
             or("OAK_PLANKS", "WOOD"),
             or("END_STONE", "ENDER_STONE"),
             or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")

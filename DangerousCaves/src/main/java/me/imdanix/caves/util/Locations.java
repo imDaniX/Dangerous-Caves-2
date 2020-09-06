@@ -19,6 +19,7 @@
 package me.imdanix.caves.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
@@ -75,8 +76,11 @@ public final class Locations {
 
     public static boolean isCave(Location loc) {
         Block block = loc.getBlock();
-        return block.getLightFromSky() == 0 &&
-                Materials.isCave(block.getRelative(BlockFace.DOWN).getType());
+        Material lowerType;
+        return block.getLightFromSky() <= 1 && (
+                Materials.isCave(lowerType = block.getRelative(BlockFace.DOWN).getType()) ||
+                Materials.isAir(lowerType)
+        );
 
     }
 
