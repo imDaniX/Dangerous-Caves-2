@@ -19,7 +19,7 @@ public class WeightedPool<T> {
 
     public WeightedPool(Collection<T> collection, ToIntFunction<T> funct) {
         elements = new ArrayList<>();
-        if(!collection.isEmpty()) {
+        if (!collection.isEmpty()) {
             Objects.requireNonNull(funct);
             collection.forEach(t -> add(t, funct.applyAsInt(t)));
         }
@@ -27,11 +27,15 @@ public class WeightedPool<T> {
     }
 
     public void add(T element, int weight) {
-        for(int i = 0; i < weight; i++)
+        for (int i = 0; i < weight; i++)
             this.elements.add(element);
     }
 
     public T next() {
         return this.elements.get(Rnd.nextInt(this.elements.size()));
+    }
+
+    public boolean isEmpty() {
+        return elements.isEmpty();
     }
 }

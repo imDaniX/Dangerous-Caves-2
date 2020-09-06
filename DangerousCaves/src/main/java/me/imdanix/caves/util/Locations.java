@@ -30,8 +30,34 @@ import org.bukkit.util.Vector;
 import java.util.function.Consumer;
 
 public final class Locations {
-    public static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST};
-    public static final BlockFace[] FULL_FACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,BlockFace.UP,BlockFace.DOWN};
+    public static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
+    public static final BlockFace[] FULL_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN};
+
+    /**
+     * Creates new Location instance and adds coordinates
+     *
+     * @param loc Initial location
+     * @param x   X to add
+     * @param y   Y to add
+     * @param z   Z to add
+     * @return Edited Location instance
+     */
+    public static Location add(Location loc, double x, double y, double z) {
+        return new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z);
+    }
+
+    /**
+     * Creates new Location instance and subtracts coordinates
+     *
+     * @param loc Initial location
+     * @param x   X to subtract
+     * @param y   Y to subtract
+     * @param z   Z to subreact
+     * @return Edited Location instance
+     */
+    public static Location subtract(Location loc, double x, double y, double z) {
+        return new Location(loc.getWorld(), loc.getX() - x, loc.getY() - y, loc.getZ() - z);
+    }
 
     public static void loop(int radius, Location start, Consumer<Location> loop) {
         World world = start.getWorld();

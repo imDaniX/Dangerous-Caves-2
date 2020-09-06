@@ -64,40 +64,38 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         chance = cfg.getDouble("chance", 50) / 100;
         maxTries = cfg.getInt("max-tries", 3);
 
+        // TODO: Refactor
         AbstractStructure.setMimicChance(cfg.getDouble("mimic-chance") / 100);
 
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
         disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && maxTries > 0 && !worlds.isEmpty());
-        if(!disabled) recalculate();
+        if (!disabled) recalculate();
 
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             List<BlockPopulator> populators = world.getPopulators();
             populators.remove(this);
-            if(!disabled && worlds.contains(world.getName())) populators.add(this);
+            if (!disabled && worlds.contains(world.getName())) populators.add(this);
         }
         List<Material> items = new ArrayList<>();
 
         List<String> itemsCfg = cfg.getStringList("chest-items");
-        for(String materialStr : itemsCfg) {
+        for (String materialStr : itemsCfg) {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
-            if(material != null) items.add(material);
+            if (material != null) items.add(material);
         }
         AbstractStructure.setItems(items);
     }
-
 
     /**
      * Recalculate structure groups spawn chances
      */
     private void recalculate() {
-        Set<StructureGroup> structuresSet = new HashSet<>();
-        structures.values().forEach(g -> {if(g.getWeight() > 0) structuresSet.add(g);});
-        if(structuresSet.isEmpty()) {
+        structuresPool = new WeightedPool<>();
+        structures.values().forEach(g -> structuresPool.add(g, g.getWeight()));
+        if (structuresPool.isEmpty()) {
             disabled = true;
-        } else {
-            structuresPool = new WeightedPool<>(structuresSet, StructureGroup::getWeight);
         }
     }
 
@@ -107,39 +105,39 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
      */
     @Override
     public boolean register(StructureGroup group) {
-        if(structures.containsKey(group.getId())) return false;
+        if (structures.containsKey(group.getId())) return false;
         structures.put(group.getId(), group);
         structuresPool.add(group, group.getWeight());
-        if(group instanceof Configurable)
+        if (group instanceof Configurable)
             cfg.register((Configurable) group);
         return true;
     }
 
     @Override
     public void populate(World world, Random random, Chunk chunk) {
-        if(chance > random.nextDouble()) {
+        if (chance > random.nextDouble()) {
             Block block = null;
             int tries = 0;
-            while(tries++ < maxTries && block == null) {
+            while (tries++ < maxTries && block == null) {
                 block = getClosestAir(chunk, random.nextInt(16), random.nextInt(16));
             }
-            if(block != null) structuresPool.next().generate(random, chunk, block);
+            if (block != null) structuresPool.next().generate(random, chunk, block);
         }
-    }
-
-    private static Block getClosestAir(Chunk chunk, int x, int z) {
-        for(int y = 4; y < 55; y++) {
-            Block block = chunk.getBlock(x, y, z);
-            if(Materials.isAir(block.getType())
-                && Materials.isAir(block.getRelative(BlockFace.UP).getType())
-                && Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
-                return block;
-        }
-        return null;
     }
 
     @Override
     public String getPath() {
         return "generator";
+    }
+
+    private static Block getClosestAir(Chunk chunk, int x, int z) {
+        for (int y = 4; y < 55; y++) {
+            Block block = chunk.getBlock(x, y, z);
+            if (Materials.isAir(block.getType())
+                    && Materials.isAir(block.getRelative(BlockFace.UP).getType())
+                    && Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                return block;
+        }
+        return null;
     }
 }

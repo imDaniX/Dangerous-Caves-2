@@ -68,17 +68,13 @@ import java.util.function.Predicate;
  */
 public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Configurable {
     private static final Multimap<CustomMob.Ticking, UUID> tickingEntities = HashMultimap.create();
-
-    private boolean disabled;
-
     private final MetadataValue MARKER;
-
     private final Plugin plugin;
     private final Configuration config;
     private final Dynamics dynamics;
-
     private final Map<String, CustomMob> mobs;
     private final Set<String> worlds;
+    private boolean disabled;
     private WeightedPool<CustomMob> mobsPool;
 
     private Set<EntityType> replaceTypes;
@@ -100,7 +96,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         mobs = new HashMap<>();
         worlds = new HashSet<>();
         mobsPool = new WeightedPool<>();
-        if(lockListener = (PaperLib.getMinecraftVersion() < 16 || !PaperLib.isPaper())) {
+        if (lockListener = (PaperLib.getMinecraftVersion() < 16 || !PaperLib.isPaper())) {
             spawnListener = new SpigotSpawnListener();
             Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
         }
@@ -129,21 +125,21 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         recalculate();
 
         metadata = cfg.getBoolean("add-metadata", false);
-        if(!lockListener) {
-            if(cfg.getBoolean("use-prespawn", true)) {
-                if(spawnListener == null) {
+        if (!lockListener) {
+            if (cfg.getBoolean("use-prespawn", true)) {
+                if (spawnListener == null) {
                     spawnListener = new PaperSpawnListener();
                     Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                } else if(!(spawnListener instanceof PaperSpawnListener)) {
+                } else if (!(spawnListener instanceof PaperSpawnListener)) {
                     HandlerList.unregisterAll(spawnListener);
                     spawnListener = new PaperSpawnListener();
                     Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
                 }
             } else {
-                if(spawnListener == null) {
+                if (spawnListener == null) {
                     spawnListener = new SpigotSpawnListener();
                     Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                } else if(!(spawnListener instanceof SpigotSpawnListener)) {
+                } else if (!(spawnListener instanceof SpigotSpawnListener)) {
                     HandlerList.unregisterAll(spawnListener);
                     spawnListener = new SpigotSpawnListener();
                     Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
@@ -156,12 +152,11 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      * Recalculate mobs spawn chances
      */
     private void recalculate() {
-        Set<CustomMob> mobsSet = new HashSet<>();
-        mobs.values().forEach(m -> {if(m.getWeight() > 0) mobsSet.add(m);});
-        if(mobsSet.isEmpty())
+        mobsPool = new WeightedPool<>();
+        mobs.values().forEach(m -> mobsPool.add(m, m.getWeight()));
+        if (mobsPool.isEmpty()) {
             disabled = true;
-        else
-            mobsPool = new WeightedPool<>(mobsSet, CustomMob::getWeight);
+        }
     }
 
     /**
@@ -170,15 +165,15 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      */
     @Override
     public boolean register(CustomMob mob) {
-        if(!mobs.containsKey(mob.getCustomType())) {
+        if (!mobs.containsKey(mob.getCustomType())) {
             mobsPool.add(mob, mob.getWeight());
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
-            if(mob instanceof Configurable)
+            if (mob instanceof Configurable)
                 config.register((Configurable) mob);
-            if(mob instanceof Listener)
+            if (mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
-            if(mob instanceof Tickable)
+            if (mob instanceof Tickable)
                 dynamics.register((Tickable) mob);
             return true;
         }
@@ -188,10 +183,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     @Override
     public void tick() {
         Iterator<Map.Entry<CustomMob.Ticking, UUID>> iter = tickingEntities.entries().iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             Map.Entry<CustomMob.Ticking, UUID> mob = iter.next();
             Entity entity = Bukkit.getEntity(mob.getValue());
-            if(entity == null) {
+            if (entity == null) {
                 iter.remove();
             } else mob.getKey().tick((LivingEntity) entity);
         }
@@ -209,12 +204,12 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     /**
      * Try to summon a new mob
      * @param type Type of mob to summon
-     * @param loc Where to summon
+     * @param loc  Where to summon
      * @return Is summoning was successful
      */
     public LivingEntity spawn(String type, Location loc) {
         CustomMob mob = mobs.get(type);
-        if(mob == null) return null;
+        if (mob == null) return null;
         return spawn(mob, loc);
     }
 
@@ -227,7 +222,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     public LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
         Compatibility.setTag(entity, mob.getCustomType());
-        if(metadata) entity.setMetadata("DangerousCaves", MARKER);
+        if (metadata) entity.setMetadata("DangerousCaves", MARKER);
         entity.setRemoveWhenFarAway(true);
         return entity;
     }
@@ -235,15 +230,15 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkLoad(ChunkLoadEvent event) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if(!event.getChunk().isLoaded()) return;
-            for(Entity entity : event.getChunk().getEntities()) {
-                if(!(entity instanceof LivingEntity)) continue;
+            if (!event.getChunk().isLoaded()) return;
+            for (Entity entity : event.getChunk().getEntities()) {
+                if (!(entity instanceof LivingEntity)) continue;
                 LivingEntity livingEntity = (LivingEntity) entity;
                 String type = Compatibility.getTag(livingEntity);
-                if(type != null) {
-                    if(metadata) entity.setMetadata("DangerousCaves", MARKER);
+                if (type != null) {
+                    if (metadata) entity.setMetadata("DangerousCaves", MARKER);
                     CustomMob mob = mobs.get(type);
-                    if(mob instanceof CustomMob.Ticking)
+                    if (mob instanceof CustomMob.Ticking)
                         handle(livingEntity, (CustomMob.Ticking) mob);
                 }
             }
@@ -252,11 +247,11 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
-        if(event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
-            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity)event.getDamager(), event.getDamage());
+        if (event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
+            PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity) event.getDamager(), event.getDamage());
             Bukkit.getPluginManager().callEvent(pEvent);
             event.setDamage(pEvent.getDamage());
-            if(pEvent.isCancelled()) event.setCancelled(true);
+            if (pEvent.isCancelled()) event.setCancelled(true);
         }
     }
 
@@ -266,14 +261,14 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         Material item = event.getHand() == EquipmentSlot.HAND ?
                 event.getPlayer().getInventory().getItemInMainHand().getType() :
                 event.getPlayer().getInventory().getItemInOffHand().getType();
-        if(blockRename && item == Material.NAME_TAG &&
-                entity instanceof LivingEntity && Compatibility.isTagged((LivingEntity)entity)) {
+        if (blockRename && item == Material.NAME_TAG &&
+                entity instanceof LivingEntity && Compatibility.isTagged((LivingEntity) entity)) {
             event.setCancelled(true);
         }
     }
 
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
-        if(disabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
+        if (disabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 !replaceTypes.contains(type) ||
                 !lightCheck.test(loc) ||
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
@@ -282,7 +277,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 !Rnd.chance(chance))
             return false;
         CustomMob mob = mobsPool.next();
-        if(mob.canSpawn(loc)) {
+        if (mob.canSpawn(loc)) {
             spawn(mob, loc);
             return true;
         }
@@ -294,10 +289,19 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         return "mobs";
     }
 
+    /**
+     * Handle a new ticking mob
+     * @param entity Entity to handle
+     * @param mob    Related custom mob
+     */
+    public static void handle(LivingEntity entity, CustomMob.Ticking mob) {
+        tickingEntities.put(mob, entity.getUniqueId());
+    }
+
     private class PaperSpawnListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(PreCreatureSpawnEvent event) {
-            if(MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
+            if (MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
         }
     }
@@ -305,17 +309,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private class SpigotSpawnListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH)
         public void onSpawn(CreatureSpawnEvent event) {
-            if(MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
+            if (MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
         }
-    }
-
-    /**
-     * Handle a new ticking mob
-     * @param entity Entity to handle
-     * @param mob Related custom mob
-     */
-    public static void handle(LivingEntity entity, CustomMob.Ticking mob) {
-        tickingEntities.put(mob, entity.getUniqueId());
     }
 }
