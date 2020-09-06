@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -80,11 +79,11 @@ public final class Materials {
             or("OAK_PLANKS", "WOOD"),
             or("END_STONE", "ENDER_STONE"),
             or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
-        ).build();
+        ).build(true);
 
     private static final Set<Material> AIR = new Materials.SetBuilder(
             "AIR", "CAVE_AIR", "VOID_AIR"
-        ).build();
+        ).build(true);
 
     public static boolean isAir(Material type) {
         return AIR.contains(type);
@@ -95,12 +94,12 @@ public final class Materials {
     }
 
     public static Set<Material> getSet(Collection<String> types) {
-        Set<Material> materials = new HashSet<>();
+        Set<Material> materials = EnumSet.noneOf(Material.class);
         for (String typeStr : types) {
             Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
             if (type != null) materials.add(type);
         }
-        return materials.isEmpty() ? Collections.emptySet() : materials;
+        return materials;
     }
 
     public static ItemStack getColored(EquipmentSlot slot, int r, int g, int b) {
@@ -142,17 +141,15 @@ public final class Materials {
         private final Set<Material> materials;
 
         public SetBuilder() {
-            materials = new HashSet<>();
+            materials = EnumSet.noneOf(Material.class);
         }
 
         public SetBuilder(Material... types) {
-            materials = new HashSet<>();
-            with(types);
+            this(); with(types);
         }
 
         public SetBuilder(String... types) {
-            materials = new HashSet<>();
-            with(types);
+            this(); with(types);
         }
 
         public SetBuilder with(String... types) {
@@ -168,8 +165,8 @@ public final class Materials {
             return this;
         }
 
-        public EnumSet<Material> build() {
-            return EnumSet.copyOf(materials);
+        public Set<Material> build(boolean unmod) {
+            return unmod ? Collections.unmodifiableSet(materials) : materials;
         }
     }
 }
