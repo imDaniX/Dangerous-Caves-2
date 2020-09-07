@@ -207,7 +207,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     /**
      * Try to summon a new mob
      * @param type Type of mob to summon
-     * @param loc  Where to summon
+     * @param loc Where to summon
      * @return Is summoning was successful
      */
     public LivingEntity spawn(String type, Location loc) {
