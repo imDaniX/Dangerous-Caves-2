@@ -153,10 +153,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      */
     private void recalculate() {
         mobsPool = new WeightedPool<>();
-        mobs.values().forEach(m -> {
-            config.reload(m);
-            mobsPool.add(m, m.getWeight());
-        });
+        mobs.values().forEach(m -> mobsPool.add(m, m.getWeight()));
         if (mobsPool.isEmpty()) {
             disabled = true;
         }
@@ -172,8 +169,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             mobsPool.add(mob, mob.getWeight());
             Compatibility.cacheTag(mob.getCustomType());
             mobs.put(mob.getCustomType(), mob);
-            //config.register(mob);
-            config.reload(mob);
+            if (mob instanceof Configurable)
+                config.register((Configurable) mob);
             if (mob instanceof Listener)
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if (mob instanceof Tickable)

@@ -66,7 +66,7 @@ public class DangerousCaves extends JavaPlugin {
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
         CavesAging cavesAging = new CavesAging(this);
-        DepthHypoxia hypoxia = new DepthHypoxia(this, cfg);
+        DepthHypoxia hypoxia = new DepthHypoxia(this);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             DCExpansion expansion = new DCExpansion(cfg);

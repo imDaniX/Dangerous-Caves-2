@@ -19,6 +19,7 @@
 package me.imdanix.caves.mobs;
 
 import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.configuration.Configurable;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -27,7 +28,8 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Locale;
 
-public abstract class AbstractMob implements CustomMob {
+@Configurable.Before("mobs")
+public abstract class AbstractMob implements CustomMob, Configurable {
     private final EntityType type;
     private final String customType;
     private int weight;

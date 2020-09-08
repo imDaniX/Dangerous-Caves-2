@@ -20,7 +20,6 @@ package me.imdanix.caves.caverns;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
-import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.placeholders.Placeholder;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -57,7 +56,6 @@ public class DepthHypoxia implements Tickable, Configurable {
     private static final PotionEffect SLOW_DIGGING = new PotionEffect(PotionEffectType.SLOW_DIGGING, 55, 1);
 
     private final Plugin plugin;
-    private final Configuration config;
 
     private final Set<String> worlds;
     private final HypoxiaChancePlaceholder placeholder;
@@ -74,9 +72,8 @@ public class DepthHypoxia implements Tickable, Configurable {
     private FormulasEvaluator formula;
     private Predicate<Player> condition;
 
-    public DepthHypoxia(Plugin plugin, Configuration config) {
+    public DepthHypoxia(Plugin plugin) {
         this.plugin = plugin;
-        this.config = config;
         worlds = new HashSet<>();
         messages = new ArrayList<>();
         placeholder = new HypoxiaChancePlaceholder();
@@ -104,7 +101,6 @@ public class DepthHypoxia implements Tickable, Configurable {
                     "is invalid! Please fix the issue. \"depth*inventory\" formula is used instead.");
         }
 
-        config.reload(placeholder);
         condition = placeholder.isEnabled() ? this::checkConditionsPH : this::checkConditions;
 
         disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && minChance > 0 &&
@@ -188,6 +184,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         return placeholder;
     }
 
+    @Before("caverns.hypoxia")
     private class HypoxiaChancePlaceholder implements Placeholder, Configurable {
         private final Map<Player, String> chances;
         private boolean enabled;

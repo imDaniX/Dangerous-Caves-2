@@ -30,11 +30,11 @@ import java.util.Map;
 
 public class DCExpansion extends PlaceholderExpansion implements Manager<Placeholder> {
     private final Map<String, Placeholder> placeholders;
-    private final Configuration cfg;
+    private final Configuration config;
 
-    public DCExpansion(Configuration cfg) {
+    public DCExpansion(Configuration config) {
         this.placeholders = new HashMap<>();
-        this.cfg = cfg;
+        this.config = config;
     }
 
     @Override
@@ -71,9 +71,8 @@ public class DCExpansion extends PlaceholderExpansion implements Manager<Placeho
     public boolean register(Placeholder placeholder) {
         if (!placeholders.containsKey(placeholder.getName())) {
             placeholders.put(placeholder.getName(), placeholder);
-            if (placeholder instanceof Configurable) {
-                cfg.register((Configurable)placeholder);
-            }
+            if (placeholder instanceof Configurable)
+                config.register((Configurable)placeholder);
             return true;
         }
         return false;

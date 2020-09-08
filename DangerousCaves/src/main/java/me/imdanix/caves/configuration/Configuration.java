@@ -25,8 +25,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Configuration implements Manager<Configurable> {
     private final Plugin plugin;
@@ -39,7 +39,13 @@ public class Configuration implements Manager<Configurable> {
     public Configuration(Plugin plugin, String name, String version) {
         this.plugin = plugin;
         this.name = name;
-        configurables = new HashSet<>();
+        configurables = new TreeSet<>((o, c) -> {
+            Class<?> clazz = o.getClass();
+            if (o == c) return 0;
+            return clazz.isAnnotationPresent(Configurable.Before.class) &&
+                           clazz.getAnnotation(Configurable.Before.class).value().equals(c.getConfigPath()) ?
+                   -1 : 1;
+        });
         file = new File(plugin.getDataFolder(), name + ".yml");
         this.version = version;
     }
