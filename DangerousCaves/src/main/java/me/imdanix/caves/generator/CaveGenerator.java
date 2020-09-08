@@ -64,7 +64,6 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         chance = cfg.getDouble("chance", 50) / 100;
         maxTries = cfg.getInt("max-tries", 3);
 
-        // TODO: Refactor
         AbstractStructure.setMimicChance(cfg.getDouble("mimic-chance") / 100);
 
         Set<String> worlds = new HashSet<>();

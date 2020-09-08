@@ -54,13 +54,15 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
         return "generator.structures";
     }
 
-    public static Material randomStone(Random random) {
+    protected static Material randomStone(Random random) {
         return random.nextBoolean() ? Material.STONE : Material.COBBLESTONE;
     }
 
-    public static void setType(Location loc, Material material) {
+    protected static void setType(Location loc, Material material) {
         loc.getBlock().setType(material, false);
     }
+
+    // TODO: It's actually kinda awful...
 
     public static void fillInventory(Block block) {
         if (!(block.getState() instanceof Container)) return;

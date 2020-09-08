@@ -52,7 +52,7 @@ public class HexedArmor extends AbstractMob implements Listener {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Hexed Armor"));
         health = cfg.getDouble("health", 20);
 

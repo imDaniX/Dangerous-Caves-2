@@ -37,7 +37,7 @@ public class CryingBat extends TickingMob {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Crying Bat"));
         cryChance = cfg.getDouble("cry-chance", 3.33) / 100;
         deathChance = cfg.getDouble("death-chance", 20) / 100;

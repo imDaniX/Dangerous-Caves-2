@@ -63,7 +63,7 @@ public abstract class AbstractMob implements CustomMob, Configurable {
         configure(cfg);
     }
 
-    public abstract void configure(ConfigurationSection cfg);
+    protected abstract void configure(ConfigurationSection cfg);
 
     @Override
     public boolean isThis(Entity entity) {

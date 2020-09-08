@@ -51,7 +51,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Alpha Spider"));
         health = cfg.getDouble("health", 18);
         cobwebChance = cfg.getDouble("cobweb-chance", 14.29) / 100;

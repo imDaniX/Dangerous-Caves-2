@@ -44,7 +44,7 @@ public class SmokeDemon extends TickingMob {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
         health = cfg.getDouble("health", 20);
 

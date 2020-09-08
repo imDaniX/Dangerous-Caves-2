@@ -54,7 +54,7 @@ public class Watcher extends TickingMob implements Listener {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Watcher"));
         health = cfg.getDouble("health", 20);
 

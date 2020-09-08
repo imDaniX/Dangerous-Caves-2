@@ -69,7 +69,7 @@ public class MagmaMonster extends TickingMob implements Listener {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
         health = cfg.getDouble("health", 20);
 

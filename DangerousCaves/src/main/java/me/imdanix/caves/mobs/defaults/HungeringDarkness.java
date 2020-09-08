@@ -47,7 +47,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     }
 
     @Override
-    public void configure(ConfigurationSection cfg) {
+    protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", ""));
         damage = cfg.getDouble("damage", 200);
         remove = cfg.getBoolean("remove-on-light", false);
