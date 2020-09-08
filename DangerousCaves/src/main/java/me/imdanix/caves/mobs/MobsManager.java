@@ -85,7 +85,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean metadata;
     private Predicate<Location> lightCheck;
 
-    private boolean lockListener;
+    private final boolean lockListener;
     private Listener spawnListener;
 
     public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
@@ -96,7 +96,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         mobs = new HashMap<>();
         worlds = new HashSet<>();
         mobsPool = new WeightedPool<>();
-        if (lockListener = (PaperLib.getMinecraftVersion() < 16 || !PaperLib.isPaper())) {
+        if (lockListener = (PaperLib.getMinecraftVersion() >= 16 || !PaperLib.isPaper())) {
             spawnListener = new SpigotSpawnListener();
             Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
         }
