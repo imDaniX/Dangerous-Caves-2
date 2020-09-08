@@ -119,7 +119,7 @@ public class AmbientSounds implements Tickable, Configurable {
                 loc.add(Rnd.nextDouble(-radius, radius),
                         Rnd.nextDouble(-radius, radius),
                         Rnd.nextDouble(-radius, radius));
-            player.playSound(player.getEyeLocation(), sound, SoundCategory.AMBIENT, volume, pitch);
+            player.playSound(loc, sound, SoundCategory.AMBIENT, volume, pitch);
         }
     }
 }
