@@ -10,7 +10,6 @@ version: ${cfgVersion}
 # NOTE: Worlds
 # World names are case-sensitive
 # Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
-# "Blank worlds" doesn't means "worlds:" - use "worlds: []"
 
 # NOTE: Ticks
 # Plugin utilizes its own tick system which is based on vanilla one

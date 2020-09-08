@@ -126,7 +126,6 @@ public class CavesAging implements Tickable, Configurable {
             }
 
         replaceBlocks = Materials.getSet(cfg.getStringList("replace-blocks"));
-        replaceBlocks = replaceBlocks.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(replaceBlocks);
         percentage = cfg.getDouble("percentage", 70) / 100;
 
         withReplace = cfg.getBoolean("age-types.replace", true);
