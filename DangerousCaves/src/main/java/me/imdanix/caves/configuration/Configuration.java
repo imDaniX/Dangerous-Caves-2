@@ -39,12 +39,10 @@ public class Configuration implements Manager<Configurable> {
     public Configuration(Plugin plugin, String name, String version) {
         this.plugin = plugin;
         this.name = name;
-        configurables = new TreeSet<>((o, c) -> {
-            Class<?> clazz = o.getClass();
-            if (o == c) return 0;
-            return clazz.isAnnotationPresent(Configurable.Before.class) &&
-                           clazz.getAnnotation(Configurable.Before.class).value().equals(c.getConfigPath()) ?
-                   -1 : 1;
+        configurables = new TreeSet<>((incoming, checked) -> {
+            if (incoming == checked) return 0;
+            Configurable.Before before = incoming.getClass().getAnnotation(Configurable.Before.class);
+            return before != null && before.value().equals(checked.getConfigPath()) ? -1 : 1;
         });
         file = new File(plugin.getDataFolder(), name + ".yml");
         this.version = version;
