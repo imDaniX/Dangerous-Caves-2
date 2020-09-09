@@ -136,20 +136,20 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     private boolean checkConditionsPH(Player player) {
-        return checkConditionsPH(player, false);
+        return checkConditionsPH(player, true);
     }
 
-    private boolean checkConditionsPH(Player player, boolean rg) {
+    private boolean checkConditionsPH(Player player, boolean check) {
         Location loc = player.getLocation();
         if (!Locations.isCave(loc) || loc.getY() > yMax) {
             placeholder.removePlayer(player);
             return false;
         }
-        if (Rnd.chance(chance)) {
+        if (check && Rnd.chance(chance)) {
             double hypoxiaChance;
-            boolean check = Rnd.chance(hypoxiaChance = getChance(player));
+            boolean chanceCheck = Rnd.chance(hypoxiaChance = getChance(player));
             placeholder.cachePlayer(hypoxiaChance, player);
-            return check && (rg || Regions.INSTANCE.check(CheckType.EFFECT, loc));
+            return chanceCheck && Regions.INSTANCE.check(CheckType.EFFECT, loc);
         } else {
             placeholder.cachePlayer(getChance(player), player);
             return false;
@@ -212,7 +212,7 @@ public class DepthHypoxia implements Tickable, Configurable {
                 int schedule = cfg.getInt("schedule", 200);
                 if (schedule > 0) {
                     task = Bukkit.getScheduler().runTaskTimer(plugin, () ->
-                            Bukkit.getOnlinePlayers().forEach(p -> checkConditionsPH(p, true)),
+                            Bukkit.getOnlinePlayers().forEach(p -> checkConditionsPH(p, false)),
                             schedule, schedule);
                 }
                 if (cfg.getBoolean("calculate-on-join", true)) {
