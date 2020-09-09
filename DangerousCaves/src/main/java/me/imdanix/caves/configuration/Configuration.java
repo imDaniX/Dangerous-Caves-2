@@ -74,7 +74,7 @@ public class Configuration implements Manager<Configurable> {
      */
     @Override
     public boolean register(Configurable conf) {
-        if (!configurables.contains(conf) && conf.getConfigName().equals(name)) {
+        if (conf.getConfigName().equals(name) && !configurables.contains(conf)) {
             configurables.add(conf);
             reload(conf);
             return true;
