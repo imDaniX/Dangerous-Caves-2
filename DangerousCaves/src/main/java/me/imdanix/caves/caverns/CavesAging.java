@@ -45,10 +45,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -185,15 +187,15 @@ public class CavesAging implements Tickable, Configurable {
         Location edge = chunk.getBlock(0, 0, 0).getLocation();
         ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Set<DelayedChange> changes = calculateChanges(edge, snapshot);
+            List<DelayedChange> changes = calculateChanges(edge, snapshot);
             if (changes.isEmpty()) return;
 
             Bukkit.getScheduler().runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
         });
     }
 
-    private Set<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot) {
-        Set<DelayedChange> changes = new HashSet<>();
+    private List<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot) {
+        List<DelayedChange> changes = new ArrayList<>();
 
         int count = 0;
         int totalCount = 0;
@@ -215,7 +217,7 @@ public class CavesAging implements Tickable, Configurable {
                     snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
                 continue;
 
-            if (!Regions.INSTANCE.check(CheckType.BLOCK, edge.clone().add(x, 0, z).add(0, y, 0)))
+            if (!Regions.INSTANCE.check(CheckType.BLOCK, Locations.add(edge, x, y, z)))
                 continue;
 
             if (type == Material.TORCH) {
@@ -254,7 +256,7 @@ public class CavesAging implements Tickable, Configurable {
             }
         }
 
-        return count / (float)++totalCount > percentage ? Collections.emptySet() : changes;
+        return count / (float)++totalCount > percentage ? Collections.emptyList() : changes;
     }
 
     @Override
