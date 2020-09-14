@@ -19,8 +19,6 @@
 package me.imdanix.caves.mobs;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.papermc.lib.PaperLib;
 import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
@@ -55,6 +53,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -67,7 +66,7 @@ import java.util.function.Predicate;
  * Manages custom mob spawning and registering
  */
 public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Configurable {
-    private static final Multimap<CustomMob.Ticking, UUID> tickingEntities = HashMultimap.create();
+    private static final Map<CustomMob.Ticking, Collection<UUID>> tickingEntities = new HashMap<>();
     private final MetadataValue MARKER;
     private final Plugin plugin;
     private final Configuration config;
@@ -175,6 +174,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
             if (mob instanceof Tickable)
                 dynamics.register((Tickable) mob);
+            if (mob instanceof CustomMob.Ticking)
+                tickingEntities.put((CustomMob.Ticking) mob, new HashSet<>());
             return true;
         }
         return false;
@@ -182,13 +183,15 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
     @Override
     public void tick() {
-        Iterator<Map.Entry<CustomMob.Ticking, UUID>> iter = tickingEntities.entries().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<CustomMob.Ticking, UUID> mob = iter.next();
-            Entity entity = Bukkit.getEntity(mob.getValue());
-            if (entity == null) {
-                iter.remove();
-            } else mob.getKey().tick((LivingEntity) entity);
+        for (Map.Entry<CustomMob.Ticking, Collection<UUID>> entry : tickingEntities.entrySet()) {
+            CustomMob.Ticking mob = entry.getKey();
+            Iterator<UUID> uuids = entry.getValue().iterator();
+            while (uuids.hasNext()) {
+                Entity entity = Bukkit.getEntity(uuids.next());
+                if (entity == null) {
+                    uuids.remove();
+                } else mob.tick((LivingEntity) entity);
+            }
         }
     }
 
@@ -295,7 +298,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      * @param mob Related custom mob
      */
     public static void handle(LivingEntity entity, CustomMob.Ticking mob) {
-        tickingEntities.put(mob, entity.getUniqueId());
+        tickingEntities.get(mob).add(entity.getUniqueId());
     }
 
     private class PaperSpawnListener implements Listener {
