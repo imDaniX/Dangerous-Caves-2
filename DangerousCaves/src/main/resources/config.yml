@@ -331,7 +331,7 @@ mobs:
     minion-chance: 6.67
 
   # Crying Bat
-  # Just screams and eventually dies
+  # Just screams and eventually dies. What a legend
   crying-bat:
     priority: 9
     name: "&4Crying Bat"
@@ -341,7 +341,7 @@ mobs:
     death-chance: 20
 
   # Dead Miner
-  # Placing torches when it's too dark and drops some items when damaged
+  # Places torches when it's too dark and drops some items when damaged
   dead-miner:
     priority: 10
     name: "&4Dead Miner"
@@ -384,6 +384,8 @@ mobs:
     name: ""
     # Kill the entity on light?
     remove-on-light: false
+    # Play death sound on light?
+    death-sound: true
     # Is night vision effect considered as light?
     night-vision: false
     # When player is attacked

@@ -18,7 +18,9 @@
 
 package me.imdanix.caves.mobs.defaults;
 
+import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
@@ -41,6 +43,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private double damage;
     private boolean remove;
     private boolean vision;
+    private boolean deathSound;
 
     public HungeringDarkness() {
         super(EntityType.VEX, "hungering-darkness", 8);
@@ -52,6 +55,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
         damage = cfg.getDouble("damage", 200);
         remove = cfg.getBoolean("remove-on-light", false);
         vision = cfg.getBoolean("night-vision", false);
+        deathSound = cfg.getBoolean("death-sound", true);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
                 ((LivingEntity)target).hasPotionEffect(PotionEffectType.NIGHT_VISION)
             )) {
             event.setCancelled(true);
-            if (remove) event.getEntity().remove();
+            die(event.getEntity());
         }
     }
 
@@ -93,7 +97,15 @@ public class HungeringDarkness extends AbstractMob implements Listener {
                 player.hasPotionEffect(PotionEffectType.NIGHT_VISION)
             )) {
             event.setCancelled(true);
-            if (remove) event.getAttacker().remove();
+            die(event.getAttacker());
         } else event.setDamage(damage);
+    }
+
+    private void die(Entity entity) {
+        if (!remove) return;
+        if (deathSound) {
+            Locations.playSound(entity.getLocation(), VSound.ENTITY_PHANTOM_SWOOP.get(), 1f, 0.8f);
+        }
+        entity.remove();
     }
 }
