@@ -112,7 +112,7 @@ public class CaveIns implements Listener, Configurable {
             if (blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             if (blastEffect) player.addPotionEffect(BLINDNESS);
 
-            Set<List<Block>> allBlocks = getBlocksInRadius(blockLoc);
+            List<List<Block>> allBlocks = getBlocksInRadius(blockLoc);
 
             if (slowFall) {
                 allBlocks.forEach(l -> l.forEach(block -> {
@@ -135,8 +135,8 @@ public class CaveIns implements Listener, Configurable {
         }
     }
 
-    private Set<List<Block>> getBlocksInRadius(Location blockLoc) {
-        Set<List<Block>> allBlocks = new HashSet<>();
+    private List<List<Block>> getBlocksInRadius(Location blockLoc) {
+        List<List<Block>> allBlocks = new ArrayList<>();
 
         blockLoc.subtract(radius, 2, radius);
         if (blockLoc.getY() < 1) blockLoc.setY(1);
