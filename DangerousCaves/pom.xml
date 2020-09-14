@@ -107,7 +107,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>compatibility-postaqua</artifactId>
+            <artifactId>compatibility-modern</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
