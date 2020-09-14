@@ -18,7 +18,7 @@
 
 package me.imdanix.caves.caverns;
 
-import me.imdanix.caves.compatibility.Compatibility;
+import io.papermc.lib.PaperLib;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.placeholders.Placeholder;
 import me.imdanix.caves.regions.CheckType;
@@ -29,6 +29,8 @@ import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -85,7 +87,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         maxChance = cfg.getDouble("chance-max", 90) / 100;
         minChance = cfg.getDouble("chance-min", 10) / 100;
         yMax = cfg.getInt("y-max", 42);
-        actionbar = cfg.getBoolean("actionbar", true);
+        actionbar = cfg.getBoolean("actionbar", true) && PaperLib.isSpigot();
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
         worlds.clear();
@@ -108,6 +110,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void tick() {
         if (disabled) return;
 
@@ -120,7 +123,8 @@ public class DepthHypoxia implements Tickable, Configurable {
                 if (messages.isEmpty()) continue;
                 String text = Rnd.randomElement(messages).replace("%player", player.getName());
                 if (actionbar) {
-                    Compatibility.sendActionBar(player, text);
+                    // Spigot still doesn't have Player#sendActionBar, bruh
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
                 } else {
                     player.sendMessage(text);
                 }

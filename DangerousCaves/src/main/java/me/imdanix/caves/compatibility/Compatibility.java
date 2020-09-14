@@ -22,7 +22,6 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -30,7 +29,6 @@ import org.bukkit.plugin.Plugin;
 public final class Compatibility {
     private static MaterialsProvider materials;
     private static TagsProvider tags;
-    private static Messenger messenger;
 
     public static void init(Plugin plugin) {
         int version = PaperLib.getMinecraftVersion();
@@ -42,15 +40,12 @@ public final class Compatibility {
                 plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
             materials = new LegacyMaterials();
             tags = new ScoreboardTags();
-            messenger = new LegacyMessenger(isBukkit);
         } else if (version == 13) {
             materials = new v1_13Materials();
             tags = new ScoreboardTags();
-            messenger = new LegacyMessenger(isBukkit);
         } else {
             materials = version > 15 ? new v1_16Materials() : new v1_13Materials();
             tags = new PersistentTags(plugin);
-            messenger = new ModernMessenger();
         }
     }
 
@@ -89,9 +84,5 @@ public final class Compatibility {
 
     public static String getTag(Block block) {
         return tags.getTag(block);
-    }
-
-    public static void sendActionBar(Player player, String message) {
-        messenger.sendActionBar(player, message);
     }
 }
