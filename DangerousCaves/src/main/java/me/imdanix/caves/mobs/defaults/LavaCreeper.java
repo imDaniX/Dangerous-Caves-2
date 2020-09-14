@@ -91,7 +91,7 @@ public class LavaCreeper extends TickingMob implements Listener {
         event.getDamager().setFireTicks(fireTouch);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         if (!isThis(event.getEntity()) || chance <= 0) return;
         ((LivingEntity)event.getEntity()).removePotionEffect(PotionEffectType.FIRE_RESISTANCE);

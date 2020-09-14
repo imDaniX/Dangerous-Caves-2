@@ -116,7 +116,7 @@ public class Mimic extends TickingMob implements Listener {
         equipment.setBoots(BOOTS);              equipment.setBootsDropChance(0);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
         if (block.getType() != Material.CHEST) return;

@@ -248,13 +248,13 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         }, 1);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if (event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
             PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity) event.getDamager(), event.getDamage());
             Bukkit.getPluginManager().callEvent(pEvent);
             event.setDamage(pEvent.getDamage());
-            if (pEvent.isCancelled()) event.setCancelled(true);
+            event.setCancelled(pEvent.isCancelled());
         }
     }
 
@@ -302,7 +302,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     }
 
     private class PaperSpawnListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGH)
+        @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onSpawn(PreCreatureSpawnEvent event) {
             if (MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
                 event.setCancelled(true);
@@ -310,7 +310,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     }
 
     private class SpigotSpawnListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGH)
+        @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onSpawn(CreatureSpawnEvent event) {
             if (MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);

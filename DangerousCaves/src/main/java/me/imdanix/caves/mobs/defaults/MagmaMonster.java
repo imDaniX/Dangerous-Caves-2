@@ -32,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
@@ -99,10 +100,10 @@ public class MagmaMonster extends TickingMob implements Listener {
         entity.addPotionEffect(INVISIBILITY);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
-        if (!isThis(event.getDamager()) || Rnd.nextBoolean()) return;
-        event.getEntity().setFireTicks(60);
+        if (isThis(event.getDamager()) && Rnd.nextBoolean())
+            event.getEntity().setFireTicks(60);
     }
 
     @Override

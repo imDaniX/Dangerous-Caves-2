@@ -65,7 +65,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
         Utils.setMaxHealth(entity, health);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!isThis(event.getDamager())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
