@@ -20,6 +20,8 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.mobs.MobsManager;
+import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
@@ -28,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -108,10 +111,16 @@ public class CaveGolem extends AbstractMob implements Listener {
         if (!materials.isEmpty() && (breakChance = cfg.getDouble("spawn-from-block")/100) > 0) {
             if (breakListener == null) {
                 Bukkit.getPluginManager().registerEvents(new Listener() {
-                    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+                    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
                     public void onBreak(BlockBreakEvent event) {
-                        if (!materials.contains(event.getBlock().getType()) || !Rnd.chance(breakChance)) return;
-                        mobs.spawn(CaveGolem.this, event.getBlock().getLocation());
+                        Block block = event.getBlock();
+                        if (materials.contains(block.getType()) && Rnd.chance(breakChance)
+                                && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
+                            event.setDropItems(false);
+                            event.setExpToDrop(0);
+                            mobs.spawn(CaveGolem.this, block.getLocation())
+                                    .getEquipment().setHelmet(new ItemStack(block.getType()));
+                        }
                     }
                 }, plugin);
             }

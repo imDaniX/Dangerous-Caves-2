@@ -34,6 +34,8 @@ import me.imdanix.caves.mobs.defaults.TNTCreeper;
 import me.imdanix.caves.mobs.defaults.Watcher;
 
 enum DefaultMobs {
+//  MIMIC(new Mimic()),
+//  CAVE_GOLEM(new CaveGolem()),
     ALPHA_SPIDER(new AlphaSpider()),
     HEXED_ARMOR(new HexedArmor()),
     MAGMA_MONSTER(new MagmaMonster()),
@@ -44,8 +46,6 @@ enum DefaultMobs {
     LAVA_CREEPER(new LavaCreeper()),
     DEAD_MINER(new DeadMiner()),
     SMOKE_DEMON(new SmokeDemon());
- // MIMIC(new Mimic()),
- // CAVE_GOLEM(new CaveGolem());
 
     private final CustomMob custom;
 
