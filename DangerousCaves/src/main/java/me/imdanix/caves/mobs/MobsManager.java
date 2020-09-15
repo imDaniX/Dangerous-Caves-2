@@ -325,4 +325,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     public Plugin getPlugin() {
         return plugin;
     }
+
+    public Set<String> getMobs() {
+        return mobs.keySet();
+    }
 }

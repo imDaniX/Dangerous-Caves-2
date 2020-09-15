@@ -7,6 +7,6 @@ description: ${description}
 softdepend: [PlaceholderAPI, WorldGuard, GriefPrevention, GriefPreventionFlags, Lands]
 commands:
   dangerouscaves:
-    aliases: [dcaves, dc]
+    aliases: [dcaves]
     usage: "/<command> [info|summon|kill|tick|reload]"
     permission: dangerous.caves.command
