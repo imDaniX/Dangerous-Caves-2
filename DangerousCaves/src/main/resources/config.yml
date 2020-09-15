@@ -492,3 +492,5 @@ mobs:
       - LAPIS_ORE
       - DIAMOND_ORE
       - EMERALD_ORE
+    # Chance of spawning from block (only variants above)
+    spawn-from-block: 0.5

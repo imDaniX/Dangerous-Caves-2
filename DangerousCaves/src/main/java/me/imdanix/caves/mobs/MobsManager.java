@@ -321,4 +321,8 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 event.setCancelled(true);
         }
     }
+
+    public Plugin getPlugin() {
+        return plugin;
+    }
 }

@@ -25,7 +25,7 @@ import me.imdanix.caves.generator.defaults.BuildingsGroup;
 import me.imdanix.caves.generator.defaults.PillarsGroup;
 import me.imdanix.caves.generator.defaults.TrapsGroup;
 
-public enum DefaultStructures {
+enum DefaultStructures {
     BOULDERS(new BouldersGroup()),
     BUILDINGS(new BuildingsGroup()),
     PILLARS(new PillarsGroup()),

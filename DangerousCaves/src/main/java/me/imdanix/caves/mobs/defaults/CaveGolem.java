@@ -19,10 +19,12 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rnd;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -31,18 +33,22 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
 
 public class CaveGolem extends AbstractMob implements Listener {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0);
@@ -59,17 +65,27 @@ public class CaveGolem extends AbstractMob implements Listener {
         BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
     }
 
+    private final Plugin plugin;
+    private final MobsManager mobs;
+
     private String name;
     private double health;
 
     private final List<ItemStack> heads;
+    private Set<Material> materials;
+
     private boolean slow;
     private boolean distract;
     private double nonPickaxe;
     private double damageModifier;
 
-    public CaveGolem() {
+    private double breakChance;
+    private Listener breakListener;
+
+    public CaveGolem(MobsManager mobs) {
         super(EntityType.SKELETON, "cave-golem", 3);
+        this.plugin = mobs.getPlugin();
+        this.mobs = mobs;
         this.heads = new ArrayList<>();
     }
 
@@ -83,13 +99,28 @@ public class CaveGolem extends AbstractMob implements Listener {
         nonPickaxe = cfg.getDouble("nonpickaxe-modifier", 0.07);
         damageModifier = cfg.getDouble("damage-modifier", 2.0);
 
+        materials = Materials.getSet(cfg.getStringList("variants"));
         heads.clear();
-        for (String typeStr : cfg.getStringList("variants")) {
-            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
-            if (type == null || !type.isBlock()) continue;
-            heads.add(new ItemStack(type));
-        }
+        materials.forEach(m -> heads.add(new ItemStack(m)));
+
         if (heads.isEmpty()) heads.add(new ItemStack(Material.STONE));
+
+        if (!materials.isEmpty() && (breakChance = cfg.getDouble("spawn-from-block")/100) > 0) {
+            if (breakListener == null) {
+                Bukkit.getPluginManager().registerEvents(new Listener() {
+                    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+                    public void onBreak(BlockBreakEvent event) {
+                        if (!materials.contains(event.getBlock().getType()) || !Rnd.chance(breakChance)) return;
+                        mobs.spawn(CaveGolem.this, event.getBlock().getLocation());
+                    }
+                }, plugin);
+            }
+        } else {
+            if (breakListener != null) {
+                HandlerList.unregisterAll(breakListener);
+                breakListener = null;
+            }
+        }
     }
 
     @Override
