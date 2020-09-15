@@ -32,12 +32,13 @@ public class Dynamics implements Manager<Tickable> {
 
     public Dynamics(Plugin plugin) {
         tickables = new EnumMap<>(TickLevel.class);
+        int offset = 0;
         for (TickLevel level : TickLevel.values()) {
             tickables.put(level, new HashSet<>());
             Bukkit.getScheduler().scheduleSyncRepeatingTask(
                     plugin,
                     () -> tick(level),
-                    level.ticks,
+                    level.ticks + ++offset,
                     level.ticks
             );
         }
