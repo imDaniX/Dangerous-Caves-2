@@ -36,6 +36,7 @@ public class SmokeDemon extends TickingMob {
 
     private String name;
     private double health;
+    private int maxLight;
 
     private double radius;
 
@@ -47,13 +48,13 @@ public class SmokeDemon extends TickingMob {
     protected void configure(ConfigurationSection cfg) {
         name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
         health = cfg.getDouble("health", 20);
-
+        maxLight = cfg.getInt("max-light", 11);
         radius = cfg.getInt("harm-radius", 3);
     }
 
     @Override
     public boolean canSpawn(Location loc) {
-        return loc.getBlock().getLightLevel() < 12;
+        return loc.getBlock().getLightLevel() <= maxLight;
     }
 
     @Override
@@ -68,16 +69,16 @@ public class SmokeDemon extends TickingMob {
 
     @Override
     public void tick(LivingEntity entity) {
-        if (entity.getLocation().getBlock().getLightLevel() >= 12) {
+        if (entity.getLocation().getBlock().getLightLevel() > maxLight) {
             entity.remove();
             return;
         }
-        entity.getNearbyEntities(radius, radius, radius).forEach(SmokeDemon::harm);
+        entity.getNearbyEntities(radius, radius, radius).forEach(this::harm);
         entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().add(0, 1, 0), 30, 1, 1, 1, 0f);
     }
 
-    private static void harm(Entity entity) {
-        if (entity instanceof LivingEntity && entity.getLocation().getBlock().getLightLevel() < 12) {
+    private void harm(Entity entity) {
+        if (entity instanceof LivingEntity && entity.getLocation().getBlock().getLightLevel() <= maxLight) {
             LivingEntity living = (LivingEntity) entity;
             living.addPotionEffect(BLINDNESS);
             living.addPotionEffect(WITHER);

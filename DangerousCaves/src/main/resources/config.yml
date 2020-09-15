@@ -430,6 +430,8 @@ mobs:
     health: 20
     # Radius in blocks
     harm-radius: 3
+    # Condition for spawning and harm/wither effect
+    max-light: 11
 
   # TNT Creeper
   # Spawns additional TNTs when explodes and creates small explosion when damaged
