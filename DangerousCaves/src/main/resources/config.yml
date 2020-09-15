@@ -178,7 +178,7 @@ caverns:
     max-light-level: 0
     # Vanilla ticks between chunk changes. Larger value - better performance, but slower process
     # Large values(80+) are not recommended
-    schedule-timer: 10
+    schedule-timer: 8
     # Force chunk loading if chunk was unloaded during scheduled aging. Disable if it's too intensive for your server
     force-load: true
     # Maximal percentage of aged blocks per chunk
