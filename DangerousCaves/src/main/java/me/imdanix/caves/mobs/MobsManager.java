@@ -124,7 +124,12 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         recalculate();
 
         metadata = cfg.getBoolean("add-metadata", false);
-        if (!lockListener) {
+        if (disabled) {
+            if (spawnListener != null) {
+                HandlerList.unregisterAll(spawnListener);
+                spawnListener = null;
+            }
+        } else if (!lockListener) {
             if (cfg.getBoolean("use-prespawn", true)) {
                 if (spawnListener == null) {
                     spawnListener = new PaperSpawnListener();
