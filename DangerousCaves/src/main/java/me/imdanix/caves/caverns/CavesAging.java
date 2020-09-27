@@ -110,7 +110,7 @@ public class CavesAging implements Tickable, Configurable {
         } else {
             lightLevelCheck = (b) -> true;
         }
-        schedule = Math.max(cfg.getInt("schedule-timer", 4), 1);
+        schedule = Math.max(cfg.getInt("schedule-timer", 8), 1);
         forceLoad = cfg.getBoolean("force-load", true);
         torchRemove = cfg.getDouble("torch-remove-chance", 40) / 100;
         worlds.clear();
@@ -128,7 +128,7 @@ public class CavesAging implements Tickable, Configurable {
             }
 
         replaceBlocks = Materials.getSet(cfg.getStringList("replace-blocks"));
-        percentage = cfg.getDouble("percentage", 70) / 100;
+        percentage = cfg.getDouble("percentage", 30) / 100;
 
         withReplace = cfg.getBoolean("age-types.replace", true);
         withRocks = cfg.getBoolean("age-types.rocks", true);
