@@ -38,7 +38,7 @@ public class Dynamics implements Manager<Tickable> {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(
                     plugin,
                     () -> tick(level),
-                    level.ticks + ++offset,
+                    level.ticks + offset++,
                     level.ticks
             );
         }
