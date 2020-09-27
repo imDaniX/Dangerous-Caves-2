@@ -56,11 +56,11 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class CavesAging implements Tickable, Configurable {
-    private static final EnumSet<Material> AGING_MATERIALS = EnumSet.of(
+    private static final Set<Material> AGING_MATERIALS = Collections.unmodifiableSet(EnumSet.of(
             Material.COBBLESTONE, Material.STONE_BUTTON,
             VMaterial.ANDESITE.get(), VMaterial.COBBLESTONE_WALL.get(),
             Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.VINE
-    );
+    ));
 
     private final Plugin plugin;
     private final Map<String, Set<Bound>> skippedChunks;
