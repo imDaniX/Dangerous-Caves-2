@@ -176,7 +176,9 @@ public class CavesAging implements Tickable, Configurable {
                 Chunk chunk = queuedChunk.getChunk(world);
                 if (!chunk.isLoaded()) {
                     if (forceLoad) {
-                        PaperLib.getChunkAtAsync(world, queuedChunk.x, queuedChunk.z).thenAccept(this::proceedChunk);
+                        PaperLib.getChunkAtAsync(world, queuedChunk.x, queuedChunk.z).thenAccept(
+                                this::proceedChunk
+                        );
                     }
                 } else proceedChunk(chunk);
             }, (timer += schedule));
