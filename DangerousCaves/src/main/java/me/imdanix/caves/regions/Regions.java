@@ -68,6 +68,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
         boolean invert = cfg.getBoolean("invert", false);
         String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
 
+        List<String> failedModes = new ArrayList<>();
         if (modes.length == 0) {
             current.add(NONE);
         } else for (String mode : modes) {
@@ -75,8 +76,12 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
             if (manager != null) {
                 current.add((c,l) -> invert != manager.test(c, l));
             } else {
-                logger.warning("Can't find mode \"" + mode + "\".");
+                failedModes.add(mode);
             }
+        }
+        if (failedModes.size() > 0) {
+            String modeOrModes = failedModes.size() > 1 ? "modes(" : "mode(";
+            logger.warning("Cannot find " + modeOrModes + String.join(", ", failedModes) + ") for regions protection.");
         }
     }
 
