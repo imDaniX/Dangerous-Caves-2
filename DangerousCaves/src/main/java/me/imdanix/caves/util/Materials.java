@@ -71,12 +71,13 @@ public final class Materials {
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL,
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
-            Material.RAIL, Material.TORCH, Material.CHEST
+            Material.TORCH, Material.CHEST
         ).with(
             "ANDESITE", "DIORITE", "GRANITE",
             "SOUL_SOIL", "BLACKSTONE", "BASALT",
             "NETHER_GOLD_ORE", "GILDED_BLACKSTONE"
         ).with(
+            or("RAIL", "RAILS"),
             or("SPAWNER", "MOB_SPAWNER"),
             or("OAK_PLANKS", "WOOD"),
             or("END_STONE", "ENDER_STONE"),
