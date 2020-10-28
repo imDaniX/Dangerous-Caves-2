@@ -65,7 +65,12 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
     // TODO: It's actually kinda awful...
 
     public static void fillInventory(Block block) {
-        if (!(block.getState() instanceof Container)) return;
+        try {
+            if (!(block.getState() instanceof Container)) return;
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+            return;
+        }
         if (mimicChance > 0 && Rnd.chance(mimicChance)) {
             Compatibility.setTag(block, "mimic-30");
             return;
