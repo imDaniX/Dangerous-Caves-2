@@ -44,17 +44,17 @@ public class DangerousCaves extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        Regions.INSTANCE.onLoad();
-    }
-
-    @Override
-    public void onEnable() {
         if (getDescription().getVersion().contains("SNAPSHOT")) {
             getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/Dangerous-Сaves-2/issues");
         }
-        Regions.INSTANCE.onEnable();
+        Regions.INSTANCE.onLoad();
         Compatibility.init(this);
+    }
+
+    @Override
+    public void onEnable() {
+        Regions.INSTANCE.onEnable();
 
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config", getDescription().getVersion().split(";")[1]); cfg.create(true);
