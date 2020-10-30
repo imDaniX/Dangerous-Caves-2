@@ -33,9 +33,11 @@ import me.imdanix.caves.mobs.defaults.SmokeDemon;
 import me.imdanix.caves.mobs.defaults.TNTCreeper;
 import me.imdanix.caves.mobs.defaults.Watcher;
 
+import java.util.function.Function;
+
 enum DefaultMobs {
-//  MIMIC(new Mimic()),
-//  CAVE_GOLEM(new CaveGolem()),
+    MIMIC(Mimic::new),
+    CAVE_GOLEM(CaveGolem::new),
     ALPHA_SPIDER(new AlphaSpider()),
     HEXED_ARMOR(new HexedArmor()),
     MAGMA_MONSTER(new MagmaMonster()),
@@ -47,16 +49,26 @@ enum DefaultMobs {
     DEAD_MINER(new DeadMiner()),
     SMOKE_DEMON(new SmokeDemon());
 
-    private final CustomMob custom;
+    private final Function<MobsManager, CustomMob> custom;
+    private CustomMob mob;
 
     DefaultMobs(CustomMob mob) {
-        this.custom = mob;
+        this.custom = mm -> mob;
+    }
+
+    DefaultMobs(Function<MobsManager, CustomMob> custom) {
+        this.custom = custom;
+    }
+
+    public CustomMob getMob() {
+        return mob;
     }
 
     public static void registerAll(MobsManager manager) {
-        for (DefaultMobs mob : DefaultMobs.values())
-            manager.register(mob.custom);
-        manager.register(new Mimic(manager));
-        manager.register(new CaveGolem(manager));
+        for (DefaultMobs mob : DefaultMobs.values()) {
+            CustomMob customMob = mob.custom.apply(manager);
+            manager.register(customMob);
+            mob.mob = customMob;
+        }
     }
 }
