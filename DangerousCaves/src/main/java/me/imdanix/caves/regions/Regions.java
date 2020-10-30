@@ -104,18 +104,20 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
     }
 
     public void onEnable() {
-        if (Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            register(new GriefPreventionProtector());
-            if (Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
-                register( new GriefPreventionFlagsProtector());
-        }
-
         if (Bukkit.getPluginManager().isPluginEnabled("Lands")) {
             register(new LandsProtector(true));
             register(new LandsProtector(false));
         }
 
         protectors.values().forEach(RegionProtector::onEnable);
+    }
+
+    public void onDone() {
+        if (Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+            register(new GriefPreventionProtector());
+            if (Bukkit.getPluginManager().isPluginEnabled("GriefPreventionFlags"))
+                register(new GriefPreventionFlagsProtector());
+        }
     }
 
     @Override

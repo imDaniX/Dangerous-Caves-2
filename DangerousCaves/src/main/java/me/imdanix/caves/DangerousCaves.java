@@ -82,7 +82,6 @@ public class DangerousCaves extends JavaPlugin {
         dynamics.register(cavesAging);
         dynamics.register(hypoxia);
 
-        cfg.register(Regions.INSTANCE);
         cfg.register(mobsManager);
         cfg.register(ambient);
         cfg.register(cavesAging);
@@ -97,6 +96,11 @@ public class DangerousCaves extends JavaPlugin {
         cfg.checkVersion(true);
 
         new MetricsLite(this, 6824);
+
+        Bukkit.getScheduler().runTask(this, () -> {
+            Regions.INSTANCE.onDone();
+            cfg.register(Regions.INSTANCE);
+        });
     }
 
     public MobsManager getMobs() {
