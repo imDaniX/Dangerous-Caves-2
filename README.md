@@ -11,6 +11,8 @@ More information soon on Wiki page.
 
 If you want to support - just make some cool PRs :D
 
+This project started as a fork of [Dangerous Caves](https://github.com/Evil-Lootlye/dangerous-caves) project, but it just gone too far, so I decided to detach/defork the original repository from the project.
+
 ## Build
 Just.. you know.. `mvn clean package`
 
