@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -45,13 +45,13 @@
         <dependency>
             <groupId>com.github.ShaneBeee</groupId>
             <artifactId>GriefPreventionFlags</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.13.0</version>
+            <version>16.17.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
