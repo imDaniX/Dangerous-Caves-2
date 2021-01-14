@@ -1,6 +1,6 @@
 /*
  * Dangerous Caves 2 | Make your caves scary
- * Copyright (C) 2020  imDaniX
+ * Copyright (C) 2021  imDaniX
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
