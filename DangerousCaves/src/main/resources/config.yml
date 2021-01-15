@@ -9,7 +9,7 @@ version: ${cfgVersion}
 
 # NOTE: Worlds
 # World names are case-sensitive
-# Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds will be used automatically
+# Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds are going to be used automatically
 
 # NOTE: Ticks
 # Plugin utilizes its own tick system which is based on vanilla one
@@ -174,7 +174,7 @@ caverns:
     # Chance of block will be affected
     change-chance: 2.5
     # Maximal light level of block (0-15)
-    # WARNING: Can cause lags if > 0. This option checks every horizontal side of block to check if there's some light
+    # WARNING: Can cause lags. This option checks every horizontal side of block to detect if there's any light
     max-light-level: 0
     # Vanilla ticks between chunk changes. Larger value - better performance, but slower process
     # Large values(80+) are not recommended
