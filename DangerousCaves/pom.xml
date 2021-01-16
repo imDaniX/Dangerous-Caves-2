@@ -59,7 +59,7 @@
                             <manifestEntries>
                                 <Specification-Title>DangerousCaves - Make your caves scary</Specification-Title>
                                 <Implementation-Title>me.imdanix.caves</Implementation-Title>
-                                <Implementation-Version>${project.version}</Implementation-Version>
+                                <Implementation-Version>${project.version}.${subVersion}</Implementation-Version>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>${bukkitVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -43,6 +43,7 @@
     <properties>
         <subVersion>2.12-SNAPSHOT</subVersion>
         <cfgVersion>22</cfgVersion>
+        <bukkitVersion>1.16.5-R0.1-SNAPSHOT</bukkitVersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>
