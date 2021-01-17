@@ -24,7 +24,7 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -102,7 +102,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
-        if (isThis(event.getDamager()) && Rnd.nextBoolean())
+        if (isThis(event.getDamager()) && Rng.nextBoolean())
             event.getEntity().setFireTicks(60);
     }
 
@@ -115,7 +115,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
         boolean fire;
         boolean magma;
-        if (((fire = fireChance > 0 && Rnd.chance(fireChance)) | (magma = magmaChance > 0 && Rnd.chance(magmaChance))) &&
+        if (((fire = fireChance > 0 && Rng.chance(fireChance)) | (magma = magmaChance > 0 && Rng.chance(magmaChance))) &&
                 !Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation()))
             return;
 

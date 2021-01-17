@@ -30,7 +30,7 @@ import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.bound.Bound;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -43,8 +43,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -53,6 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class CavesAging implements Tickable, Configurable {
@@ -73,6 +72,7 @@ public class CavesAging implements Tickable, Configurable {
     private int radius;
     private int yMax;
     private double chance;
+    private boolean chancePerChunks;
     private double agingChance;
     private int schedule;
     private boolean forceLoad;
@@ -95,9 +95,10 @@ public class CavesAging implements Tickable, Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        radius = cfg.getInt("radius", 3);
+        radius = Math.max(cfg.getInt("radius", 3), 1);
         yMax = Math.min(128, cfg.getInt("y-max", 80));
         chance = cfg.getDouble("chance", 50) / 100;
+        chancePerChunks = cfg.getBoolean("use-chance-per-chunk", false);
         agingChance = cfg.getDouble("change-chance", 25) / 100;
         lightLevel = cfg.getInt("max-light-level", 0);
         if (lightLevel > 0) {
@@ -110,7 +111,7 @@ public class CavesAging implements Tickable, Configurable {
         } else {
             lightLevelCheck = (b) -> true;
         }
-        schedule = Math.max(cfg.getInt("schedule-timer", 8), 1);
+        schedule = Math.max(cfg.getInt("schedule-timer", 4), 1);
         forceLoad = cfg.getBoolean("force-load", true);
         torchRemove = cfg.getDouble("torch-remove-chance", 40) / 100;
         worlds.clear();
@@ -149,13 +150,14 @@ public class CavesAging implements Tickable, Configurable {
 
             Set<QueuedChunk> chunks = new HashSet<>();
             for (Player player : world.getPlayers()) {
-                if (!Rnd.chance(chance)) continue;
+                if (!chancePerChunks && !Rng.chance(chance)) continue;
                 Chunk start = player.getLocation().getChunk();
+                // TODO: Move it to async too?
                 for (int x = start.getX() - radius; x <= start.getX() + radius; x++)
                     for (int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
                         if (isAllowed(world, x, z)) chunks.add(new QueuedChunk(x, z));
             }
-            proceedChunks(new WeakReference<>(world), chunks);
+            proceedChunks(world.getUID(), chunks);
         }
     }
 
@@ -167,11 +169,11 @@ public class CavesAging implements Tickable, Configurable {
         return true;
     }
 
-    private void proceedChunks(Reference<World> worldRef, Set<QueuedChunk> chunks) {
+    private void proceedChunks(UUID worldId, Set<QueuedChunk> chunks) {
         int timer = 0;
         for (QueuedChunk queuedChunk : chunks) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                World world = worldRef.get();
+                World world = Bukkit.getWorld(worldId);
                 if (world == null) return;
                 Chunk chunk = queuedChunk.getChunk(world);
                 if (!chunk.isLoaded()) {
@@ -189,6 +191,7 @@ public class CavesAging implements Tickable, Configurable {
         Location edge = chunk.getBlock(0, 0, 0).getLocation();
         ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (chancePerChunks && !Rng.chance(chance)) return;
             List<DelayedChange> changes = calculateChanges(edge, snapshot);
             if (changes.isEmpty()) return;
 
@@ -223,11 +226,11 @@ public class CavesAging implements Tickable, Configurable {
                 continue;
 
             if (type == Material.TORCH) {
-                if (torchRemove > 0 && Rnd.chance(torchRemove))
+                if (torchRemove > 0 && Rng.chance(torchRemove))
                     changes.add(new DelayedChange(x, y, z, ChangeType.TORCH_AIR));
-            } else if (replaceBlocks.contains(type) && Rnd.chance(agingChance)) {
+            } else if (replaceBlocks.contains(type) && Rng.chance(agingChance)) {
                 if (withReplace) {
-                    switch (Rnd.nextInt(6)) {
+                    switch (Rng.nextInt(6)) {
                         case 0:
                             changes.add(new DelayedChange(x, y, z, ChangeType.ANDESITE));
                             break;
@@ -237,21 +240,21 @@ public class CavesAging implements Tickable, Configurable {
                             break;
 
                         case 2:
-                            if (Materials.isAir(snapshot.getBlockType(x, y-1, z)) && Rnd.nextBoolean())
+                            if (Materials.isAir(snapshot.getBlockType(x, y-1, z)) && Rng.nextBoolean())
                                 changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
                             break;
                     }
                 }
 
-                if (withVines && Rnd.chance(0.125)) {
+                if (withVines && Rng.chance(0.125)) {
                     changes.add(new DelayedChange(x, y, z, ChangeType.VINE));
                 }
 
                 if (Materials.isAir(snapshot.getBlockType(x, y+1, z))){
-                    if (withMushrooms && Rnd.chance(0.111)) {
-                        changes.add(new DelayedChange(x, y+1, z, Rnd.nextBoolean() ?
-                                ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
-                    } else if (withRocks && Rnd.chance(0.167)) {
+                    if (withMushrooms && Rng.chance(0.111)) {
+                        changes.add(new DelayedChange(x, y+1, z, Rng.nextBoolean() ?
+                                                                 ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
+                    } else if (withRocks && Rng.chance(0.167)) {
                         changes.add(new DelayedChange(x, y+1, z, ChangeType.ROCK));
                     }
                 }

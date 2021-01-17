@@ -20,7 +20,7 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -73,13 +73,13 @@ public class TNTCreeper extends AbstractMob implements Listener {
         Location loc = event.getLocation();
         for (int i = 0; i < tntAmount; i++) {
             Entity tnt = entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
-            tnt.setVelocity(new Vector(Rnd.nextDouble(2) - 1, 0.3, Rnd.nextDouble(2) - 1));
+            tnt.setVelocity(new Vector(Rng.nextDouble(2) - 1, 0.3, Rng.nextDouble(2) - 1));
         }
     }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (explosionChance > 0 && isThis(event.getEntity()) && Rnd.chance(explosionChance))
+        if (explosionChance > 0 && isThis(event.getEntity()) && Rng.chance(explosionChance))
             event.getDamager().getWorld().createExplosion(event.getDamager().getLocation(), 0.01f);
     }
 }

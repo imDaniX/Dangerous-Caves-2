@@ -28,7 +28,7 @@ import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -121,7 +121,7 @@ public class DepthHypoxia implements Tickable, Configurable {
                 player.addPotionEffect(SLOW);
                 player.addPotionEffect(SLOW_DIGGING);
                 if (messages.isEmpty()) continue;
-                String text = Rnd.randomElement(messages).replace("%player", player.getName());
+                String text = Rng.randomElement(messages).replace("%player", player.getName());
                 if (actionbar) {
                     // Spigot still doesn't have Player#sendActionBar, bruh
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
@@ -135,7 +135,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     private boolean checkConditions(Player player) {
         Location loc = player.getLocation();
         return Locations.isCave(loc) && loc.getY() <= yMax &&
-                Rnd.chance(chance) && Rnd.chance(getChance(player)) &&
+                Rng.chance(chance) && Rng.chance(getChance(player)) &&
                 Regions.INSTANCE.check(CheckType.EFFECT, loc);
     }
 
@@ -149,9 +149,9 @@ public class DepthHypoxia implements Tickable, Configurable {
             placeholder.removePlayer(player);
             return false;
         }
-        if (check && Rnd.chance(chance)) {
+        if (check && Rng.chance(chance)) {
             double hypoxiaChance;
-            boolean chanceCheck = Rnd.chance(hypoxiaChance = getChance(player));
+            boolean chanceCheck = Rng.chance(hypoxiaChance = getChance(player));
             placeholder.cachePlayer(hypoxiaChance, player);
             return chanceCheck && Regions.INSTANCE.check(CheckType.EFFECT, loc);
         } else {

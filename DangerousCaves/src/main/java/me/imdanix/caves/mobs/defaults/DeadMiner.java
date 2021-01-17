@@ -26,7 +26,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -96,10 +96,10 @@ public class DeadMiner extends TickingMob implements Listener {
     public void onAttack(EntityDamageByEntityEvent event) {
         if (!isThis(event.getEntity()) || event.getDamage() < 1) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
-        if (dropChance > 0 && !items.isEmpty() && Rnd.chance(dropChance))
+        if (dropChance > 0 && !items.isEmpty() && Rng.chance(dropChance))
             entity.getWorld().dropItemNaturally(
                     entity.getLocation(),
-                    new ItemStack(Rnd.randomElement(items))
+                    new ItemStack(Rng.randomElement(items))
             );
     }
 
@@ -109,11 +109,11 @@ public class DeadMiner extends TickingMob implements Listener {
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head); equipment.setHelmetDropChance(0);
-        equipment.setItemInMainHand(new ItemStack(Rnd.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
-        if (Rnd.nextBoolean())
-            equipment.setChestplate(new ItemStack(Rnd.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
-        if (Rnd.nextBoolean())
-            equipment.setBoots(new ItemStack(Rnd.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
+        equipment.setItemInMainHand(new ItemStack(Rng.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
+        if (Rng.nextBoolean())
+            equipment.setChestplate(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
+        if (Rng.nextBoolean())
+            equipment.setBoots(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
         if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH));
         entity.setCanPickupItems(false);
     }

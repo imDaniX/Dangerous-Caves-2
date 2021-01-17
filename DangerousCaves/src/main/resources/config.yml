@@ -166,6 +166,8 @@ caverns:
     # Chance of caves near player will be affected
     # Checking every WORLD tick
     chance: 50
+    # Use `chance` for every chunk near players rather than just every player
+    use-chance-per-chunk: false
     # Radius of cave aging near player
     # In chunks (+1 where the player is)
     radius: 3
@@ -176,10 +178,10 @@ caverns:
     # Maximal light level of block (0-15)
     # WARNING: Can cause lags. This option checks every horizontal side of block to detect if there's any light
     max-light-level: 0
-    # Vanilla ticks between chunk changes. Larger value - better performance, but slower process
-    # Large values(80+) are not recommended
-    schedule-timer: 8
+    # Vanilla ticks between chunk changes calculations. Larger value - better performance, but slower process
+    schedule-timer: 4
     # Force chunk loading if chunk was unloaded during scheduled aging. Disable if it's too intensive for your server
+    # Plugin will try to load it async if you're using Paper or its forks
     force-load: true
     # Maximal percentage of aged blocks per chunk
     percentage: 30

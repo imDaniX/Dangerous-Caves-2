@@ -26,7 +26,7 @@ import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -85,9 +85,9 @@ public class AmbientSounds implements Tickable, Configurable {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if (loc.getBlockY() <= yMax && Locations.isCave(loc) && Rnd.chance(chance)
+                if (loc.getBlockY() <= yMax && Locations.isCave(loc) && Rng.chance(chance)
                     && Regions.INSTANCE.check(CheckType.EFFECT, loc))
-                    Rnd.randomElement(sounds).play(player);
+                    Rng.randomElement(sounds).play(player);
             }
         }
     }
@@ -116,9 +116,9 @@ public class AmbientSounds implements Tickable, Configurable {
         public void play(Player player) {
             Location loc = player.getEyeLocation();
             if (radius > 0)
-                loc.add(Rnd.nextDouble(-radius, radius),
-                        Rnd.nextDouble(-radius, radius),
-                        Rnd.nextDouble(-radius, radius));
+                loc.add(Rng.nextDouble(-radius, radius),
+                        Rng.nextDouble(-radius, radius),
+                        Rng.nextDouble(-radius, radius));
             player.playSound(loc, sound, SoundCategory.AMBIENT, volume, pitch);
         }
     }

@@ -50,7 +50,7 @@ public class WeightedPool<T> {
     }
 
     public T next() {
-        return this.elements.get(Rnd.nextInt(this.elements.size()));
+        return this.elements.get(Rng.nextInt(this.elements.size()));
     }
 
     public boolean isEmpty() {

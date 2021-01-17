@@ -25,7 +25,7 @@ import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.PseudoRandom;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -107,7 +107,7 @@ public class CaveIns implements Listener, Configurable {
         if (player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
-        if (Regions.INSTANCE.check(CheckType.BLOCK, initBlock.getLocation()) && Rnd.chance(chance)) {
+        if (Regions.INSTANCE.check(CheckType.BLOCK, initBlock.getLocation()) && Rng.chance(chance)) {
             Location blockLoc = initBlock.getLocation();
             if (blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             if (blastEffect) player.addPotionEffect(BLINDNESS);

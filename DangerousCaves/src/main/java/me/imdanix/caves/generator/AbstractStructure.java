@@ -20,7 +20,7 @@ package me.imdanix.caves.generator;
 
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -71,18 +71,18 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
             ex.printStackTrace();
             return;
         }
-        if (mimicChance > 0 && Rnd.chance(mimicChance)) {
+        if (mimicChance > 0 && Rng.chance(mimicChance)) {
             Compatibility.setTag(block, "mimic-30");
             return;
         }
         if (chestItems.isEmpty()) return;
         Inventory inventory = ((Container)block.getState()).getInventory();
-        int itemsCount = Rnd.nextInt(10) + 2;
+        int itemsCount = Rng.nextInt(10) + 2;
         while(itemsCount-- > 0) {
-            Material material = Rnd.randomElement(chestItems);
+            Material material = Rng.randomElement(chestItems);
             inventory.setItem(
-                    Rnd.nextInt(inventory.getSize()),
-                    new ItemStack(material, material.getMaxStackSize() > 1 ? Rnd.nextInt(3) + 1 : 1)
+                    Rng.nextInt(inventory.getSize()),
+                    new ItemStack(material, material.getMaxStackSize() > 1 ? Rng.nextInt(3) + 1 : 1)
             );
         }
     }

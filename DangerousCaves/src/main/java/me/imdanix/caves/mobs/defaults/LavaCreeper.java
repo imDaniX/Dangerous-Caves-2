@@ -25,7 +25,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -100,16 +100,16 @@ public class LavaCreeper extends TickingMob implements Listener {
         int cz = start.getBlockZ();
         start.getWorld().spawnParticle(Particle.FLAME, cx, cy+1, cz, 20, 0, 0, 0, 2);
         Locations.loop(radius, start, (world, x, y, z) -> {
-            if ((Utils.square(cx - x) + Utils.square(cy - y) + Utils.square(cz - z)) > radiusSquared || !Rnd.chance(chance)) return;
+            if ((Utils.square(cx - x) + Utils.square(cy - y) + Utils.square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
             if (Materials.isAir(block.getType())) {
-                if (fire > 0 && Rnd.chance(fire)) block.setType(Material.FIRE);
+                if (fire > 0 && Rng.chance(fire)) block.setType(Material.FIRE);
             } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
-                if (magmaBlock > 0 && Rnd.chance(magmaBlock)) {
+                if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
                     block.setType(VMaterial.MAGMA_BLOCK.get());
-                } else if (obsidian > 0 && Rnd.chance(obsidian)) {
+                } else if (obsidian > 0 && Rng.chance(obsidian)) {
                     block.setType(Material.OBSIDIAN);
-                } else if (lava > 0 && Rnd.chance(lava)) {
+                } else if (lava > 0 && Rng.chance(lava)) {
                     block.setType(Material.LAVA);
                 }
             }

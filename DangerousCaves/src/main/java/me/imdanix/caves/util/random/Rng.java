@@ -21,10 +21,10 @@ package me.imdanix.caves.util.random;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Rnd {
+public class Rng {
 
     public static <T> T randomElement(List<T> list) {
-        return list.get(Rnd.nextInt(list.size()));
+        return list.get(Rng.nextInt(list.size()));
     }
 
     public static boolean chance(double v) {

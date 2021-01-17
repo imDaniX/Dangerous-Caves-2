@@ -25,7 +25,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -70,8 +70,8 @@ public class AlphaSpider extends AbstractMob implements Listener {
         if (!isThis(event.getDamager())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
         Entity damager = event.getDamager();
-        if (Rnd.nextBoolean()) {
-            if (minionChance > 0 && Rnd.chance(minionChance))
+        if (Rng.nextBoolean()) {
+            if (minionChance > 0 && Rng.chance(minionChance))
                 damager.getWorld().spawnEntity(damager.getLocation(), EntityType.CAVE_SPIDER);
 
             if (cobwebChance > 0) {
@@ -80,7 +80,7 @@ public class AlphaSpider extends AbstractMob implements Listener {
                 entity.getEyeLocation().getBlock().setType(VMaterial.COBWEB.get());
 
                 Locations.loop(3, loc, l -> {
-                    if (Materials.isAir(l.getBlock().getType()) && Rnd.chance(cobwebChance) &&
+                    if (Materials.isAir(l.getBlock().getType()) && Rng.chance(cobwebChance) &&
                             Regions.INSTANCE.check(CheckType.ENTITY, l)) {
                         l.getBlock().setType(VMaterial.COBWEB.get());
                     }}

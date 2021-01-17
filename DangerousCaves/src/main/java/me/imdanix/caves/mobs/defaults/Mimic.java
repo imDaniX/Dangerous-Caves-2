@@ -28,7 +28,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -169,7 +169,7 @@ public class Mimic extends TickingMob implements Listener {
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);
-            if (!items.isEmpty()) drops.add(new ItemStack(Rnd.randomElement(items)));
+            if (!items.isEmpty()) drops.add(new ItemStack(Rng.randomElement(items)));
         }
     }
 
@@ -181,7 +181,7 @@ public class Mimic extends TickingMob implements Listener {
             for (BlockFace face : Locations.HORIZONTAL_FACES)
                 if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
-            Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rnd.nextInt(4)]);
+            Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
             Compatibility.setTag(block, "mimic-" + entity.getHealth());
             entity.remove();
         }

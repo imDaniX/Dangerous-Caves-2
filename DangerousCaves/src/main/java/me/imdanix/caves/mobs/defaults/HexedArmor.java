@@ -22,7 +22,7 @@ import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -79,7 +79,7 @@ public class HexedArmor extends AbstractMob implements Listener {
     @EventHandler
     public void onAttack(PlayerAttackedEvent event) {
         LivingEntity entity = event.getAttacker();
-        if (isThis(entity) && Rnd.chance(chance)) {
+        if (isThis(entity) && Rng.chance(chance)) {
             PlayerInventory inv = event.getPlayer().getInventory();
             ItemStack[] armor = inv.getArmorContents();
             for (ItemStack item : armor) {
@@ -94,7 +94,7 @@ public class HexedArmor extends AbstractMob implements Listener {
     }
 
     private ItemStack getRandom(Material[] arr) {
-        int i = Rnd.nextInt(arr.length);
+        int i = Rng.nextInt(arr.length);
         return i >= arr.length ? null : enchant(new ItemStack(arr[i]));
     }
 

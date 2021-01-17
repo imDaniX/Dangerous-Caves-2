@@ -30,7 +30,7 @@ import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import me.imdanix.caves.util.random.WeightedPool;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -282,7 +282,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 loc.getBlockY() > yMax || loc.getBlockY() < yMin ||
                 !worlds.contains(loc.getWorld().getName()) ||
                 !Locations.isCave(loc) ||
-                !Rnd.chance(chance))
+                !Rng.chance(chance))
             return false;
         CustomMob mob = mobsPool.next();
         if (mob.canSpawn(loc)) {

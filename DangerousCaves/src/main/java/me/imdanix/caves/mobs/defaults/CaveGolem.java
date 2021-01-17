@@ -25,7 +25,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
-import me.imdanix.caves.util.random.Rnd;
+import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -114,7 +114,7 @@ public class CaveGolem extends AbstractMob implements Listener {
                     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
                     public void onBreak(BlockBreakEvent event) {
                         Block block = event.getBlock();
-                        if (materials.contains(block.getType()) && Rnd.chance(breakChance)
+                        if (materials.contains(block.getType()) && Rng.chance(breakChance)
                                 && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                             event.setDropItems(false);
                             event.setExpToDrop(0);
@@ -138,7 +138,7 @@ public class CaveGolem extends AbstractMob implements Listener {
         Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
-        equipment.setHelmet(Rnd.randomElement(heads)); equipment.setHelmetDropChance(1);
+        equipment.setHelmet(Rng.randomElement(heads)); equipment.setHelmetDropChance(1);
         equipment.setChestplate(CHESTPLATE);        equipment.setChestplateDropChance(0);
         equipment.setLeggings(LEGGINGS);            equipment.setLeggingsDropChance(0);
         equipment.setBoots(BOOTS);                  equipment.setBootsDropChance(0);
