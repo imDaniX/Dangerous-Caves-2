@@ -7,6 +7,11 @@ version: ${cfgVersion}
 # NOTE: Chances
 # All the chances are in percents
 
+# NOTE: Formulas
+# For formulas you can use all common operators + - * / ^ ( ), for square roots you can use operator #
+# Also plugin will give you some variables to use in your expression
+# So, "12^2 * (45.342+32.1) / #43.1" will result you approximately "1698.6" (which is right)
+
 # NOTE: Worlds
 # World names are case-sensitive
 # Instead of specifying worlds you can leave them blank - all the OVERWORLD worlds are going to be used automatically
@@ -137,11 +142,10 @@ caverns:
     # Chance of checking the player
     # Checking every PLAYER tick
     try-chance: 60
-    # Formula to calculate chance of activation. Supports integers, floats, -, +, *, /, ^, (, )
     # Result should be between 0 and 1, where 0 is 0% and 1 is 100%
     # Depth (0-1) - depth of player, where 1 is Y 0, and 0 is y-max(from config)
     # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe, 16 ender pearls or 64 dirt)
-    # For 2.1.9 behavior use "(depth+inventory)/2"
+    # For v2.1.9 behavior use "(depth+inventory)/2"
     # For original-like behavior just use "1" and set try-chance to 40
     chance-formula: "depth*inventory"
     # Limit maximal and minimal chance of activation
@@ -153,7 +157,7 @@ caverns:
     actionbar: true
     # Messages when player is feeling lack of air. You can use %player placeholder
     messages:
-      - "&4I really need more air..."
+      - "&4I really need more fresh air..."
       - "&4It is so stuffy down here."
       - "&4Maybe drop some items from the inventory?"
 
