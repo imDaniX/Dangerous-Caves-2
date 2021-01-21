@@ -100,14 +100,17 @@ public class FormulasEvaluator {
             holder.tryNext(')');
         } else if (isNumberChar(holder.current())) {
             holder.pointer++;
-            while(isNumberChar(holder.current())) holder.pointer++;
+            while (isNumberChar(holder.current())) holder.pointer++;
             double a = Double.parseDouble(holder.substring(start, holder.pointer));
             x = () -> a;
         } else if (isWordChar(holder.current())) {
             holder.pointer++;
-            while(isWordChar(holder.current()) || isNumberChar(holder.current())) holder.pointer++;
+            while (isWordChar(holder.current()) || isNumberChar(holder.current())) holder.pointer++;
             String str = holder.substring(start, holder.pointer);
             x = () -> variables.get(str);
+        } else if (holder.tryNext('#')) {
+            Expression a = thirdImportance(holder);
+            x = () -> Math.sqrt(a.eval());
         }
 
         if (holder.tryNext('^')) {
