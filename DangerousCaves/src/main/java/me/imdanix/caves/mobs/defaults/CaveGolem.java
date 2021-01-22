@@ -114,7 +114,8 @@ public class CaveGolem extends AbstractMob implements Listener {
                     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
                     public void onBreak(BlockBreakEvent event) {
                         Block block = event.getBlock();
-                        if (materials.contains(block.getType()) && Rng.chance(breakChance)
+                        if (mobs.checkWorld(block.getWorld().getName())
+                                && materials.contains(block.getType()) && Rng.chance(breakChance)
                                 && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                             event.setDropItems(false);
                             event.setExpToDrop(0);

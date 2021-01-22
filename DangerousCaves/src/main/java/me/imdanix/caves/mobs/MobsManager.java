@@ -292,6 +292,10 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         return false;
     }
 
+    public boolean checkWorld(String world) {
+        return worlds.contains(world);
+    }
+
     @Override
     public String getConfigPath() {
         return "mobs";
