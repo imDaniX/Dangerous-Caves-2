@@ -17,6 +17,13 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <filtering>true</filtering>
+                <directory>..</directory>
+                <includes>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
         </resources>
         <finalName>Dangerous-Caves-${project.version}.${subVersion}</finalName>
         <plugins>
