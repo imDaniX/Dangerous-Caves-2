@@ -4,24 +4,24 @@ import me.imdanix.caves.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Dynamics implements Manager<Tickable> {
-    private final Map<TickLevel, Set<Tickable>> tickables;
+    private final Map<TickLevel, List<Tickable>> tickables;
 
     public Dynamics(Plugin plugin) {
         tickables = new EnumMap<>(TickLevel.class);
         int offset = 0;
         for (TickLevel level : TickLevel.values()) {
-            tickables.put(level, new HashSet<>());
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(
+            tickables.put(level, new ArrayList<>());
+            Bukkit.getScheduler().runTaskTimer(
                     plugin,
                     () -> tick(level),
-                    level.ticks + offset++,
-                    level.ticks
+                    level.getTicks() + offset++,
+                    level.getTicks()
             );
         }
     }
@@ -33,9 +33,11 @@ public class Dynamics implements Manager<Tickable> {
         return true;
     }
 
+    // TODO: Spread among ticks
     public void tick(TickLevel level) {
-        for (Tickable tickable : tickables.get(level))
+        for (Tickable tickable : tickables.get(level)) {
             tickable.tick();
+        }
     }
 
 }
