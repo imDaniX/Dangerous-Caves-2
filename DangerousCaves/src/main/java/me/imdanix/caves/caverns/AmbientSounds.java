@@ -31,6 +31,8 @@ public class AmbientSounds implements Tickable, Configurable {
     private double chance;
     private double radius;
     private int yMax;
+    private boolean worldSound;
+    private double worldDistance;
 
     public AmbientSounds() {
         sounds = new ArrayList<>();
@@ -53,6 +55,8 @@ public class AmbientSounds implements Tickable, Configurable {
             ));
         }
         if (sounds.isEmpty()) chance = 0;
+        worldSound = cfg.getBoolean("server-wise", true);
+        worldDistance = cfg.getDouble("server-wise-distance", 0); worldDistance *= worldDistance;
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
@@ -62,14 +66,24 @@ public class AmbientSounds implements Tickable, Configurable {
     @Override
     public void tick() {
         if (disabled) return;
-
+        List<Location> soundSources = worldSound && worldDistance > 0 ? new ArrayList<>() : null;
         for (World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
                 Location loc = player.getLocation();
-                if (loc.getBlockY() <= yMax && Locations.isCave(loc) && Rng.chance(chance)
-                    && Regions.INSTANCE.check(CheckType.EFFECT, loc))
-                    Rng.randomElement(sounds).play(player);
+                if (loc.getBlockY() > yMax || !Locations.isCave(loc) || !Rng.chance(chance) ||
+                        !Regions.INSTANCE.check(CheckType.EFFECT, loc)) continue;
+                if (worldSound && soundSources != null) {
+                    boolean check = false;
+                    for (Location source : soundSources) {
+                        if (source.distanceSquared(loc) > worldDistance) continue;
+                        check = true;
+                        break;
+                    }
+                    if (check) continue;
+                    soundSources.add(loc);
+                }
+                Rng.randomElement(sounds).play(player, worldSound);
             }
         }
     }
@@ -95,13 +109,17 @@ public class AmbientSounds implements Tickable, Configurable {
             this.pitch = (float) pitch;
         }
 
-        public void play(Player player) {
+        public void play(Player player, boolean world) {
             Location loc = player.getEyeLocation();
             if (radius > 0)
                 loc.add(Rng.nextDouble(-radius, radius),
                         Rng.nextDouble(-radius, radius),
                         Rng.nextDouble(-radius, radius));
-            player.playSound(loc, sound, SoundCategory.AMBIENT, volume, pitch);
+            if (world) {
+                loc.getWorld().playSound(loc, sound, SoundCategory.AMBIENT, volume, pitch);
+            } else {
+                player.playSound(loc, sound, SoundCategory.AMBIENT, volume, pitch);
+            }
         }
     }
 }

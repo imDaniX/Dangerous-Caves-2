@@ -19,9 +19,9 @@ public final class Locations {
     /**
      * Creates new Location instance and adds coordinates
      * @param loc Initial location
-     * @param x   X to add
-     * @param y   Y to add
-     * @param z   Z to add
+     * @param x X to add
+     * @param y Y to add
+     * @param z Z to add
      * @return Edited Location instance
      */
     public static Location add(Location loc, double x, double y, double z) {
@@ -31,9 +31,9 @@ public final class Locations {
     /**
      * Creates new Location instance and subtracts coordinates
      * @param loc Initial location
-     * @param x   X to subtract
-     * @param y   Y to subtract
-     * @param z   Z to subreact
+     * @param x X to subtract
+     * @param y Y to subtract
+     * @param z Z to subreact
      * @return Edited Location instance
      */
     public static Location subtract(Location loc, double x, double y, double z) {
@@ -61,8 +61,7 @@ public final class Locations {
         Material lowerType;
         return block.getLightFromSky() <= 1 && (
                 Materials.isCave(lowerType = block.getRelative(BlockFace.DOWN).getType()) ||
-                Materials.isAir(lowerType)
-        );
+                Materials.isAir(lowerType));
 
     }
 

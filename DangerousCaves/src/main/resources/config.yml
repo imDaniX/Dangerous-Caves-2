@@ -112,18 +112,14 @@ caverns:
     y-max: 64
     # Play sound in random location near player. 0 to play sound on player's location
     near: 7
+    # Everyone will hear a sound in its radius
+    server-wise: true
+    # Minimal distance between sound sources if server-wise option is used.
+    # May affect performance when enabled. Set to 0 or lower to disable
+    server-wise-distance: 0
     # List of sounds to play - you can add more or remove some
     sounds:
-      MUSIC_DRAGON:
-        volume: 1
-        pitch: 0.5
-      MUSIC_NETHER:
-        volume: 1
-        pitch: 0.5
       MUSIC_DISC_11:
-        volume: 1
-        pitch: 0.5
-      MUSIC_DISC_13:
         volume: 1
         pitch: 0.5
       ENCHANT_THORNS_HIT:
