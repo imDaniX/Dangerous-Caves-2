@@ -11,7 +11,10 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Screenshots or logs**
-If applicable, add screenshots or logs to help explain your problem. For logs please use [pastebin](https://pastebin.com/), [hastebin](https://hasteb.in/) or something alike. 
+If applicable, add screenshots or logs to help explain your problem. For logs please use [pastebin](https://pastebin.com/), [hastebin](https://hasteb.in/) or something alike.
+
+**Plugin config**
+Add a config here. Please use [pastebin](https://pastebin.com/), [hastebin](https://hasteb.in/) or something alike.
 
 **Additional information**
 - Server version (/version)
