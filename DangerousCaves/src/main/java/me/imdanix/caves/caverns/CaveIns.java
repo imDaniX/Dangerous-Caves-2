@@ -66,7 +66,6 @@ public class CaveIns implements Listener, Configurable {
         blastEffect = cfg.getBoolean("blast-effect", true);
         blastSound = cfg.getBoolean("blast-sound", true);
 
-        worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
         pseudoRandom = cuboid ? PseudoRandom.ZERO_PSEUDO_RANDOM : PSEUDO_RANDOM;

@@ -72,7 +72,6 @@ public class DepthHypoxia implements Tickable, Configurable {
         actionbar = cfg.getBoolean("actionbar", true) && PaperLib.isSpigot();
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
-        worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         try {
             formula = new FormulasEvaluator(cfg.getString("chance-formula", "depth*inventory"));

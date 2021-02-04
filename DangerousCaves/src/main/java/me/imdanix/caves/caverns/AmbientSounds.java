@@ -57,7 +57,6 @@ public class AmbientSounds implements Tickable, Configurable {
         if (sounds.isEmpty()) chance = 0;
         worldSound = cfg.getBoolean("server-wise", true);
         worldDistance = cfg.getDouble("server-wise-distance", 0); worldDistance *= worldDistance;
-        worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
         disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && !worlds.isEmpty());

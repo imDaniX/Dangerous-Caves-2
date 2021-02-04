@@ -32,6 +32,7 @@ public final class Utils {
     }
 
     public static void fillWorlds(List<String> worldsCfg, Collection<String> worlds) {
+        worlds.clear();
         if (worldsCfg.isEmpty()) {
             for (World world : Bukkit.getWorlds()) {
                 if (world.getEnvironment() == World.Environment.NORMAL)

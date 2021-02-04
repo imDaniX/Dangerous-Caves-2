@@ -99,7 +99,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             lightCheck = (l) -> true;
         }
 
-        worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
         List<String> replaceMobs = cfg.isList("replace-mobs") ?

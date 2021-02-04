@@ -96,7 +96,6 @@ public class CavesAging implements Tickable, Configurable {
         schedule = Math.max(cfg.getInt("schedule-timer", 4), 1);
         forceLoad = cfg.getBoolean("force-load", true);
         torchRemove = cfg.getDouble("torch-remove-chance", 40) / 100;
-        worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         skippedChunks.clear();
         ConfigurationSection boundsCfg = cfg.getConfigurationSection("skip-chunks");
