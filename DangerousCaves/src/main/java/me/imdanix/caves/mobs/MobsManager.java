@@ -35,10 +35,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -99,7 +101,12 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
         worlds.clear();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
-        replaceTypes = Utils.getEnumSet(EntityType.class, cfg.getStringList("replace-mobs"));
+
+        List<String> replaceMobs = cfg.isList("replace-mobs") ?
+                                   cfg.getStringList("replace-mobs") :
+                                   Arrays.asList("ZOMBIE", "HUSK", "SKELETON", "STRAY", "CREEPER",
+                                                                                        "SPIDER", "WITCH", "ENDERMAN");
+        replaceTypes = Utils.getEnumSet(EntityType.class, replaceMobs);
 
         disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && yMax > 0 && yMax >= yMin &&
                 !worlds.isEmpty() && !replaceTypes.isEmpty());
