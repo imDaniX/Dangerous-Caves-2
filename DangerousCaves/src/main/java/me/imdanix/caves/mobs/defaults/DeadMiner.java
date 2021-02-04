@@ -9,7 +9,6 @@ import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -103,12 +102,12 @@ public class DeadMiner extends TickingMob implements Listener {
     @Override
     public void tick(LivingEntity entity) {
         if (!torches || entity.hasPotionEffect(PotionEffectType.CONFUSION)) return;
-        Location loc = entity.getLocation();
-        Block block = loc.getBlock();
-        if (block.getLightLevel() > 0 ||
-                (withoutTarget && ((Monster)entity).getTarget() != null) ||
-                !Regions.INSTANCE.check(CheckType.ENTITY, loc))
+        Block block = entity.getLocation().getBlock();
+
+        if (block.getLightLevel() > 0 || (!withoutTarget && ((Monster)entity).getTarget() == null) ||
+                !Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation()))
             return;
+
         if (Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
