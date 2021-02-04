@@ -18,10 +18,6 @@ import java.util.regex.Pattern;
 public final class Utils {
     private final static Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
 
-    public static int square(int i) {
-        return i*i;
-    }
-
     public static String clr(String s){
         return s == null ? "\u00A74Error" : ChatColor.translateAlternateColorCodes('&', s);
     }

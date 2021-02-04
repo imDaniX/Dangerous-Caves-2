@@ -82,7 +82,7 @@ public class LavaCreeper extends TickingMob implements Listener {
         int cz = start.getBlockZ();
         start.getWorld().spawnParticle(Particle.FLAME, cx, cy+1, cz, 20, 0, 0, 0, 2);
         Locations.loop(radius, start, (world, x, y, z) -> {
-            if ((Utils.square(cx - x) + Utils.square(cy - y) + Utils.square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
+            if ((square(cx - x) + square(cy - y) + square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
             if (Materials.isAir(block.getType())) {
                 if (fire > 0 && Rng.chance(fire)) block.setType(Material.FIRE);
@@ -101,5 +101,9 @@ public class LavaCreeper extends TickingMob implements Listener {
     @Override
     public void tick(LivingEntity entity) {
         entity.getWorld().spawnParticle(Particle.LAVA, entity.getLocation().add(0, 1, 0), 1, 0.3, 0.8, 0.3);
+    }
+
+    private static int square(int i) {
+        return i*i;
     }
 }
