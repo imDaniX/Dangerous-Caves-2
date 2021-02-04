@@ -34,7 +34,7 @@ public class DeadMiner extends TickingMob implements Listener {
     private String name;
     private double health;
 
-    private boolean withoutTarget;
+    private boolean requiresTarget;
     private boolean torches;
     private boolean redTorches;
     private double dropChance;
@@ -52,7 +52,7 @@ public class DeadMiner extends TickingMob implements Listener {
         name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
         health = cfg.getDouble("health", 22);
 
-        withoutTarget = cfg.getBoolean("without-target", false);
+        requiresTarget = cfg.getBoolean("requires-target", true);
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
@@ -104,7 +104,7 @@ public class DeadMiner extends TickingMob implements Listener {
         if (!torches || entity.hasPotionEffect(PotionEffectType.CONFUSION)) return;
         Block block = entity.getLocation().getBlock();
 
-        if (block.getLightLevel() > 0 || (!withoutTarget && ((Monster)entity).getTarget() == null) ||
+        if (block.getLightLevel() > 0 || (requiresTarget && ((Monster)entity).getTarget() == null) ||
                 !Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation()))
             return;
 

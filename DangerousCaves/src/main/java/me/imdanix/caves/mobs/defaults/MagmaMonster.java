@@ -47,7 +47,7 @@ public class MagmaMonster extends TickingMob implements Listener {
     private double fireChance;
     private double magmaChance;
     private boolean extinguishDamage;
-    private boolean withoutTarget;
+    private boolean requiresTarget;
 
     public MagmaMonster() {
         super(EntityType.ZOMBIE, "magma-monster", 4);
@@ -61,7 +61,7 @@ public class MagmaMonster extends TickingMob implements Listener {
         fireChance = cfg.getDouble("fire-chance", 7.14) / 100;
         magmaChance = cfg.getDouble("magma-chance", 3.57) / 100;
         extinguishDamage = cfg.getBoolean("extinguished-damage", false);
-        withoutTarget = cfg.getBoolean("without-target", false);
+        requiresTarget = cfg.getBoolean("requires-target", true);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class MagmaMonster extends TickingMob implements Listener {
             entity.setFireTicks(20);
         }
 
-        if (!withoutTarget && ((Monster)entity).getTarget() == null) return;
+        if (requiresTarget && ((Monster)entity).getTarget() == null) return;
 
         boolean fire;
         boolean magma;
