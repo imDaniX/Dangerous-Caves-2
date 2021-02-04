@@ -355,7 +355,7 @@ mobs:
     place-torches: true
     # Place redstone torches instead of normal?
     red-torches: false
-    # Place torches if Dead Miner has no player as a target?
+    # Place torches if Dead Miner has no entity as a target?
     without-target: true
     # Cooldown in seconds between torches placing. Useful for preventing torch farms. Set to 0 to disable
     torches-cooldown: 12
@@ -423,6 +423,8 @@ mobs:
     fire-chance: 7.14
     # Placing magma-blocks. Every ENTITY tick
     magma-chance: 3.57
+    # Place magma and fire if Magma Monster has no entity as a target?
+    without-target: false
 
   # Smoke Demon
   # Creates a smoke and gives wither effect
