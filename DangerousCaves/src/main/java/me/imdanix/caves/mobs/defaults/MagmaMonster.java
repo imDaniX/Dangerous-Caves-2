@@ -45,7 +45,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     private double fireChance;
     private double magmaChance;
-    private boolean extinguish;
+    private boolean extinguishDamage;
 
     public MagmaMonster() {
         super(EntityType.ZOMBIE, "magma-monster", 4);
@@ -58,7 +58,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
         fireChance = cfg.getDouble("fire-chance", 7.14) / 100;
         magmaChance = cfg.getDouble("magma-chance", 3.57) / 100;
-        extinguish = cfg.getBoolean("extinguished-damage", false);
+        extinguishDamage = cfg.getBoolean("extinguished-damage", false);
     }
 
     @Override
@@ -80,6 +80,7 @@ public class MagmaMonster extends TickingMob implements Listener {
 
         entity.addPotionEffect(FIRE_RESISTANCE);
         entity.addPotionEffect(INVISIBILITY);
+        entity.setFireTicks(20);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -90,10 +91,11 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        if (extinguish)
-                entity.damage(0.1);
-            else
-                entity.setFireTicks(20);
+        if (extinguishDamage && entity.getFireTicks() > 0) {
+            entity.damage(0.1);
+        } else {
+            entity.setFireTicks(20);
+        }
 
         boolean fire;
         boolean magma;
