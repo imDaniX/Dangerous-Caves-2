@@ -355,8 +355,8 @@ mobs:
     place-torches: true
     # Place redstone torches instead of normal?
     red-torches: false
-    # Don't place torches if Dead Miner has player as a target
-    without-target: false
+    # Place torches if Dead Miner has no player as a target?
+    without-target: true
     # Cooldown in seconds between torches placing. Useful for preventing torch farms. Set to 0 to disable
     torches-cooldown: 12
     # When Dead Miner is damaged
@@ -476,8 +476,8 @@ mobs:
   # Has strong attack, can be damaged only with pickaxe, drops its head on death
   cave-golem:
     priority: 3
-    health: 35
     name: "&4Cave Golem"
+    health: 35
     # Give Cave Golem slowness effect
     slowness: true
     # When Cave Golem is attacking give its victim slowness, nausea and blindness effects
