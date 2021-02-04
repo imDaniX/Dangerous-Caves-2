@@ -21,10 +21,10 @@ public final class Compatibility {
             if (version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
             materials = new LegacyMaterials();
-            tags = new ScoreboardTags();
+            tags = new LegacyTags();
         } else if (version == 13) {
             materials = new v1_13Materials();
-            tags = new ScoreboardTags();
+            tags = new LegacyTags();
         } else {
             materials = version > 15 ? new v1_16Materials() : new v1_13Materials();
             tags = new PersistentTags(plugin);
@@ -32,8 +32,8 @@ public final class Compatibility {
     }
 
     public static void cacheTag(String tag) {
-        if (tags instanceof ScoreboardTags)
-            ((ScoreboardTags) tags).cacheTag(tag);
+        if (tags instanceof LegacyTags)
+            ((LegacyTags) tags).cacheTag(tag);
     }
 
     public static ItemStack getHeadFromValue(String value) {

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+// TODO: Other blocks like furnace
 public class Mimic extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private static final ItemStack CHEST;
@@ -127,7 +128,7 @@ public class Mimic extends TickingMob implements Listener {
         if (tag == null || !tag.startsWith("mimic")) return false;
         if (block.getRelative(BlockFace.UP).getType().isSolid()) return true;
         block.setType(Material.AIR);
-        double health = Utils.getDouble(tag.substring(0, 6), this.health);
+        double health = Utils.getDouble(tag.substring(6), this.health);
         if (health <= 0) health = 1;
         Location loc = block.getLocation();
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));

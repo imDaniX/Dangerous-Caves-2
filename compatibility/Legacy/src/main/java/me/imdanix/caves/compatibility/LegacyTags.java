@@ -8,13 +8,13 @@ import org.bukkit.entity.LivingEntity;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ScoreboardTags implements TagsProvider {
+public class LegacyTags implements TagsProvider {
     private static final String TAG_PREFIX = "§0§kdc-tag-";
     private static final String DC_TAG = "dc-mob";
 
     private final Set<String> tags;
 
-    public ScoreboardTags() {
+    public LegacyTags() {
         tags = new HashSet<>();
     }
 
