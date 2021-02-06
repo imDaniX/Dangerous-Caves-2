@@ -7,7 +7,6 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -31,9 +30,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class DeadMiner extends TickingMob implements Listener {
-    private String name;
-    private double health;
-
     private boolean requiresTarget;
     private boolean torches;
     private boolean redTorches;
@@ -43,15 +39,12 @@ public class DeadMiner extends TickingMob implements Listener {
     private PotionEffect cooldownEffect;
 
     public DeadMiner() {
-        super(EntityType.ZOMBIE, "dead-miner", 10);
+        super(EntityType.ZOMBIE, "dead-miner", 10, 22d);
         items = new ArrayList<>();
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
-        health = cfg.getDouble("health", 22);
-
         requiresTarget = cfg.getBoolean("requires-target", true);
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
@@ -86,8 +79,6 @@ public class DeadMiner extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head); equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rng.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));

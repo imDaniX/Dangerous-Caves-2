@@ -6,7 +6,6 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,28 +22,22 @@ public class AlphaSpider extends AbstractMob implements Listener {
     private static final PotionEffect POISON = new PotionEffect(PotionEffectType.POISON, 75, 1);
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, false, true);
 
-    private String name;
-    private double health;
     private double cobwebChance;
     private double minionChance;
 
     public AlphaSpider() {
-        super(EntityType.SPIDER, "alpha-spider", 9);
+        super(EntityType.SPIDER, "alpha-spider", 9, 18d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Alpha Spider"));
-        health = cfg.getDouble("health", 18);
         cobwebChance = cfg.getDouble("cobweb-chance", 14.29) / 100;
         minionChance = cfg.getDouble("minion-chance", 6.67) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
         entity.addPotionEffect(REGENERATION);
-        Utils.setMaxHealth(entity, health);
     }
 
     @EventHandler(ignoreCancelled = true)

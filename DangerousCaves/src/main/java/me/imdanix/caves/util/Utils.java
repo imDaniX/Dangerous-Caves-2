@@ -19,7 +19,7 @@ public final class Utils {
     private final static Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     public static String clr(String s){
-        return s == null ? "\u00A74Error" : ChatColor.translateAlternateColorCodes('&', s);
+        return s == null ? null : ChatColor.translateAlternateColorCodes('&', s);
     }
 
     public static List<String> clr(List<String> list) {
@@ -38,7 +38,6 @@ public final class Utils {
     }
 
     public static void setMaxHealth(LivingEntity entity, double health) {
-        if (health <= 0) return;
         entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
         entity.setHealth(health);
     }

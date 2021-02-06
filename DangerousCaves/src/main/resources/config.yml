@@ -314,7 +314,7 @@ mobs:
 
   # List of *default* custom mobs
 
-  # To disable mob's name just leave it blank, like
+  # To disable mob's name just leave it blank or remove section entirely, like
   #   name: ""
   # Larger priority - larger chance to spawn in comparison with others.
   # Set priority to 0 to disable mob, like
@@ -383,7 +383,7 @@ mobs:
   # Spawns in the dark and kills player if there's no light
   hungering-darkness:
     priority: 8
-    name: ""
+    name: "&4Hungering Darkness"
     # Kill the entity on light?
     remove-on-light: false
     # Play death sound on light?

@@ -6,7 +6,6 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -53,9 +52,6 @@ public class CaveGolem extends AbstractMob implements Listener {
     private final Plugin plugin;
     private final MobsManager mobs;
 
-    private String name;
-    private double health;
-
     private final List<ItemStack> heads;
     private Set<Material> materials;
 
@@ -68,7 +64,7 @@ public class CaveGolem extends AbstractMob implements Listener {
     private Listener breakListener;
 
     public CaveGolem(MobsManager mobs) {
-        super(EntityType.SKELETON, "cave-golem", 3);
+        super(EntityType.SKELETON, "cave-golem", 3, 35d);
         this.plugin = mobs.getPlugin();
         this.mobs = mobs;
         this.heads = new ArrayList<>();
@@ -76,9 +72,6 @@ public class CaveGolem extends AbstractMob implements Listener {
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Dead Miner"));
-        health = cfg.getDouble("health", 35);
-
         slow = cfg.getBoolean("slowness", true);
         distract = cfg.getBoolean("distract-attack", true);
         nonPickaxe = cfg.getDouble("nonpickaxe-modifier", 0.07);
@@ -117,8 +110,6 @@ public class CaveGolem extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
         equipment.setHelmet(Rng.randomElement(heads)); equipment.setHelmetDropChance(1);

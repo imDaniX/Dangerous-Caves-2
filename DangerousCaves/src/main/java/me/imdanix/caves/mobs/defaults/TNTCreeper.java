@@ -1,8 +1,8 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.AbstractMob;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -20,30 +20,21 @@ import org.bukkit.util.Vector;
 public class TNTCreeper extends AbstractMob implements Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
 
-    private String name;
-    private double health;
-
     private int tntAmount;
     private double explosionChance;
 
     public TNTCreeper() {
-        super(EntityType.CREEPER, "tnt-creeper", 9);
+        super(EntityType.CREEPER, "tnt-creeper", 9,20d, ChatColor.DARK_RED + "TNT Creeper");
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4TNT Creeper"));
-        health = cfg.getDouble("health", 20);
-
         tntAmount = cfg.getInt("tnt-amount", 2);
         explosionChance = cfg.getDouble("explosion-chance", 33.33) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.addPotionEffect(INCREASE_DAMAGE);
     }
 

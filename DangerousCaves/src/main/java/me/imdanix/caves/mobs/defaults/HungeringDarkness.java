@@ -4,7 +4,6 @@ import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.PlayerAttackedEvent;
-import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -21,19 +20,17 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
 
-    private String name;
     private double damage;
     private boolean remove;
     private boolean vision;
     private boolean deathSound;
 
     public HungeringDarkness() {
-        super(EntityType.VEX, "hungering-darkness", 8);
+        super(EntityType.VEX, "hungering-darkness", 8, null);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", ""));
         damage = cfg.getDouble("damage", 200);
         remove = cfg.getBoolean("remove-on-light", false);
         vision = cfg.getBoolean("night-vision", false);
@@ -47,7 +44,6 @@ public class HungeringDarkness extends AbstractMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
         entity.setCustomNameVisible(false);
         entity.setInvulnerable(true);
         entity.setCollidable(false);

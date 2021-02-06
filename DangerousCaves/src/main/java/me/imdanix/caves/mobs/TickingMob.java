@@ -5,8 +5,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 public abstract class TickingMob extends AbstractMob implements CustomMob.Ticking {
-    public TickingMob(EntityType base, String id, int weight) {
-        super(base, id, weight);
+
+    public TickingMob(EntityType type, String id, int weight, Double health) {
+        super(type, id, weight, health);
+    }
+
+    public TickingMob(EntityType type, String id, int weight, Double health, String name) {
+        super(type, id, weight, health, name);
     }
 
     @Override

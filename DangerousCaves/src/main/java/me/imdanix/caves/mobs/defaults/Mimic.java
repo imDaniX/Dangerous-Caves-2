@@ -60,20 +60,14 @@ public class Mimic extends TickingMob implements Listener {
     private final MobsManager mobsManager;
     private final List<Material> items;
 
-    private String name;
-    private double health;
-
     public Mimic(MobsManager mobsManager) {
-        super(EntityType.WITHER_SKELETON, "mimic", 0);
+        super(EntityType.WITHER_SKELETON, "mimic", 0, 30d);
         this.mobsManager = mobsManager;
         items = new ArrayList<>();
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Mimic"));
-        health = cfg.getDouble("health", 30);
-
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
         for (String materialStr : itemsCfg) {
@@ -84,9 +78,6 @@ public class Mimic extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         EntityEquipment equipment = entity.getEquipment();
@@ -128,7 +119,7 @@ public class Mimic extends TickingMob implements Listener {
         if (tag == null || !tag.startsWith("mimic")) return false;
         if (block.getRelative(BlockFace.UP).getType().isSolid()) return true;
         block.setType(Material.AIR);
-        double health = Utils.getDouble(tag.substring(6), this.health);
+        double health = Utils.getDouble(tag.substring(6), this.health); // Safe because will be defined anyway
         if (health <= 0) health = 1;
         Location loc = block.getLocation();
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));

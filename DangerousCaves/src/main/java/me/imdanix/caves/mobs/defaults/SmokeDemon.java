@@ -1,7 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.TickingMob;
-import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,20 +15,15 @@ public class SmokeDemon extends TickingMob {
     private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER, 120, 0);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
 
-    private String name;
-    private double health;
     private int maxLight;
-
     private double radius;
 
     public SmokeDemon() {
-        super(EntityType.ZOMBIE, "smoke-demon", 7);
+        super(EntityType.ZOMBIE, "smoke-demon", 7, 20d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Smoke Demon"));
-        health = cfg.getDouble("health", 20);
         maxLight = cfg.getInt("max-light", 11);
         radius = cfg.getInt("harm-radius", 3);
     }
@@ -41,9 +35,6 @@ public class SmokeDemon extends TickingMob {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.setCustomNameVisible(false);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);

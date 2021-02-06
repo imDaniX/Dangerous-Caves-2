@@ -6,7 +6,6 @@ import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,9 +25,6 @@ import org.bukkit.potion.PotionEffectType;
 public class LavaCreeper extends TickingMob implements Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false);
 
-    private String name;
-    private double health;
-
     private double chance;
     private double fire;
     private double magmaBlock;
@@ -40,14 +36,11 @@ public class LavaCreeper extends TickingMob implements Listener {
     private int radiusSquared;
 
     public LavaCreeper() {
-        super(EntityType.CREEPER, "lava-creeper", 6);
+        super(EntityType.CREEPER, "lava-creeper", 6, 20d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Lava Creeper"));
-        health = cfg.getDouble("health", 20);
-
         chance = cfg.getDouble("change-chance", 50) / 100;
         fire = cfg.getDouble("blocks.fire", 33.33) / 100;
         magmaBlock = cfg.getDouble("blocks.magma_block", 25) / 100;
@@ -60,9 +53,6 @@ public class LavaCreeper extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.addPotionEffect(FIRE_RESISTANCE);
     }
 

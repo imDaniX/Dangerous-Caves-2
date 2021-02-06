@@ -5,7 +5,6 @@ import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -41,23 +40,17 @@ public class MagmaMonster extends TickingMob implements Listener {
         POWDER = new ItemStack(Material.BLAZE_POWDER);
     }
 
-    private String name;
-    private double health;
-
     private double fireChance;
     private double magmaChance;
     private boolean extinguishDamage;
     private boolean requiresTarget;
 
     public MagmaMonster() {
-        super(EntityType.ZOMBIE, "magma-monster", 4);
+        super(EntityType.ZOMBIE, "magma-monster", 4, 20d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Magma Monster"));
-        health = cfg.getDouble("health", 20);
-
         fireChance = cfg.getDouble("fire-chance", 7.14) / 100;
         magmaChance = cfg.getDouble("magma-chance", 3.57) / 100;
         extinguishDamage = cfg.getBoolean("extinguished-damage", false);
@@ -66,9 +59,6 @@ public class MagmaMonster extends TickingMob implements Listener {
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.setFireTicks(Integer.MAX_VALUE);
         entity.setSilent(true);
         entity.setCanPickupItems(false);

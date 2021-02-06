@@ -3,7 +3,6 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.util.Locations;
-import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,28 +26,19 @@ public class Watcher extends TickingMob implements Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 80, 2);
     private static final Vector ZERO_VECTOR = new Vector(0, 0, 0);
 
-    private String name;
-    private double health;
-
     private ItemStack head;
 
     public Watcher() {
-        super(EntityType.HUSK, "watcher", 7);
+        super(EntityType.HUSK, "watcher", 7, 20d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Watcher"));
-        health = cfg.getDouble("health", 20);
-
         head = Compatibility.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="));
     }
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         entity.addPotionEffect(INVISIBILITY);

@@ -3,7 +3,6 @@ package me.imdanix.caves.mobs.defaults;
 import me.imdanix.caves.mobs.AbstractMob;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.PlayerAttackedEvent;
-import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,30 +22,21 @@ import org.bukkit.potion.PotionEffectType;
 public class HexedArmor extends AbstractMob implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
-    private String name;
-    private double health;
-
     private double chance;
     private boolean binding;
 
     public HexedArmor() {
-        super(EntityType.ZOMBIE, "hexed-armor", 6);
+        super(EntityType.ZOMBIE, "hexed-armor", 6, 20d);
     }
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        name = Utils.clr(cfg.getString("name", "&4Hexed Armor"));
-        health = cfg.getDouble("health", 20);
-
         binding = cfg.getBoolean("binding-curse", true);
         chance = cfg.getDouble("apply-chance", 25) / 100;
     }
 
     @Override
     public void setup(LivingEntity entity) {
-        if (!name.isEmpty()) entity.setCustomName(name);
-        Utils.setMaxHealth(entity, health);
-
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
