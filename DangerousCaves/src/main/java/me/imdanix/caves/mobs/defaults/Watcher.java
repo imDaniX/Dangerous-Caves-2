@@ -29,7 +29,7 @@ public class Watcher extends TickingMob implements Listener {
     private ItemStack head;
 
     public Watcher() {
-        super(EntityType.HUSK, "watcher", 7, 20d);
+        super(EntityType.HUSK, "watcher", 7, 15d);
     }
 
     @Override

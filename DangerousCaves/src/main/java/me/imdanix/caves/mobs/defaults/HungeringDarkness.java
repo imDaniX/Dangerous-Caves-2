@@ -26,7 +26,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private boolean deathSound;
 
     public HungeringDarkness() {
-        super(EntityType.VEX, "hungering-darkness", 8, null);
+        super(EntityType.VEX, "hungering-darkness", 8);
     }
 
     @Override

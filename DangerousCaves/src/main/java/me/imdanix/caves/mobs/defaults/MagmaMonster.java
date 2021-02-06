@@ -46,7 +46,7 @@ public class MagmaMonster extends TickingMob implements Listener {
     private boolean requiresTarget;
 
     public MagmaMonster() {
-        super(EntityType.ZOMBIE, "magma-monster", 4, 20d);
+        super(EntityType.ZOMBIE, "magma-monster", 4);
     }
 
     @Override

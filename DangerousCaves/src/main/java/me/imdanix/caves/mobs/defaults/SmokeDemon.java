@@ -19,7 +19,7 @@ public class SmokeDemon extends TickingMob {
     private double radius;
 
     public SmokeDemon() {
-        super(EntityType.ZOMBIE, "smoke-demon", 7, 20d);
+        super(EntityType.ZOMBIE, "smoke-demon", 7);
     }
 
     @Override

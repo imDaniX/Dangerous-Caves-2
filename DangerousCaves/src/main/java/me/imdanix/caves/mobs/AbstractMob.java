@@ -27,6 +27,10 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     private final Double defHealth;
     protected Double health;
 
+    public AbstractMob(EntityType type, String id, int weight) {
+        this(type, id, weight, null);
+    }
+
     public AbstractMob(EntityType type, String id, int weight, Double health) {
         this(type, id, weight, health, ChatColor.DARK_RED + idToName(id));
     }

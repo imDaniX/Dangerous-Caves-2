@@ -288,8 +288,8 @@ mobs:
   y-max: 64
 
   # (Paper only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
-  # Disabled for 1.16+
-  use-prespawn: false
+  # Doesn't work for 1.16+
+  use-prespawn: true
 
   # Block renaming with name-tags
   restrict-rename: false
@@ -308,17 +308,18 @@ mobs:
     - WITCH
     - ENDERMAN
 
-  # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like SAML.
+  # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like SAML
   # Not sure, but can cause memory leak, so disabled by default
   add-metadata: false
 
   # List of *default* custom mobs
 
-  # To disable mob's name just leave it blank or remove section entirely, like
-  #   name: ""
-  # Larger priority - larger chance to spawn in comparison with others.
-  # Set priority to 0 to disable mob, like
-  #   priority: 0
+  # You can set health and name for EVERY mob
+  # Remove health parameter to use default MC health of the base mob
+  # Remove or set to "" name parameter to remove mob's name
+  # Larger priority - larger chance to spawn in comparison with others
+  # Set priority to 0 to disable mob
+
   # Spawn chance formula - (mob_priority)/(total_priority)
 
   # Alpha Spider
@@ -385,7 +386,7 @@ mobs:
     priority: 8
     name: "&4Hungering Darkness"
     # Kill the entity on light?
-    remove-on-light: false
+    remove-on-light: true
     # Play death sound on light?
     death-sound: true
     # Is night vision effect considered as light?
@@ -453,7 +454,7 @@ mobs:
   watcher:
     priority: 7
     name: "&4Watcher"
-    health: 20
+    health: 15
     # Get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
