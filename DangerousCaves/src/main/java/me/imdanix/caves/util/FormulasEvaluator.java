@@ -91,7 +91,7 @@ public class FormulasEvaluator {
             String str = holder.substring(start, holder.pointer);
             x = () -> variables.get(str);
         } else if (holder.tryNext('#')) {
-            Expression a = thirdImportance(holder);
+            Expression a = firstImportance(holder);
             x = () -> Math.sqrt(a.eval());
         }
 

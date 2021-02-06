@@ -298,6 +298,14 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         tickingEntities.get(mob).add(entity.getUniqueId());
     }
 
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public Set<String> getMobs() {
+        return mobs.keySet();
+    }
+
     private class PaperSpawnListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onSpawn(PreCreatureSpawnEvent event) {
@@ -312,13 +320,5 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
             if (MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
                 event.setCancelled(true);
         }
-    }
-
-    public Plugin getPlugin() {
-        return plugin;
-    }
-
-    public Set<String> getMobs() {
-        return mobs.keySet();
     }
 }
