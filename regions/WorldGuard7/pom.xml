@@ -12,6 +12,13 @@
 
     <artifactId>regions-worldguard7</artifactId>
 
+    <repositories>
+        <repository>
+            <id>aikar</id>
+            <url>http://repo.aikar.co/nexus/content/groups/aikar/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
