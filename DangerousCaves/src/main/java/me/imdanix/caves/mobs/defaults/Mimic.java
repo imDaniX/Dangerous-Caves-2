@@ -123,7 +123,8 @@ public class Mimic extends TickingMob implements Listener {
         if (health <= 0) health = 1;
         Location loc = block.getLocation();
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));
-        entity.setHealth(health);
+        Utils.setMaxHealth(entity, this.health);
+        entity.setHealth(Math.min(health, this.health));
         Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
         player.addPotionEffect(BLINDNESS);
         ((Monster)entity).setTarget(player);
