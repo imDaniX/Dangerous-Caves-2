@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+// TODO: Redo from scratch
 public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
     private final Configuration config;
 
@@ -37,7 +38,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
 
     public CaveGenerator(Configuration config) {
         this.config = config;
-        structures = new HashMap<>();
+        this.structures = new HashMap<>();
         this.structuresPool = new WeightedPool<>();
     }
 

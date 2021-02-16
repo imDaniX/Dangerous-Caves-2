@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class v1_13Materials implements MaterialsProvider {
+public class v1_13Physicals implements PhysicalsProvider {
     @SuppressWarnings("deprecation")
     @Override
     public void rotate(Block block, BlockFace face) {

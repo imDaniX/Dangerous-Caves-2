@@ -1,6 +1,7 @@
 package me.imdanix.caves.compatibility;
 
 import io.papermc.lib.PaperLib;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
@@ -9,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 // TODO: Proper singleton for objects?
 public final class Compatibility {
-    private static MaterialsProvider materials;
+    private static PhysicalsProvider physicals;
     private static TagsProvider tags;
 
     public static void init(Plugin plugin) {
@@ -20,13 +21,13 @@ public final class Compatibility {
         if (version < 13) {
             if (version < 12)
                 plugin.getLogger().warning("Please note that versions before 1.12.2 are not really supported.");
-            materials = new LegacyMaterials();
+            physicals = new LegacyPhysicals();
             tags = new LegacyTags();
         } else if (version == 13) {
-            materials = new v1_13Materials();
+            physicals = new v1_13Physicals();
             tags = new LegacyTags();
         } else {
-            materials = version > 15 ? new v1_16Materials() : new v1_13Materials();
+            physicals = version > 15 ? new v1_16Physicals() : new v1_13Physicals();
             tags = new PersistentTags(plugin);
         }
     }
@@ -37,11 +38,11 @@ public final class Compatibility {
     }
 
     public static ItemStack getHeadFromValue(String value) {
-        return materials.getHeadFromValue(value);
+        return physicals.getHeadFromValue(value);
     }
 
     public static void rotate(Block block, BlockFace face) {
-        materials.rotate(block, face);
+        physicals.rotate(block, face);
     }
 
     public static void setTag(LivingEntity entity, String tag) {
@@ -66,5 +67,13 @@ public final class Compatibility {
 
     public static String getTag(Block block) {
         return tags.getTag(block);
+    }
+
+    public static int getYMin(World world) {
+        return physicals.getYMin(world);
+    }
+
+    public static int getYMax(World world) {
+        return physicals.getYMax(world);
     }
 }

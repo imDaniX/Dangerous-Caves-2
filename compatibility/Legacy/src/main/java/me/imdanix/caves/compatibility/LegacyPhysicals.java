@@ -12,7 +12,7 @@ import org.bukkit.material.Vine;
 
 import java.util.UUID;
 
-public class LegacyMaterials implements MaterialsProvider {
+public class LegacyPhysicals implements PhysicalsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockState state = block.getState();

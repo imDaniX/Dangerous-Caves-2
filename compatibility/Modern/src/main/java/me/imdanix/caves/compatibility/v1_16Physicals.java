@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class v1_16Materials implements MaterialsProvider {
+public class v1_16Physicals implements PhysicalsProvider {
     @Override
     public void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
@@ -28,13 +28,17 @@ public class v1_16Materials implements MaterialsProvider {
 
     @SuppressWarnings("deprecation")
     @Override
+    // TODO: For Paper use Profile API
     public ItemStack getHeadFromValue(String value) {
         UUID id = UUID.nameUUIDFromBytes(value.getBytes());
-        int less = (int) id.getLeastSignificantBits();
-        int most = (int) id.getMostSignificantBits();
+        // Heck yeah, magic numbers
+        long less = id.getLeastSignificantBits();
+        int lessA = (int) (less >> 32); int lessB = (int) less;
+        long most = id.getMostSignificantBits();
+        int mostA = (int) (most >> 32); int mostB = (int) most;
         return Bukkit.getUnsafe().modifyItemStack(
                 new ItemStack(Material.PLAYER_HEAD),
-                "{SkullOwner:{Id:[I;" + less*most + "," + (less >> 17) + "," + most/less + "," + (most >> 17) + "]," +
+                "{SkullOwner:{Id:[I;" + lessA + "," + lessB + "," + mostA + "," + mostB + "]," +
                         "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
     }
