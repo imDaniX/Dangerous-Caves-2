@@ -286,11 +286,13 @@ public class CavesAging implements Tickable, Configurable {
 
                 case RED_MUSHROOM:
                     if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                    if (block.getLightLevel() > 12) return;
                     block.setType(Material.RED_MUSHROOM, false);
                     break;
 
                 case BROWN_MUSHROOM:
                     if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                    if (block.getLightLevel() > 12) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
                     break;
 
