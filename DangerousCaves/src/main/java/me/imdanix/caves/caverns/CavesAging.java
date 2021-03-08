@@ -344,7 +344,7 @@ public class CavesAging implements Tickable, Configurable {
 
         @Override
         public int hashCode() {
-            return (x >>> 15) * (z >>> 31) * 1907;
+            return x * 31 + z;
         }
 
         @Override
