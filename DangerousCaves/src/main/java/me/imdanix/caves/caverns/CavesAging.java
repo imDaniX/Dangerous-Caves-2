@@ -128,15 +128,18 @@ public class CavesAging implements Tickable, Configurable {
 
         for (World world : Bukkit.getWorlds()) {
             if (!worlds.contains(world.getName())) continue;
-
             Set<QueuedChunk> chunks = new HashSet<>();
             for (Player player : world.getPlayers()) {
                 if (!chancePerChunks && !Rng.chance(chance)) continue;
                 Chunk start = player.getLocation().getChunk();
                 // TODO: Move it to async too?
-                for (int x = start.getX() - radius; x <= start.getX() + radius; x++)
-                    for (int z = start.getZ() - radius; z <= start.getZ() + radius; z++)
-                        if (isAllowed(world, x, z)) chunks.add(new QueuedChunk(x, z));
+                for (int x = start.getX() - radius; x <= start.getX() + radius; x++) {
+                    for (int z = start.getZ() - radius; z <= start.getZ() + radius; z++) {
+                        if (isAllowed(world, x, z)) {
+                            chunks.add(new QueuedChunk(x, z));
+                        }
+                    }
+                }
             }
             proceedChunks(world.getUID(), chunks);
         }

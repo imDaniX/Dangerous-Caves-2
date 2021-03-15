@@ -63,7 +63,11 @@ public abstract class AbstractMob implements CustomMob, Configurable {
         weight = cfg.getInt("priority", defWeight);
         String nameCfg = cfg.getString("name", defName);
         name = nameCfg == null || nameCfg.isEmpty() ? null : Utils.clr(cfg.getString("name", defName));
-        health = cfg.isDouble("health") ? Math.max(cfg.getDouble("health"), 1) : defHealth;
+        if (cfg.isDouble("health")) {
+            health = Math.max(cfg.getDouble("health"), 1);
+        } else {
+            health = defHealth;
+        }
         configure(cfg);
     }
 
