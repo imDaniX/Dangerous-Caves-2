@@ -13,6 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -49,6 +50,14 @@ public class CaveGolem extends AbstractMob implements Listener {
         BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
     }
 
+    private static final Set<Material> PICKAXES = new Materials.SetBuilder().with(
+            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE
+    ).with(
+            "NETHERITE_PICKAXE"
+    ).with(
+            Materials.or("GOLDEN_PICKAXE", "GOLD_PICKAXE")
+    ).build(true);
+
     private final Plugin plugin;
     private final MobsManager mobs;
 
@@ -57,8 +66,9 @@ public class CaveGolem extends AbstractMob implements Listener {
 
     private boolean slow;
     private boolean distract;
-    private double nonPickaxe;
-    private double damageModifier;
+    private double nonPickaxeModifier;
+    private double pickaxeModifier;
+    private double mobModifier;
 
     private double breakChance;
     private Listener breakListener;
@@ -74,8 +84,9 @@ public class CaveGolem extends AbstractMob implements Listener {
     protected void configure(ConfigurationSection cfg) {
         slow = cfg.getBoolean("slowness", true);
         distract = cfg.getBoolean("distract-attack", true);
-        nonPickaxe = cfg.getDouble("nonpickaxe-modifier", 0.07);
-        damageModifier = cfg.getDouble("damage-modifier", 2.0);
+        nonPickaxeModifier = cfg.getDouble("nonpickaxe-modifier", 0.07);
+        pickaxeModifier = cfg.getDouble("pickaxe-modifier", 2.0);
+        mobModifier = cfg.getDouble("damage-modifier", 2.0);
 
         materials = Materials.getSet(cfg.getStringList("variants"));
         heads.clear();
@@ -112,10 +123,10 @@ public class CaveGolem extends AbstractMob implements Listener {
     public void setup(LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
-        equipment.setHelmet(Rng.randomElement(heads)); equipment.setHelmetDropChance(1);
-        equipment.setChestplate(CHESTPLATE);        equipment.setChestplateDropChance(0);
-        equipment.setLeggings(LEGGINGS);            equipment.setLeggingsDropChance(0);
-        equipment.setBoots(BOOTS);                  equipment.setBootsDropChance(0);
+        equipment.setHelmet(Rng.randomElement(heads));  equipment.setHelmetDropChance(1);
+        equipment.setChestplate(CHESTPLATE);            equipment.setChestplateDropChance(0);
+        equipment.setLeggings(LEGGINGS);                equipment.setLeggingsDropChance(0);
+        equipment.setBoots(BOOTS);                      equipment.setBootsDropChance(0);
         entity.setSilent(true);
         if (slow) entity.addPotionEffect(SLOW);
     }
@@ -125,29 +136,36 @@ public class CaveGolem extends AbstractMob implements Listener {
         if (isThis(event.getDamager())) {
             if (!(event.getEntity() instanceof LivingEntity)) return;
             LivingEntity entity = (LivingEntity) event.getEntity();
-            Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.HOSTILE, 2, 0.5f);
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 2, 0.5f);
             if (distract) {
                 entity.addPotionEffect(BLINDNESS);
                 entity.addPotionEffect(SLOW_PL);
                 entity.addPotionEffect(CONFUSION);
             }
-            event.setDamage(event.getDamage() * damageModifier);
+            event.setDamage(event.getDamage() * mobModifier);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
-        if (isThis(event.getEntity())) {
-            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 2, 0.6f);
+        Entity entity = event.getEntity();
+        if (isThis(entity)) {
             if (event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
                 if (enEvent.getDamager() instanceof Player) {
                     Player player = (Player) enEvent.getDamager();
-                    if (player.getInventory().getItemInMainHand().getType().name().endsWith("PICKAXE"))
+                    if (PICKAXES.contains(player.getInventory().getItemInMainHand().getType())) {
+                        Locations.playSound(entity.getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 0.6f, 1);
+                        event.setDamage(event.getDamage() * pickaxeModifier);
                         return;
+                    } else {
+                        Locations.playSound(entity.getLocation(), Sound.ITEM_SHIELD_BREAK, SoundCategory.HOSTILE, 1, 1);
+                    }
                 }
+            } else {
+                Locations.playSound(entity.getLocation(), Sound.BLOCK_STONE_BREAK, SoundCategory.HOSTILE, 2, 0.6f);
             }
-            event.setDamage(event.getDamage() * nonPickaxe);
+            event.setDamage(event.getDamage() * nonPickaxeModifier);
         }
     }
 }

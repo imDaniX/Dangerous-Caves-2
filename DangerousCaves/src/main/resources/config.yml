@@ -489,6 +489,8 @@ mobs:
     damage-modifier: 2.0
     # Damage multiplier when player is attacking Cave Golem without pickaxe
     nonpickaxe-modifier: 0.07
+    # Damage multiplier when player is attacking Cave Golem with pickaxe
+    pickaxe-modifier: 2.0
     # These blocks will be on Cave Golem's head and will be dropped after death
     variants:
       - COAL_ORE
