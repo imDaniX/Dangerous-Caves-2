@@ -50,7 +50,7 @@ public class CaveGolem extends AbstractMob implements Listener {
         BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
     }
 
-    private static final Set<Material> PICKAXES = new Materials.SetBuilder().with(
+    private static final Set<Material> PICKAXES = new Materials.Builder().with(
             Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE
     ).with(
             "NETHERITE_PICKAXE"

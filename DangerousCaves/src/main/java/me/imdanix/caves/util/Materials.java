@@ -46,7 +46,7 @@ public final class Materials {
         BOOTS = boots.toArray(new Material[0]);
     }
 
-    private static final Set<Material> CAVE = new Materials.SetBuilder(
+    private static final Set<Material> CAVE = new Builder(
             Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
@@ -66,7 +66,7 @@ public final class Materials {
             or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
         ).build(true);
 
-    private static final Set<Material> AIR = new Materials.SetBuilder(
+    private static final Set<Material> AIR = new Builder(
             "AIR", "CAVE_AIR", "VOID_AIR"
         ).build(true);
 
@@ -122,27 +122,27 @@ public final class Materials {
         return null;
     }
 
-    public static class SetBuilder {
+    public static class Builder {
         private final Set<Material> materials;
 
-        public SetBuilder() {
+        public Builder() {
             materials = EnumSet.noneOf(Material.class);
         }
 
-        public SetBuilder(Material... types) {
+        public Builder(Material... types) {
             this(); with(types);
         }
 
-        public SetBuilder(String... types) {
+        public Builder(String... types) {
             this(); with(types);
         }
 
-        public SetBuilder with(String... types) {
+        public Builder with(String... types) {
             materials.addAll(Materials.getSet(Arrays.asList(types)));
             return this;
         }
 
-        public SetBuilder with(Material... types) {
+        public Builder with(Material... types) {
             for (Material type : types) {
                 if (type != null)
                     materials.add(type);

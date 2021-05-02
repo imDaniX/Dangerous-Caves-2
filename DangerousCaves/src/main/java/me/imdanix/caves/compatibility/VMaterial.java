@@ -2,6 +2,8 @@ package me.imdanix.caves.compatibility;
 
 import org.bukkit.Material;
 
+// TODO: Remove - it's actually kinda useless because of Materials util class
+@Deprecated
 public enum VMaterial {
     MAGMA_BLOCK("MAGMA_BLOCK", "MAGMA"),
     REDSTONE_TORCH("REDSTONE_TORCH", "REDSTONE_TORCH_ON"),

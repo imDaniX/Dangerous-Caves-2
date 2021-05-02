@@ -24,7 +24,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-// TODO: Redo from scratch
+/*
+    TODO: Redo from scratch
+    Probably the best solution would be developing a custom file format:
+        version;xsize,ysize,zsize;xcenter,ycenter,zcenter;rotatehoriz?,rotatevert?,fliphoriz?,flipvert?\n
+        0:TYPE_1,LEGACY_TYPE_1;1:TYPE_2,LEGACY_TYPE_2;d:TYPE_3,LEGACY_TYPE_3\n
+        a:0-weight,1-weight;b:1-weight,2-weight\n
+        blocks
+ */
 public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
     private final Configuration config;
 
