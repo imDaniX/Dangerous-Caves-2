@@ -144,6 +144,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                 }
                 sender.sendMessage(Utils.clr("&eRemoving " + toRemove.size() + " mimic chests..."));
                 for (Block block : toRemove) block.setType(Material.AIR, false);
+                break;
             }
             // TODO ^
 
