@@ -95,6 +95,12 @@
             <version>1.8</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Compatibility -->
 
@@ -109,12 +115,14 @@
             <artifactId>compatibility-modern</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>compatibility-legacy</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- Regions -->
@@ -130,33 +138,28 @@
             <artifactId>regions-worldguard6</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>regions-worldguard7</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>regions-griefprevention</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>regions-lands</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-
-        <!-- Placeholders -->
-
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

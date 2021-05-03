@@ -44,7 +44,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
 
     @Override
     public void reload(ConfigurationSection cfg) {
-        // TODO Logger util
+        // TODO Logger util?
         Logger logger = Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger();
 
         boolean invert = cfg.getBoolean("invert", false);
@@ -71,6 +71,8 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
     public String getConfigPath() {
         return "integration.protection";
     }
+
+    // v TODO: There's no purpose to leave it there - move to main class
 
     public void onLoad() {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
@@ -101,6 +103,8 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
                 register(new GriefPreventionFlagsProtector());
         }
     }
+
+    // ^ TODO
 
     @Override
     public boolean register(RegionProtector regionProtector) {
