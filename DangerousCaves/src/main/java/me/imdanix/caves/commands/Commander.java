@@ -8,12 +8,17 @@ import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -22,6 +27,8 @@ import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -106,6 +113,38 @@ public class Commander implements CommandExecutor, TabCompleter {
                 }
                 break;
             }
+
+            // TODO v Temporary command - need to finish mimics...
+            case "mimeremove": { // /dcaves mimeremove 3 me
+                if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
+                boolean checkAll = args.length < 3 || !args[2].equalsIgnoreCase("all") || sender instanceof ConsoleCommandSender;
+                int radius = args.length < 2 ? 1 : (int) Utils.getDouble(args[1], 1);
+
+                Collection<? extends Player> players = checkAll ? Bukkit.getOnlinePlayers() : Collections.singleton((Player) sender);
+                Set<Integer> checked = new HashSet<>(); // Better to use fastutils, but whatever
+                List<Block> toRemove = new ArrayList<>();
+                for (Player player : players) {
+                    World world = player.getWorld();
+                    final int centerX = (int) player.getLocation().getX() / 16;
+                    final int centerZ = (int) player.getLocation().getZ() / 16;
+                    for (int chunkX = centerX - radius; chunkX <= centerX + radius; ++chunkX) for (int chunkZ = centerZ - radius; chunkZ <= centerZ + radius; ++chunkZ) {
+                        int hash = chunkZ * (chunkX >> 16) * world.getUID().hashCode();
+                        if (!world.isChunkLoaded(chunkX, chunkZ) || checked.contains(hash)) continue;
+                        Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+                        for (int x = 0; x < 16; ++x) for (int z = 0; z < 16; ++z) {
+                            for (BlockState state : chunk.getTileEntities()) {
+                                Block block = state.getBlock();
+                                String tag = Compatibility.getTag(block);
+                                if (tag != null && tag.startsWith("mimic")) toRemove.add(block);
+                            }
+                        }
+                        checked.add(hash);
+                    }
+                }
+                sender.sendMessage(Utils.clr("&eRemoving " + toRemove.size() + " mimic chests..."));
+                for (Block block : toRemove) block.setType(Material.AIR, false);
+            }
+            // TODO ^
 
             case "tick": {
                 if (!sender.hasPermission("dangerous.caves.command.tick")) return false;
