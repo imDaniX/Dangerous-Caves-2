@@ -38,6 +38,7 @@ public class SmokeDemon extends TickingMob {
         entity.setCustomNameVisible(false);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);
+        entity.setCanPickupItems(false);
     }
 
     @Override
