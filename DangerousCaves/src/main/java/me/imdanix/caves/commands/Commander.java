@@ -133,6 +133,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                         Chunk chunk = world.getChunkAt(chunkX, chunkZ);
                         for (int x = 0; x < 16; ++x) for (int z = 0; z < 16; ++z) {
                             for (BlockState state : chunk.getTileEntities()) {
+                                if (state.getType() != Material.CHEST) continue;
                                 Block block = state.getBlock();
                                 String tag = Compatibility.getTag(block);
                                 if (tag != null && tag.startsWith("mimic")) toRemove.add(block);
