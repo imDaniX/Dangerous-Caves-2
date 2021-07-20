@@ -26,7 +26,7 @@
         <subVersion>2.14-SNAPSHOT</subVersion>
         <cfgVersion>24</cfgVersion>
         <bukkitVersion>1.17.1-R0.1-SNAPSHOT</bukkitVersion>
-        <java.version>1.8</java.version>
+        <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>
     </properties>
@@ -64,7 +64,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
