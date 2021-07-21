@@ -42,7 +42,7 @@ public class DangerousCaves extends JavaPlugin {
         Regions.INSTANCE.onEnable();
 
         dynamics = new Dynamics(this);
-        cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version"));
+        cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version", "0"));
         cfg.create(true);
         mobsManager = new MobsManager(this, cfg, dynamics);
         generator = new CaveGenerator(cfg);
