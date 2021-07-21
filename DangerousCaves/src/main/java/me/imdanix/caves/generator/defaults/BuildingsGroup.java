@@ -30,37 +30,23 @@ public class BuildingsGroup extends AbstractStructure {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         switch (random.nextInt(10)) {
-            default:
+            default -> {
                 setType(loc, Material.CHEST);
                 fillInventory(loc.getBlock());
-                break;
-
-            case 1:
-                generateStructure(random, OldStructures.chests3, loc.subtract(0, 1, 0));
-                break;
-
-            case 2:
-                generateStructure(random, OldStructures.chests2, loc.subtract(0, 1, 0));
-                break;
-
-            case 3:
-                generateStructure(random, OldStructures.chests1, loc);
-                break;
-
-            case 4:
-                setType(loc, VMaterial.SKELETON_SKULL_BLOCK.get());
-                break;
-
-            case 5:
+            }
+            case 1 -> generateStructure(random, OldStructures.chests3, loc.subtract(0, 1, 0));
+            case 2 -> generateStructure(random, OldStructures.chests2, loc.subtract(0, 1, 0));
+            case 3 -> generateStructure(random, OldStructures.chests1, loc);
+            case 4 -> setType(loc, VMaterial.SKELETON_SKULL_BLOCK.get());
+            case 5 -> {
                 setType(Locations.add(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
                 setType(Locations.subtract(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
                 setType(Locations.add(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
                 setType(Locations.subtract(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
                 setType(Locations.subtract(loc, 0, 1, 0), Material.NETHERRACK);
                 setType(loc, Material.FIRE);
-                break;
-
-            case 6:
+            }
+            case 6 -> {
                 Location tempL1 = Locations.add(loc, 1, -1, 0);
                 Location tempL2 = Locations.add(loc, -1, -1, 0);
                 Location tempL3 = Locations.add(loc, 0, -1, 1);
@@ -78,19 +64,10 @@ public class BuildingsGroup extends AbstractStructure {
                 if (tempL4.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
-                break;
-
-            case 7:
-                generateStructure(random, OldStructures.sfishs1, loc);
-                break;
-
-            case 8:
-                generateStructure(random, OldStructures.sfishs2, loc);
-                break;
-
-            case 9:
-                generateStructure(random, OldStructures.sfishs3, loc);
-                break;
+            }
+            case 7 -> generateStructure(random, OldStructures.sfishs1, loc);
+            case 8 -> generateStructure(random, OldStructures.sfishs2, loc);
+            case 9 -> generateStructure(random, OldStructures.sfishs3, loc);
         }
     }
 
@@ -156,17 +133,9 @@ public class BuildingsGroup extends AbstractStructure {
 
             case 7:
                 switch (random.nextInt(3)) {
-                    default:
-                        setType(loc, Material.STONE);
-                        break;
-
-                    case 1:
-                        setType(loc, Material.COAL_ORE);
-                        break;
-
-                    case 2:
-                        setType(loc, Material.IRON_ORE);
-                        break;
+                    default -> setType(loc, Material.STONE);
+                    case 1 -> setType(loc, Material.COAL_ORE);
+                    case 2 -> setType(loc, Material.IRON_ORE);
                 }
                 break;
 

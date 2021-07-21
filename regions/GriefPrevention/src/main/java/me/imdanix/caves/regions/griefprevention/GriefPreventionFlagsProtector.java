@@ -32,18 +32,11 @@ public class GriefPreventionFlagsProtector implements RegionProtector {
 
     @Override
     public boolean test(CheckType checkType, Location location) {
-        Flag flag;
-        switch (checkType) {
-            default:
-                flag = entityFlag.GetFlagInstanceAtLocation(location, null);
-                break;
-            case BLOCK:
-                flag = blockFlag.GetFlagInstanceAtLocation(location, null);
-                break;
-            case EFFECT:
-                flag = effectFlag.GetFlagInstanceAtLocation(location, null);
-                break;
-        }
+        Flag flag = switch (checkType) {
+            default -> entityFlag.GetFlagInstanceAtLocation(location, null);
+            case BLOCK -> blockFlag.GetFlagInstanceAtLocation(location, null);
+            case EFFECT -> effectFlag.GetFlagInstanceAtLocation(location, null);
+        };
         return flag != null;
     }
 

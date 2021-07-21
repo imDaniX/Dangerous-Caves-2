@@ -24,17 +24,16 @@ public class BouldersGroup extends AbstractStructure {
     @Override
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
-        boolean[][][] rock;
-        switch (random.nextInt(8)) {
-            default:rock = OldStructures.rock1; break;
-            case 1: rock = OldStructures.rock2; break;
-            case 2: rock = OldStructures.rock3; break;
-            case 3: rock = OldStructures.rock4; break;
-            case 4: rock = OldStructures.rock5; break;
-            case 5: rock = OldStructures.rock6; break;
-            case 6: rock = OldStructures.rock7; break;
-            case 7: rock = OldStructures.rock8; break;
-        }
+        boolean[][][] rock = switch (random.nextInt(8)) {
+            default -> OldStructures.rock1;
+            case 1 -> OldStructures.rock2;
+            case 2 -> OldStructures.rock3;
+            case 3 -> OldStructures.rock4;
+            case 4 -> OldStructures.rock5;
+            case 5 -> OldStructures.rock6;
+            case 6 -> OldStructures.rock7;
+            case 7 -> OldStructures.rock8;
+        };
         int xMod = random.nextBoolean() ? -1 : 1;
         int zMod = random.nextBoolean() ? -1 : 1;
         for (int y = 0; y < rock[0].length; y++) for (int x = -1; x < rock.length-1; x++) for (int z = -1; z < rock[0][0].length-1; z++) {

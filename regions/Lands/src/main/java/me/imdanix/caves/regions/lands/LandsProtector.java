@@ -36,16 +36,16 @@ public class LandsProtector implements RegionProtector {
         }
 
         switch (type) {
-            case ENTITY: {
+            case ENTITY -> {
                 return area.hasLandSetting(LandSetting.ENTITY_GRIEFING);
             }
-            case BLOCK: {
+            case BLOCK -> {
                 return area.hasLandSetting(LandSetting.LEAF_DECAY);
             }
-            case EFFECT: {
+            case EFFECT -> {
                 return effect;
             }
-            default: {
+            default -> {
                 return false;
             }
         }

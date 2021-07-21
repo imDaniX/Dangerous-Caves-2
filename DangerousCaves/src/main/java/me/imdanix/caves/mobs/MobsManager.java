@@ -228,8 +228,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!event.getChunk().isLoaded()) return;
             for (Entity entity : event.getChunk().getEntities()) {
-                if (!(entity instanceof LivingEntity)) continue;
-                LivingEntity livingEntity = (LivingEntity) entity;
+                if (!(entity instanceof LivingEntity livingEntity)) continue;
                 String type = Compatibility.getTag(livingEntity);
                 if (type != null) {
                     if (metadata) entity.setMetadata("DangerousCaves", MARKER);

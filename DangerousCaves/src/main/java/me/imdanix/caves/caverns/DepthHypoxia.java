@@ -148,7 +148,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         ItemStack[] contents = player.getInventory().getContents();
         for (ItemStack item : contents) {
             if (item == null) continue;
-            weightChance += item.getAmount() / item.getMaxStackSize();
+            weightChance += item.getAmount() / (float) item.getMaxStackSize();
         }
         weightChance /= contents.length;
         formula.setVariable("depth", depthChance);

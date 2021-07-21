@@ -259,12 +259,13 @@ public class CavesAging implements Tickable, Configurable {
         return "caverns.aging";
     }
 
+    // TODO Make record too?
     private class DelayedChange {
         private final int x;
         private final int y;
         private final int z;
         private final ChangeType changeType;
-    
+
         public DelayedChange(int x, int y, int z, ChangeType changeType) {
             this.x = x;
             this.y = y;
@@ -277,7 +278,7 @@ public class CavesAging implements Tickable, Configurable {
             Material type = block.getType();
             if (!lightLevelCheck.test(block)) return;
             switch (changeType) {
-                case VINE:
+                case VINE -> {
                     if (!replaceBlocks.contains(type)) return;
                     for (BlockFace face : Locations.HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
@@ -286,45 +287,41 @@ public class CavesAging implements Tickable, Configurable {
                             Compatibility.rotate(relBlock, face.getOppositeFace());
                         }
                     }
-                    break;
-
-                case RED_MUSHROOM:
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                }
+                case RED_MUSHROOM -> {
+                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                        return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.RED_MUSHROOM, false);
-                    break;
-
-                case BROWN_MUSHROOM:
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                }
+                case BROWN_MUSHROOM -> {
+                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                        return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
-                    break;
-
-                case ROCK:
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
+                }
+                case ROCK -> {
+                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                        return;
                     block.setType(Material.STONE_BUTTON, false);
                     Compatibility.rotate(block, BlockFace.UP);
-                    break;
-
-                case STALAGMITE:
+                }
+                case STALAGMITE -> {
                     if (!Materials.isAir(type)) return;
                     block.setType(VMaterial.COBBLESTONE_WALL.get(), false);
-                    break;
-
-                case COBBLESTONE:
+                }
+                case COBBLESTONE -> {
                     if (!replaceBlocks.contains(type)) return;
                     block.setType(Material.COBBLESTONE, false);
-                    break;
-
-                case ANDESITE:
+                }
+                case ANDESITE -> {
                     if (!replaceBlocks.contains(type)) return;
                     block.setType(VMaterial.ANDESITE.get(), false);
-                    break;
-
-                case TORCH_AIR:
+                }
+                case TORCH_AIR -> {
                     if (type != Material.TORCH) return;
                     block.setType(Material.AIR, false);
-                    break;
+                }
             }
         }
     }
@@ -333,14 +330,7 @@ public class CavesAging implements Tickable, Configurable {
         VINE, RED_MUSHROOM, BROWN_MUSHROOM, ROCK, STALAGMITE, COBBLESTONE, ANDESITE, TORCH_AIR
     }
 
-    private static class QueuedChunk {
-        private final int x;
-        private final int z;
-
-        public QueuedChunk(int x, int z) {
-            this.x = x;
-            this.z = z;
-        }
+    private record QueuedChunk(int x, int z) {
 
         public Chunk getChunk(World world) {
             return world.getChunkAt(x, z);
@@ -353,8 +343,7 @@ public class CavesAging implements Tickable, Configurable {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof QueuedChunk)) return false;
-            QueuedChunk chunk = (QueuedChunk) o;
+            if (!(o instanceof QueuedChunk chunk)) return false;
             return chunk.x == x && chunk.z == z;
         }
     }

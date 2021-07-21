@@ -61,8 +61,7 @@ public class SmokeDemon extends TickingMob {
     }
 
     private void harm(Entity entity) {
-        if (entity instanceof LivingEntity && entity.getLocation().getBlock().getLightLevel() <= maxLight) {
-            LivingEntity living = (LivingEntity) entity;
+        if (entity instanceof LivingEntity living && entity.getLocation().getBlock().getLightLevel() <= maxLight) {
             living.addPotionEffect(BLINDNESS);
             living.addPotionEffect(WITHER);
         }

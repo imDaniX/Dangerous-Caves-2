@@ -134,8 +134,7 @@ public class CaveGolem extends AbstractMob implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
         if (isThis(event.getDamager())) {
-            if (!(event.getEntity() instanceof LivingEntity)) return;
-            LivingEntity entity = (LivingEntity) event.getEntity();
+            if (!(event.getEntity() instanceof LivingEntity entity)) return;
             Locations.playSound(entity.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 2, 0.5f);
             if (distract) {
                 entity.addPotionEffect(BLINDNESS);
@@ -150,10 +149,8 @@ public class CaveGolem extends AbstractMob implements Listener {
     public void onDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
         if (isThis(entity)) {
-            if (event instanceof EntityDamageByEntityEvent) {
-                EntityDamageByEntityEvent enEvent = (EntityDamageByEntityEvent) event;
-                if (enEvent.getDamager() instanceof Player) {
-                    Player player = (Player) enEvent.getDamager();
+            if (event instanceof EntityDamageByEntityEvent enEvent) {
+                if (enEvent.getDamager() instanceof Player player) {
                     if (PICKAXES.contains(player.getInventory().getItemInMainHand().getType())) {
                         Locations.playSound(entity.getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 0.6f, 1);
                         event.setDamage(event.getDamage() * pickaxeModifier);

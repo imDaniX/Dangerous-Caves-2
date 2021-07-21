@@ -27,13 +27,12 @@ public class PillarsGroup extends AbstractStructure {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         switch (random.nextInt(8)) {
-            case 1:
+            case 1 -> {
                 setType(loc, VMaterial.POLISHED_ANDESITE.get());
                 setType(loc.add(0, 1, 0), randomStone(random));
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 setType(loc, VMaterial.STONE_BRICKS.get());
                 if (random.nextBoolean()) {
                     setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
@@ -44,33 +43,29 @@ public class PillarsGroup extends AbstractStructure {
                 }
                 setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 setType(loc, random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(1, 0, random.nextInt(2)), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 4:
+            }
+            case 4 -> {
                 setType(loc, randomStone(random));
                 setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0,1,0), VMaterial.POLISHED_ANDESITE.get());
+                setType(loc.add(0, 1, 0), VMaterial.POLISHED_ANDESITE.get());
                 setType(loc.add(-1, 0, random.nextInt(2)), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 5:
+            }
+            case 5 -> {
                 setType(loc, VMaterial.STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(Locations.add(loc, 0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.subtract(loc, 0 , 0, 1), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.subtract(loc, 0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 6:
+            }
+            case 6 -> {
                 setType(loc, VMaterial.STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
@@ -78,22 +73,20 @@ public class PillarsGroup extends AbstractStructure {
                 setType(Locations.add(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.add(loc, 1, 0 ,0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
                 setType(Locations.subtract(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
                 setType(loc.add(1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
-                break;
-
-            case 7:
+            }
+            case 7 -> {
                 setType(loc, Material.COBBLESTONE);
                 setType(loc.add(0, 1, 0), VMaterial.COBBLESTONE_WALL.get());
-                break;
-
-            default:
+            }
+            default -> {
                 setType(loc, VMaterial.POLISHED_ANDESITE.get());
                 setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
-                break;
+            }
         }
     }
 

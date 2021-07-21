@@ -60,22 +60,20 @@ public class Commander implements CommandExecutor, TabCompleter {
         if (args.length < 1) {
             help(sender, label);
         } else switch (args[0].toLowerCase(Locale.ENGLISH)) {
-            case "info": {
-                if (!(sender instanceof Player)) {
+            case "info" -> {
+                if (!(sender instanceof Player player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from the console!"));
                     return true;
                 } else if (!sender.hasPermission("dangerous.caves.command.info")) return false;
-                Player player = (Player)sender;
                 Location loc = player.getLocation();
                 sender.sendMessage(Utils.clr("&bWorld: &f") + loc.getWorld().getName());
                 sender.sendMessage(Utils.clr("&bChunk: &f") + loc.getChunk().getX() + "," + loc.getChunk().getZ());
                 sender.sendMessage(Utils.clr("&bHand: &f") + player.getInventory().getItemInMainHand().getType());
-                break;
             }
 
             // TODO: "debug"
 
-            case "summon": case "spawn": {
+            case "summon", "spawn" -> {
                 if (!sender.hasPermission("dangerous.caves.command.summon")) return false;
                 if (args.length < 2) {
                     sender.sendMessage(Utils.clr("&cYou should specify mob's type to summon!"));
@@ -93,10 +91,9 @@ public class Commander implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Utils.clr("&cThere's no mob's type called &e" + type + "&c!"));
                     sender.sendMessage(Utils.clr("&7List of all mob's types: &f" + String.join(", ", mobsManager.getMobs())));
                 }
-                break;
             }
 
-            case "kill": {
+            case "kill" -> {
                 if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
                 if (args.length < 2) {
                     killAll(LivingEntity::remove);
@@ -111,11 +108,10 @@ public class Commander implements CommandExecutor, TabCompleter {
                         sender.sendMessage(Utils.clr("&7List of all mob's types: &f" + String.join(", ", mobsManager.getMobs())));
                     }
                 }
-                break;
             }
 
             // TODO v Temporary command - need to finish mimics...
-            case "mimeremove": { // /dcaves mimeremove 3 me
+            case "mimeremove" -> { // /dcaves mimeremove 3 me
                 if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
                 boolean checkAll = args.length < 3 || !args[2].equalsIgnoreCase("all") || sender instanceof ConsoleCommandSender;
                 int radius = args.length < 2 ? 1 : (int) Utils.getDouble(args[1], 1);
@@ -144,26 +140,23 @@ public class Commander implements CommandExecutor, TabCompleter {
                 }
                 sender.sendMessage(Utils.clr("&eRemoving " + toRemove.size() + " mimic chests..."));
                 for (Block block : toRemove) block.setType(Material.AIR, false);
-                break;
             }
+
             // TODO ^
 
-            case "tick": {
+            case "tick" -> {
                 if (!sender.hasPermission("dangerous.caves.command.tick")) return false;
                 for (TickLevel level : TickLevel.values()) dynamics.tick(level);
                 sender.sendMessage(Utils.clr("&aTicked every tickables."));
-                break;
             }
 
-            case "reload": case "r": {
+            case "reload", "r" -> {
                 if (!sender.hasPermission("dangerous.caves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
                 cfg.checkVersion(true);
-                break;
             }
-
-            default: help(sender, label);
+            default -> help(sender, label);
         }
         return true;
     }
@@ -226,8 +219,7 @@ public class Commander implements CommandExecutor, TabCompleter {
 
     private static void killAll(Consumer<LivingEntity> kill) {
         for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) {
-            if (!(entity instanceof LivingEntity)) continue;
-            LivingEntity living = (LivingEntity) entity;
+            if (!(entity instanceof LivingEntity living)) continue;
             if (Compatibility.isTagged(living))
                 kill.accept(living);
         }

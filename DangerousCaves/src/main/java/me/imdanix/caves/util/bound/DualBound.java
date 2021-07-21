@@ -1,11 +1,6 @@
 package me.imdanix.caves.util.bound;
 
-public class DualBound implements Bound {
-    private final int xMin;
-    private final int xMax;
-
-    private final int zMin;
-    private final int zMax;
+public record DualBound(int xMin, int xMax, int zMin, int zMax) implements Bound {
 
     public DualBound(int xMin, int xMax, int zMin, int zMax) {
         if (xMin > xMax) {
@@ -36,8 +31,7 @@ public class DualBound implements Bound {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof DualBound)) return false;
-        DualBound b = (DualBound) object;
+        if (!(object instanceof DualBound b)) return false;
         return (xMin == b.xMin && xMax == b.xMax) && (zMin == b.zMax && zMax == b.zMax);
     }
 }
