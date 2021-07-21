@@ -1,6 +1,5 @@
 package me.imdanix.caves.regions;
 
-import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionFlagsProtector;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionProtector;
@@ -9,6 +8,7 @@ import me.imdanix.caves.regions.worldguard.WorldGuard6FlagsProtector;
 import me.imdanix.caves.regions.worldguard.WorldGuard6Protector;
 import me.imdanix.caves.regions.worldguard.WorldGuard7FlagsProtector;
 import me.imdanix.caves.regions.worldguard.WorldGuard7Protector;
+import me.imdanix.caves.util.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

@@ -2,7 +2,6 @@ package me.imdanix.caves.mobs;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import io.papermc.lib.PaperLib;
-import me.imdanix.caves.Manager;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
@@ -10,6 +9,7 @@ import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
+import me.imdanix.caves.util.Manager;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;

@@ -1,6 +1,6 @@
 package me.imdanix.caves.configuration;
 
-import me.imdanix.caves.Manager;
+import me.imdanix.caves.util.Manager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

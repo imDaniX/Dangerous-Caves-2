@@ -1,6 +1,6 @@
 package me.imdanix.caves.ticks;
 
-import me.imdanix.caves.Manager;
+import me.imdanix.caves.util.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

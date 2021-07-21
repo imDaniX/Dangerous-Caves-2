@@ -1,8 +1,8 @@
 package me.imdanix.caves.generator;
 
-import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
+import me.imdanix.caves.util.Manager;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.WeightedPool;

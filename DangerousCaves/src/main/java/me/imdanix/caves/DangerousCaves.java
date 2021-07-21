@@ -16,6 +16,7 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class DangerousCaves extends JavaPlugin {
     @Override
     public void onLoad() {
         if (getDescription().getVersion().contains("SNAPSHOT")) {
-            getLogger().info("Thank you for using dev-build of the plugin! But please note that this version may " +
+            getLogger().warning("Thank you for using dev-build of the plugin! But please note that this version may " +
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/Dangerous-Сaves-2/issues");
         }
         Regions.INSTANCE.onLoad();
@@ -41,7 +42,8 @@ public class DangerousCaves extends JavaPlugin {
         Regions.INSTANCE.onEnable();
 
         dynamics = new Dynamics(this);
-        cfg = new Configuration(this, "config", getDescription().getVersion().split(";")[1]); cfg.create(true);
+        cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version"));
+        cfg.create(true);
         mobsManager = new MobsManager(this, cfg, dynamics);
         generator = new CaveGenerator(cfg);
         DefaultMobs.registerAll(mobsManager);

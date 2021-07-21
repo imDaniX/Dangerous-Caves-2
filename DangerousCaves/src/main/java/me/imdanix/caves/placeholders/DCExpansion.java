@@ -1,9 +1,9 @@
 package me.imdanix.caves.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.imdanix.caves.Manager;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
+import me.imdanix.caves.util.Manager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
