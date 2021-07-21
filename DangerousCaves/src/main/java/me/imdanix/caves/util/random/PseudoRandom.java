@@ -3,7 +3,7 @@ package me.imdanix.caves.util.random;
 public class PseudoRandom {
     private static final int[] ZERO_INT = null;
 
-    public static PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(){
+    public static final PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(){
         @Override
         public int next() {
             return 0;

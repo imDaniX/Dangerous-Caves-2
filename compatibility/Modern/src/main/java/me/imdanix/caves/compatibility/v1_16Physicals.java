@@ -2,6 +2,7 @@ package me.imdanix.caves.compatibility;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -41,5 +42,10 @@ public class v1_16Physicals implements PhysicalsProvider {
                 "{SkullOwner:{Id:[I;" + lessA + "," + lessB + "," + mostA + "," + mostB + "]," +
                         "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
+    }
+
+    @Override
+    public int getMinY(World world) {
+        return world.getMinHeight();
     }
 }

@@ -10,11 +10,7 @@ public interface PhysicalsProvider {
 
     ItemStack getHeadFromValue(String value);
 
-    default int getYMin(World world) {
+    default int getMinY(World world) {
         return 0;
-    }
-
-    default int getYMax(World world) {
-        return 256;
     }
 }

@@ -69,11 +69,7 @@ public final class Compatibility {
         return tags.getTag(block);
     }
 
-    public static int getYMin(World world) {
-        return physicals.getYMin(world);
-    }
-
-    public static int getYMax(World world) {
-        return physicals.getYMax(world);
+    public static int getMinY(World world) {
+        return physicals.getMinY(world);
     }
 }

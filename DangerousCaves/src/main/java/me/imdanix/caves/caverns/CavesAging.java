@@ -188,6 +188,7 @@ public class CavesAging implements Tickable, Configurable {
 
         int count = 0;
         int totalCount = 0;
+        // TODO Use Compatibility.getMinY()
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 

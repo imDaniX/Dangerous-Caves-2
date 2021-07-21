@@ -1,5 +1,6 @@
 package me.imdanix.caves.generator;
 
+import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.util.Manager;
@@ -120,7 +121,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     }
 
     private static Block getClosestAir(Chunk chunk, int x, int z) {
-        for (int y = 4; y < 55; y++) {
+        for (int y = Compatibility.getMinY(chunk.getWorld()); y < 55; y++) {
             Block block = chunk.getBlock(x, y, z);
             if (Materials.isAir(block.getType())
                     && Materials.isAir(block.getRelative(BlockFace.UP).getType())
