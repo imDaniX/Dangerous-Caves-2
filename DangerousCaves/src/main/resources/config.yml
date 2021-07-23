@@ -437,6 +437,9 @@ mobs:
     harm-radius: 3
     # Condition for spawning and harm/wither effect
     max-light: 11
+    # Particle name to spawn around the mob
+    # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+    particle: CLOUD
 
   # TNT Creeper
   # Spawns additional TNTs when explodes and creates small explosion when damaged

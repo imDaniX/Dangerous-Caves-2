@@ -1,6 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,6 +19,7 @@ public class SmokeDemon extends TickingMob {
 
     private int maxLight;
     private double radius;
+    private Particle particle;
 
     public SmokeDemon() {
         super(EntityType.ZOMBIE, "smoke-demon", 7);
@@ -27,6 +29,7 @@ public class SmokeDemon extends TickingMob {
     protected void configure(ConfigurationSection cfg) {
         maxLight = cfg.getInt("max-light", 11);
         radius = cfg.getInt("harm-radius", 3);
+        particle = Utils.getEnum(Particle.class, cfg.getString("particle", "CLOUD"), Particle.CLOUD);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class SmokeDemon extends TickingMob {
             return;
         }
         entity.getNearbyEntities(radius, radius, radius).forEach(this::harm);
-        entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().add(0, 1, 0), 30, 1, 1, 1, 0f);
+        entity.getWorld().spawnParticle(particle, entity.getLocation().add(0, 1, 0), 30, 1, 1, 1, 0f);
     }
 
     private void harm(Entity entity) {
