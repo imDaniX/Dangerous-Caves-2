@@ -105,7 +105,7 @@ public class CaveIns implements Listener, Configurable {
                 Block search = blocks.get(0).getRelative(BlockFace.DOWN);
 
                 if (search.getType().isSolid()) continue;
-                while(search.getY() > 0 && !search.getType().isSolid() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
+                while (search.getY() > 0 && !search.getType().isSolid() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
 
                 for (Block block : blocks) {
                     search = search.getRelative(BlockFace.UP);
@@ -135,6 +135,7 @@ public class CaveIns implements Listener, Configurable {
             int heightMax = heightMap[x][z] - pseudoRandom.next();
             for (int y = 0; y <= heightMax; y++) {
                 Block block = world.getBlockAt(xRel, yInit + y, zRel);
+                if (block.getType() == Material.BEDROCK) continue;
                 if (!Materials.isCave(block.getType())) {
                     if (Materials.isAir(block.getType())) continue;
                     break;
