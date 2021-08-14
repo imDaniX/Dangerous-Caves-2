@@ -46,6 +46,7 @@ public final class Compatibility {
     }
 
     public static void setTag(LivingEntity entity, String tag) {
+        entity.addScoreboardTag(TagsProvider.DC_SCOREBOARD_TAG);
         tags.setTag(entity, tag);
     }
 

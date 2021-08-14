@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class LegacyTags implements TagsProvider {
     private static final String TAG_PREFIX = "§0§kdc-tag-";
-    private static final String DC_TAG = "dc-mob";
 
     private final Set<String> tags;
 
@@ -24,7 +23,6 @@ public class LegacyTags implements TagsProvider {
 
     @Override
     public void setTag(LivingEntity entity, String tag) {
-        entity.addScoreboardTag(DC_TAG);
         entity.addScoreboardTag(tag);
     }
 
@@ -40,7 +38,7 @@ public class LegacyTags implements TagsProvider {
     public String getTag(LivingEntity entity) {
         Set<String> entityTags = entity.getScoreboardTags();
 
-        if (entityTags.contains(DC_TAG)) {
+        if (entityTags.contains(DC_SCOREBOARD_TAG)) {
             if (entityTags.size() > tags.size()) {
                 for (String tag : tags)
                     if (entityTags.contains(tag)) return tag;
@@ -54,7 +52,7 @@ public class LegacyTags implements TagsProvider {
 
     @Override
     public boolean isTagged(LivingEntity entity) {
-        return entity.getScoreboardTags().contains(DC_TAG);
+        return entity.getScoreboardTags().contains(DC_SCOREBOARD_TAG);
     }
 
     @Override
