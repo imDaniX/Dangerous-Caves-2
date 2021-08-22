@@ -283,18 +283,16 @@ mobs:
   worlds:
     - world
 
-  # Minimal and maximal Y coordinate where custom mobs can spawn
-  y-min: 4
+  # Maximal Y coordinate where custom mobs can spawn
   y-max: 64
 
-  # (Paper only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
-  # Doesn't work for 1.16+
+  # (Paper 1.12-1.15 only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
   use-prespawn: true
 
   # Block renaming with name-tags
   restrict-rename: false
 
-  # Maximal light level where mobs can spawn. Vanilla level for monsters is 7. Set to 16 or more to disable
+  # Maximal light level where mobs can spawn (0-15). Vanilla level for monsters is 7. Set to 16 or more to disable
   max-light-level: 16
 
   # Only these mobs will be replaced
@@ -308,8 +306,8 @@ mobs:
     - WITCH
     - ENDERMAN
 
-  # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like SAML
-  # Not sure, but can cause memory leak, so disabled by default
+  # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like FarmControl
+  # Not sure, but may cause memory leak, so disabled by default
   add-metadata: false
 
   # List of *default* custom mobs
@@ -437,7 +435,7 @@ mobs:
     harm-radius: 3
     # Condition for spawning and harm/wither effect
     max-light: 11
-    # Particle name to spawn around the mob
+    # Particles' name to spawn around the mob
     # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
     particle: CLOUD
 

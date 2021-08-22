@@ -55,9 +55,16 @@ public final class Materials {
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
             Material.TORCH, Material.CHEST
         ).with(
+            // 1.13
             "ANDESITE", "DIORITE", "GRANITE",
+            // 1.16
             "SOUL_SOIL", "BLACKSTONE", "BASALT",
-            "NETHER_GOLD_ORE", "GILDED_BLACKSTONE"
+            "NETHER_GOLD_ORE", "GILDED_BLACKSTONE",
+            // 1.17
+            "CALCITE", "TUFF", "DRIPSTONE_BLOCK", "MOSS_BLOCK", "ROOTED_DIRT",
+            "DEEPSLATE", "DEEPSLATE_COAL_ORE", "DEEPSLATE_COPPER_ORE",
+            "DEEPSLATE_DIAMOND_ORE", "DEEPSLATE_EMERALD_ORE", "DEEPSLATE_GOLD_ORE",
+            "DEEPSLATE_IRON_ORE", "DEEPSLATE_LAPIS_ORE", "DEEPSLATE_REDSTONE_ORE"
         ).with(
             or("RAIL", "RAILS"),
             or("SPAWNER", "MOB_SPAWNER"),
