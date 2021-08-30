@@ -96,6 +96,10 @@ public class Configuration implements Manager<Configurable> {
         return name;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
     /**
      * Compare version of configuration with version in the file
      * @param message Throw default warning if versions don't match?

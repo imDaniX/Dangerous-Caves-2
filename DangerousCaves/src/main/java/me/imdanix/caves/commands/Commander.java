@@ -50,14 +50,12 @@ public class Commander implements CommandExecutor, TabCompleter {
         this.mobsManager = plugin.getMobs();
         this.cfg = plugin.getConfiguration();
         this.dynamics = plugin.getDynamics();
-
-        String version = plugin.getDescription().getVersion();
-        this.version = version.split(";");
+        this.version = new String[]{plugin.getDescription().getVersion(), plugin.getConfiguration().getVersion()};
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1) {
+        if (args.length == 0) {
             help(sender, label);
         } else switch (args[0].toLowerCase(Locale.ENGLISH)) {
             case "info" -> {
