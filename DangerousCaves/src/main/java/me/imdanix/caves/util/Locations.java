@@ -14,7 +14,6 @@ import java.util.function.Consumer;
 
 public final class Locations {
     public static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
-    public static final BlockFace[] FULL_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN};
 
     /**
      * Creates new Location instance and adds coordinates

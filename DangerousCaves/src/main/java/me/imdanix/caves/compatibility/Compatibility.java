@@ -4,6 +4,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -50,7 +51,7 @@ public final class Compatibility {
         tags.setTag(entity, tag);
     }
 
-    public static void setTag(Block block, String tag) {
+    public static void setTag(BlockState block, String tag) {
         tags.setTag(block, tag);
     }
 
@@ -66,7 +67,7 @@ public final class Compatibility {
         return tags.isTagged(entity, tag);
     }
 
-    public static String getTag(Block block) {
+    public static String getTag(BlockState block) {
         return tags.getTag(block);
     }
 

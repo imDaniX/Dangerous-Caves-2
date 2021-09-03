@@ -466,6 +466,9 @@ mobs:
     priority: 0
     name: "&4Mimic"
     health: 30
+    # Remove mimic chests on chunks unloading
+    # RECOMMENDED if you're using this mob
+    remove-on-unload: false
     # List of dropped materials after death
     drop-items:
       - BOOK

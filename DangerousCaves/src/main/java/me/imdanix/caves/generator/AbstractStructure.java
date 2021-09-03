@@ -6,6 +6,7 @@ import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -46,19 +47,21 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
 
     // TODO: It's actually kinda awful...
 
-    public static void fillInventory(Block block) {
+    protected static void fillInventory(Block block) {
+        BlockState state;
         try {
-            if (!(block.getState() instanceof Container)) return;
+            if (!((state = block.getState()) instanceof Container)) return;
         } catch (IllegalStateException ex) {
+            // ItemsAdder goes somewhat wild?
             ex.printStackTrace();
             return;
         }
         if (mimicChance > 0 && Rng.chance(mimicChance)) {
-            Compatibility.setTag(block, "mimic-30");
+            Compatibility.setTag(state, "mimic-30");
             return;
         }
         if (chestItems.isEmpty()) return;
-        Inventory inventory = ((Container)block.getState()).getInventory();
+        Inventory inventory = ((Container) state).getInventory();
         int itemsCount = Rng.nextInt(10) + 2;
         while(itemsCount-- > 0) {
             Material material = Rng.randomElement(chestItems);

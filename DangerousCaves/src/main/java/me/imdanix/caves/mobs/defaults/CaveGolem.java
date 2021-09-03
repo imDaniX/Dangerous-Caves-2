@@ -41,14 +41,9 @@ public class CaveGolem extends AbstractMob implements Listener {
     private static final PotionEffect CONFUSION = new PotionEffect(PotionEffectType.CONFUSION, 20, 0);
     private static final PotionEffect SLOW_PL = new PotionEffect(PotionEffectType.SLOW, 40, 1);
 
-    private static final ItemStack CHESTPLATE;
-    private static final ItemStack LEGGINGS;
-    private static final ItemStack BOOTS;
-    static {
-        CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 105, 105, 105);
-        LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 105, 105, 105);
-        BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
-    }
+    private static final ItemStack CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 105, 105, 105);;
+    private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 105, 105, 105);
+    private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
 
     private static final Set<Material> PICKAXES = new Materials.Builder().with(
             Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE
@@ -94,9 +89,9 @@ public class CaveGolem extends AbstractMob implements Listener {
 
         if (heads.isEmpty()) heads.add(new ItemStack(Material.STONE));
 
-        if (!materials.isEmpty() && (breakChance = cfg.getDouble("spawn-from-block")/100) > 0) {
+        if (!materials.isEmpty() && (breakChance = cfg.getDouble("spawn-from-block") / 100) > 0) {
             if (breakListener == null) {
-                Bukkit.getPluginManager().registerEvents(new Listener() {
+                Bukkit.getPluginManager().registerEvents(breakListener = new Listener() {
                     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
                     public void onBreak(BlockBreakEvent event) {
                         Block block = event.getBlock();
@@ -111,11 +106,9 @@ public class CaveGolem extends AbstractMob implements Listener {
                     }
                 }, plugin);
             }
-        } else {
-            if (breakListener != null) {
-                HandlerList.unregisterAll(breakListener);
-                breakListener = null;
-            }
+        } else if (breakListener != null) {
+            HandlerList.unregisterAll(breakListener);
+            breakListener = null;
         }
     }
 

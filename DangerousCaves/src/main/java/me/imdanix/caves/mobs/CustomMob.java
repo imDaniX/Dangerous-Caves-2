@@ -20,7 +20,7 @@ public interface CustomMob {
     /**
      * Check if custom mob can be spawned on location
      * @param loc Where to check
-     * @return Is mob can be spawned here
+     * @return Is mob can be spawned there
      */
     default boolean canSpawn(Location loc) {
         return true;

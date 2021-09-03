@@ -1,7 +1,6 @@
 package me.imdanix.caves.compatibility;
 
 import org.bukkit.Nameable;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 
@@ -27,8 +26,7 @@ public class LegacyTags implements TagsProvider {
     }
 
     @Override
-    public void setTag(Block block, String tag) {
-        BlockState state = block.getState();
+    public void setTag(BlockState state, String tag) {
         if (!(state instanceof Nameable)) return;
         ((Nameable)state).setCustomName(TAG_PREFIX + tag);
         state.update(false, false);
@@ -61,8 +59,7 @@ public class LegacyTags implements TagsProvider {
     }
 
     @Override
-    public String getTag(Block block) {
-        BlockState state = block.getState();
+    public String getTag(BlockState state) {
         if (!(state instanceof Nameable)) return null;
         String name = ((Nameable) state).getCustomName();
         return name != null && name.startsWith(TAG_PREFIX) ? name.substring(TAG_PREFIX.length()) : null;

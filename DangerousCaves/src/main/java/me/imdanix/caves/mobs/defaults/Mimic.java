@@ -1,5 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
+import io.papermc.lib.PaperLib;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.VSound;
@@ -11,12 +12,17 @@ import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -26,14 +32,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataHolder;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -41,29 +52,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-// TODO: Other blocks like furnace
+// TODO: Other blocks like furnace?
 public class Mimic extends TickingMob implements Listener {
+    private static final boolean CHUNK_IS_HOLDER = PaperLib.getMinecraftVersion() >= 14 && PersistentDataHolder.class.isAssignableFrom(Chunk.class);
+
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
-    private static final ItemStack CHEST;
-    private static final ItemStack CHESTPLATE;
-    private static final ItemStack LEGGINGS;
-    private static final ItemStack BOOTS;
-    private static final ItemStack PLANKS;
-    static {
-        CHEST = new ItemStack(Material.CHEST);
-        CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 194, 105, 18);
-        LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 194, 105, 18);
-        BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
-        PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
-    }
+    private static final ItemStack CHEST = new ItemStack(Material.CHEST);
+    private static final ItemStack CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 194, 105, 18);
+    private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 194, 105, 18);
+    private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
+    private static final ItemStack PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
 
     private final MobsManager mobsManager;
+    private final NamespacedKey chunkKey;
     private final List<Material> items;
+    private boolean clean;
+    private Listener unloadListener;
 
     public Mimic(MobsManager mobsManager) {
         super(EntityType.WITHER_SKELETON, "mimic", 0, 30d);
         this.mobsManager = mobsManager;
         items = new ArrayList<>();
+        chunkKey = new NamespacedKey(mobsManager.getPlugin(), "mimic-count");
     }
 
     @Override
@@ -73,6 +83,36 @@ public class Mimic extends TickingMob implements Listener {
         for (String materialStr : itemsCfg) {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if (material != null) items.add(material);
+        }
+        if (clean = cfg.getBoolean("remove-on-unload", false)) {
+            if (unloadListener == null) {
+                Bukkit.getPluginManager().registerEvents(unloadListener = new Listener() {
+                    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+                    public void onUnload(ChunkUnloadEvent event) {
+                        if (CHUNK_IS_HOLDER) {
+                            PersistentDataContainer container = event.getChunk().getPersistentDataContainer();
+                            if (!container.has(chunkKey, PersistentDataType.INTEGER)) return;
+                            int amount = container.getOrDefault(chunkKey, PersistentDataType.INTEGER, Integer.MAX_VALUE);
+                            for (BlockState tile : event.getChunk().getTileEntities()) {
+                                if (!(tile instanceof Chest)) continue;
+                                String tag = Compatibility.getTag(tile);
+                                if (tag == null || !tag.startsWith("mimic")) continue;
+                                tile.setType(Material.AIR);
+                                if (--amount == 0) break;
+                            }
+                            container.remove(chunkKey);
+                        } else for (BlockState tile : event.getChunk().getTileEntities()) {
+                            if (!(tile instanceof Chest)) continue;
+                            String tag = Compatibility.getTag(tile);
+                            if (tag == null || !tag.startsWith("mimic")) continue;
+                            tile.setType(Material.AIR);
+                        }
+                    }
+                }, mobsManager.getPlugin());
+            }
+        } else if (unloadListener != null) {
+            HandlerList.unregisterAll(unloadListener);
+            unloadListener = null;
         }
     }
 
@@ -115,7 +155,7 @@ public class Mimic extends TickingMob implements Listener {
     }
 
     private boolean openMimic(Block block, Player player) {
-        String tag = Compatibility.getTag(block);
+        String tag = Compatibility.getTag(block.getState());
         if (tag == null || !tag.startsWith("mimic")) return false;
         if (block.getRelative(BlockFace.UP).getType().isSolid()) return true;
         block.setType(Material.AIR);
@@ -157,8 +197,13 @@ public class Mimic extends TickingMob implements Listener {
                 if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
             Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
-            Compatibility.setTag(block, "mimic-" + entity.getHealth());
+            Compatibility.setTag(block.getState(), "mimic-" + entity.getHealth());
             entity.remove();
+
+            if (clean && CHUNK_IS_HOLDER) {
+                PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
+                container.set(chunkKey, PersistentDataType.INTEGER, container.getOrDefault(chunkKey, PersistentDataType.INTEGER, 0) + 1);
+            }
         }
     }
 }

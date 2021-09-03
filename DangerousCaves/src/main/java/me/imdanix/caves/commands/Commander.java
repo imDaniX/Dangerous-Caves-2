@@ -12,7 +12,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -116,7 +115,7 @@ public class Commander implements CommandExecutor, TabCompleter {
 
                 Collection<? extends Player> players = checkAll ? Bukkit.getOnlinePlayers() : Collections.singleton((Player) sender);
                 Set<Integer> checked = new HashSet<>(); // Better to use fastutils, but whatever
-                List<Block> toRemove = new ArrayList<>();
+                List<BlockState> toRemove = new ArrayList<>();
                 for (Player player : players) {
                     World world = player.getWorld();
                     final int centerX = (int) player.getLocation().getX() / 16;
@@ -128,16 +127,15 @@ public class Commander implements CommandExecutor, TabCompleter {
                         for (int x = 0; x < 16; ++x) for (int z = 0; z < 16; ++z) {
                             for (BlockState state : chunk.getTileEntities()) {
                                 if (state.getType() != Material.CHEST) continue;
-                                Block block = state.getBlock();
-                                String tag = Compatibility.getTag(block);
-                                if (tag != null && tag.startsWith("mimic")) toRemove.add(block);
+                                String tag = Compatibility.getTag(state);
+                                if (tag != null && tag.startsWith("mimic")) toRemove.add(state);
                             }
                         }
                         checked.add(hash);
                     }
                 }
                 sender.sendMessage(Utils.clr("&eRemoving " + toRemove.size() + " mimic chests..."));
-                for (Block block : toRemove) block.setType(Material.AIR, false);
+                for (BlockState block : toRemove) block.getBlock().setType(Material.AIR, false);
             }
 
             // TODO ^
@@ -227,7 +225,7 @@ public class Commander implements CommandExecutor, TabCompleter {
         sender.sendMessage(Utils.clr("&6&lDangerousCaves&e v" + version[0] + " c" + version[1]));
         sender.sendMessage(Utils.clr("&a /" + label + " info &7- Get some info about your location."));
         sender.sendMessage(Utils.clr("&a /" + label + " summon <mob> [x] [y] [z] [yaw] [pitch] [world] &7- Spawn a &emob&7 on your or desired location."));
-        sender.sendMessage(Utils.clr("&a /" + label + " kill [mob] &7- Kill all DC mobs (of type &emob&7 if specified&7)."));
+        sender.sendMessage(Utils.clr("&a /" + label + " kill [mob] &7- Kill all DC mobs (of type &emob&7 if specified)."));
         sender.sendMessage(Utils.clr("&a /" + label + " tick &7- Tick everything manually."));
         sender.sendMessage(Utils.clr("&a /" + label + " reload &7- Reload plugin configuration."));
     }

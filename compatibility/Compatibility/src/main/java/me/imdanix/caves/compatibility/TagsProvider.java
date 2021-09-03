@@ -1,6 +1,6 @@
 package me.imdanix.caves.compatibility;
 
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 
 public interface TagsProvider {
@@ -8,7 +8,7 @@ public interface TagsProvider {
 
     void setTag(LivingEntity entity, String tag);
 
-    void setTag(Block block, String tag);
+    void setTag(BlockState block, String tag);
 
     String getTag(LivingEntity entity);
 
@@ -16,5 +16,5 @@ public interface TagsProvider {
 
     boolean isTagged(LivingEntity entity, String tag);
 
-    String getTag(Block block);
+    String getTag(BlockState block);
 }
