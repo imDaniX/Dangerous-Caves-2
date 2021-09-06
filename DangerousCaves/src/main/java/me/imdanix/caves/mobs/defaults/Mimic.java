@@ -84,21 +84,22 @@ public class Mimic extends TickingMob implements Listener {
             Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
             if (material != null) items.add(material);
         }
+        boolean skipPersistence = cfg.getBoolean("skip-persistence-check", false);
         if (clean = cfg.getBoolean("remove-on-unload", false)) {
             if (unloadListener == null) {
                 Bukkit.getPluginManager().registerEvents(unloadListener = new Listener() {
                     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
                     public void onUnload(ChunkUnloadEvent event) {
-                        if (CHUNK_IS_HOLDER) {
+                        if (!skipPersistence && CHUNK_IS_HOLDER) {
                             PersistentDataContainer container = event.getChunk().getPersistentDataContainer();
                             if (!container.has(chunkKey, PersistentDataType.INTEGER)) return;
-                            int amount = container.getOrDefault(chunkKey, PersistentDataType.INTEGER, Integer.MAX_VALUE);
+                            int amount = container.get(chunkKey, PersistentDataType.INTEGER);
                             for (BlockState tile : event.getChunk().getTileEntities()) {
                                 if (!(tile instanceof Chest)) continue;
                                 String tag = Compatibility.getTag(tile);
                                 if (tag == null || !tag.startsWith("mimic")) continue;
                                 tile.setType(Material.AIR);
-                                if (--amount == 0) break;
+                                if (--amount <= 0) break;
                             }
                             container.remove(chunkKey);
                         } else for (BlockState tile : event.getChunk().getTileEntities()) {
@@ -167,7 +168,17 @@ public class Mimic extends TickingMob implements Listener {
         entity.setHealth(Math.min(health, this.health));
         Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
         player.addPotionEffect(BLINDNESS);
-        ((Monster)entity).setTarget(player);
+        ((Monster) entity).setTarget(player);
+        if (CHUNK_IS_HOLDER) {
+            PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
+            if (!container.has(chunkKey, PersistentDataType.INTEGER)) return true;
+            Integer amount = container.get(chunkKey, PersistentDataType.INTEGER);
+            if (amount == 1) {
+                container.remove(chunkKey);
+            } else {
+                container.set(chunkKey, PersistentDataType.INTEGER, amount - 1);
+            }
+        }
         return true;
     }
 

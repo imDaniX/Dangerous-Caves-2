@@ -469,6 +469,9 @@ mobs:
     # Remove mimic chests on chunks unloading
     # RECOMMENDED if you're using this mob
     remove-on-unload: false
+    # Check for mimics even if they are not registered in the chunk. May slightly affect performance.
+    # Recommended if mimics were spawning before `remove-on-unload` feature
+    skip-persistence-check: false
     # List of dropped materials after death
     drop-items:
       - BOOK
