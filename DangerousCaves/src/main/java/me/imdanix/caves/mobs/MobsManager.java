@@ -1,7 +1,5 @@
 package me.imdanix.caves.mobs;
 
-import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import io.papermc.lib.PaperLib;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
@@ -24,7 +22,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -67,7 +64,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean metadata;
     private Predicate<Location> lightCheck;
 
-    private final boolean lockListener;
     private Listener spawnListener;
 
     public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
@@ -78,10 +74,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         mobs = new HashMap<>();
         worlds = new HashSet<>();
         mobsPool = new WeightedPool<>();
-        if (lockListener = (PaperLib.getMinecraftVersion() >= 16 || !PaperLib.isPaper())) {
-            spawnListener = new SpigotSpawnListener();
-            Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-        }
     }
 
     @Override
@@ -110,31 +102,9 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         recalculate();
 
         metadata = cfg.getBoolean("add-metadata", false);
-        if (disabled) {
-            if (spawnListener != null) {
-                HandlerList.unregisterAll(spawnListener);
-                spawnListener = null;
-            }
-        } else if (!lockListener) {
-            if (cfg.getBoolean("use-prespawn", true)) {
-                if (spawnListener == null) {
-                    spawnListener = new PaperSpawnListener();
-                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                } else if (!(spawnListener instanceof PaperSpawnListener)) {
-                    HandlerList.unregisterAll(spawnListener);
-                    spawnListener = new PaperSpawnListener();
-                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                }
-            } else {
-                if (spawnListener == null) {
-                    spawnListener = new SpigotSpawnListener();
-                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                } else if (!(spawnListener instanceof SpigotSpawnListener)) {
-                    HandlerList.unregisterAll(spawnListener);
-                    spawnListener = new SpigotSpawnListener();
-                    Bukkit.getPluginManager().registerEvents(spawnListener, plugin);
-                }
-            }
+        CreatureSpawnEvent.getHandlerList().unregister(this);
+        if (!disabled) {
+            Bukkit.getPluginManager().registerEvents(this, plugin);
         }
     }
 
@@ -260,6 +230,12 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onSpawn(CreatureSpawnEvent event) {
+        if (onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
+            event.setCancelled(true);
+    }
+
     private boolean onSpawn(EntityType type, Location loc, CreatureSpawnEvent.SpawnReason reason) {
         if (disabled || reason != CreatureSpawnEvent.SpawnReason.NATURAL ||
                 !replaceTypes.contains(type) ||
@@ -301,21 +277,5 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
 
     public Set<String> getMobs() {
         return mobs.keySet();
-    }
-
-    private class PaperSpawnListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-        public void onSpawn(PreCreatureSpawnEvent event) {
-            if (MobsManager.this.onSpawn(event.getType(), event.getSpawnLocation(), event.getReason()))
-                event.setCancelled(true);
-        }
-    }
-
-    private class SpigotSpawnListener implements Listener {
-        @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-        public void onSpawn(CreatureSpawnEvent event) {
-            if (MobsManager.this.onSpawn(event.getEntityType(), event.getLocation(), event.getSpawnReason()))
-                event.setCancelled(true);
-        }
     }
 }

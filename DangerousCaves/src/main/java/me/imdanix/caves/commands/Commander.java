@@ -36,7 +36,7 @@ import java.util.function.Consumer;
 
 // TODO: Refactor, split to different classes
 public class Commander implements CommandExecutor, TabCompleter {
-    private static final List<String> ARGS = Arrays.asList("info", "summon", "spawn", "kill", "tick", "reload", "r");
+    private static final List<String> ARGS = Arrays.asList("info", "summon", "spawn", "kill", "tick", "reload", "r", "mimeremove");
     private static final Set<String> WITH_MOBS = new HashSet<>(Arrays.asList("summon", "spawn", "kill"));
 
     private final MobsManager mobsManager;
@@ -114,7 +114,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                 int radius = args.length < 2 ? 1 : (int) Utils.getDouble(args[1], 1);
 
                 Collection<? extends Player> players = checkAll ? Bukkit.getOnlinePlayers() : Collections.singleton((Player) sender);
-                Set<Integer> checked = new HashSet<>(); // Better to use fastutils, but whatever
+                Set<Integer> checked = new HashSet<>(); // Better to use fastutils, but unavailable in Spigot
                 List<BlockState> toRemove = new ArrayList<>();
                 for (Player player : players) {
                     World world = player.getWorld();
@@ -137,7 +137,6 @@ public class Commander implements CommandExecutor, TabCompleter {
                 sender.sendMessage(Utils.clr("&eRemoving " + toRemove.size() + " mimic chests..."));
                 for (BlockState block : toRemove) block.getBlock().setType(Material.AIR, false);
             }
-
             // TODO ^
 
             case "tick" -> {

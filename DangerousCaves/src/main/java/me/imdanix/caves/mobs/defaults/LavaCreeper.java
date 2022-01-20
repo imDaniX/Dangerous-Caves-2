@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -75,7 +76,7 @@ public class LavaCreeper extends TickingMob implements Listener {
             if ((square(cx - x) + square(cy - y) + square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
             if (Materials.isAir(block.getType())) {
-                if (fire > 0 && Rng.chance(fire)) block.setType(Material.FIRE);
+                if (fire > 0 && !Materials.isAir(block.getRelative(BlockFace.DOWN).getType()) && Rng.chance(fire)) block.setType(Material.FIRE);
             } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                 if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
                     block.setType(VMaterial.MAGMA_BLOCK.get());

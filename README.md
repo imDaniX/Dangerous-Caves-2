@@ -1,6 +1,6 @@
 # Dangerous Caves [![Java CI](https://github.com/imDaniX/Dangerous-Caves-2/workflows/Java%20CI/badge.svg)](https://github.com/imDaniX/Dangerous-Caves-2/actions) [![JitPack](https://jitpack.io/v/imDaniX/Dangerous-Caves-2.svg)](https://jitpack.io/#imDaniX/Dangerous-Caves-2) [![Codacy](https://app.codacy.com/project/badge/Grade/0488bef8e70741eca3087fc3c728096a)](https://www.codacy.com/manual/imDaniX/Dangerous-Caves-2) [![SpigotMC](https://img.shields.io/badge/dynamic/json?label=SpigotMC&cacheSeconds=21600&style=flat&color=brightgree&query=%24.rating.average&url=http%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F76212)](https://www.spigotmc.org/resources/76212/)
 
-### Major rewrite is planned to start in january 2022,
+### Currently, on major legacy rewrite.
 
 ## Information
 Adds more mechanics to caves in order to make caving a more interesting but challenging experience.

@@ -23,10 +23,10 @@
 
     <description>Adds and improves mechanics in caves</description>
     <properties>
-        <subVersion>2.14-SNAPSHOT</subVersion>
+        <subVersion>3.0-SNAPSHOT</subVersion>
         <cfgVersion>24</cfgVersion>
-        <bukkitVersion>1.17.1-R0.1-SNAPSHOT</bukkitVersion>
-        <java.version>16</java.version>
+        <bukkitVersion>1.18.1-R0.1-SNAPSHOT</bukkitVersion>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>
     </properties>
