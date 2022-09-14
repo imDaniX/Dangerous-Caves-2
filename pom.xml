@@ -25,7 +25,7 @@
     <properties>
         <subVersion>3.0-SNAPSHOT</subVersion>
         <cfgVersion>24</cfgVersion>
-        <bukkitVersion>1.18.1-R0.1-SNAPSHOT</bukkitVersion>
+        <bukkitVersion>1.19.1-R0.1-SNAPSHOT</bukkitVersion>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>
@@ -57,13 +57,6 @@
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <defaultGoal>clean package</defaultGoal>

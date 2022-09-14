@@ -32,27 +32,26 @@ public final class Locations {
      * @param loc Initial location
      * @param x X to subtract
      * @param y Y to subtract
-     * @param z Z to subreact
+     * @param z Z to subtract
      * @return Edited Location instance
      */
     public static Location subtract(Location loc, double x, double y, double z) {
         return new Location(loc.getWorld(), loc.getX() - x, loc.getY() - y, loc.getZ() - z);
     }
 
-    public static void loop(int radius, Location start, Consumer<Location> loop) {
-        World world = start.getWorld();
-        for (int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
-        for (int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
-        for (int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
-            loop.accept(new Location(world, x, y, z));
+    public static void loop(int radius, Location start, Consumer<Location> consumer) {
+        loop(radius, start, ((world, x, y, z) -> consumer.accept(new Location(world, x, y, z))));
     }
 
-    public static void loop(int radius, Location start, LocationConsumer loop) {
+    public static void loop(int radius, Location start, LocationConsumer consumer) {
         World world = start.getWorld();
-        for (int x = start.getBlockX() - radius; x <= start.getBlockX() + radius; x++)
-        for (int y = start.getBlockY() - radius; y <= start.getBlockY() + radius; y++)
-        for (int z = start.getBlockZ() - radius; z <= start.getBlockZ() + radius; z++)
-            loop.accept(world, x, y, z);
+        for (int x = start.getBlockX() - radius, xMax = start.getBlockX() + radius; x <= xMax; x++) {
+            for (int y = start.getBlockY() - radius, yMax = start.getBlockY() + radius; y <= yMax; y++) {
+                for (int z = start.getBlockZ() - radius, zMax = start.getBlockZ() + radius; z <= zMax; z++) {
+                    consumer.accept(world, x, y, z);
+                }
+            }
+        }
     }
 
     public static boolean isCave(Location loc) {

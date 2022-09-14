@@ -1,9 +1,7 @@
 package me.imdanix.caves.util.random;
 
 public class PseudoRandom {
-    private static final int[] ZERO_INT = null;
-
-    public static final PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(){
+    public static final PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(null) {
         @Override
         public int next() {
             return 0;
@@ -12,10 +10,6 @@ public class PseudoRandom {
 
     private final int[] randomValues;
     private int cur = 0;
-
-    private PseudoRandom() {
-        this.randomValues = ZERO_INT;
-    }
 
     public PseudoRandom(int[] randomValues) {
         this.randomValues = randomValues;
