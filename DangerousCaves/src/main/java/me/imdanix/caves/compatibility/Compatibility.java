@@ -4,7 +4,6 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 // TODO: Proper singleton for objects?
@@ -34,10 +33,6 @@ public final class Compatibility {
     public static void cacheTag(String tag) {
         if (tags instanceof LegacyTags)
             ((LegacyTags) tags).cacheTag(tag);
-    }
-
-    public static ItemStack getHeadFromValue(String value) {
-        return physicals.getHeadFromValue(value);
     }
 
     public static void setTag(LivingEntity entity, String tag) {

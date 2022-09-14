@@ -1,6 +1,5 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
@@ -49,7 +48,7 @@ public class DeadMiner extends TickingMob implements Listener {
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
-        head = Compatibility.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
+        head = Materials.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
 
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");

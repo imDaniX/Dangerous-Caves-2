@@ -1,6 +1,7 @@
 package me.imdanix.caves.util;
 
 import me.imdanix.caves.compatibility.VMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +22,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 public final class Materials {
     public static final Material[] HELMETS;
@@ -93,6 +95,20 @@ public final class Materials {
             ((MultipleFacing) data).setFace(face, true);
         }
         block.setBlockData(data, false);
+    }
+
+    public static ItemStack getHeadFromValue(String value) {
+        UUID id = UUID.nameUUIDFromBytes(value.getBytes());
+        // Heck yeah, magic numbers
+        long less = id.getLeastSignificantBits();
+        int lessA = (int) (less >> 32); int lessB = (int) less;
+        long most = id.getMostSignificantBits();
+        int mostA = (int) (most >> 32); int mostB = (int) most;
+        return Bukkit.getUnsafe().modifyItemStack(
+                new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:[I;" + lessA + "," + lessB + "," + mostA + "," + mostB + "]," +
+                        "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
+        );
     }
 
     public static boolean isAir(Material type) {
