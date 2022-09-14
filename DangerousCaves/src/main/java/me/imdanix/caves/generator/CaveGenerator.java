@@ -72,7 +72,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
 
         List<String> itemsCfg = cfg.getStringList("chest-items");
         for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ROOT));
             if (material != null) items.add(material);
         }
         AbstractStructure.setItems(items);

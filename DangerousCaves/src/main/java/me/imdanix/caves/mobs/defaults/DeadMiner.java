@@ -1,7 +1,8 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DeadMiner extends TickingMob implements Listener {
+public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
     private boolean requiresTarget;
     private boolean torches;
     private boolean redTorches;
@@ -53,7 +54,7 @@ public class DeadMiner extends TickingMob implements Listener {
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
         for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ROOT));
             if (material != null) items.add(material);
         }
 

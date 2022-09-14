@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CaveGolem extends AbstractMob implements Listener {
+public class CaveGolem extends MobBase implements Listener {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 30, 0);
     private static final PotionEffect CONFUSION = new PotionEffect(PotionEffectType.CONFUSION, 20, 0);

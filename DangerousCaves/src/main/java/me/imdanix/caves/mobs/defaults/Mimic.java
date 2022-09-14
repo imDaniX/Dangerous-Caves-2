@@ -4,8 +4,9 @@ import io.papermc.lib.PaperLib;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.compatibility.VSound;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
-import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -53,7 +54,7 @@ import java.util.List;
 import java.util.Locale;
 
 // TODO: Other blocks like furnace?
-public class Mimic extends TickingMob implements Listener {
+public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     private static final boolean CHUNK_IS_HOLDER = PaperLib.getMinecraftVersion() >= 14 && PersistentDataHolder.class.isAssignableFrom(Chunk.class);
 
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
@@ -81,7 +82,7 @@ public class Mimic extends TickingMob implements Listener {
         items.clear();
         List<String> itemsCfg = cfg.getStringList("drop-items");
         for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
+            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ROOT));
             if (material != null) items.add(material);
         }
         boolean skipPersistence = cfg.getBoolean("skip-persistence-check", false);

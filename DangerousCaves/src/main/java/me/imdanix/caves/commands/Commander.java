@@ -1,6 +1,7 @@
 package me.imdanix.caves.commands;
 
 import me.imdanix.caves.DangerousCaves;
+import me.imdanix.caves.TagHelper;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.mobs.MobsManager;
@@ -42,6 +43,7 @@ public class Commander implements CommandExecutor, TabCompleter {
     private final MobsManager mobsManager;
     private final Configuration cfg;
     private final Dynamics dynamics;
+    private final TagHelper tags;
 
     private final String[] version;
 
@@ -49,6 +51,7 @@ public class Commander implements CommandExecutor, TabCompleter {
         this.mobsManager = plugin.getMobs();
         this.cfg = plugin.getConfiguration();
         this.dynamics = plugin.getDynamics();
+        this.tags = plugin.getTags();
         this.version = new String[]{plugin.getDescription().getVersion(), plugin.getConfiguration().getVersion()};
     }
 
@@ -56,7 +59,7 @@ public class Commander implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             help(sender, label);
-        } else switch (args[0].toLowerCase(Locale.ENGLISH)) {
+        } else switch (args[0].toLowerCase(Locale.ROOT)) {
             case "info" -> {
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from the console!"));
@@ -81,7 +84,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Utils.clr("&cPlease, follow the syntax!"));
                     return true;
                 }
-                String type = args[1].toLowerCase(Locale.ENGLISH);
+                String type = args[1].toLowerCase(Locale.ROOT);
                 if (mobsManager.spawn(type, loc) != null) {
                     sender.sendMessage(Utils.clr("&aMob &e" + type + "&a was successfully summoned."));
                 } else {
@@ -96,9 +99,9 @@ public class Commander implements CommandExecutor, TabCompleter {
                     killAll(LivingEntity::remove);
                     sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs."));
                 } else {
-                    String type = args[1].toLowerCase(Locale.ENGLISH);
+                    String type = args[1].toLowerCase(Locale.ROOT);
                     if (mobsManager.getMob(type) == null) {
-                        killAll(entity -> {if (Compatibility.isTagged(entity, type)) entity.remove();});
+                        killAll(entity -> {if (tags.isTagged(entity, type)) entity.remove();});
                         sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs of type &e" + type + "&a."));
                     } else {
                         sender.sendMessage(Utils.clr("&cThere's no mob's type called &e" + type + "&c!"));
@@ -161,7 +164,7 @@ public class Commander implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0], ARGS, new ArrayList<>());
         }
-        return args.length == 2 && WITH_MOBS.contains(args[0].toLowerCase(Locale.ENGLISH)) ?
+        return args.length == 2 && WITH_MOBS.contains(args[0].toLowerCase(Locale.ROOT)) ?
                StringUtil.copyPartialMatches(args[1], mobsManager.getMobs(), new ArrayList<>()) : null;
     }
 
@@ -212,10 +215,10 @@ public class Commander implements CommandExecutor, TabCompleter {
         }
     }
 
-    private static void killAll(Consumer<LivingEntity> kill) {
+    private void killAll(Consumer<LivingEntity> kill) {
         for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) {
             if (!(entity instanceof LivingEntity living)) continue;
-            if (Compatibility.isTagged(living))
+            if (tags.isTagged(living))
                 kill.accept(living);
         }
     }

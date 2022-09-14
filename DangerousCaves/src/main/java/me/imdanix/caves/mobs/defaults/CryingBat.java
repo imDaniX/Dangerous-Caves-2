@@ -1,6 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Sound;
@@ -8,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-public class CryingBat extends TickingMob {
+public class CryingBat extends MobBase implements CustomMob.Ticking {
     private double cryChance;
     private double deathChance;
 

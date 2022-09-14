@@ -3,7 +3,6 @@ package me.imdanix.caves.compatibility;
 import io.papermc.lib.PaperLib;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
 // TODO: Proper singleton for objects?
@@ -30,30 +29,8 @@ public final class Compatibility {
         }
     }
 
-    public static void cacheTag(String tag) {
-        if (tags instanceof LegacyTags)
-            ((LegacyTags) tags).cacheTag(tag);
-    }
-
-    public static void setTag(LivingEntity entity, String tag) {
-        entity.addScoreboardTag(TagsProvider.DC_SCOREBOARD_TAG);
-        tags.setTag(entity, tag);
-    }
-
     public static void setTag(BlockState block, String tag) {
         tags.setTag(block, tag);
-    }
-
-    public static String getTag(LivingEntity entity) {
-        return tags.getTag(entity);
-    }
-
-    public static boolean isTagged(LivingEntity entity) {
-        return tags.isTagged(entity);
-    }
-
-    public static boolean isTagged(LivingEntity entity, String tag) {
-        return tags.isTagged(entity, tag);
     }
 
     public static String getTag(BlockState block) {

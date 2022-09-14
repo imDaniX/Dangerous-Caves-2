@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 
 public class DangerousCaves extends JavaPlugin {
+    private TagHelper tags;
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
@@ -41,10 +42,11 @@ public class DangerousCaves extends JavaPlugin {
     public void onEnable() {
         Regions.INSTANCE.onEnable();
 
+        tags = new TagHelper(this);
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version", "0"));
         cfg.create(true);
-        mobsManager = new MobsManager(this, cfg, dynamics);
+        mobsManager = new MobsManager(this, cfg, dynamics, tags);
         generator = new CaveGenerator(cfg);
         DefaultMobs.registerAll(mobsManager);
         DefaultStructures.registerAll(generator);
@@ -103,5 +105,9 @@ public class DangerousCaves extends JavaPlugin {
 
     public CaveGenerator getGenerator() {
         return generator;
+    }
+
+    public TagHelper getTags() {
+        return tags;
     }
 }

@@ -54,7 +54,7 @@ public final class Utils {
     public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {
         Set<T> enums = new HashSet<>();
         for (String enumStr : enumStrColl) {
-            T t = getEnum(clazz, enumStr.toUpperCase(Locale.ENGLISH));
+            T t = getEnum(clazz, enumStr.toUpperCase(Locale.ROOT));
             if (t != null) enums.add(t);
         }
         return enums.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(enums);

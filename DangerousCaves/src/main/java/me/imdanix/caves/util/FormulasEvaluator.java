@@ -18,7 +18,7 @@ public class FormulasEvaluator {
 
     public FormulasEvaluator(String expression) {
         this.variables = new HashMap<>();
-        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase(Locale.ENGLISH)));
+        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase(Locale.ROOT)));
     }
 
     public void setVariable(String variable, Double value) {

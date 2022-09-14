@@ -122,7 +122,7 @@ public final class Materials {
     public static Set<Material> getSet(Collection<String> types) {
         Set<Material> materials = EnumSet.noneOf(Material.class);
         for (String typeStr : types) {
-            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ROOT));
             if (type != null) materials.add(type);
         }
         return materials;
@@ -157,7 +157,7 @@ public final class Materials {
 
     public static Material or(String... types) {
         for (String typeStr : types) {
-            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ROOT));
             if (type != null) return type;
         }
         return null;

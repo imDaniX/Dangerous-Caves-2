@@ -1,7 +1,8 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -23,7 +24,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class LavaCreeper extends TickingMob implements Listener {
+public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false);
 
     private double chance;

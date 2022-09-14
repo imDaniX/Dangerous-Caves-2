@@ -1,7 +1,8 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
@@ -23,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class MagmaMonster extends TickingMob implements Listener {
+public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY,

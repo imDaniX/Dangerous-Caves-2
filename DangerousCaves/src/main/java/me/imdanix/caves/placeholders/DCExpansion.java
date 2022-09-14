@@ -46,7 +46,7 @@ public class DCExpansion extends PlaceholderExpansion implements Manager<Placeho
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        return placeholders.getOrDefault(identifier.toLowerCase(Locale.ENGLISH), Placeholder.EMPTY).getValue(player);
+        return placeholders.getOrDefault(identifier.toLowerCase(Locale.ROOT), Placeholder.EMPTY).getValue(player);
     }
 
     @Override

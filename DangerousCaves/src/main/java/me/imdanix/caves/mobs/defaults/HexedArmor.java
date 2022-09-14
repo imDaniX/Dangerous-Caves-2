@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import me.imdanix.caves.util.random.Rng;
@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class HexedArmor extends AbstractMob implements Listener {
+public class HexedArmor extends MobBase implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
     private double chance;
