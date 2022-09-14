@@ -1,8 +1,8 @@
 package me.imdanix.caves.generator.defaults;
 
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.generator.AbstractStructure;
+import me.imdanix.caves.util.Materials;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,7 +110,7 @@ public class TrapsGroup extends AbstractStructure {
             case 8:
                 setType(loc, VMaterial.STONE_PRESSURE_PLATE.get());
                 setType(loc.subtract(0, 1, 0), Material.DISPENSER);
-                Compatibility.rotate(loc.getBlock(), BlockFace.UP);
+                Materials.rotate(loc.getBlock(), BlockFace.UP);
                 ((Dispenser) loc.getBlock().getState()).getInventory().addItem(new ItemStack(Material.ARROW, 3));
                 break;
 

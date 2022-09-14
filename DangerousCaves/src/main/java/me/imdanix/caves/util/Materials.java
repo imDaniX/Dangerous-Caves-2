@@ -3,6 +3,12 @@ package me.imdanix.caves.util;
 import me.imdanix.caves.compatibility.VMaterial;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.FaceAttachable;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -76,6 +82,18 @@ public final class Materials {
     private static final Set<Material> AIR = new Builder(
             "AIR", "CAVE_AIR", "VOID_AIR"
         ).build(true);
+
+    public static void rotate(Block block, BlockFace face) {
+        BlockData data = block.getBlockData();
+        if (data instanceof FaceAttachable) {
+            ((FaceAttachable) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
+        } else if (data instanceof Directional) {
+            ((Directional) data).setFacing(face);
+        } else if (data instanceof MultipleFacing) {
+            ((MultipleFacing) data).setFace(face, true);
+        }
+        block.setBlockData(data, false);
+    }
 
     public static boolean isAir(Material type) {
         return AIR.contains(type);

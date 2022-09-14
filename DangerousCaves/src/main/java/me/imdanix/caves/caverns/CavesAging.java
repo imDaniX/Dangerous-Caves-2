@@ -1,7 +1,6 @@
 package me.imdanix.caves.caverns;
 
 import io.papermc.lib.PaperLib;
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.CheckType;
@@ -284,7 +283,7 @@ public class CavesAging implements Tickable, Configurable {
                         Block relBlock = block.getRelative(face);
                         if (Materials.isAir(relBlock.getType())) {
                             relBlock.setType(Material.VINE, false);
-                            Compatibility.rotate(relBlock, face.getOppositeFace());
+                            Materials.rotate(relBlock, face.getOppositeFace());
                         }
                     }
                 }
@@ -304,7 +303,7 @@ public class CavesAging implements Tickable, Configurable {
                     if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     block.setType(Material.STONE_BUTTON, false);
-                    Compatibility.rotate(block, BlockFace.UP);
+                    Materials.rotate(block, BlockFace.UP);
                 }
                 case STALAGMITE -> {
                     if (!Materials.isAir(type)) return;

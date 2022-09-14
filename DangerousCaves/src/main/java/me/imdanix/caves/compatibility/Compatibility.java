@@ -2,8 +2,6 @@ package me.imdanix.caves.compatibility;
 
 import io.papermc.lib.PaperLib;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -40,10 +38,6 @@ public final class Compatibility {
 
     public static ItemStack getHeadFromValue(String value) {
         return physicals.getHeadFromValue(value);
-    }
-
-    public static void rotate(Block block, BlockFace face) {
-        physicals.rotate(block, face);
     }
 
     public static void setTag(LivingEntity entity, String tag) {

@@ -207,7 +207,7 @@ public class Mimic extends TickingMob implements Listener {
             for (BlockFace face : Locations.HORIZONTAL_FACES)
                 if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
-            Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
+            Materials.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
             Compatibility.setTag(block.getState(), "mimic-" + entity.getHealth());
             entity.remove();
 

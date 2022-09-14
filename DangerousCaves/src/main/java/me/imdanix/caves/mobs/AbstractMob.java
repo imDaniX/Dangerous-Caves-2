@@ -3,7 +3,6 @@ package me.imdanix.caves.mobs;
 import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.Utils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -93,6 +92,6 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     }
 
     private static String idToName(String id) {
-        return WordUtils.capitalizeFully(id.replace('-', ' '));
+        return Utils.capitalize(id.replace('-', ' '));
     }
 }
