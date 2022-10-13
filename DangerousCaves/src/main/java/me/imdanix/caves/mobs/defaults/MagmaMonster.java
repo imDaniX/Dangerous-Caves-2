@@ -1,6 +1,5 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
@@ -108,7 +107,7 @@ public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener
         if (magma) {
             Block block = entity.getLocation().subtract(0, 1, 0).getBlock();
             if (block.getType() != Material.BEDROCK && Materials.isCave(block.getType()))
-                block.setType(VMaterial.MAGMA_BLOCK.get(), false);
+                block.setType(Material.MAGMA_BLOCK, false);
         }
     }
 }

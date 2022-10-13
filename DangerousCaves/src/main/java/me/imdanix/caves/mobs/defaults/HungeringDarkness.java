@@ -1,10 +1,10 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -82,7 +82,7 @@ public class HungeringDarkness extends MobBase implements Listener {
     private void die(Entity entity) {
         if (!remove) return;
         if (deathSound) {
-            Locations.playSound(entity.getLocation(), VSound.ENTITY_PHANTOM_SWOOP.get(), 1f, 0.8f);
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_PHANTOM_SWOOP, 1f, 0.8f);
         }
         entity.remove();
     }

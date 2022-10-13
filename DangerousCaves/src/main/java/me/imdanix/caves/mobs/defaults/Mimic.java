@@ -2,8 +2,6 @@ package me.imdanix.caves.mobs.defaults;
 
 import io.papermc.lib.PaperLib;
 import me.imdanix.caves.compatibility.Compatibility;
-import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.compatibility.VSound;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
@@ -62,7 +60,7 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     private static final ItemStack CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 194, 105, 18);
     private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 194, 105, 18);
     private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
-    private static final ItemStack PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
+    private static final ItemStack PLANKS = new ItemStack(Material.SPRUCE_PLANKS);
 
     private final MobsManager mobsManager;
     private final NamespacedKey chunkKey;
@@ -167,7 +165,7 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));
         Utils.setMaxHealth(entity, this.health);
         entity.setHealth(Math.min(health, this.health));
-        Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
+        Locations.playSound(loc, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1f, 0.5f);
         player.addPotionEffect(BLINDNESS);
         ((Monster) entity).setTarget(player);
         if (CHUNK_IS_HOLDER) {
@@ -192,7 +190,7 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
         if (isThis(event.getEntity())) {
-            Locations.playSound(event.getEntity().getLocation(), VSound.BLOCK_ENDER_CHEST_CLOSE.get(), SoundCategory.HOSTILE, 1f, 0.2f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, SoundCategory.HOSTILE, 1f, 0.2f);
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);

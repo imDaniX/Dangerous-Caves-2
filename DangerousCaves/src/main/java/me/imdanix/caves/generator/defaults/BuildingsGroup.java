@@ -1,6 +1,5 @@
 package me.imdanix.caves.generator.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.generator.AbstractStructure;
 import me.imdanix.caves.util.Locations;
 import org.bukkit.Chunk;
@@ -34,15 +33,15 @@ public class BuildingsGroup extends AbstractStructure {
                 setType(loc, Material.CHEST);
                 fillInventory(loc.getBlock());
             }
-            case 1 -> generateStructure(random, OldStructures.chests3, loc.subtract(0, 1, 0));
-            case 2 -> generateStructure(random, OldStructures.chests2, loc.subtract(0, 1, 0));
-            case 3 -> generateStructure(random, OldStructures.chests1, loc);
-            case 4 -> setType(loc, VMaterial.SKELETON_SKULL_BLOCK.get());
+            case 1 -> generateStructure(random, LegacyStructures.chests3, loc.subtract(0, 1, 0));
+            case 2 -> generateStructure(random, LegacyStructures.chests2, loc.subtract(0, 1, 0));
+            case 3 -> generateStructure(random, LegacyStructures.chests1, loc);
+            case 4 -> setType(loc, Material.SKELETON_SKULL);
             case 5 -> {
-                setType(Locations.add(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
-                setType(Locations.subtract(loc, 1, 0, 0), VMaterial.COBBLESTONE_SLAB.get());
-                setType(Locations.add(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
-                setType(Locations.subtract(loc, 0, 0, 1), VMaterial.COBBLESTONE_SLAB.get());
+                setType(Locations.add(loc, 1, 0, 0), Material.COBBLESTONE_SLAB);
+                setType(Locations.subtract(loc, 1, 0, 0), Material.COBBLESTONE_SLAB);
+                setType(Locations.add(loc, 0, 0, 1), Material.COBBLESTONE_SLAB);
+                setType(Locations.subtract(loc, 0, 0, 1), Material.COBBLESTONE_SLAB);
                 setType(Locations.subtract(loc, 0, 1, 0), Material.NETHERRACK);
                 setType(loc, Material.FIRE);
             }
@@ -51,7 +50,7 @@ public class BuildingsGroup extends AbstractStructure {
                 Location tempL2 = Locations.add(loc, -1, -1, 0);
                 Location tempL3 = Locations.add(loc, 0, -1, 1);
                 Location tempL4 = Locations.add(loc, 0, -1, -1);
-                loc.getBlock().setType(VMaterial.CRAFTING_TABLE.get());
+                loc.getBlock().setType(Material.CRAFTING_TABLE);
                 if (tempL1.getBlock().getType().isSolid() && random.nextInt(3) == 1) {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
@@ -65,9 +64,9 @@ public class BuildingsGroup extends AbstractStructure {
                     setType(tempL1.add(0, 1, 0), Material.REDSTONE_WIRE);
                 }
             }
-            case 7 -> generateStructure(random, OldStructures.sfishs1, loc);
-            case 8 -> generateStructure(random, OldStructures.sfishs2, loc);
-            case 9 -> generateStructure(random, OldStructures.sfishs3, loc);
+            case 7 -> generateStructure(random, LegacyStructures.sfishs1, loc);
+            case 8 -> generateStructure(random, LegacyStructures.sfishs2, loc);
+            case 9 -> generateStructure(random, LegacyStructures.sfishs3, loc);
         }
     }
 
@@ -83,7 +82,7 @@ public class BuildingsGroup extends AbstractStructure {
         //1 == wood decide 2 == chest 3 == torch 4 == random utility 5 == door 6 = wood stay 7 == Random Ore 8 == Snow Block 9 == Spawner 10 = silverfish stone
         switch (type) {
             case 1:
-                if (random.nextBoolean()) setType(loc, VMaterial.OAK_PLANKS.get());
+                if (random.nextBoolean()) setType(loc, Material.OAK_PLANKS);
                 break;
 
             case 2:
@@ -97,38 +96,25 @@ public class BuildingsGroup extends AbstractStructure {
 
             case 4:
                 switch (random.nextInt(15)) {
-                    case 0:
-                        setType(loc, Material.FURNACE);
-                        break;
-
-                    case 1:
+                    case 0 -> setType(loc, Material.FURNACE);
+                    case 1 -> {
                         setType(loc, Material.CHEST);
                         fillInventory(loc.getBlock());
-                        break;
-
-                    case 2:
-                        setType(loc, VMaterial.CRAFTING_TABLE.get());
-                        break;
-
-                    case 3:
-                        setType(loc, Material.CAULDRON);
-                        break;
-
-                    case 4:
-                        setType(loc, Material.ANVIL);
-                        break;
-
-                    default:
-                        break;
+                    }
+                    case 2 -> setType(loc, Material.CRAFTING_TABLE);
+                    case 3 -> setType(loc, Material.CAULDRON);
+                    case 4 -> setType(loc, Material.ANVIL);
+                    default -> {
+                    }
                 }
                 break;
 
             case 5:
-                setType(loc, VMaterial.OAK_PLANKS.get());
+                setType(loc, Material.OAK_PLANKS);
                 break;
 
             case 6:
-                setType(loc, VMaterial.SPRUCE_LOG.get());
+                setType(loc, Material.SPRUCE_LOG);
                 break;
 
             case 7:
@@ -144,7 +130,7 @@ public class BuildingsGroup extends AbstractStructure {
                 break;
 
             case 9:
-                setType(loc, VMaterial.SPAWNER.get());
+                setType(loc, Material.SPAWNER);
                 BlockState blockState = loc.getBlock().getState();
                 CreatureSpawner spawner = ((CreatureSpawner) blockState);
                 spawner.setSpawnedType(EntityType.SILVERFISH);
@@ -152,7 +138,7 @@ public class BuildingsGroup extends AbstractStructure {
                 break;
 
             case 10:
-                setType(loc, VMaterial.INFESTED_STONE.get());
+                setType(loc, Material.INFESTED_STONE);
                 break;
 
             default:

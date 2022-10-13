@@ -1,6 +1,5 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
@@ -80,7 +79,7 @@ public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener 
                 if (fire > 0 && !Materials.isAir(block.getRelative(BlockFace.DOWN).getType()) && Rng.chance(fire)) block.setType(Material.FIRE);
             } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                 if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
-                    block.setType(VMaterial.MAGMA_BLOCK.get());
+                    block.setType(Material.MAGMA_BLOCK);
                 } else if (obsidian > 0 && Rng.chance(obsidian)) {
                     block.setType(Material.OBSIDIAN);
                 } else if (lava > 0 && Rng.chance(lava)) {

@@ -1,7 +1,6 @@
 package me.imdanix.caves.caverns;
 
 import io.papermc.lib.PaperLib;
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -38,7 +37,7 @@ import java.util.function.Predicate;
 public class CavesAging implements Tickable, Configurable {
     private static final Set<Material> AGING_MATERIALS = Collections.unmodifiableSet(EnumSet.of(
             Material.COBBLESTONE, Material.STONE_BUTTON,
-            VMaterial.ANDESITE.get(), VMaterial.COBBLESTONE_WALL.get(),
+            Material.ANDESITE, Material.COBBLESTONE_WALL,
             Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.VINE
     ));
 
@@ -307,7 +306,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 case STALAGMITE -> {
                     if (!Materials.isAir(type)) return;
-                    block.setType(VMaterial.COBBLESTONE_WALL.get(), false);
+                    block.setType(Material.COBBLESTONE_WALL, false);
                 }
                 case COBBLESTONE -> {
                     if (!replaceBlocks.contains(type)) return;
@@ -315,7 +314,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 case ANDESITE -> {
                     if (!replaceBlocks.contains(type)) return;
-                    block.setType(VMaterial.ANDESITE.get(), false);
+                    block.setType(Material.ANDESITE, false);
                 }
                 case TORCH_AIR -> {
                     if (type != Material.TORCH) return;

@@ -16,12 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.imdanix.caves.generator.defaults;
+package me.imdanix.caves;
 
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.generator.StructureGroup;
+import me.imdanix.caves.generator.defaults.BouldersGroup;
+import me.imdanix.caves.generator.defaults.BuildingsGroup;
+import me.imdanix.caves.generator.defaults.PillarsGroup;
+import me.imdanix.caves.generator.defaults.TrapsGroup;
 
-public enum DefaultStructures {
+enum DefaultStructures {
     BOULDERS(new BouldersGroup()),
     BUILDINGS(new BuildingsGroup()),
     PILLARS(new PillarsGroup()),

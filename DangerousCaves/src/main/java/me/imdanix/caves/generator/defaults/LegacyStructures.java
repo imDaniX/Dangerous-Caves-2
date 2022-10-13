@@ -1,6 +1,6 @@
 package me.imdanix.caves.generator.defaults;
 
-public interface OldStructures {
+public interface LegacyStructures {
     /*int[][][] rock5 = { { {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
                         {   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} },
                         {   {0, 0, 0}, {0, 0, 0}, {0, 0, 0} } };*/

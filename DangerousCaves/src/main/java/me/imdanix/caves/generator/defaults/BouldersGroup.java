@@ -25,14 +25,14 @@ public class BouldersGroup extends AbstractStructure {
     public void generate(Random random, Chunk chunk, Block block) {
         Location loc = block.getLocation();
         boolean[][][] rock = switch (random.nextInt(8)) {
-            default -> OldStructures.rock1;
-            case 1 -> OldStructures.rock2;
-            case 2 -> OldStructures.rock3;
-            case 3 -> OldStructures.rock4;
-            case 4 -> OldStructures.rock5;
-            case 5 -> OldStructures.rock6;
-            case 6 -> OldStructures.rock7;
-            case 7 -> OldStructures.rock8;
+            default -> LegacyStructures.rock1;
+            case 1 -> LegacyStructures.rock2;
+            case 2 -> LegacyStructures.rock3;
+            case 3 -> LegacyStructures.rock4;
+            case 4 -> LegacyStructures.rock5;
+            case 5 -> LegacyStructures.rock6;
+            case 6 -> LegacyStructures.rock7;
+            case 7 -> LegacyStructures.rock8;
         };
         int xMod = random.nextBoolean() ? -1 : 1;
         int zMod = random.nextBoolean() ? -1 : 1;

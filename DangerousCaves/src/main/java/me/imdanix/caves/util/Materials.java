@@ -1,6 +1,5 @@
 package me.imdanix.caves.util;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -47,7 +46,7 @@ public final class Materials {
                 boots.add(mat);
             }
         }
-        helmets.add(VMaterial.CARVED_PUMPKIN.get());
+        helmets.add(Material.CARVED_PUMPKIN);
         HELMETS = helmets.toArray(new Material[0]);
         LEGGINGS = leggings.toArray(new Material[0]);
         CHESTPLATES = chestplates.toArray(new Material[0]);

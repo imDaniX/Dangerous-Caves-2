@@ -63,7 +63,7 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
         if (chestItems.isEmpty()) return;
         Inventory inventory = ((Container) state).getInventory();
         int itemsCount = Rng.nextInt(10) + 2;
-        while(itemsCount-- > 0) {
+        while (itemsCount-- > 0) {
             Material material = Rng.randomElement(chestItems);
             inventory.setItem(
                     Rng.nextInt(inventory.getSize()),

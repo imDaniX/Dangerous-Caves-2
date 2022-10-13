@@ -1,6 +1,5 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
@@ -86,7 +85,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
             equipment.setChestplate(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
         if (Rng.nextBoolean())
             equipment.setBoots(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
-        if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH));
+        if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? Material.REDSTONE_TORCH : Material.TORCH));
         entity.setCanPickupItems(false);
     }
 
@@ -100,7 +99,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
             return;
 
         if (Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
-            block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
+            block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
             if (cooldownEffect != null)
                 entity.addPotionEffect(cooldownEffect);

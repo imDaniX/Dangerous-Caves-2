@@ -1,6 +1,5 @@
 package me.imdanix.caves.generator.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.generator.AbstractStructure;
 import me.imdanix.caves.util.Locations;
 import org.bukkit.Chunk;
@@ -28,64 +27,64 @@ public class PillarsGroup extends AbstractStructure {
         Location loc = block.getLocation();
         switch (random.nextInt(8)) {
             case 1 -> {
-                setType(loc, VMaterial.POLISHED_ANDESITE.get());
+                setType(loc, Material.POLISHED_ANDESITE);
                 setType(loc.add(0, 1, 0), randomStone(random));
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
             }
             case 2 -> {
-                setType(loc, VMaterial.STONE_BRICKS.get());
+                setType(loc, Material.STONE_BRICKS);
                 if (random.nextBoolean()) {
-                    setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
+                    setType(loc, Material.CRACKED_STONE_BRICKS);
                 }
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICKS.get());
+                setType(loc.add(0, 1, 0), Material.STONE_BRICKS);
                 if (random.nextBoolean()) {
-                    setType(loc, VMaterial.CRACKED_STONE_BRICKS.get());
+                    setType(loc, Material.CRACKED_STONE_BRICKS);
                 }
-                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
             }
             case 3 -> {
-                setType(loc, random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.add(1, 0, random.nextInt(2)), VMaterial.STONE_BRICK_SLAB.get());
+                setType(loc, random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
             }
             case 4 -> {
                 setType(loc, randomStone(random));
-                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), VMaterial.POLISHED_ANDESITE.get());
-                setType(loc.add(-1, 0, random.nextInt(2)), VMaterial.STONE_BRICK_SLAB.get());
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), Material.POLISHED_ANDESITE);
+                setType(loc.add(-1, 0, random.nextInt(2)), Material.STONE_BRICK_SLAB);
             }
             case 5 -> {
-                setType(loc, VMaterial.STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.add(loc, 0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.subtract(loc, 0, 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(loc, Material.STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.add(loc, 0, 0, 1), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.subtract(loc, 0, 0, 1), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
             }
             case 6 -> {
-                setType(loc, VMaterial.STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.add(loc, random.nextInt(2), 0, 1), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.add(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.add(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), random.nextBoolean() ? VMaterial.STONE_BRICKS.get() : VMaterial.CRACKED_STONE_BRICKS.get());
-                setType(Locations.subtract(loc, 1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
-                setType(loc.add(1, 0, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(loc, Material.STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.add(loc, random.nextInt(2), 0, 1), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.add(loc, 1, 0, 0), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.add(loc, 1, 0, 0), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), random.nextBoolean() ? Material.STONE_BRICKS : Material.CRACKED_STONE_BRICKS);
+                setType(Locations.subtract(loc, 1, 0, 0), Material.STONE_BRICK_SLAB);
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
+                setType(loc.add(1, 0, 0), Material.STONE_BRICK_SLAB);
             }
             case 7 -> {
                 setType(loc, Material.COBBLESTONE);
-                setType(loc.add(0, 1, 0), VMaterial.COBBLESTONE_WALL.get());
+                setType(loc.add(0, 1, 0), Material.COBBLESTONE_WALL);
             }
             default -> {
-                setType(loc, VMaterial.POLISHED_ANDESITE.get());
-                setType(loc.add(0, 1, 0), VMaterial.STONE_BRICK_SLAB.get());
+                setType(loc, Material.POLISHED_ANDESITE);
+                setType(loc.add(0, 1, 0), Material.STONE_BRICK_SLAB);
             }
         }
     }
