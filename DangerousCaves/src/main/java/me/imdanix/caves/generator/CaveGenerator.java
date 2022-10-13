@@ -27,11 +27,6 @@ import java.util.Set;
 
 /*
     TODO: Redo from scratch
-    Probably the best solution would be developing a custom file format:
-        version;xsize,ysize,zsize;xcenter,ycenter,zcenter;rotatehoriz?,rotatevert?,fliphoriz?,flipvert?\n
-        0:TYPE_1,LEGACY_TYPE_1;1:TYPE_2,LEGACY_TYPE_2;d:TYPE_3,LEGACY_TYPE_3\n
-        a:0-weight,1-weight;b:1-weight,2-weight\n
-        blocks
  */
 public class CaveGenerator extends BlockPopulator implements Manager<StructureGroup>, Configurable {
     private final Configuration config;
@@ -121,10 +116,10 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
     }
 
     private static Block getClosestAir(Chunk chunk, int x, int z) {
-        for (int y = Compatibility.getMinY(chunk.getWorld()); y < 55; y++) {
+        for (int y = chunk.getWorld().getMinHeight(); y < 55; y++) {
             Block block = chunk.getBlock(x, y, z);
-            if (Materials.isAir(block.getType())
-                    && Materials.isAir(block.getRelative(BlockFace.UP).getType())
+            if (block.getType().isAir()
+                    && block.getRelative(BlockFace.UP).getType().isAir()
                     && Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                 return block;
         }

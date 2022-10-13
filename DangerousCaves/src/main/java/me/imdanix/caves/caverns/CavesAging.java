@@ -190,7 +190,7 @@ public class CavesAging implements Tickable, Configurable {
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
-            if (Materials.isAir(type))
+            if (type.isAir())
                 continue;
 
             totalCount++;
@@ -223,7 +223,7 @@ public class CavesAging implements Tickable, Configurable {
                             break;
 
                         case 2:
-                            if (Materials.isAir(snapshot.getBlockType(x, y-1, z)) && Rng.nextBoolean())
+                            if (snapshot.getBlockType(x, y-1, z).isAir() && Rng.nextBoolean())
                                 changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
                             break;
                     }
@@ -233,7 +233,7 @@ public class CavesAging implements Tickable, Configurable {
                     changes.add(new DelayedChange(x, y, z, ChangeType.VINE));
                 }
 
-                if (Materials.isAir(snapshot.getBlockType(x, y+1, z))){
+                if (snapshot.getBlockType(x, y+1, z).isAir()){
                     if (withMushrooms && Rng.chance(0.111)) {
                         changes.add(new DelayedChange(x, y+1, z, Rng.nextBoolean() ?
                                                                  ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
@@ -280,32 +280,32 @@ public class CavesAging implements Tickable, Configurable {
                     if (!replaceBlocks.contains(type)) return;
                     for (BlockFace face : Locations.HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
-                        if (Materials.isAir(relBlock.getType())) {
+                        if (relBlock.getType().isAir()) {
                             relBlock.setType(Material.VINE, false);
                             Materials.rotate(relBlock, face.getOppositeFace());
                         }
                     }
                 }
                 case RED_MUSHROOM -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.RED_MUSHROOM, false);
                 }
                 case BROWN_MUSHROOM -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
                 }
                 case ROCK -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     block.setType(Material.STONE_BUTTON, false);
                     Materials.rotate(block, BlockFace.UP);
                 }
                 case STALAGMITE -> {
-                    if (!Materials.isAir(type)) return;
+                    if (!type.isAir()) return;
                     block.setType(Material.COBBLESTONE_WALL, false);
                 }
                 case COBBLESTONE -> {

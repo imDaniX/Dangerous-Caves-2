@@ -59,7 +59,7 @@ public final class Locations {
         Material lowerType;
         return block.getLightFromSky() <= 1 && (
                 Materials.isCave(lowerType = block.getRelative(BlockFace.DOWN).getType()) ||
-                Materials.isAir(lowerType));
+                lowerType.isAir());
 
     }
 

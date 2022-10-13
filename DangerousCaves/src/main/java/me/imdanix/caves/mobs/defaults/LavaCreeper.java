@@ -75,8 +75,8 @@ public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener 
         Locations.loop(radius, start, (world, x, y, z) -> {
             if ((square(cx - x) + square(cy - y) + square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
-            if (Materials.isAir(block.getType())) {
-                if (fire > 0 && !Materials.isAir(block.getRelative(BlockFace.DOWN).getType()) && Rng.chance(fire)) block.setType(Material.FIRE);
+            if (block.getType().isAir()) {
+                if (fire > 0 && !block.getRelative(BlockFace.DOWN).getType().isAir() && Rng.chance(fire)) block.setType(Material.FIRE);
             } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                 if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
                     block.setType(Material.MAGMA_BLOCK);

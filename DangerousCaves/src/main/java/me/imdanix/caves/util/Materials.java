@@ -24,17 +24,16 @@ import java.util.Set;
 import java.util.UUID;
 
 public final class Materials {
-    public static final Material[] HELMETS;
-    public static final Material[] LEGGINGS;
-    public static final Material[] CHESTPLATES;
-    public static final Material[] BOOTS;
+    public static final List<Material> HELMETS;
+    public static final List<Material> LEGGINGS;
+    public static final List<Material> CHESTPLATES;
+    public static final List<Material> BOOTS;
     static {
         List<Material> helmets = new ArrayList<>();
         List<Material> leggings = new ArrayList<>();
         List<Material> chestplates = new ArrayList<>();
         List<Material> boots = new ArrayList<>();
         for (Material mat : Material.values()) {
-            if (mat.isBlock()) continue;
             String name = mat.name();
             if (name.endsWith("_HELMET")) {
                 helmets.add(mat);
@@ -47,23 +46,24 @@ public final class Materials {
             }
         }
         helmets.add(Material.CARVED_PUMPKIN);
-        HELMETS = helmets.toArray(new Material[0]);
-        LEGGINGS = leggings.toArray(new Material[0]);
-        CHESTPLATES = chestplates.toArray(new Material[0]);
-        BOOTS = boots.toArray(new Material[0]);
+
+        HELMETS = Collections.unmodifiableList(helmets);
+        LEGGINGS = Collections.unmodifiableList(leggings);
+        CHESTPLATES = Collections.unmodifiableList(chestplates);
+        BOOTS = Collections.unmodifiableList(boots);
     }
 
     private static final Set<Material> CAVE = new Builder(
+            Material.ANDESITE, Material.DIORITE, Material.GRANITE,
             Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
             Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
             Material.DIRT, Material.GRAVEL,
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
-            Material.TORCH, Material.CHEST
+            Material.TORCH, Material.CHEST, Material.OAK_PLANKS, Material.RAIL,
+            Material.SPAWNER, Material.END_STONE, Material.NETHER_QUARTZ_ORE
         ).with(
-            // 1.13
-            "ANDESITE", "DIORITE", "GRANITE",
             // 1.16
             "SOUL_SOIL", "BLACKSTONE", "BASALT",
             "NETHER_GOLD_ORE", "GILDED_BLACKSTONE",
@@ -72,16 +72,6 @@ public final class Materials {
             "DEEPSLATE", "DEEPSLATE_COAL_ORE", "DEEPSLATE_COPPER_ORE",
             "DEEPSLATE_DIAMOND_ORE", "DEEPSLATE_EMERALD_ORE", "DEEPSLATE_GOLD_ORE",
             "DEEPSLATE_IRON_ORE", "DEEPSLATE_LAPIS_ORE", "DEEPSLATE_REDSTONE_ORE"
-        ).with(
-            or("RAIL", "RAILS"),
-            or("SPAWNER", "MOB_SPAWNER"),
-            or("OAK_PLANKS", "WOOD"),
-            or("END_STONE", "ENDER_STONE"),
-            or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
-        ).build(true);
-
-    private static final Set<Material> AIR = new Builder(
-            "AIR", "CAVE_AIR", "VOID_AIR"
         ).build(true);
 
     public static void rotate(Block block, BlockFace face) {
@@ -108,10 +98,6 @@ public final class Materials {
                 "{SkullOwner:{Id:[I;" + lessA + "," + lessB + "," + mostA + "," + mostB + "]," +
                         "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
         );
-    }
-
-    public static boolean isAir(Material type) {
-        return AIR.contains(type);
     }
 
     public static boolean isCave(Material type) {

@@ -55,7 +55,7 @@ public class AlphaSpider extends MobBase implements Listener {
                 entity.getEyeLocation().getBlock().setType(Material.COBWEB);
 
                 Locations.loop(3, loc, l -> {
-                    if (Materials.isAir(l.getBlock().getType()) && Rng.chance(cobwebChance) &&
+                    if (l.getBlock().getType().isAir() && Rng.chance(cobwebChance) &&
                             Regions.INSTANCE.check(CheckType.ENTITY, l)) {
                         l.getBlock().setType(Material.COBWEB);
                     }}

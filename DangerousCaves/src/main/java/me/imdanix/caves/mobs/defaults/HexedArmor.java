@@ -19,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+
 public class HexedArmor extends MobBase implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
 
@@ -65,9 +67,9 @@ public class HexedArmor extends MobBase implements Listener {
         }
     }
 
-    private ItemStack getRandom(Material[] arr) {
-        int i = Rng.nextInt(arr.length);
-        return i >= arr.length ? null : enchant(new ItemStack(arr[i]));
+    private ItemStack getRandom(List<Material> armor) {
+        int i = Rng.nextInt(armor.size());
+        return i >= armor.size() ? null : enchant(new ItemStack(armor.get(i)));
     }
 
     private ItemStack enchant(ItemStack item) {

@@ -100,7 +100,7 @@ public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener
 
         if (fire) {
             Block block = entity.getLocation().getBlock();
-            if (Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
+            if (block.getType().isAir() && block.getRelative(BlockFace.DOWN).getType().isSolid())
                 block.setType(Material.FIRE, false);
         }
 

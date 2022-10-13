@@ -12,7 +12,6 @@
         <module>compatibility/Legacy</module>
         <module>compatibility/Modern</module>
         <module>regions/RegionManager</module>
-        <module>regions/WorldGuard6</module>
         <module>regions/WorldGuard7</module>
         <module>regions/GriefPrevention</module>
         <module>regions/Lands</module>
@@ -23,9 +22,9 @@
 
     <description>Adds and improves mechanics in caves</description>
     <properties>
-        <subVersion>3.0-SNAPSHOT</subVersion>
-        <cfgVersion>24</cfgVersion>
-        <bukkitVersion>1.19.1-R0.1-SNAPSHOT</bukkitVersion>
+        <sub-version>3.0-SNAPSHOT</sub-version>
+        <cfg-version>24</cfg-version>
+        <bukkit-version>1.17.1-R0.1-SNAPSHOT</bukkit-version>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.assembly>true</skip.assembly>

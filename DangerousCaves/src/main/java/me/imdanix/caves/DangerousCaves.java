@@ -12,7 +12,7 @@ import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.placeholders.DCExpansion;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.Dynamics;
-import org.bstats.bukkit.MetricsLite;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,7 +81,7 @@ public class DangerousCaves extends JavaPlugin {
 
         cfg.checkVersion(true);
 
-        new MetricsLite(this, 6824);
+        new Metrics(this, 6824);
 
         Bukkit.getScheduler().runTask(this, () -> {
             Regions.INSTANCE.onDone();

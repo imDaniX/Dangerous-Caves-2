@@ -25,7 +25,7 @@
                 </includes>
             </resource>
         </resources>
-        <finalName>Dangerous-Caves-${project.version}.${subVersion}</finalName>
+        <finalName>Dangerous-Caves-${project.version}.${sub-version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,7 +48,7 @@
                             <manifestEntries>
                                 <Specification-Title>DangerousCaves - Make your caves scary</Specification-Title>
                                 <Implementation-Title>me.imdanix.caves</Implementation-Title>
-                                <Implementation-Version>${project.version}.${subVersion}</Implementation-Version>
+                                <Implementation-Version>${project.version}.${sub-version}</Implementation-Version>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${bukkitVersion}</version>
+            <version>${bukkit-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -91,8 +91,8 @@
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit-lite</artifactId>
-            <version>1.8</version>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -132,13 +132,6 @@
             <artifactId>regionmanager</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>regions-worldguard6</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

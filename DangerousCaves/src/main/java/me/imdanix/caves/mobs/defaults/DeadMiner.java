@@ -98,7 +98,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
                 !Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation()))
             return;
 
-        if (Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
+        if (block.getType().isAir() && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
             if (cooldownEffect != null)

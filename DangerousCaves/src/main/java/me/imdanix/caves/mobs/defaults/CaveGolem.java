@@ -45,12 +45,9 @@ public class CaveGolem extends MobBase implements Listener {
     private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 105, 105, 105);
     private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
 
-    private static final Set<Material> PICKAXES = new Materials.Builder().with(
-            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE
-    ).with(
-            "NETHERITE_PICKAXE"
-    ).with(
-            Materials.or("GOLDEN_PICKAXE", "GOLD_PICKAXE")
+    private static final Set<Material> PICKAXES = new Materials.Builder(
+            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE,
+            Material.NETHERITE_PICKAXE, Material.GOLDEN_PICKAXE
     ).build(true);
 
     private final Plugin plugin;

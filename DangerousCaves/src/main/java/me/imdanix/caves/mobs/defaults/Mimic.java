@@ -201,7 +201,7 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     @Override
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
-        if (((Monster)entity).getTarget() == null && Materials.isAir(block.getType()) &&
+        if (((Monster)entity).getTarget() == null && block.getType().isAir() &&
                 Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation())) {
             for (BlockFace face : Locations.HORIZONTAL_FACES)
                 if (block.getRelative(face).getType() == Material.CHEST) return;

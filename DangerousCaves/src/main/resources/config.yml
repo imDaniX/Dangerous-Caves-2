@@ -2,7 +2,7 @@
 # | Recoded by imDaniX
 
 # Version of this configuration file
-version: ${cfgVersion}
+version: ${cfg-version}
 
 # NOTE: Chances
 # All the chances are in percents
