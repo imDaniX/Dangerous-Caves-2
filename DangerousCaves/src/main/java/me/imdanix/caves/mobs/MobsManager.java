@@ -101,8 +101,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                                                                                         "SPIDER", "WITCH", "ENDERMAN");
         replaceTypes = Utils.getEnumSet(EntityType.class, replaceMobs);
 
-        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 &&
-                !worlds.isEmpty() && !replaceTypes.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
         recalculateChances();
 
         metadata = cfg.getBoolean("add-metadata", false);

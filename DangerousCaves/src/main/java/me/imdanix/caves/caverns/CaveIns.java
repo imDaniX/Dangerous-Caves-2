@@ -73,7 +73,7 @@ public class CaveIns implements Listener, Configurable {
         distance = radius*2 + 1;
         heightMap = calcMap();
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && !worlds.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

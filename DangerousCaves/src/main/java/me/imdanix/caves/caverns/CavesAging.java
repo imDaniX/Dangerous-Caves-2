@@ -97,7 +97,7 @@ public class CavesAging implements Tickable, Configurable {
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         skippedChunks.clear();
         ConfigurationSection boundsCfg = cfg.getConfigurationSection("skip-chunks");
-        if (boundsCfg != null)
+        if (boundsCfg != null) {
             for (String worldStr : boundsCfg.getKeys(false)) {
                 Set<Bound> worldBounds = new HashSet<>();
                 for (String str : boundsCfg.getStringList(worldStr)) {
@@ -106,6 +106,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 skippedChunks.put(worldStr, worldBounds);
             }
+        }
 
         replaceBlocks = Materials.getSet(cfg.getStringList("replace-blocks"));
         percentage = cfg.getDouble("percentage", 30) / 100;
@@ -115,9 +116,7 @@ public class CavesAging implements Tickable, Configurable {
         withMushrooms = cfg.getBoolean("age-types.mushrooms", true);
         withVines = cfg.getBoolean("age-types.vines", true);
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && agingChance > 0 &&
-                percentage > 0 && lightLevel < 17 && !replaceBlocks.isEmpty() && !worlds.isEmpty() &&
-                (withVines || withMushrooms || withRocks || withReplace));
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @Override

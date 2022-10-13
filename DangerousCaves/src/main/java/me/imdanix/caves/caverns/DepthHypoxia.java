@@ -86,8 +86,7 @@ public class DepthHypoxia implements Tickable, Configurable {
 
         condition = placeholder.isEnabled() ? this::checkConditionsPH : this::checkConditions;
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && minChance > 0 &&
-                !worlds.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @Override

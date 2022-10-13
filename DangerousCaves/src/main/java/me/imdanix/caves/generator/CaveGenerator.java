@@ -54,7 +54,7 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         Set<String> worlds = new HashSet<>();
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
-        disabled = !(cfg.getBoolean("enabled", true) && chance > 0 && maxTries > 0 && !worlds.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
         if (!disabled) recalculate();
 
         for (World world : Bukkit.getWorlds()) {
