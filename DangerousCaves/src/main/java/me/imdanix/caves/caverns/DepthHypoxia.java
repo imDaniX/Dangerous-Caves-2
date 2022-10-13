@@ -142,7 +142,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     private double getChance(Player player) {
-        // TODO Use Compatibility.getMinY()
+        // TODO Use world.getMinY()
         double depthChance = (yMax - player.getLocation().getY()) / yMax;
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();

@@ -25,8 +25,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
     private boolean requiresTarget;
@@ -39,7 +39,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
 
     public DeadMiner() {
         super(EntityType.ZOMBIE, "dead-miner", 10, 22d);
-        items = new ArrayList<>();
+        items = Collections.emptyList();
     }
 
     @Override
@@ -50,12 +50,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
         head = Materials.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
 
-        items.clear();
-        List<String> itemsCfg = cfg.getStringList("drop-items");
-        for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ROOT));
-            if (material != null) items.add(material);
-        }
+        items = new ArrayList<>(Materials.getSet(cfg.getStringList("drop-items")));
 
         int cooldown = cfg.getInt("torches-cooldown", 12);
         if (cooldown <= 0) {
@@ -101,8 +96,9 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
         if (block.getType().isAir() && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
             block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
-            if (cooldownEffect != null)
+            if (cooldownEffect != null) {
                 entity.addPotionEffect(cooldownEffect);
+            }
         }
     }
 }

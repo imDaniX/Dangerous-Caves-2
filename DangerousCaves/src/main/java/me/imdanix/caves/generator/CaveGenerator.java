@@ -1,6 +1,5 @@
 package me.imdanix.caves.generator;
 
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.util.Manager;
@@ -93,8 +92,8 @@ public class CaveGenerator extends BlockPopulator implements Manager<StructureGr
         if (structures.containsKey(group.getId())) return false;
         structures.put(group.getId(), group);
         structuresPool.add(group, group.getWeight());
-        if (group instanceof Configurable)
-            config.register((Configurable) group);
+        if (group instanceof Configurable configurable)
+            config.register(configurable);
         return true;
     }
 

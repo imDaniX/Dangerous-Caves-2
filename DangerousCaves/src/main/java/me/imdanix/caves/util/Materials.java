@@ -54,34 +54,30 @@ public final class Materials {
     }
 
     private static final Set<Material> CAVE = new Builder(
-            Material.ANDESITE, Material.DIORITE, Material.GRANITE,
-            Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK,
+            Material.ANDESITE, Material.DIORITE, Material.GRANITE, Material.CALCITE, Material.TUFF, Material.DRIPSTONE_BLOCK,
+            Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK, Material.SMOOTH_BASALT,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
-            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
+            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE, Material.COPPER_ORE,
+            Material.DEEPSLATE_DIAMOND_ORE, Material.DEEPSLATE_EMERALD_ORE, Material.DEEPSLATE_IRON_ORE, Material.DEEPSLATE_GOLD_ORE,
+            Material.DEEPSLATE_LAPIS_ORE, Material.DEEPSLATE_REDSTONE_ORE, Material.DEEPSLATE_COAL_ORE, Material.DEEPSLATE_COPPER_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL,
+            Material.DIRT, Material.GRAVEL, Material.MOSS_BLOCK, Material.ROOTED_DIRT,
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
             Material.TORCH, Material.CHEST, Material.OAK_PLANKS, Material.RAIL,
-            Material.SPAWNER, Material.END_STONE, Material.NETHER_QUARTZ_ORE
-        ).with(
-            // 1.16
-            "SOUL_SOIL", "BLACKSTONE", "BASALT",
-            "NETHER_GOLD_ORE", "GILDED_BLACKSTONE",
-            // 1.17
-            "CALCITE", "TUFF", "DRIPSTONE_BLOCK", "MOSS_BLOCK", "ROOTED_DIRT",
-            "DEEPSLATE", "DEEPSLATE_COAL_ORE", "DEEPSLATE_COPPER_ORE",
-            "DEEPSLATE_DIAMOND_ORE", "DEEPSLATE_EMERALD_ORE", "DEEPSLATE_GOLD_ORE",
-            "DEEPSLATE_IRON_ORE", "DEEPSLATE_LAPIS_ORE", "DEEPSLATE_REDSTONE_ORE"
+            Material.SPAWNER, Material.END_STONE, Material.NETHER_QUARTZ_ORE,
+            Material.SOUL_SOIL, Material.BLACKSTONE, Material.BASALT,
+            Material.NETHER_GOLD_ORE, Material.GILDED_BLACKSTONE,
+            Material.DEEPSLATE
         ).build(true);
 
     public static void rotate(Block block, BlockFace face) {
         BlockData data = block.getBlockData();
-        if (data instanceof FaceAttachable) {
-            ((FaceAttachable) data).setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
-        } else if (data instanceof Directional) {
-            ((Directional) data).setFacing(face);
-        } else if (data instanceof MultipleFacing) {
-            ((MultipleFacing) data).setFace(face, true);
+        if (data instanceof FaceAttachable attachable) {
+            attachable.setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
+        } else if (data instanceof Directional directional) {
+            directional.setFacing(face);
+        } else if (data instanceof MultipleFacing multifacing) {
+            multifacing.setFace(face, true);
         }
         block.setBlockData(data, false);
     }

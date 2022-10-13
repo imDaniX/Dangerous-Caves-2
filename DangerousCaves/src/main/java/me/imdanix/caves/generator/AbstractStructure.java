@@ -1,6 +1,6 @@
 package me.imdanix.caves.generator;
 
-import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
@@ -52,12 +52,11 @@ public abstract class AbstractStructure implements StructureGroup, Configurable 
         try {
             if (!((state = block.getState()) instanceof Container)) return;
         } catch (IllegalStateException ex) {
-            // ItemsAdder goes somewhat wild?
-            ex.printStackTrace();
+            // TODO Fix async access
             return;
         }
         if (mimicChance > 0 && Rng.chance(mimicChance)) {
-            Compatibility.setTag(state, "mimic-30");
+            TagHelper.setTag(state, "mimic-30");
             return;
         }
         if (chestItems.isEmpty()) return;

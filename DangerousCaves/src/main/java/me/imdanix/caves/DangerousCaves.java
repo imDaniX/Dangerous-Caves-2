@@ -5,7 +5,6 @@ import me.imdanix.caves.caverns.CaveIns;
 import me.imdanix.caves.caverns.CavesAging;
 import me.imdanix.caves.caverns.DepthHypoxia;
 import me.imdanix.caves.commands.Commander;
-import me.imdanix.caves.compatibility.Compatibility;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
@@ -20,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 
 public class DangerousCaves extends JavaPlugin {
-    private TagHelper tags;
+
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
@@ -33,18 +32,16 @@ public class DangerousCaves extends JavaPlugin {
                     "contain bugs. If you found some - report it to https://github.com/imDaniX/Dangerous-Сaves-2/issues");
         }
         Regions.INSTANCE.onLoad();
-        Compatibility.init(this);
     }
 
     @Override
     public void onEnable() {
         Regions.INSTANCE.onEnable();
 
-        tags = new TagHelper(this);
         dynamics = new Dynamics(this);
         cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version", "0"));
         cfg.create(true);
-        mobsManager = new MobsManager(this, cfg, dynamics, tags);
+        mobsManager = new MobsManager(this, cfg, dynamics);
         generator = new CaveGenerator(cfg);
         DefaultMobs.registerAll(mobsManager);
         DefaultStructures.registerAll(generator);
@@ -103,9 +100,5 @@ public class DangerousCaves extends JavaPlugin {
 
     public CaveGenerator getGenerator() {
         return generator;
-    }
-
-    public TagHelper getTags() {
-        return tags;
     }
 }

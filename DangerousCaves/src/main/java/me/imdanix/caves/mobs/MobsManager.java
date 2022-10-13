@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs;
 
-import me.imdanix.caves.TagHelper;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.ticks.Dynamics;
@@ -51,13 +51,12 @@ import java.util.regex.Pattern;
 public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Configurable {
     private static final Pattern CUSTOM_TYPE_PATTERN = Pattern.compile("[a-z\\d_-]+");
 
-    private final Map<CustomMob.Ticking, Collection<UUID>> tickingEntities = new HashMap<>();
+    private final Map<CustomMob.Ticking, Set<UUID>> tickingEntities = new HashMap<>();
     private final MetadataValue MARKER;
 
     private final Plugin plugin;
     private final Configuration config;
     private final Dynamics dynamics;
-    private final TagHelper tags;
 
     private final Map<String, CustomMob> mobs;
     private final Set<String> worlds;
@@ -71,12 +70,11 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     private boolean metadata;
     private Predicate<Location> lightCheck;
 
-    public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics, TagHelper tags) {
+    public MobsManager(Plugin plugin, Configuration config, Dynamics dynamics) {
         MARKER = new FixedMetadataValue(plugin, new Object());
         this.plugin = plugin;
         this.config = config;
         this.dynamics = dynamics;
-        this.tags = tags;
         mobs = new HashMap<>();
         worlds = new HashSet<>();
         mobsPool = new WeightedPool<>();
@@ -136,20 +134,20 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         }
         mobsPool.add(mob, mob.getWeight());
         mobs.put(mob.getCustomType(), mob);
-        if (mob instanceof Configurable)
-            config.register((Configurable) mob);
-        if (mob instanceof Listener)
-            Bukkit.getPluginManager().registerEvents((Listener) mob, plugin);
-        if (mob instanceof Tickable)
-            dynamics.register((Tickable) mob);
-        if (mob instanceof CustomMob.Ticking)
-            tickingEntities.put((CustomMob.Ticking) mob, new HashSet<>());
+        if (mob instanceof Configurable configurable)
+            config.register(configurable);
+        if (mob instanceof Listener listener)
+            Bukkit.getPluginManager().registerEvents(listener, plugin);
+        if (mob instanceof Tickable tickable)
+            dynamics.register(tickable);
+        if (mob instanceof CustomMob.Ticking ticking)
+            tickingEntities.put(ticking, new HashSet<>());
         return true;
     }
 
     @Override
     public void tick() {
-        for (Map.Entry<CustomMob.Ticking, Collection<UUID>> entry : tickingEntities.entrySet()) {
+        for (Map.Entry<CustomMob.Ticking, Set<UUID>> entry : tickingEntities.entrySet()) {
             CustomMob.Ticking mob = entry.getKey();
             Iterator<UUID> uuids = entry.getValue().iterator();
             while (uuids.hasNext()) {
@@ -191,7 +189,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     public LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
         entity.addScoreboardTag(TagHelper.SCOREBOARD_TAG);
-        tags.setTag(entity, mob.getCustomType());
+        TagHelper.setTag(entity, mob.getCustomType());
         if (metadata) entity.setMetadata("DangerousCaves", MARKER);
         if (mob instanceof CustomMob.Ticking ticking) {
             handleTicking(entity, ticking);
@@ -204,18 +202,18 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
     public void onChunkLoad(EntitiesLoadEvent event) {
         for (Entity entity : event.getEntities()) {
             if (!(entity instanceof LivingEntity livingEntity)) continue;
-            String type = tags.getTag(livingEntity);
+            String type = TagHelper.getTag(livingEntity);
             if (type != null) {
                 if (metadata) entity.setMetadata("DangerousCaves", MARKER);
                 CustomMob mob = mobs.get(type);
-                if (mob instanceof CustomMob.Ticking) {
-                    handleTicking(livingEntity, (CustomMob.Ticking) mob);
+                if (mob instanceof CustomMob.Ticking ticking) {
+                    handleTicking(livingEntity, ticking);
                 }
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if (event.getEntityType() == EntityType.PLAYER && event.getDamager() instanceof LivingEntity) {
             PlayerAttackedEvent pEvent = new PlayerAttackedEvent((Player) event.getEntity(), (LivingEntity) event.getDamager(), event.getDamage());
@@ -232,7 +230,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
                 event.getPlayer().getInventory().getItemInMainHand().getType() :
                 event.getPlayer().getInventory().getItemInOffHand().getType();
         if (item == Material.NAME_TAG && event.getRightClicked() instanceof LivingEntity living
-                && tags.isTagged(living)) {
+            && TagHelper.isTagged(living)) {
             event.setCancelled(true);
         }
     }

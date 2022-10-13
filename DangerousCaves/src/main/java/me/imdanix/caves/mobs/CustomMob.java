@@ -63,7 +63,6 @@ public interface CustomMob {
     interface Ticking extends CustomMob {
         /**
          * Spawn a new {@link LivingEntity} of this custom mob
-         * Make sure to handle it via {@link MobsManager#handle(LivingEntity, Ticking)}
          * @param loc Where to spawn an entity
          * @return Spawned entity
          */

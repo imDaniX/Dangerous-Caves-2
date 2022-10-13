@@ -53,8 +53,8 @@ public class DCExpansion extends PlaceholderExpansion implements Manager<Placeho
     public boolean register(Placeholder placeholder) {
         if (!placeholders.containsKey(placeholder.getName())) {
             placeholders.put(placeholder.getName(), placeholder);
-            if (placeholder instanceof Configurable)
-                config.register((Configurable)placeholder);
+            if (placeholder instanceof Configurable configurable)
+                config.register(configurable);
             return true;
         }
         return false;

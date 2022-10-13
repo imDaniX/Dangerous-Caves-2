@@ -1,8 +1,7 @@
 package me.imdanix.caves.commands;
 
 import me.imdanix.caves.DangerousCaves;
-import me.imdanix.caves.TagHelper;
-import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.ticks.Dynamics;
@@ -43,7 +42,6 @@ public class Commander implements CommandExecutor, TabCompleter {
     private final MobsManager mobsManager;
     private final Configuration cfg;
     private final Dynamics dynamics;
-    private final TagHelper tags;
 
     private final String[] version;
 
@@ -51,7 +49,6 @@ public class Commander implements CommandExecutor, TabCompleter {
         this.mobsManager = plugin.getMobs();
         this.cfg = plugin.getConfiguration();
         this.dynamics = plugin.getDynamics();
-        this.tags = plugin.getTags();
         this.version = new String[]{plugin.getDescription().getVersion(), plugin.getConfiguration().getVersion()};
     }
 
@@ -101,7 +98,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                 } else {
                     String type = args[1].toLowerCase(Locale.ROOT);
                     if (mobsManager.getMob(type) == null) {
-                        killAll(entity -> {if (tags.isTagged(entity, type)) entity.remove();});
+                        killAll(entity -> {if (TagHelper.isTagged(entity, type)) entity.remove();});
                         sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs of type &e" + type + "&a."));
                     } else {
                         sender.sendMessage(Utils.clr("&cThere's no mob's type called &e" + type + "&c!"));
@@ -130,7 +127,7 @@ public class Commander implements CommandExecutor, TabCompleter {
                         for (int x = 0; x < 16; ++x) for (int z = 0; z < 16; ++z) {
                             for (BlockState state : chunk.getTileEntities()) {
                                 if (state.getType() != Material.CHEST) continue;
-                                String tag = Compatibility.getTag(state);
+                                String tag = TagHelper.getTag(state);
                                 if (tag != null && tag.startsWith("mimic")) toRemove.add(state);
                             }
                         }
@@ -170,10 +167,10 @@ public class Commander implements CommandExecutor, TabCompleter {
 
     private static Location getLocation(CommandSender sender, String[] args) {
         if (args.length == 0) {                                                 // empty
-            if (sender instanceof Entity) {
-                return ((Entity) sender).getLocation();
-            } else if (sender instanceof BlockCommandSender) {
-                return ((BlockCommandSender) sender).getBlock().getLocation();
+            if (sender instanceof Entity entitySender) {
+                return entitySender.getLocation();
+            } else if (sender instanceof BlockCommandSender blockSender) {
+                return blockSender.getBlock().getLocation();
             } else {
                 return null;
             }
@@ -181,10 +178,10 @@ public class Commander implements CommandExecutor, TabCompleter {
 
         World world;
         if (args.length == 3 || args.length == 5) {                             // x y z OR x y z yaw pitch
-            if (sender instanceof Entity) {
-                world = ((Entity) sender).getWorld();
-            } else if (sender instanceof BlockCommandSender) {
-                world = ((BlockCommandSender) sender).getBlock().getWorld();
+            if (sender instanceof Entity entitySender) {
+                world = entitySender.getWorld();
+            } else if (sender instanceof BlockCommandSender blockSender) {
+                world = blockSender.getBlock().getWorld();
             } else {
                 world = Bukkit.getWorlds().get(0);
             }
@@ -217,9 +214,7 @@ public class Commander implements CommandExecutor, TabCompleter {
 
     private void killAll(Consumer<LivingEntity> kill) {
         for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) {
-            if (!(entity instanceof LivingEntity living)) continue;
-            if (tags.isTagged(living))
-                kill.accept(living);
+            if (entity instanceof LivingEntity living && TagHelper.isTagged(living)) kill.accept(living);
         }
     }
 

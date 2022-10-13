@@ -59,8 +59,7 @@ public class Watcher extends MobBase implements CustomMob.Ticking, Listener {
 
     @Override
     public void tick(LivingEntity entity) {
-        LivingEntity target = ((Monster)entity).getTarget();
-        if (target instanceof Player) {
+        if (((Monster)entity).getTarget() instanceof Player target) {
             if (Locations.isLookingAt(target, entity)) return;
             Location loc = target.getLocation().add(target.getLocation().getDirection());
             loc.setYaw(-loc.getYaw());

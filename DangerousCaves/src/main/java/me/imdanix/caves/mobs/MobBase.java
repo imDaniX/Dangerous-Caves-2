@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs;
 
-import me.imdanix.caves.TagHelper;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.ChatColor;

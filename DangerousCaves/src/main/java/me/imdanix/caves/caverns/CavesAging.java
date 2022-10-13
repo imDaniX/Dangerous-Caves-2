@@ -35,11 +35,11 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class CavesAging implements Tickable, Configurable {
-    private static final Set<Material> AGING_MATERIALS = Collections.unmodifiableSet(EnumSet.of(
+    private static final Set<Material> AGING_MATERIALS = new Materials.Builder(
             Material.COBBLESTONE, Material.STONE_BUTTON,
             Material.ANDESITE, Material.COBBLESTONE_WALL,
             Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.VINE
-    ));
+    ).build(true);
 
     private final Plugin plugin;
     private final Map<String, Set<Bound>> skippedChunks;
@@ -186,7 +186,7 @@ public class CavesAging implements Tickable, Configurable {
 
         int count = 0;
         int totalCount = 0;
-        // TODO Use Compatibility.getMinY()
+        // TODO Use world.getMinY()
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
@@ -329,20 +329,8 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     private record QueuedChunk(int x, int z) {
-
         public Chunk getChunk(World world) {
             return world.getChunkAt(x, z);
-        }
-
-        @Override
-        public int hashCode() {
-            return x * 31 + z;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof QueuedChunk chunk)) return false;
-            return chunk.x == x && chunk.z == z;
         }
     }
 }
