@@ -1,7 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class MagmaMonster extends TickingMob implements Listener {
+public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
             Integer.MAX_VALUE, 1, false, false);
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY,
@@ -100,14 +100,14 @@ public class MagmaMonster extends TickingMob implements Listener {
 
         if (fire) {
             Block block = entity.getLocation().getBlock();
-            if (Materials.isAir(block.getType()) && block.getRelative(BlockFace.DOWN).getType().isSolid())
+            if (block.getType().isAir() && block.getRelative(BlockFace.DOWN).getType().isSolid())
                 block.setType(Material.FIRE, false);
         }
 
         if (magma) {
             Block block = entity.getLocation().subtract(0, 1, 0).getBlock();
             if (block.getType() != Material.BEDROCK && Materials.isCave(block.getType()))
-                block.setType(VMaterial.MAGMA_BLOCK.get(), false);
+                block.setType(Material.MAGMA_BLOCK, false);
         }
     }
 }

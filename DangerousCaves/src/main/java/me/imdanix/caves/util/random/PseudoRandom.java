@@ -1,11 +1,11 @@
 package me.imdanix.caves.util.random;
 
-public class PseudoRandom {
-    private static final int[] ZERO_INT = null;
+import java.util.random.RandomGenerator;
 
-    public static final PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(){
+public class PseudoRandom implements RandomGenerator {
+    public static final PseudoRandom ZERO_PSEUDO_RANDOM = new PseudoRandom(null) {
         @Override
-        public int next() {
+        public int nextInt() {
             return 0;
         }
     };
@@ -13,15 +13,22 @@ public class PseudoRandom {
     private final int[] randomValues;
     private int cur = 0;
 
-    private PseudoRandom() {
-        this.randomValues = ZERO_INT;
+    public PseudoRandom(int[] values) {
+        this.randomValues = values;
     }
 
-    public PseudoRandom(int[] randomValues) {
-        this.randomValues = randomValues;
-    }
-
-    public int next() {
+    @Override
+    public int nextInt() {
         return randomValues[cur >= randomValues.length ? (cur = 0) : cur++];
+    }
+
+    @Override
+    public long nextLong() {
+        return nextInt();
+    }
+
+    @Override
+    public double nextDouble() {
+        return nextInt();
     }
 }

@@ -86,8 +86,7 @@ public class DepthHypoxia implements Tickable, Configurable {
 
         condition = placeholder.isEnabled() ? this::checkConditionsPH : this::checkConditions;
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && minChance > 0 &&
-                !worlds.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @Override
@@ -142,7 +141,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     private double getChance(Player player) {
-        // TODO Use Compatibility.getMinY()
+        // TODO Use world.getMinY()
         double depthChance = (yMax - player.getLocation().getY()) / yMax;
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();

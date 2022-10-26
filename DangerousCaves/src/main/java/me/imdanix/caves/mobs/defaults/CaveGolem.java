@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CaveGolem extends AbstractMob implements Listener {
+public class CaveGolem extends MobBase implements Listener {
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0);
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 30, 0);
     private static final PotionEffect CONFUSION = new PotionEffect(PotionEffectType.CONFUSION, 20, 0);
@@ -45,12 +45,9 @@ public class CaveGolem extends AbstractMob implements Listener {
     private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 105, 105, 105);
     private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 105, 105, 105);
 
-    private static final Set<Material> PICKAXES = new Materials.Builder().with(
-            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE
-    ).with(
-            "NETHERITE_PICKAXE"
-    ).with(
-            Materials.or("GOLDEN_PICKAXE", "GOLD_PICKAXE")
+    private static final Set<Material> PICKAXES = new Materials.Builder(
+            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE,
+            Material.NETHERITE_PICKAXE, Material.GOLDEN_PICKAXE
     ).build(true);
 
     private final Plugin plugin;

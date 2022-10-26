@@ -1,10 +1,10 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VSound;
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.PlayerAttackedEvent;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class HungeringDarkness extends AbstractMob implements Listener {
+public class HungeringDarkness extends MobBase implements Listener {
     private static final PotionEffect INVISIBILITY = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false);
     private static final PotionEffect SLOW = new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3, false, false);
 
@@ -82,7 +82,7 @@ public class HungeringDarkness extends AbstractMob implements Listener {
     private void die(Entity entity) {
         if (!remove) return;
         if (deathSound) {
-            Locations.playSound(entity.getLocation(), VSound.ENTITY_PHANTOM_SWOOP.get(), 1f, 0.8f);
+            Locations.playSound(entity.getLocation(), Sound.ENTITY_PHANTOM_SWOOP, 1f, 0.8f);
         }
         entity.remove();
     }

@@ -1,6 +1,6 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.mobs.AbstractMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public class TNTCreeper extends AbstractMob implements Listener {
+public class TNTCreeper extends MobBase implements Listener {
     private static final PotionEffect INCREASE_DAMAGE = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, true);
 
     private int tntAmount;

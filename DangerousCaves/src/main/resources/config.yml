@@ -2,7 +2,7 @@
 # | Recoded by imDaniX
 
 # Version of this configuration file
-version: ${cfgVersion}
+version: ${cfg-version}
 
 # NOTE: Chances
 # All the chances are in percents
@@ -22,11 +22,9 @@ version: ${cfgVersion}
 # PLAYER tick is 800 vanilla ticks (about 40 seconds)
 # ENTITY tick is 4 vanilla ticks (about 200 milliseconds)
 
-# NOTE: Per-version
-# 1.13+ Materials(ignore LEGACY) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-# -1.12 Materials https://helpch.at/docs/1.12.2/index.html?org/bukkit/Material.html
-# 1.13+ Sounds https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
-# -1.12 Sounds https://helpch.at/docs/1.12.2/index.html?org/bukkit/Sound.html
+# NOTE: Values
+# Materials(same as vanilla item ids; ignore LEGACY) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# Sounds https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
 
 #
 # Some plugin integrations
@@ -211,66 +209,6 @@ caverns:
     #   - "0,0"
 
 #
-# Generator-related things
-#
-generator:
-  enabled: true
-
-  # Force Dangerous Caves' generator to wait for other plugins (other generators)
-  wait-other: false
-
-  # Chance of custom structure generations in chunk
-  chance: 50
-
-  # Maximal amount of tries to find empty space for generation
-  max-tries: 3
-
-  # Worlds where generator will work
-  worlds:
-    - world
-
-  # Items in generated chests
-  chest-items:
-    - OAK_PLANKS
-    - TORCH
-    - COBWEB
-    - BONE
-    - STICK
-    - OAK_LOG
-    - WATER_BUCKET
-    - WOODEN_PICKAXE
-    - STONE_PICKAXE
-    - OAK_SAPLING
-    - COAL
-    - BEEF
-    - APPLE
-    - CHICKEN
-    - WHITE_WOOL
-    - BREAD
-    - DIRT
-    - CARROT
-    - COOKIE
-    - WOODEN_AXE
-    - STONE_AXE
-    - PAPER
-    - SUGAR_CANE
-    - SUGAR
-    - TORCH
-    - DIRT
-
-  # List of *default* structures to generate
-  # Larger priority - larger chance in comparison with others. Set to 0 to disable
-  # Chance formula - (structure_priority)/(total_priority)
-  structures:
-    traps: 1
-    pillars: 1
-    boulders: 1
-    buildings: 1
-
-  # Chance of spawning a mimic inside of custom structure with chests
-  mimic-chance: 10
-
-#
 # Mob-related things
 #
 mobs:
@@ -286,13 +224,10 @@ mobs:
   # Maximal Y coordinate where custom mobs can spawn
   y-max: 64
 
-  # (Paper 1.12-1.15 only) Use PreCreatureSpawnEvent when trying to spawn mobs. More performance-friendly, but a bit less accurate
-  use-prespawn: true
-
   # Block renaming with name-tags
   restrict-rename: false
 
-  # Maximal light level where mobs can spawn (0-15). Vanilla level for monsters is 7. Set to 16 or more to disable
+  # Doesn't do much if you have vanilla mob spawning light limit, as vanilla requires 0 light for mobs to spawn
   max-light-level: 16
 
   # Only these mobs will be replaced
@@ -307,6 +242,7 @@ mobs:
     - ENDERMAN
 
   # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like FarmControl
+  # Do note that DC already adds scoreboard tag "dc-mob" to all its mobs, so you may consider using that instead
   # Not sure, but may cause memory leak, so disabled by default
   add-metadata: false
 
@@ -420,9 +356,10 @@ mobs:
     extinguished-damage: false
     # Placing fire. Every ENTITY tick
     fire-chance: 7.14
-    # Placing magma-blocks. Every ENTITY tick
+    # Placing magma blocks. Every ENTITY tick
     magma-chance: 3.57
     # Place magma and fire only if Magma Monster has entity as a target?
+    # Helps with limiting entity griefing
     requires-target: true
 
   # Smoke Demon

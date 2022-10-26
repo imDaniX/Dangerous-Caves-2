@@ -1,9 +1,8 @@
 package me.imdanix.caves.mobs;
 
-import me.imdanix.caves.compatibility.Compatibility;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.util.Utils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,9 +13,10 @@ import org.bukkit.entity.LivingEntity;
 import java.util.Locale;
 
 @Configurable.Before("mobs")
-public abstract class AbstractMob implements CustomMob, Configurable {
+public abstract class MobBase implements CustomMob, Configurable {
     private final EntityType type;
     private final String customType;
+    private final String scoreboardTag;
 
     private final int defWeight;
     private int weight;
@@ -27,17 +27,18 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     private final Double defHealth;
     protected Double health;
 
-    public AbstractMob(EntityType type, String id, int weight) {
+    public MobBase(EntityType type, String id, int weight) {
         this(type, id, weight, null);
     }
 
-    public AbstractMob(EntityType type, String id, int weight, Double health) {
+    public MobBase(EntityType type, String id, int weight, Double health) {
         this(type, id, weight, health, ChatColor.DARK_RED + idToName(id));
     }
 
-    public AbstractMob(EntityType type, String id, int weight, Double health, String name) {
+    public MobBase(EntityType type, String id, int weight, Double health, String name) {
         this.type = type;
-        this.customType = id.toLowerCase(Locale.ENGLISH);
+        this.customType = id.toLowerCase(Locale.ROOT);
+        this.scoreboardTag = TagHelper.mobScoreboardTag(customType);
         this.defWeight = weight;
         this.defName = name;
         this.defHealth = health;
@@ -75,7 +76,7 @@ public abstract class AbstractMob implements CustomMob, Configurable {
 
     @Override
     public boolean isThis(Entity entity) {
-        return entity instanceof LivingEntity && customType.equals(Compatibility.getTag((LivingEntity) entity));
+        return entity instanceof LivingEntity && entity.getScoreboardTags().contains(scoreboardTag);
     }
 
     @Override
@@ -93,6 +94,6 @@ public abstract class AbstractMob implements CustomMob, Configurable {
     }
 
     private static String idToName(String id) {
-        return WordUtils.capitalizeFully(id.replace('-', ' '));
+        return Utils.capitalize(id.replace('-', ' '));
     }
 }

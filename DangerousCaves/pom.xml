@@ -25,13 +25,14 @@
                 </includes>
             </resource>
         </resources>
-        <finalName>Dangerous-Caves-${project.version}.${subVersion}</finalName>
+        <finalName>Dangerous-Caves-${project.version}.${sub-version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.3.0</version>
                 <configuration>
+                    <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -48,7 +49,7 @@
                             <manifestEntries>
                                 <Specification-Title>DangerousCaves - Make your caves scary</Specification-Title>
                                 <Implementation-Title>me.imdanix.caves</Implementation-Title>
-                                <Implementation-Version>${project.version}.${subVersion}</Implementation-Version>
+                                <Implementation-Version>${project.version}.${sub-version}</Implementation-Version>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -80,49 +81,26 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${bukkitVersion}</version>
+            <version>${bukkit-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit-lite</artifactId>
-            <version>1.8</version>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.11.2</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- Compatibility -->
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>compatibility</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>compatibility-modern</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>compatibility-legacy</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
 
         <!-- Regions -->
@@ -132,13 +110,6 @@
             <artifactId>regionmanager</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>regions-worldguard6</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

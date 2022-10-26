@@ -42,10 +42,19 @@ public final class Utils {
         entity.setHealth(health);
     }
 
+    public static String capitalize(String str) {
+        StringBuilder builder = new StringBuilder(str.length() + 1);
+        String[] split = str.split(" ");
+        for (String word : split) {
+            builder.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(' ');
+        }
+        return builder.substring(0, builder.length() - 1);
+    }
+
     public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> clazz, Collection<String> enumStrColl) {
         Set<T> enums = new HashSet<>();
         for (String enumStr : enumStrColl) {
-            T t = getEnum(clazz, enumStr.toUpperCase(Locale.ENGLISH));
+            T t = getEnum(clazz, enumStr.toUpperCase(Locale.ROOT));
             if (t != null) enums.add(t);
         }
         return enums.isEmpty() ? Collections.emptySet() : EnumSet.copyOf(enums);

@@ -4,15 +4,12 @@ import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionFlagsProtector;
 import me.imdanix.caves.regions.griefprevention.GriefPreventionProtector;
 import me.imdanix.caves.regions.lands.LandsProtector;
-import me.imdanix.caves.regions.worldguard.WorldGuard6FlagsProtector;
-import me.imdanix.caves.regions.worldguard.WorldGuard6Protector;
 import me.imdanix.caves.regions.worldguard.WorldGuard7FlagsProtector;
 import me.imdanix.caves.regions.worldguard.WorldGuard7Protector;
 import me.imdanix.caves.util.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +45,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
         Logger logger = Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger();
 
         boolean invert = cfg.getBoolean("invert", false);
-        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ENGLISH).split(",\\s*");
+        String[] modes = cfg.getString("mode", "none").toLowerCase(Locale.ROOT).split(",\\s*");
 
         List<String> failedModes = new ArrayList<>();
         if (modes.length == 0) {
@@ -75,15 +72,9 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
     // v TODO: There's no purpose to leave it there - move to main class
 
     public void onLoad() {
-        Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-        if (wg != null) {
-            if (wg.getDescription().getVersion().startsWith("6")) {
-                register(new WorldGuard6FlagsProtector());
-                register(new WorldGuard6Protector());
-            } else {
-                register(new WorldGuard7FlagsProtector());
-                register(new WorldGuard7Protector());
-            }
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            register(new WorldGuard7FlagsProtector());
+            register(new WorldGuard7Protector());
         }
     }
 

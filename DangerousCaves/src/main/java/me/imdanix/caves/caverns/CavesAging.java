@@ -1,8 +1,6 @@
 package me.imdanix.caves.caverns;
 
 import io.papermc.lib.PaperLib;
-import me.imdanix.caves.compatibility.Compatibility;
-import me.imdanix.caves.compatibility.VMaterial;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
@@ -37,11 +35,11 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class CavesAging implements Tickable, Configurable {
-    private static final Set<Material> AGING_MATERIALS = Collections.unmodifiableSet(EnumSet.of(
+    private static final Set<Material> AGING_MATERIALS = new Materials.Builder(
             Material.COBBLESTONE, Material.STONE_BUTTON,
-            VMaterial.ANDESITE.get(), VMaterial.COBBLESTONE_WALL.get(),
+            Material.ANDESITE, Material.COBBLESTONE_WALL,
             Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.VINE
-    ));
+    ).build(true);
 
     private final Plugin plugin;
     private final Map<String, Set<Bound>> skippedChunks;
@@ -99,7 +97,7 @@ public class CavesAging implements Tickable, Configurable {
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
         skippedChunks.clear();
         ConfigurationSection boundsCfg = cfg.getConfigurationSection("skip-chunks");
-        if (boundsCfg != null)
+        if (boundsCfg != null) {
             for (String worldStr : boundsCfg.getKeys(false)) {
                 Set<Bound> worldBounds = new HashSet<>();
                 for (String str : boundsCfg.getStringList(worldStr)) {
@@ -108,6 +106,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 skippedChunks.put(worldStr, worldBounds);
             }
+        }
 
         replaceBlocks = Materials.getSet(cfg.getStringList("replace-blocks"));
         percentage = cfg.getDouble("percentage", 30) / 100;
@@ -117,9 +116,7 @@ public class CavesAging implements Tickable, Configurable {
         withMushrooms = cfg.getBoolean("age-types.mushrooms", true);
         withVines = cfg.getBoolean("age-types.vines", true);
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && agingChance > 0 &&
-                percentage > 0 && lightLevel < 17 && !replaceBlocks.isEmpty() && !worlds.isEmpty() &&
-                (withVines || withMushrooms || withRocks || withReplace));
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @Override
@@ -188,11 +185,11 @@ public class CavesAging implements Tickable, Configurable {
 
         int count = 0;
         int totalCount = 0;
-        // TODO Use Compatibility.getMinY()
+        // TODO Use world.getMinY()
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = 2; y <= yMax; y++) {
             Material type = snapshot.getBlockType(x, y, z);
 
-            if (Materials.isAir(type))
+            if (type.isAir())
                 continue;
 
             totalCount++;
@@ -225,7 +222,7 @@ public class CavesAging implements Tickable, Configurable {
                             break;
 
                         case 2:
-                            if (Materials.isAir(snapshot.getBlockType(x, y-1, z)) && Rng.nextBoolean())
+                            if (snapshot.getBlockType(x, y-1, z).isAir() && Rng.nextBoolean())
                                 changes.add(new DelayedChange(x, y-1, z, ChangeType.STALAGMITE));
                             break;
                     }
@@ -235,7 +232,7 @@ public class CavesAging implements Tickable, Configurable {
                     changes.add(new DelayedChange(x, y, z, ChangeType.VINE));
                 }
 
-                if (Materials.isAir(snapshot.getBlockType(x, y+1, z))){
+                if (snapshot.getBlockType(x, y+1, z).isAir()){
                     if (withMushrooms && Rng.chance(0.111)) {
                         changes.add(new DelayedChange(x, y+1, z, Rng.nextBoolean() ?
                                                                  ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
@@ -282,33 +279,33 @@ public class CavesAging implements Tickable, Configurable {
                     if (!replaceBlocks.contains(type)) return;
                     for (BlockFace face : Locations.HORIZONTAL_FACES) {
                         Block relBlock = block.getRelative(face);
-                        if (Materials.isAir(relBlock.getType())) {
+                        if (relBlock.getType().isAir()) {
                             relBlock.setType(Material.VINE, false);
-                            Compatibility.rotate(relBlock, face.getOppositeFace());
+                            Materials.rotate(relBlock, face.getOppositeFace());
                         }
                     }
                 }
                 case RED_MUSHROOM -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.RED_MUSHROOM, false);
                 }
                 case BROWN_MUSHROOM -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
                 }
                 case ROCK -> {
-                    if (!Materials.isAir(type) || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
                         return;
                     block.setType(Material.STONE_BUTTON, false);
-                    Compatibility.rotate(block, BlockFace.UP);
+                    Materials.rotate(block, BlockFace.UP);
                 }
                 case STALAGMITE -> {
-                    if (!Materials.isAir(type)) return;
-                    block.setType(VMaterial.COBBLESTONE_WALL.get(), false);
+                    if (!type.isAir()) return;
+                    block.setType(Material.COBBLESTONE_WALL, false);
                 }
                 case COBBLESTONE -> {
                     if (!replaceBlocks.contains(type)) return;
@@ -316,7 +313,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 case ANDESITE -> {
                     if (!replaceBlocks.contains(type)) return;
-                    block.setType(VMaterial.ANDESITE.get(), false);
+                    block.setType(Material.ANDESITE, false);
                 }
                 case TORCH_AIR -> {
                     if (type != Material.TORCH) return;
@@ -331,20 +328,8 @@ public class CavesAging implements Tickable, Configurable {
     }
 
     private record QueuedChunk(int x, int z) {
-
         public Chunk getChunk(World world) {
             return world.getChunkAt(x, z);
-        }
-
-        @Override
-        public int hashCode() {
-            return x * 31 + z;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof QueuedChunk chunk)) return false;
-            return chunk.x == x && chunk.z == z;
         }
     }
 }

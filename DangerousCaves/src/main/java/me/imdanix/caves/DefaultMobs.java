@@ -1,11 +1,12 @@
-package me.imdanix.caves.mobs.defaults;
+package me.imdanix.caves;
 
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobsManager;
+import me.imdanix.caves.mobs.defaults.*;
 
 import java.util.function.Function;
 
-public enum DefaultMobs {
+enum DefaultMobs {
     MIMIC(Mimic::new),
     CAVE_GOLEM(CaveGolem::new),
     ALPHA_SPIDER(new AlphaSpider()),
@@ -20,7 +21,6 @@ public enum DefaultMobs {
     SMOKE_DEMON(new SmokeDemon());
 
     private final Function<MobsManager, CustomMob> custom;
-    private CustomMob mob;
 
     DefaultMobs(CustomMob mob) {
         this.custom = mm -> mob;
@@ -30,15 +30,10 @@ public enum DefaultMobs {
         this.custom = custom;
     }
 
-    public CustomMob getMob() {
-        return mob;
-    }
-
     public static void registerAll(MobsManager manager) {
         for (DefaultMobs mob : DefaultMobs.values()) {
             CustomMob customMob = mob.custom.apply(manager);
             manager.register(customMob);
-            mob.mob = customMob;
         }
     }
 }

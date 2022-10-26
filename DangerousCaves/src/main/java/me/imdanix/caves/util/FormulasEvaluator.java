@@ -18,7 +18,7 @@ public class FormulasEvaluator {
 
     public FormulasEvaluator(String expression) {
         this.variables = new HashMap<>();
-        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase(Locale.ENGLISH)));
+        this.expression = thirdImportance(new PointerHolder(expression.replace(" ", "").toLowerCase(Locale.ROOT)));
     }
 
     public void setVariable(String variable, Double value) {
@@ -31,7 +31,7 @@ public class FormulasEvaluator {
 
     private Expression thirdImportance(PointerHolder holder) {
         Expression x = secondImportance(holder);
-        while(true) {
+        while (true) {
             if (holder.tryNext('+')) {
                 Expression a = x;
                 Expression b = secondImportance(holder);
@@ -48,7 +48,7 @@ public class FormulasEvaluator {
 
     private Expression secondImportance(PointerHolder holder) {
         Expression x = firstImportance(holder);
-        while(true) {
+        while (true) {
             if (holder.tryNext('*')) {
                 Expression a = x;
                 Expression b = firstImportance(holder);

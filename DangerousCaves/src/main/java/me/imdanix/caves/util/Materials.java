@@ -1,8 +1,14 @@
 package me.imdanix.caves.util;
 
-import me.imdanix.caves.compatibility.VMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.FaceAttachable;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -15,19 +21,19 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 public final class Materials {
-    public static final Material[] HELMETS;
-    public static final Material[] LEGGINGS;
-    public static final Material[] CHESTPLATES;
-    public static final Material[] BOOTS;
+    public static final List<Material> HELMETS;
+    public static final List<Material> LEGGINGS;
+    public static final List<Material> CHESTPLATES;
+    public static final List<Material> BOOTS;
     static {
         List<Material> helmets = new ArrayList<>();
         List<Material> leggings = new ArrayList<>();
         List<Material> chestplates = new ArrayList<>();
         List<Material> boots = new ArrayList<>();
         for (Material mat : Material.values()) {
-            if (mat.isBlock()) continue;
             String name = mat.name();
             if (name.endsWith("_HELMET")) {
                 helmets.add(mat);
@@ -39,46 +45,55 @@ public final class Materials {
                 boots.add(mat);
             }
         }
-        helmets.add(VMaterial.CARVED_PUMPKIN.get());
-        HELMETS = helmets.toArray(new Material[0]);
-        LEGGINGS = leggings.toArray(new Material[0]);
-        CHESTPLATES = chestplates.toArray(new Material[0]);
-        BOOTS = boots.toArray(new Material[0]);
+        helmets.add(Material.CARVED_PUMPKIN);
+
+        HELMETS = Collections.unmodifiableList(helmets);
+        LEGGINGS = Collections.unmodifiableList(leggings);
+        CHESTPLATES = Collections.unmodifiableList(chestplates);
+        BOOTS = Collections.unmodifiableList(boots);
     }
 
     private static final Set<Material> CAVE = new Builder(
-            Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK,
+            Material.ANDESITE, Material.DIORITE, Material.GRANITE, Material.CALCITE, Material.TUFF, Material.DRIPSTONE_BLOCK,
+            Material.STONE, Material.BONE_BLOCK, Material.OBSIDIAN, Material.BEDROCK, Material.SMOOTH_BASALT,
             Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.IRON_ORE, Material.GOLD_ORE,
-            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE,
+            Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.COAL_ORE, Material.COPPER_ORE,
+            Material.DEEPSLATE_DIAMOND_ORE, Material.DEEPSLATE_EMERALD_ORE, Material.DEEPSLATE_IRON_ORE, Material.DEEPSLATE_GOLD_ORE,
+            Material.DEEPSLATE_LAPIS_ORE, Material.DEEPSLATE_REDSTONE_ORE, Material.DEEPSLATE_COAL_ORE, Material.DEEPSLATE_COPPER_ORE,
             Material.COBBLESTONE, Material.MOSSY_COBBLESTONE,
-            Material.DIRT, Material.GRAVEL,
+            Material.DIRT, Material.GRAVEL, Material.MOSS_BLOCK, Material.ROOTED_DIRT,
             Material.SOUL_SAND, Material.NETHERRACK, Material.GLOWSTONE,
-            Material.TORCH, Material.CHEST
-        ).with(
-            // 1.13
-            "ANDESITE", "DIORITE", "GRANITE",
-            // 1.16
-            "SOUL_SOIL", "BLACKSTONE", "BASALT",
-            "NETHER_GOLD_ORE", "GILDED_BLACKSTONE",
-            // 1.17
-            "CALCITE", "TUFF", "DRIPSTONE_BLOCK", "MOSS_BLOCK", "ROOTED_DIRT",
-            "DEEPSLATE", "DEEPSLATE_COAL_ORE", "DEEPSLATE_COPPER_ORE",
-            "DEEPSLATE_DIAMOND_ORE", "DEEPSLATE_EMERALD_ORE", "DEEPSLATE_GOLD_ORE",
-            "DEEPSLATE_IRON_ORE", "DEEPSLATE_LAPIS_ORE", "DEEPSLATE_REDSTONE_ORE"
-        ).with(
-            or("RAIL", "RAILS"),
-            or("SPAWNER", "MOB_SPAWNER"),
-            or("OAK_PLANKS", "WOOD"),
-            or("END_STONE", "ENDER_STONE"),
-            or("NETHER_QUARTZ_ORE", "QUARTZ_ORE")
+            Material.TORCH, Material.CHEST, Material.OAK_PLANKS, Material.RAIL,
+            Material.SPAWNER, Material.END_STONE, Material.NETHER_QUARTZ_ORE,
+            Material.SOUL_SOIL, Material.BLACKSTONE, Material.BASALT,
+            Material.NETHER_GOLD_ORE, Material.GILDED_BLACKSTONE,
+            Material.DEEPSLATE
         ).build(true);
 
-    private static final Set<Material> AIR = new Builder(
-            "AIR", "CAVE_AIR", "VOID_AIR"
-        ).build(true);
+    public static void rotate(Block block, BlockFace face) {
+        BlockData data = block.getBlockData();
+        if (data instanceof FaceAttachable attachable) {
+            attachable.setAttachedFace(FaceAttachable.AttachedFace.FLOOR);
+        } else if (data instanceof Directional directional) {
+            directional.setFacing(face);
+        } else if (data instanceof MultipleFacing multifacing) {
+            multifacing.setFace(face, true);
+        }
+        block.setBlockData(data, false);
+    }
 
-    public static boolean isAir(Material type) {
-        return AIR.contains(type);
+    public static ItemStack getHeadFromValue(String value) {
+        UUID id = UUID.nameUUIDFromBytes(value.getBytes());
+        // Heck yeah, magic numbers
+        long less = id.getLeastSignificantBits();
+        int lessA = (int) (less >> 32); int lessB = (int) less;
+        long most = id.getMostSignificantBits();
+        int mostA = (int) (most >> 32); int mostB = (int) most;
+        return Bukkit.getUnsafe().modifyItemStack(
+                new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:[I;" + lessA + "," + lessB + "," + mostA + "," + mostB + "]," +
+                        "Properties:{textures:[{Value:\"" + value + "\"}]}}}"
+        );
     }
 
     public static boolean isCave(Material type) {
@@ -88,7 +103,7 @@ public final class Materials {
     public static Set<Material> getSet(Collection<String> types) {
         Set<Material> materials = EnumSet.noneOf(Material.class);
         for (String typeStr : types) {
-            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ROOT));
             if (type != null) materials.add(type);
         }
         return materials;
@@ -123,7 +138,7 @@ public final class Materials {
 
     public static Material or(String... types) {
         for (String typeStr : types) {
-            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ENGLISH));
+            Material type = Material.getMaterial(typeStr.toUpperCase(Locale.ROOT));
             if (type != null) return type;
         }
         return null;

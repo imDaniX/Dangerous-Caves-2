@@ -46,7 +46,7 @@ public class AmbientSounds implements Tickable, Configurable {
         radius = cfg.getDouble("near", 7);
         sounds.clear();
         for (String soundStr : Configuration.section(cfg, "sounds").getKeys(false)) {
-            Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase(Locale.ENGLISH));
+            Sound sound = Utils.getEnum(Sound.class, soundStr.toUpperCase(Locale.ROOT));
             if (sound == null) continue;
             sounds.add(new WrappedSound(
                     sound,
@@ -59,7 +59,7 @@ public class AmbientSounds implements Tickable, Configurable {
         worldDistance = cfg.getDouble("server-wise-distance", 0); worldDistance *= worldDistance;
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
-        disabled = !(cfg.getBoolean("enabled", true) && yMax > 0 && chance > 0 && !worlds.isEmpty());
+        disabled = !cfg.getBoolean("enabled", true);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.Compatibility;
-import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -26,10 +25,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
-public class DeadMiner extends TickingMob implements Listener {
+public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
     private boolean requiresTarget;
     private boolean torches;
     private boolean redTorches;
@@ -40,7 +39,7 @@ public class DeadMiner extends TickingMob implements Listener {
 
     public DeadMiner() {
         super(EntityType.ZOMBIE, "dead-miner", 10, 22d);
-        items = new ArrayList<>();
+        items = Collections.emptyList();
     }
 
     @Override
@@ -49,14 +48,9 @@ public class DeadMiner extends TickingMob implements Listener {
         torches = cfg.getBoolean("place-torches", true);
         redTorches = cfg.getBoolean("redstone-torches", false);
         dropChance = cfg.getDouble("drop-chance", 16.67) / 100;
-        head = Compatibility.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
+        head = Materials.getHeadFromValue(cfg.getString("head-value", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5MzdiY2Q1YmVlYWEzNDI0NDkxM2YyNzc1MDVlMjlkMmU2ZmIzNWYyZTIzY2E0YWZhMmI2NzY4ZTM5OGQ3MyJ9fX0="));
 
-        items.clear();
-        List<String> itemsCfg = cfg.getStringList("drop-items");
-        for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
-            if (material != null) items.add(material);
-        }
+        items = new ArrayList<>(Materials.getSet(cfg.getStringList("drop-items")));
 
         int cooldown = cfg.getInt("torches-cooldown", 12);
         if (cooldown <= 0) {
@@ -86,7 +80,7 @@ public class DeadMiner extends TickingMob implements Listener {
             equipment.setChestplate(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
         if (Rng.nextBoolean())
             equipment.setBoots(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
-        if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH));
+        if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? Material.REDSTONE_TORCH : Material.TORCH));
         entity.setCanPickupItems(false);
     }
 
@@ -99,11 +93,12 @@ public class DeadMiner extends TickingMob implements Listener {
                 !Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation()))
             return;
 
-        if (Materials.isAir(block.getType()) && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
-            block.setType(redTorches ? VMaterial.REDSTONE_TORCH.get() : Material.TORCH, false);
+        if (block.getType().isAir() && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {
+            block.setType(redTorches ? Material.REDSTONE_TORCH : Material.TORCH, false);
             Locations.playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
-            if (cooldownEffect != null)
+            if (cooldownEffect != null) {
                 entity.addPotionEffect(cooldownEffect);
+            }
         }
     }
 }

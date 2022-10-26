@@ -46,15 +46,15 @@ public class DCExpansion extends PlaceholderExpansion implements Manager<Placeho
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        return placeholders.getOrDefault(identifier.toLowerCase(Locale.ENGLISH), Placeholder.EMPTY).getValue(player);
+        return placeholders.getOrDefault(identifier.toLowerCase(Locale.ROOT), Placeholder.EMPTY).getValue(player);
     }
 
     @Override
     public boolean register(Placeholder placeholder) {
         if (!placeholders.containsKey(placeholder.getName())) {
             placeholders.put(placeholder.getName(), placeholder);
-            if (placeholder instanceof Configurable)
-                config.register((Configurable)placeholder);
+            if (placeholder instanceof Configurable configurable)
+                config.register(configurable);
             return true;
         }
         return false;

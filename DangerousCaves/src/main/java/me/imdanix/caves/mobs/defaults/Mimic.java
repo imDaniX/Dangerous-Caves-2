@@ -1,11 +1,9 @@
 package me.imdanix.caves.mobs.defaults;
 
-import io.papermc.lib.PaperLib;
-import me.imdanix.caves.compatibility.Compatibility;
-import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.compatibility.VSound;
+import me.imdanix.caves.util.TagHelper;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
-import me.imdanix.caves.mobs.TickingMob;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -13,7 +11,6 @@ import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -43,29 +40,25 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 // TODO: Other blocks like furnace?
-public class Mimic extends TickingMob implements Listener {
-    private static final boolean CHUNK_IS_HOLDER = PaperLib.getMinecraftVersion() >= 14 && PersistentDataHolder.class.isAssignableFrom(Chunk.class);
-
+public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private static final ItemStack CHEST = new ItemStack(Material.CHEST);
     private static final ItemStack CHESTPLATE = Materials.getColored(EquipmentSlot.CHEST, 194, 105, 18);
     private static final ItemStack LEGGINGS = Materials.getColored(EquipmentSlot.LEGS, 194, 105, 18);
     private static final ItemStack BOOTS = Materials.getColored(EquipmentSlot.FEET, 194, 105, 18);
-    private static final ItemStack PLANKS = new ItemStack(VMaterial.SPRUCE_PLANKS.get());
+    private static final ItemStack PLANKS = new ItemStack(Material.SPRUCE_PLANKS);
 
     private final MobsManager mobsManager;
     private final NamespacedKey chunkKey;
-    private final List<Material> items;
+    private List<Material> items;
     private boolean clean;
     private Listener unloadListener;
 
@@ -78,25 +71,20 @@ public class Mimic extends TickingMob implements Listener {
 
     @Override
     protected void configure(ConfigurationSection cfg) {
-        items.clear();
-        List<String> itemsCfg = cfg.getStringList("drop-items");
-        for (String materialStr : itemsCfg) {
-            Material material = Material.getMaterial(materialStr.toUpperCase(Locale.ENGLISH));
-            if (material != null) items.add(material);
-        }
+        items = new ArrayList<>(Materials.getSet(cfg.getStringList("drop-items")));
         boolean skipPersistence = cfg.getBoolean("skip-persistence-check", false);
         if (clean = cfg.getBoolean("remove-on-unload", false)) {
             if (unloadListener == null) {
                 Bukkit.getPluginManager().registerEvents(unloadListener = new Listener() {
                     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
                     public void onUnload(ChunkUnloadEvent event) {
-                        if (!skipPersistence && CHUNK_IS_HOLDER) {
+                        if (!skipPersistence) {
                             PersistentDataContainer container = event.getChunk().getPersistentDataContainer();
                             if (!container.has(chunkKey, PersistentDataType.INTEGER)) return;
                             int amount = container.get(chunkKey, PersistentDataType.INTEGER);
                             for (BlockState tile : event.getChunk().getTileEntities()) {
                                 if (!(tile instanceof Chest)) continue;
-                                String tag = Compatibility.getTag(tile);
+                                String tag = TagHelper.getTag(tile);
                                 if (tag == null || !tag.startsWith("mimic")) continue;
                                 tile.setType(Material.AIR);
                                 if (--amount <= 0) break;
@@ -104,7 +92,7 @@ public class Mimic extends TickingMob implements Listener {
                             container.remove(chunkKey);
                         } else for (BlockState tile : event.getChunk().getTileEntities()) {
                             if (!(tile instanceof Chest)) continue;
-                            String tag = Compatibility.getTag(tile);
+                            String tag = TagHelper.getTag(tile);
                             if (tag == null || !tag.startsWith("mimic")) continue;
                             tile.setType(Material.AIR);
                         }
@@ -156,7 +144,7 @@ public class Mimic extends TickingMob implements Listener {
     }
 
     private boolean openMimic(Block block, Player player) {
-        String tag = Compatibility.getTag(block.getState());
+        String tag = TagHelper.getTag(block.getState());
         if (tag == null || !tag.startsWith("mimic")) return false;
         if (block.getRelative(BlockFace.UP).getType().isSolid()) return true;
         block.setType(Material.AIR);
@@ -166,18 +154,17 @@ public class Mimic extends TickingMob implements Listener {
         LivingEntity entity = mobsManager.spawn(this, loc.add(0.5, 0, 0.5));
         Utils.setMaxHealth(entity, this.health);
         entity.setHealth(Math.min(health, this.health));
-        Locations.playSound(loc, VSound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR.get(), 1f, 0.5f);
+        Locations.playSound(loc, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1f, 0.5f);
         player.addPotionEffect(BLINDNESS);
         ((Monster) entity).setTarget(player);
-        if (CHUNK_IS_HOLDER) {
-            PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
-            if (!container.has(chunkKey, PersistentDataType.INTEGER)) return true;
-            Integer amount = container.get(chunkKey, PersistentDataType.INTEGER);
-            if (amount == 1) {
-                container.remove(chunkKey);
-            } else {
-                container.set(chunkKey, PersistentDataType.INTEGER, amount - 1);
-            }
+
+        PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
+        if (!container.has(chunkKey, PersistentDataType.INTEGER)) return true;
+        Integer amount = container.get(chunkKey, PersistentDataType.INTEGER);
+        if (amount == 1) {
+            container.remove(chunkKey);
+        } else {
+            container.set(chunkKey, PersistentDataType.INTEGER, amount - 1);
         }
         return true;
     }
@@ -191,7 +178,7 @@ public class Mimic extends TickingMob implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
         if (isThis(event.getEntity())) {
-            Locations.playSound(event.getEntity().getLocation(), VSound.BLOCK_ENDER_CHEST_CLOSE.get(), SoundCategory.HOSTILE, 1f, 0.2f);
+            Locations.playSound(event.getEntity().getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, SoundCategory.HOSTILE, 1f, 0.2f);
             List<ItemStack> drops = event.getDrops();
             drops.clear();
             drops.add(CHEST);
@@ -202,16 +189,16 @@ public class Mimic extends TickingMob implements Listener {
     @Override
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
-        if (((Monster)entity).getTarget() == null && Materials.isAir(block.getType()) &&
+        if (((Monster)entity).getTarget() == null && block.getType().isAir() &&
                 Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation())) {
             for (BlockFace face : Locations.HORIZONTAL_FACES)
                 if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
-            Compatibility.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
-            Compatibility.setTag(block.getState(), "mimic-" + entity.getHealth());
+            Materials.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
+            TagHelper.setTag(block.getState(), "mimic-" + entity.getHealth());
             entity.remove();
 
-            if (clean && CHUNK_IS_HOLDER) {
+            if (clean) {
                 PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
                 container.set(chunkKey, PersistentDataType.INTEGER, container.getOrDefault(chunkKey, PersistentDataType.INTEGER, 0) + 1);
             }

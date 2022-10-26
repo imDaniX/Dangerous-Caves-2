@@ -1,7 +1,7 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.compatibility.VMaterial;
-import me.imdanix.caves.mobs.TickingMob;
+import me.imdanix.caves.mobs.CustomMob;
+import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.regions.CheckType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
@@ -23,7 +23,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class LavaCreeper extends TickingMob implements Listener {
+public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false);
 
     private double chance;
@@ -75,11 +75,11 @@ public class LavaCreeper extends TickingMob implements Listener {
         Locations.loop(radius, start, (world, x, y, z) -> {
             if ((square(cx - x) + square(cy - y) + square(cz - z)) > radiusSquared || !Rng.chance(chance)) return;
             Block block = new Location(world, x, y, z).getBlock();
-            if (Materials.isAir(block.getType())) {
-                if (fire > 0 && !Materials.isAir(block.getRelative(BlockFace.DOWN).getType()) && Rng.chance(fire)) block.setType(Material.FIRE);
+            if (block.getType().isAir()) {
+                if (fire > 0 && !block.getRelative(BlockFace.DOWN).getType().isAir() && Rng.chance(fire)) block.setType(Material.FIRE);
             } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
                 if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
-                    block.setType(VMaterial.MAGMA_BLOCK.get());
+                    block.setType(Material.MAGMA_BLOCK);
                 } else if (obsidian > 0 && Rng.chance(obsidian)) {
                     block.setType(Material.OBSIDIAN);
                 } else if (lava > 0 && Rng.chance(lava)) {
