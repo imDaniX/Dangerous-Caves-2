@@ -37,7 +37,7 @@ public interface CustomMob {
      * Setup some mob settings (effects, equipment etc.)
      * @param entity Entity to setup
      */
-    default void setup(LivingEntity entity) {
+    default void prepare(LivingEntity entity) {
         // Sometimes we just don't need to do so
     }
 

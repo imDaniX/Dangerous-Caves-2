@@ -39,7 +39,7 @@ public class SmokeDemon extends MobBase implements CustomMob.Ticking {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.setCustomNameVisible(false);
         entity.addPotionEffect(INVISIBILITY);
         entity.setSilent(true);

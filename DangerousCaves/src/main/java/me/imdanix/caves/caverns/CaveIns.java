@@ -27,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
@@ -47,7 +48,7 @@ public class CaveIns implements Listener, Configurable {
     private boolean blastEffect;
     private boolean blastSound;
 
-    private RandomGenerator rng;
+    private RandomGenerator noise;
     private int distance;
     private int[][] heightMap;
 
@@ -69,7 +70,7 @@ public class CaveIns implements Listener, Configurable {
 
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
 
-        rng = cuboid ? PseudoRandom.ZERO_PSEUDO_RANDOM : PSEUDO_RANDOM;
+        noise = cuboid ? PseudoRandom.ZERO_PSEUDO_RANDOM : PSEUDO_RANDOM;
         distance = radius*2 + 1;
         heightMap = calcMap();
 
@@ -105,8 +106,8 @@ public class CaveIns implements Listener, Configurable {
                 if (blocks.isEmpty()) continue;
                 Block search = blocks.get(0).getRelative(BlockFace.DOWN);
 
-                if (search.getType().isSolid()) continue;
-                while (search.getY() > 0 && !search.getType().isSolid() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
+                if (!search.isPassable()) continue;
+                while (search.getY() > 0 && search.isPassable() && !(search = search.getRelative(BlockFace.DOWN)).getType().isSolid());
 
                 for (Block block : blocks) {
                     search = search.getRelative(BlockFace.UP);
@@ -119,12 +120,11 @@ public class CaveIns implements Listener, Configurable {
 
     private List<List<Block>> getBlocksInRadius(Location blockLoc) {
         List<List<Block>> allBlocks = new ArrayList<>(distance*distance);
-
-        // TODO Use world.getMinY()
+        World world = Objects.requireNonNull(blockLoc.getWorld());
+        
         blockLoc.subtract(radius, 2, radius);
-        if (blockLoc.getY() < 1) blockLoc.setY(1);
+        if (blockLoc.getY() < world.getMinHeight() + 1) blockLoc.setY(world.getMinHeight() + 1);
 
-        World world = blockLoc.getWorld();
         int yInit = blockLoc.getBlockY();
 
         for (int x = 0; x < distance; x++) for (int z = 0; z < distance; z++) {
@@ -133,9 +133,9 @@ public class CaveIns implements Listener, Configurable {
 
             List<Block> blocks = new ArrayList<>();
 
-            int heightMax = heightMap[x][z] - rng.nextInt();
-            for (int y = 0; y <= heightMax; y++) {
-                Block block = world.getBlockAt(xRel, yInit + y, zRel);
+            int heightMax = heightMap[x][z] - noise.nextInt();
+            for (int yOffset = 0; yOffset <= heightMax; yOffset++) {
+                Block block = world.getBlockAt(xRel, yInit + yOffset, zRel);
                 if (block.getType() == Material.BEDROCK) continue;
                 if (!Materials.isCave(block.getType())) {
                     if (block.getType().isAir()) continue;

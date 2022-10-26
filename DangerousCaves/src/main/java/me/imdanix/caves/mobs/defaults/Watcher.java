@@ -39,7 +39,7 @@ public class Watcher extends MobBase implements CustomMob.Ticking, Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.setSilent(true);
         entity.setCanPickupItems(false);
         entity.addPotionEffect(INVISIBILITY);

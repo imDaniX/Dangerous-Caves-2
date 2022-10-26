@@ -58,7 +58,7 @@ public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.setFireTicks(Integer.MAX_VALUE);
         entity.setSilent(true);
         entity.setCanPickupItems(false);
@@ -100,7 +100,7 @@ public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener
 
         if (fire) {
             Block block = entity.getLocation().getBlock();
-            if (block.getType().isAir() && block.getRelative(BlockFace.DOWN).getType().isSolid())
+            if (block.getType().isAir() && !block.getRelative(BlockFace.DOWN).isPassable())
                 block.setType(Material.FIRE, false);
         }
 

@@ -72,14 +72,16 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         equipment.setHelmet(head); equipment.setHelmetDropChance(0);
         equipment.setItemInMainHand(new ItemStack(Rng.nextBoolean() ? Material.IRON_PICKAXE : Material.STONE_PICKAXE));
-        if (Rng.nextBoolean())
+        if (Rng.nextBoolean()) {
             equipment.setChestplate(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_CHESTPLATE : Material.LEATHER_CHESTPLATE));
-        if (Rng.nextBoolean())
+        }
+        if (Rng.nextBoolean()) {
             equipment.setBoots(new ItemStack(Rng.nextBoolean() ? Material.CHAINMAIL_BOOTS : Material.LEATHER_BOOTS));
+        }
         if (torches) equipment.setItemInOffHand(new ItemStack(redTorches ? Material.REDSTONE_TORCH : Material.TORCH));
         entity.setCanPickupItems(false);
     }

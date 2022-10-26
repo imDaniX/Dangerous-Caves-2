@@ -24,7 +24,7 @@ public class TNTCreeper extends MobBase implements Listener {
     private double explosionChance;
 
     public TNTCreeper() {
-        super(EntityType.CREEPER, "tnt-creeper", 9,null, ChatColor.DARK_RED + "TNT Creeper");
+        super(EntityType.CREEPER, "tnt-creeper", 9, null, ChatColor.DARK_RED + "TNT Creeper");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TNTCreeper extends MobBase implements Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.addPotionEffect(INCREASE_DAMAGE);
     }
 
@@ -52,7 +52,8 @@ public class TNTCreeper extends MobBase implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (explosionChance > 0 && isThis(event.getEntity()) && Rng.chance(explosionChance))
+        if (explosionChance > 0 && isThis(event.getEntity()) && Rng.chance(explosionChance)) {
             event.getDamager().getWorld().createExplosion(event.getDamager().getLocation(), 0.01f);
+        }
     }
 }

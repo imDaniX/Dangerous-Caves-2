@@ -82,6 +82,7 @@ public final class Materials {
         block.setBlockData(data, false);
     }
 
+    @SuppressWarnings("deprecation")
     public static ItemStack getHeadFromValue(String value) {
         UUID id = UUID.nameUUIDFromBytes(value.getBytes());
         // Heck yeah, magic numbers

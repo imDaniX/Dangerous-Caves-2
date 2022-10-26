@@ -184,8 +184,7 @@ public class CavesAging implements Tickable, Configurable {
 
         int count = 0;
         int totalCount = 0;
-        // TODO Use world.getMinY()
-        for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = 2; y <= yMax; y++) {
+        for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = edge.getWorld().getMinHeight() + 2; y <= yMax; y++) { // TODO Configurable aging script
             Material type = snapshot.getBlockType(x, y, z);
 
             if (type.isAir())
@@ -255,7 +254,6 @@ public class CavesAging implements Tickable, Configurable {
         return "caverns.aging";
     }
 
-    // TODO Make record too?
     private class DelayedChange {
         private final int x;
         private final int y;

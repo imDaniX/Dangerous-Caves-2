@@ -1,7 +1,7 @@
 package me.imdanix.caves.mobs;
 
-import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -84,7 +84,7 @@ public abstract class MobBase implements CustomMob, Configurable {
         LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
         entity.setCustomName(name);
         if (health != null) Utils.setMaxHealth(entity, health);
-        setup(entity);
+        prepare(entity);
         return entity;
     }
 

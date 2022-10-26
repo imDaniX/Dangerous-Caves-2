@@ -110,7 +110,7 @@ public class CaveGolem extends MobBase implements Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         equipment.setItemInMainHand(null);
         equipment.setHelmet(Rng.randomElement(heads));  equipment.setHelmetDropChance(1);

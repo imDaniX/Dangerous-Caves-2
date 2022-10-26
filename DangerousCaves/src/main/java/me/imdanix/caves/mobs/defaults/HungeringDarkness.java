@@ -43,7 +43,7 @@ public class HungeringDarkness extends MobBase implements Listener {
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.setCustomNameVisible(false);
         entity.setInvulnerable(true);
         entity.setCollidable(false);

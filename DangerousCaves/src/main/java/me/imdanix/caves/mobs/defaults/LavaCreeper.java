@@ -52,7 +52,7 @@ public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener 
     }
 
     @Override
-    public void setup(LivingEntity entity) {
+    public void prepare(LivingEntity entity) {
         entity.addPotionEffect(FIRE_RESISTANCE);
     }
 

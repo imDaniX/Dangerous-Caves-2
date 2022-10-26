@@ -85,7 +85,7 @@ public class DepthHypoxia implements Tickable, Configurable {
     public void tick() {
         if (disabled) return;
 
-        for (World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) { // TODO Custom effects
             if (!worlds.contains(world.getName())) continue;
             for (Player player : world.getPlayers()) {
                 if (!condition.test(player)) continue;
@@ -132,8 +132,8 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     private double getChance(Player player) {
-        // TODO Use world.getMinY()
-        double depthChance = (yMax - player.getLocation().getY()) / yMax;
+        double yMin = player.getWorld().getMinHeight();
+        double depthChance = 1d - (player.getLocation().getY() - yMin) / (yMax - yMin);
         double weightChance = 0;
         ItemStack[] contents = player.getInventory().getContents();
         for (ItemStack item : contents) {

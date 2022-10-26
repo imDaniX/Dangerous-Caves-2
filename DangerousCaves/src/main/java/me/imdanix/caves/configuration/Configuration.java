@@ -108,8 +108,9 @@ public class Configuration implements Manager<Configurable> {
      * @return Are versions equal
      */
     public boolean checkVersion(boolean message) {
-        if (yml == null)
+        if (yml == null) {
             throw new IllegalStateException("Configuration file is not created yet.");
+        }
         String oldVersion = yml.getString("version", "0");
         if (version.equals(oldVersion)) return true;
         if (message) {
