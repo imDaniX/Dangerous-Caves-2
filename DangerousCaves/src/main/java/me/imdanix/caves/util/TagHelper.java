@@ -6,8 +6,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Objects;
+
 public final class TagHelper {
-    public static final NamespacedKey MOB_KEY = NamespacedKey.fromString("dangerouscaves:mob-type");
+    public static final NamespacedKey MOB_KEY = Objects.requireNonNull(NamespacedKey.fromString("dangerouscaves:mob-type"));
     public static final String SCOREBOARD_TAG = "dc-mob";
 
     private TagHelper() {}

@@ -209,66 +209,6 @@ caverns:
     #   - "0,0"
 
 #
-# Generator-related things
-#
-generator:
-  enabled: true
-
-  # Force Dangerous Caves' generator to wait for other plugins (other generators)
-  wait-other: false
-
-  # Chance of custom structure generations in chunk
-  chance: 50
-
-  # Maximal amount of tries to find empty space for generation
-  max-tries: 3
-
-  # Worlds where generator will work
-  worlds:
-    - world
-
-  # Items in generated chests
-  chest-items:
-    - OAK_PLANKS
-    - TORCH
-    - COBWEB
-    - BONE
-    - STICK
-    - OAK_LOG
-    - WATER_BUCKET
-    - WOODEN_PICKAXE
-    - STONE_PICKAXE
-    - OAK_SAPLING
-    - COAL
-    - BEEF
-    - APPLE
-    - CHICKEN
-    - WHITE_WOOL
-    - BREAD
-    - DIRT
-    - CARROT
-    - COOKIE
-    - WOODEN_AXE
-    - STONE_AXE
-    - PAPER
-    - SUGAR_CANE
-    - SUGAR
-    - TORCH
-    - DIRT
-
-  # List of *default* structures to generate
-  # Larger priority - larger chance in comparison with others. Set to 0 to disable
-  # Chance formula - (structure_priority)/(total_priority)
-  structures:
-    traps: 1
-    pillars: 1
-    boulders: 1
-    buildings: 1
-
-  # Chance of spawning a mimic inside of custom structure with chests
-  mimic-chance: 10
-
-#
 # Mob-related things
 #
 mobs:
@@ -287,7 +227,7 @@ mobs:
   # Block renaming with name-tags
   restrict-rename: false
 
-  # Maximal light level where mobs can spawn (0-15). Vanilla level for monsters is 7. Set to 16 or more to disable
+  # Doesn't do much if you have vanilla mob spawning light limit, as vanilla requires 0 light for mobs to spawn
   max-light-level: 16
 
   # Only these mobs will be replaced
@@ -302,6 +242,7 @@ mobs:
     - ENDERMAN
 
   # Add metadata "DangerousCaves" when mob is spawned. Useful for some plugins like FarmControl
+  # Do note that DC already adds scoreboard tag "dc-mob" to all its mobs, so you may consider using that instead
   # Not sure, but may cause memory leak, so disabled by default
   add-metadata: false
 

@@ -6,7 +6,6 @@ import me.imdanix.caves.caverns.CavesAging;
 import me.imdanix.caves.caverns.DepthHypoxia;
 import me.imdanix.caves.commands.Commander;
 import me.imdanix.caves.configuration.Configuration;
-import me.imdanix.caves.generator.CaveGenerator;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.placeholders.DCExpansion;
 import me.imdanix.caves.regions.Regions;
@@ -23,7 +22,6 @@ public class DangerousCaves extends JavaPlugin {
     private MobsManager mobsManager;
     private Dynamics dynamics;
     private Configuration cfg;
-    private CaveGenerator generator;
 
     @Override
     public void onLoad() {
@@ -42,9 +40,7 @@ public class DangerousCaves extends JavaPlugin {
         cfg = new Configuration(this, "config", YamlConfiguration.loadConfiguration(Objects.requireNonNull(getTextResource("plugin.yml"))).getString("config-version", "0"));
         cfg.create(true);
         mobsManager = new MobsManager(this, cfg, dynamics);
-        generator = new CaveGenerator(cfg);
         DefaultMobs.registerAll(mobsManager);
-        DefaultStructures.registerAll(generator);
 
         AmbientSounds ambient = new AmbientSounds();
         CaveIns caveIns = new CaveIns();
@@ -70,9 +66,6 @@ public class DangerousCaves extends JavaPlugin {
         cfg.register(cavesAging);
         cfg.register(caveIns);
         cfg.register(hypoxia);
-        if (cfg.getYml().getBoolean("generator.wait-other", false)) {
-            Bukkit.getScheduler().runTaskLater(this, () -> cfg.register(generator), 1);
-        } else cfg.register(generator);
 
         Objects.requireNonNull(getCommand("dangerouscaves")).setExecutor(new Commander(this));
 
@@ -96,9 +89,5 @@ public class DangerousCaves extends JavaPlugin {
 
     public Configuration getConfiguration() {
         return cfg;
-    }
-
-    public CaveGenerator getGenerator() {
-        return generator;
     }
 }
