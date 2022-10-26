@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import java.util.function.BiPredicate;
 
 @FunctionalInterface
-public interface RegionProtector extends BiPredicate<CheckType, Location> {
+public interface RegionProtector extends BiPredicate<ActionType, Location> {
     /**
      * Called on plugin enable
      */
@@ -28,5 +28,5 @@ public interface RegionProtector extends BiPredicate<CheckType, Location> {
      * @return Is action allowed here
      */
     @Override
-    boolean test(CheckType type, Location location);
+    boolean test(ActionType type, Location location);
 }

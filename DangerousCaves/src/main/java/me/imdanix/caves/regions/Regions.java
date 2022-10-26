@@ -31,7 +31,7 @@ public enum Regions implements Manager<RegionProtector>, Configurable {
         current = new ArrayList<>();
     }
 
-    public boolean check(CheckType check, Location location) {
+    public boolean isAllowed(ActionType check, Location location) {
         for (RegionProtector regions : current) {
             if (!regions.test(check, location))
                 return false;

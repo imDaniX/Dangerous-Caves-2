@@ -2,7 +2,7 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
@@ -94,7 +94,7 @@ public class CaveGolem extends MobBase implements Listener {
                         Block block = event.getBlock();
                         if (mobs.checkWorld(block.getWorld().getName())
                                 && materials.contains(block.getType()) && Rng.chance(breakChance)
-                                && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
+                                && Regions.INSTANCE.isAllowed(ActionType.ENTITY, block.getLocation())) {
                             event.setDropItems(false);
                             event.setExpToDrop(0);
                             mobs.spawn(CaveGolem.this, block.getLocation())

@@ -1,6 +1,6 @@
 package me.imdanix.caves.regions.griefprevention;
 
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.RegionProtector;
 import me.ryanhamshire.GPFlags.Flag;
 import me.ryanhamshire.GPFlags.FlagManager;
@@ -31,11 +31,11 @@ public class GriefPreventionFlagsProtector implements RegionProtector {
     }
 
     @Override
-    public boolean test(CheckType checkType, Location location) {
-        Flag flag = switch (checkType) {
-            default -> entityFlag.GetFlagInstanceAtLocation(location, null);
-            case BLOCK -> blockFlag.GetFlagInstanceAtLocation(location, null);
-            case EFFECT -> effectFlag.GetFlagInstanceAtLocation(location, null);
+    public boolean test(ActionType actionType, Location location) {
+        Flag flag = switch (actionType) {
+            default -> entityFlag.getFlagInstanceAtLocation(location, null);
+            case BLOCK -> blockFlag.getFlagInstanceAtLocation(location, null);
+            case EFFECT -> effectFlag.getFlagInstanceAtLocation(location, null);
         };
         return flag != null;
     }

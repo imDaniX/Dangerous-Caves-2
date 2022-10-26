@@ -2,7 +2,7 @@ package me.imdanix.caves.caverns;
 
 import io.papermc.lib.PaperLib;
 import me.imdanix.caves.configuration.Configurable;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
@@ -25,7 +25,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -204,7 +203,7 @@ public class CavesAging implements Tickable, Configurable {
                     snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
                 continue;
 
-            if (!Regions.INSTANCE.check(CheckType.BLOCK, Locations.add(edge, x, y, z)))
+            if (!Regions.INSTANCE.isAllowed(ActionType.BLOCK, Locations.add(edge, x, y, z)))
                 continue;
 
             if (type == Material.TORCH) {

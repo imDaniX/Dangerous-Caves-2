@@ -1,13 +1,13 @@
 package me.imdanix.caves.mobs.defaults;
 
-import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
 import me.imdanix.caves.mobs.MobsManager;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Bukkit;
@@ -190,11 +190,11 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     public void tick(LivingEntity entity) {
         Block block = entity.getLocation().getBlock();
         if (((Monster)entity).getTarget() == null && block.getType().isAir() &&
-                Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation())) {
+                Regions.INSTANCE.isAllowed(ActionType.ENTITY, entity.getLocation())) {
             for (BlockFace face : Locations.HORIZONTAL_FACES)
                 if (block.getRelative(face).getType() == Material.CHEST) return;
             block.setType(Material.CHEST, false);
-            Materials.rotate(block, Locations.HORIZONTAL_FACES[Rng.nextInt(4)]);
+            Materials.rotate(block, Rng.randomElement(Locations.HORIZONTAL_FACES));
             TagHelper.setTag(block.getState(), "mimic-" + entity.getHealth());
             entity.remove();
 

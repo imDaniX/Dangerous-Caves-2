@@ -2,7 +2,7 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
@@ -90,7 +90,7 @@ public class DeadMiner extends MobBase implements CustomMob.Ticking, Listener {
         Block block = entity.getLocation().getBlock();
 
         if (block.getLightLevel() > 0 || (requiresTarget && ((Monster)entity).getTarget() == null) ||
-                !Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation()))
+                !Regions.INSTANCE.isAllowed(ActionType.ENTITY, block.getLocation()))
             return;
 
         if (block.getType().isAir() && Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) {

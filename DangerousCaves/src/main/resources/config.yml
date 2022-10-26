@@ -2,13 +2,13 @@
 # | Recoded by imDaniX
 
 # Version of this configuration file
-version: ${cfg-version}
+version: ${config.version}
 
 # NOTE: Chances
 # All the chances are in percents
 
 # NOTE: Formulas
-# For formulas you can use all common operators + - * / ^ ( ), for square roots you can use operator #
+# For formulas you can use all common operators + - * / ^ ( ). Some functions are also available, see https://github.com/imDaniX/EzMath/blob/master/src/main/java/me/imdanix/math/MathDictionary.java#L111
 # Also plugin will give you some variables to use in your expression
 # So, "12^2 * (45.342+32.1) / #43.1" will result you approximately "1698.6" (which is right)
 
@@ -24,7 +24,7 @@ version: ${cfg-version}
 
 # NOTE: Values
 # Materials(same as vanilla item ids; ignore LEGACY) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-# Sounds https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+# Sounds(same as vanilla sounds, but . replaced with _) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
 
 #
 # Some plugin integrations
@@ -69,7 +69,7 @@ integration:
       calculate-on-join: true
 
 #
-# Cave-related things
+# Cave-related mechanics
 #
 caverns:
 

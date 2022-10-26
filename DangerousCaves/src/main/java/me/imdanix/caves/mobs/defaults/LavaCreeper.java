@@ -2,10 +2,9 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
-import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -77,7 +76,7 @@ public class LavaCreeper extends MobBase implements CustomMob.Ticking, Listener 
             Block block = new Location(world, x, y, z).getBlock();
             if (block.getType().isAir()) {
                 if (fire > 0 && !block.getRelative(BlockFace.DOWN).getType().isAir() && Rng.chance(fire)) block.setType(Material.FIRE);
-            } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.check(CheckType.ENTITY, block.getLocation())) {
+            } else if (block.getType() != Material.BEDROCK && Regions.INSTANCE.isAllowed(ActionType.ENTITY, block.getLocation())) {
                 if (magmaBlock > 0 && Rng.chance(magmaBlock)) {
                     block.setType(Material.MAGMA_BLOCK);
                 } else if (obsidian > 0 && Rng.chance(obsidian)) {

@@ -2,7 +2,7 @@ package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.CustomMob;
 import me.imdanix.caves.mobs.MobBase;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.random.Rng;
@@ -95,7 +95,7 @@ public class MagmaMonster extends MobBase implements CustomMob.Ticking, Listener
         boolean fire;
         boolean magma;
         if (((fire = fireChance > 0 && Rng.chance(fireChance)) | (magma = magmaChance > 0 && Rng.chance(magmaChance))) &&
-                !Regions.INSTANCE.check(CheckType.ENTITY, entity.getLocation()))
+                !Regions.INSTANCE.isAllowed(ActionType.ENTITY, entity.getLocation()))
             return;
 
         if (fire) {

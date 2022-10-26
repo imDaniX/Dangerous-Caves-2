@@ -10,10 +10,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public final class Locations {
-    public static final BlockFace[] HORIZONTAL_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
+    public static final List<BlockFace> HORIZONTAL_FACES = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
     /**
      * Creates new Location instance and adds coordinates
@@ -25,18 +26,6 @@ public final class Locations {
      */
     public static Location add(Location loc, double x, double y, double z) {
         return new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z);
-    }
-
-    /**
-     * Creates new Location instance and subtracts coordinates
-     * @param loc Initial location
-     * @param x X to subtract
-     * @param y Y to subtract
-     * @param z Z to subtract
-     * @return Edited Location instance
-     */
-    public static Location subtract(Location loc, double x, double y, double z) {
-        return new Location(loc.getWorld(), loc.getX() - x, loc.getY() - y, loc.getZ() - z);
     }
 
     public static void loop(int radius, Location start, Consumer<Location> consumer) {

@@ -1,7 +1,7 @@
 package me.imdanix.caves.caverns;
 
 import me.imdanix.caves.configuration.Configurable;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
@@ -89,7 +89,7 @@ public class CaveIns implements Listener, Configurable {
         if (player.getGameMode() == GameMode.CREATIVE || !Locations.isCave(player.getLocation()) ||
                 (rabbitFoot && player.getInventory().contains(Material.RABBIT_FOOT))) return;
 
-        if (Regions.INSTANCE.check(CheckType.BLOCK, initBlock.getLocation()) && Rng.chance(chance)) {
+        if (Regions.INSTANCE.isAllowed(ActionType.BLOCK, initBlock.getLocation()) && Rng.chance(chance)) {
             Location blockLoc = initBlock.getLocation();
             if (blastSound) world.playSound(blockLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
             if (blastEffect) player.addPotionEffect(BLINDNESS);

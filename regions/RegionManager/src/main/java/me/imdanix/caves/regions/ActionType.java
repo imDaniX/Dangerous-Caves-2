@@ -1,5 +1,5 @@
 package me.imdanix.caves.regions;
 
-public enum CheckType {
+public enum ActionType {
     ENTITY, BLOCK, EFFECT
 }

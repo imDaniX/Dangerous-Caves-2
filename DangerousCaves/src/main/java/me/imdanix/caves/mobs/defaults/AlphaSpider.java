@@ -1,10 +1,9 @@
 package me.imdanix.caves.mobs.defaults;
 
 import me.imdanix.caves.mobs.MobBase;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
-import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.random.Rng;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,7 +55,7 @@ public class AlphaSpider extends MobBase implements Listener {
 
                 Locations.loop(3, loc, l -> {
                     if (l.getBlock().getType().isAir() && Rng.chance(cobwebChance) &&
-                            Regions.INSTANCE.check(CheckType.ENTITY, l)) {
+                            Regions.INSTANCE.isAllowed(ActionType.ENTITY, l)) {
                         l.getBlock().setType(Material.COBWEB);
                     }}
                 );

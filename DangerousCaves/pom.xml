@@ -25,7 +25,7 @@
                 </includes>
             </resource>
         </resources>
-        <finalName>Dangerous-Caves-${project.version}.${sub-version}</finalName>
+        <finalName>Dangerous-Caves-${project.version}.${project.subversion}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,14 +42,17 @@
                             <pattern>io.papermc.lib</pattern>
                             <shadedPattern>me.imdanix.caves.paperlib</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>me.imdanix.math</pattern>
+                            <shadedPattern>me.imdanix.caves.utils.math</shadedPattern>
+                        </relocation>
                     </relocations>
                     <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
                                 <Specification-Title>DangerousCaves - Make your caves scary</Specification-Title>
                                 <Implementation-Title>me.imdanix.caves</Implementation-Title>
-                                <Implementation-Version>${project.version}.${sub-version}</Implementation-Version>
+                                <Implementation-Version>${project.version}.${project.subversion}</Implementation-Version>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -81,7 +84,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${bukkit-version}</version>
+            <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -89,12 +92,21 @@
             <artifactId>paperlib</artifactId>
             <version>1.0.7</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.0</version>
             <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.github.imDaniX</groupId>
+            <artifactId>EzMath</artifactId>
+            <version>v3.2</version>
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

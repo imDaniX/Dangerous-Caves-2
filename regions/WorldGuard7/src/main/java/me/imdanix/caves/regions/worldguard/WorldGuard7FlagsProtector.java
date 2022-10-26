@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.RegionProtector;
 import org.bukkit.Location;
 
@@ -31,7 +31,7 @@ public class WorldGuard7FlagsProtector implements RegionProtector {
     }
 
     @Override
-    public boolean test(CheckType type, Location location) {
+    public boolean test(ActionType type, Location location) {
         ApplicableRegionSet set = getContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location));
         return switch (type) {
             case ENTITY -> set.testState(null, ENTITY_FLAG);

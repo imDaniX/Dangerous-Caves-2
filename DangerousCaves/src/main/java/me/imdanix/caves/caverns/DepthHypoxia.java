@@ -3,14 +3,15 @@ package me.imdanix.caves.caverns;
 import io.papermc.lib.PaperLib;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.placeholders.Placeholder;
-import me.imdanix.caves.regions.CheckType;
+import me.imdanix.caves.regions.ActionType;
 import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.ticks.TickLevel;
 import me.imdanix.caves.ticks.Tickable;
-import me.imdanix.caves.util.FormulasEvaluator;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
+import me.imdanix.math.FormulaEvaluator;
+import me.imdanix.math.MathDictionary;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -46,14 +47,14 @@ public class DepthHypoxia implements Tickable, Configurable {
 
     private boolean disabled;
 
-    private List<String> messages;
+    private final List<String> messages;
     private boolean actionbar;
     private double chance;
     private double maxChance;
     private double minChance;
     private int yMax;
 
-    private FormulasEvaluator formula;
+    private FormulaEvaluator formula;
     private Predicate<Player> condition;
 
     public DepthHypoxia(Plugin plugin) {
@@ -73,16 +74,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         messages.clear();
         messages.addAll(Utils.clr(cfg.getStringList("messages")));
         Utils.fillWorlds(cfg.getStringList("worlds"), worlds);
-        try {
-            formula = new FormulasEvaluator(cfg.getString("chance-formula", "depth*inventory"));
-            formula.setVariable("depth", 1d);
-            formula.setVariable("inventory", 1d);
-            formula.eval();
-        } catch (Exception e) {
-            formula = new FormulasEvaluator("depth*inventory");
-            Bukkit.getPluginManager().getPlugin("DangerousCaves").getLogger().warning("Depth Hypoxia formula " +
-                    "is invalid! Please fix the issue. \"depth*inventory\" formula is used instead.");
-        }
+        formula = new FormulaEvaluator(cfg.getString("chance-formula", "depth*inventory"), MathDictionary.INSTANCE);
 
         condition = placeholder.isEnabled() ? this::checkConditionsPH : this::checkConditions;
 
@@ -90,7 +82,6 @@ public class DepthHypoxia implements Tickable, Configurable {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void tick() {
         if (disabled) return;
 
@@ -116,7 +107,7 @@ public class DepthHypoxia implements Tickable, Configurable {
         Location loc = player.getLocation();
         return Locations.isCave(loc) && loc.getY() <= yMax &&
                 Rng.chance(chance) && Rng.chance(getChance(player)) &&
-                Regions.INSTANCE.check(CheckType.EFFECT, loc);
+                Regions.INSTANCE.isAllowed(ActionType.EFFECT, loc);
     }
 
     private boolean checkConditionsPH(Player player) {
@@ -133,7 +124,7 @@ public class DepthHypoxia implements Tickable, Configurable {
             double hypoxiaChance;
             boolean chanceCheck = Rng.chance(hypoxiaChance = getChance(player));
             placeholder.cachePlayer(hypoxiaChance, player);
-            return chanceCheck && Regions.INSTANCE.check(CheckType.EFFECT, loc);
+            return chanceCheck && Regions.INSTANCE.isAllowed(ActionType.EFFECT, loc);
         } else {
             placeholder.cachePlayer(getChance(player), player);
             return false;
@@ -150,9 +141,8 @@ public class DepthHypoxia implements Tickable, Configurable {
             weightChance += item.getAmount() / (float) item.getMaxStackSize();
         }
         weightChance /= contents.length;
-        formula.setVariable("depth", depthChance);
-        formula.setVariable("inventory", weightChance);
-        return Math.max(minChance, Math.min(maxChance, formula.eval()));
+        double calcChance = formula.eval(Map.of("depth", depthChance, "inventory", weightChance));
+        return Math.max(minChance, Math.min(maxChance, calcChance));
     }
 
     @Override
