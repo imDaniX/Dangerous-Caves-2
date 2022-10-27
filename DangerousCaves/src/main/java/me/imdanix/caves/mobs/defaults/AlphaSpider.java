@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -40,7 +41,13 @@ public class AlphaSpider extends MobBase implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onDamage(EntityDamageEvent event) {
+        if (!isThis(event.getEntity())) return;
+        if (event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAttack(EntityDamageByEntityEvent event) {
         if (!isThis(event.getDamager())) return;
         LivingEntity entity = (LivingEntity) event.getEntity();
         Entity damager = event.getDamager();

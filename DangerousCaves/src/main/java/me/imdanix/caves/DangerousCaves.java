@@ -47,14 +47,14 @@ public class DangerousCaves extends JavaPlugin {
         CavesAging cavesAging = new CavesAging(this);
         DepthHypoxia hypoxia = new DepthHypoxia(this);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             DCExpansion expansion = new DCExpansion(cfg);
             expansion.register(hypoxia.getPlaceholder());
             expansion.register();
         }
 
-        Bukkit.getPluginManager().registerEvents(mobsManager, this);
-        Bukkit.getPluginManager().registerEvents(caveIns, this);
+        getServer().getPluginManager().registerEvents(mobsManager, this);
+        getServer().getPluginManager().registerEvents(caveIns, this);
 
         dynamics.register(mobsManager);
         dynamics.register(ambient);

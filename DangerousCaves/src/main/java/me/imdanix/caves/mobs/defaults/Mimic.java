@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Other blocks like furnace?
+// TODO: Requires refactoring after uncompatibility
 public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     private static final PotionEffect BLINDNESS = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
     private static final ItemStack CHEST = new ItemStack(Material.CHEST);
@@ -73,7 +74,8 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
     protected void configure(ConfigurationSection cfg) {
         items = new ArrayList<>(Materials.getSet(cfg.getStringList("drop-items")));
         boolean skipPersistence = cfg.getBoolean("skip-persistence-check", false);
-        if (clean = cfg.getBoolean("remove-on-unload", false)) {
+        clean = cfg.getBoolean("remove-on-unload", false);
+        if (clean) {
             if (unloadListener == null) {
                 Bukkit.getPluginManager().registerEvents(unloadListener = new Listener() {
                     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -160,7 +162,7 @@ public class Mimic extends MobBase implements CustomMob.Ticking, Listener {
 
         PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
         if (!container.has(chunkKey, PersistentDataType.INTEGER)) return true;
-        Integer amount = container.get(chunkKey, PersistentDataType.INTEGER);
+        int amount = container.get(chunkKey, PersistentDataType.INTEGER);
         if (amount == 1) {
             container.remove(chunkKey);
         } else {

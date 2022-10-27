@@ -7,7 +7,6 @@ import me.imdanix.caves.regions.Regions;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Materials;
 import me.imdanix.caves.util.random.Rng;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -88,7 +87,7 @@ public class CaveGolem extends MobBase implements Listener {
 
         if (!materials.isEmpty() && (breakChance = cfg.getDouble("spawn-from-block") / 100) > 0) {
             if (breakListener == null) {
-                Bukkit.getPluginManager().registerEvents(breakListener = new Listener() {
+                plugin.getServer().getPluginManager().registerEvents(breakListener = new Listener() {
                     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
                     public void onBreak(BlockBreakEvent event) {
                         Block block = event.getBlock();

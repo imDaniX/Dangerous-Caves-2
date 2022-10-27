@@ -8,9 +8,10 @@ version: ${config.version}
 # All the chances are in percents
 
 # NOTE: Formulas
-# For formulas you can use all common operators + - * / ^ ( ). Some functions are also available, see https://github.com/imDaniX/EzMath/blob/master/src/main/java/me/imdanix/math/MathDictionary.java#L111
-# Also plugin will give you some variables to use in your expression
-# So, "12^2 * (45.342+32.1) / #43.1" will result you approximately "1698.6" (which is right)
+# For formulas you can use all common operators + - * / ^ ( ).
+# Some functions are also available, see https://github.com/imDaniX/EzMath/blob/master/src/main/java/me/imdanix/math/MathDictionary.java#L111
+# Plugin will also give you some variables to work with in your expressions
+# So, "12^2 * (45.342+32.1) / sqrt(43.1)" will result you approximately "1698.6" (which is right)
 
 # NOTE: Worlds
 # World names are case-sensitive
@@ -37,15 +38,18 @@ integration:
     # If you have several plugins, you can use multiple checks - just separate modes with comma
     # mode: worldguard-flags,griefprevention
     mode: none
+    # `worldguard` will block any actions within regions. `worldguard-flags` requires flags to be set up
     # WorldGuard flags:
     # dc-entity-grief (magma monster, lava creeper)
     # dc-block-change (cave-ins, caves aging)
     # dc-player-effect (ambient sounds, hypoxia)
+
     # `griefprevention-flags` mode requires GriefPreventionFlags plugin. You don't need it for `griefprevention`
     # GriefPreventionFlags flags:
     # DCNoEntityGrief (magma monster, lava creeper)
     # DCNoBlockChange (cave-ins, caves aging)
     # DCNoPlayerEffect (ambient sounds, hypoxia)
+
     # Lands settings:
     # ENTITY_GRIEFING (magma monster, lava creeper)
     # LEAF_DECAY (cave-ins, caves aging)
@@ -137,12 +141,13 @@ caverns:
     # Checking every PLAYER tick
     try-chance: 60
     # Result should be between 0 and 1, where 0 is 0% and 1 is 100%
-    # Depth (0-1) - depth of player, where 1 is Y 0, and 0 is y-max(from config)
+    # Depth (0-1) - depth of player, where 1 is Y world's min height and 0 is y-max(from config)
     # Inventory (0-1) - inventory fullness, where 1 is full and 0 is empty; slot considered as full if it has maximal amount of item inside(like 1 iron pickaxe, 16 ender pearls or 64 dirt)
     # For v2.1.9 behavior use "(depth+inventory)/2"
     # For original-like behavior just use "1" and set try-chance to 40
     chance-formula: "depth*inventory"
-    # Limit maximal and minimal chance of activation
+    # Limit maximal and minimal chances of activation
+    # So, if your formula gives a result of 5% and chance-min is 10%, the final chance will be 10%
     chance-min: 10
     chance-max: 90
     # Maximal Y where players can sense lack of air
@@ -173,8 +178,8 @@ caverns:
     y-max: 64
     # Chance of block will be affected
     change-chance: 2.5
-    # Maximal light level of block (0-15)
-    # WARNING: Can cause lags. This option checks every horizontal side of block to detect if there's any light
+    # Maximal light level of block (0-15).
+    # Can some cause some performance issues - this option starts to check every horizontal side of block to detect if there's any light
     max-light-level: 0
     # Vanilla ticks between chunk changes calculations. Larger value - better performance, but slower process
     schedule-timer: 4
@@ -291,7 +296,7 @@ mobs:
     # Place redstone torches instead of normal?
     red-torches: false
     # Place torches only if Dead Miner has entity as a target?
-    requires-target: false
+    requires-target: true
     # Cooldown in seconds between torches placing. Useful for preventing torch farms. Set to 0 to disable
     torches-cooldown: 12
     # When Dead Miner is damaged
@@ -393,7 +398,7 @@ mobs:
     priority: 7
     name: "&4Watcher"
     health: 15
-    # Get your custom head here https://minecraft-heads.com/
+    # You can get your custom head here https://minecraft-heads.com/
     # Just copy a "Value" (with =)
     head-value: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI5MzhmMjQxZDc0NDMzZjcyZjVjMzljYjgzYThlNWZmN2UxNzdiYTdjYjQyODY5ZGI2NGUzMDc5MTAyYmZjNSJ9fX0="
 
@@ -443,5 +448,13 @@ mobs:
       - LAPIS_ORE
       - DIAMOND_ORE
       - EMERALD_ORE
+      - COPPER_ORE
+      - DEEPSLATE_COAL_ORE
+      - DEEPSLATE_IRON_ORE
+      - DEEPSLATE_GOLD_ORE
+      - DEEPSLATE_LAPIS_ORE
+      - DEEPSLATE_DIAMOND_ORE
+      - DEEPSLATE_EMERALD_ORE
+      - DEEPSLATE_COPPER_ORE
     # Chance of spawning from block (only variants above)
     spawn-from-block: 0.5
