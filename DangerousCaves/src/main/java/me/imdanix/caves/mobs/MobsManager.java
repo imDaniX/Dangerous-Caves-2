@@ -1,6 +1,5 @@
 package me.imdanix.caves.mobs;
 
-import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configurable;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.ticks.Dynamics;
@@ -9,6 +8,7 @@ import me.imdanix.caves.ticks.Tickable;
 import me.imdanix.caves.util.Locations;
 import me.imdanix.caves.util.Manager;
 import me.imdanix.caves.util.PlayerAttackedEvent;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.util.Utils;
 import me.imdanix.caves.util.random.Rng;
 import me.imdanix.caves.util.random.WeightedPool;
@@ -33,7 +33,6 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;

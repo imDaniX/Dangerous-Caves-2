@@ -41,7 +41,7 @@ public class CavesAging implements Tickable, Configurable {
     ).build(true);
 
     private final Plugin plugin;
-    private final Map<String, Set<Bound>> skippedChunks;
+    private final Map<String, Set<Bound>> skippedChunks; // TODO Make part of RegionManager instead
     private final Set<String> worlds;
 
     private boolean disabled;
