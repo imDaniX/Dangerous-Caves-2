@@ -135,7 +135,7 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
         if (mob instanceof Configurable configurable)
             config.register(configurable);
         if (mob instanceof Listener listener)
-            Bukkit.getPluginManager().registerEvents(listener, plugin);
+            plugin.getServer().getPluginManager().registerEvents(listener, plugin);
         if (mob instanceof Tickable tickable)
             dynamics.register(tickable);
         if (mob instanceof CustomMob.Ticking ticking)
@@ -186,7 +186,6 @@ public class MobsManager implements Manager<CustomMob>, Listener, Tickable, Conf
      */
     public LivingEntity spawn(CustomMob mob, Location loc) {
         LivingEntity entity = mob.spawn(loc);
-        entity.addScoreboardTag(TagHelper.SCOREBOARD_TAG);
         TagHelper.setTag(entity, mob.getCustomType());
         if (metadata) entity.setMetadata("DangerousCaves", MARKER);
         if (mob instanceof CustomMob.Ticking ticking) {

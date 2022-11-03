@@ -16,6 +16,8 @@ public final class TagHelper {
 
     public static void setTag(LivingEntity entity, String tag) {
         entity.getPersistentDataContainer().set(MOB_KEY, PersistentDataType.STRING, tag);
+        entity.addScoreboardTag(SCOREBOARD_TAG);
+        entity.addScoreboardTag(mobScoreboardTag(tag));
     }
 
     public static void setTag(BlockState state, String tag) {
