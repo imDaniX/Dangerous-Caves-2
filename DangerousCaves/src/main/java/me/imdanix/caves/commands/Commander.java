@@ -1,11 +1,11 @@
 package me.imdanix.caves.commands;
 
 import me.imdanix.caves.DangerousCaves;
-import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.configuration.Configuration;
 import me.imdanix.caves.mobs.MobsManager;
 import me.imdanix.caves.ticks.Dynamics;
 import me.imdanix.caves.ticks.TickLevel;
+import me.imdanix.caves.util.TagHelper;
 import me.imdanix.caves.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -57,21 +57,10 @@ public class Commander implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             help(sender, label);
         } else switch (args[0].toLowerCase(Locale.ROOT)) {
-            case "info" -> {
-                if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Utils.clr("&cYou can't execute this subcommand from the console!"));
-                    return true;
-                } else if (!sender.hasPermission("dangerous.caves.command.info")) return false;
-                Location loc = player.getLocation();
-                sender.sendMessage(Utils.clr("&bWorld: &f") + loc.getWorld().getName());
-                sender.sendMessage(Utils.clr("&bChunk: &f") + loc.getChunk().getX() + "," + loc.getChunk().getZ());
-                sender.sendMessage(Utils.clr("&bHand: &f") + player.getInventory().getItemInMainHand().getType());
-            }
-
             // TODO: "debug"
 
             case "summon", "spawn" -> {
-                if (!sender.hasPermission("dangerous.caves.command.summon")) return false;
+                if (!sender.hasPermission("dangerouscaves.command.summon")) return false;
                 if (args.length < 2) {
                     sender.sendMessage(Utils.clr("&cYou should specify mob's type to summon!"));
                     return true;
@@ -91,7 +80,7 @@ public class Commander implements CommandExecutor, TabCompleter {
             }
 
             case "kill" -> {
-                if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
+                if (!sender.hasPermission("dangerouscaves.command.kill")) return false;
                 if (args.length < 2) {
                     killAll(LivingEntity::remove);
                     sender.sendMessage(Utils.clr("&aSuccessfully killed all DC mobs."));
@@ -109,7 +98,7 @@ public class Commander implements CommandExecutor, TabCompleter {
 
             // TODO v Temporary command - need to finish mimics...
             case "mimeremove" -> { // /dcaves mimeremove 3 me
-                if (!sender.hasPermission("dangerous.caves.command.kill")) return false;
+                if (!sender.hasPermission("dangerouscaves.command.kill")) return false;
                 boolean checkAll = args.length < 3 || !args[2].equalsIgnoreCase("all") || sender instanceof ConsoleCommandSender;
                 int radius = args.length < 2 ? 1 : (int) Utils.getDouble(args[1], 1);
 
@@ -140,13 +129,13 @@ public class Commander implements CommandExecutor, TabCompleter {
             // TODO ^
 
             case "tick" -> {
-                if (!sender.hasPermission("dangerous.caves.command.tick")) return false;
+                if (!sender.hasPermission("dangerouscaves.command.tick")) return false;
                 for (TickLevel level : TickLevel.values()) dynamics.tick(level);
                 sender.sendMessage(Utils.clr("&aTicked every tickables."));
             }
 
             case "reload", "r" -> {
-                if (!sender.hasPermission("dangerous.caves.command.reload")) return false;
+                if (!sender.hasPermission("dangerouscaves.command.reload")) return false;
                 cfg.reloadYml();
                 sender.sendMessage(Utils.clr("&aPlugin was successfully reloaded."));
                 cfg.checkVersion(true);

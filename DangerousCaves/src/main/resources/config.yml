@@ -166,21 +166,19 @@ caverns:
     # List of worlds where aging will be processed
     worlds:
       - world
-    # Chance of caves near player will be affected
+    # Chance of a chunk near player being affected
     # Checking every WORLD tick
     chance: 50
-    # Use `chance` for every chunk near players rather than just every player
-    use-chance-per-chunk: false
     # Radius of cave aging near player
     # In chunks (+1 where the player is)
     radius: 3
     # Maximal Y where aging will be processed
-    y-max: 64
+    y-max: 80
     # Chance of block will be affected
     change-chance: 2.5
-    # Maximal light level of block (0-15).
-    # Can some cause some performance issues - this option starts to check every horizontal side of block to detect if there's any light
-    max-light-level: 0
+    # Maximal light level of block (0-15). Set to -1 to disable the check
+    # Can cause some performance issues - this option will force checking every horizontal side of block to detect if there's any light
+    max-light-level: -1
     # Vanilla ticks between chunk changes calculations. Larger value - better performance, but slower process
     schedule-timer: 4
     # Force chunk loading if chunk was unloaded during scheduled aging. Disable if it's too intensive for your server
@@ -201,6 +199,7 @@ caverns:
       mushrooms: true
       replace: true
     # Replace torch on caves aging. Not affected by `change-chance`
+    # Obviously, doesn't work with max-light-level
     torch-remove-chance: 40
     # List of coordinates of chunks that should be ignored
     # To get chunk coordinates just divide your coordinates by 16 and ignore remainder(or use command)

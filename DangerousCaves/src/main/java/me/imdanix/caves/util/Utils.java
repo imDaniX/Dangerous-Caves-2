@@ -5,14 +5,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public final class Utils {
@@ -27,14 +30,14 @@ public final class Utils {
         return list;
     }
 
-    public static void fillWorlds(List<String> worldsCfg, Collection<String> worlds) {
-        worlds.clear();
-        if (worldsCfg.isEmpty()) {
+    public static void fillWorlds(List<String> worldsStr, Collection<String> into) {
+        into.clear();
+        if (worldsStr.isEmpty()) {
             for (World world : Bukkit.getWorlds()) {
                 if (world.getEnvironment() == World.Environment.NORMAL)
-                    worlds.add(world.getName());
+                    into.add(world.getName());
             }
-        } else worlds.addAll(worldsCfg);
+        } else into.addAll(worldsStr);
     }
 
     public static void setMaxHealth(LivingEntity entity, double health) {
@@ -70,6 +73,17 @@ public final class Utils {
         } catch (IllegalArgumentException e) {
             return def;
         }
+    }
+
+    public static <T> void runIteratingTask(Plugin plugin, Collection<T> col, Consumer<T> action, long timeout) {
+        Iterator<T> iterator = col.iterator();
+        plugin.getServer().getScheduler().runTaskTimer(plugin, (task) -> {
+            if (iterator.hasNext()) {
+                action.accept(iterator.next());
+            } else {
+                task.cancel();
+            }
+        }, timeout, timeout);
     }
 
     public static double getDouble(String str, double def) {

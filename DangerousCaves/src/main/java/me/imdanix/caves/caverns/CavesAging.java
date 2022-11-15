@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 public class CavesAging implements Tickable, Configurable {
@@ -51,7 +50,6 @@ public class CavesAging implements Tickable, Configurable {
     private int radius;
     private int yMax;
     private double chance;
-    private boolean chancePerChunks;
     private double agingChance;
     private int schedule;
     private boolean forceLoad;
@@ -75,14 +73,12 @@ public class CavesAging implements Tickable, Configurable {
     @Override
     public void reload(ConfigurationSection cfg) {
         radius = Math.max(cfg.getInt("radius", 3), 1);
-        yMax = Math.min(128, cfg.getInt("y-max", 80));
+        yMax = cfg.getInt("y-max", 80);
         chance = cfg.getDouble("chance", 50) / 100;
-        chancePerChunks = cfg.getBoolean("use-chance-per-chunk", false);
-        agingChance = cfg.getDouble("change-chance", 25) / 100;
-        lightLevel = cfg.getInt("max-light-level", 0);
-        if (lightLevel > 0) {
+        agingChance = cfg.getDouble("change-chance", 2.5) / 100;
+        lightLevel = cfg.getInt("max-light-level", -1);
+        if (lightLevel >= 0) {
             lightLevelCheck = (b) -> {
-                if (b.getLightFromBlocks() >= lightLevel) return false;
                 for (BlockFace face : Locations.HORIZONTAL_FACES)
                     if (b.getRelative(face).getLightFromBlocks() >= lightLevel) return false;
                 return true;
@@ -122,23 +118,37 @@ public class CavesAging implements Tickable, Configurable {
     public void tick() {
         if (disabled) return;
 
-        for (World world : Bukkit.getWorlds()) {
-            if (!worlds.contains(world.getName())) continue;
-            Set<QueuedChunk> chunks = new HashSet<>();
-            for (Player player : world.getPlayers()) {
-                if (!chancePerChunks && !Rng.chance(chance)) continue;
-                Chunk start = player.getLocation().getChunk();
-                // TODO: Move it to async too?
-                for (int x = start.getX() - radius; x <= start.getX() + radius; x++) {
-                    for (int z = start.getZ() - radius; z <= start.getZ() + radius; z++) {
-                        if (isAllowed(world, x, z)) {
-                            chunks.add(new QueuedChunk(x, z));
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (String worldName : worlds) {
+                World world = Bukkit.getWorld(worldName);
+                if (world == null) continue;
+                Set<QueuedChunk> chunks = new HashSet<>();
+                for (Player player : world.getPlayers()) {
+                    if (!player.isOnline() || player.getWorld() != world) continue;
+                    Location startLoc = player.getLocation();
+                    int xCenter = startLoc.getBlockX() >> 4;
+                    int zCenter = startLoc.getBlockZ() >> 4;
+                    for (int x = xCenter - radius, xMax = xCenter + radius; x <= xMax; x++) {
+                        for (int z = zCenter - radius, zMax = zCenter + radius; z <= zMax; z++) {
+                            if (isAllowed(world, x, z)) {
+                                chunks.add(new QueuedChunk(x, z));
+                            }
                         }
                     }
                 }
+                if (chunks.isEmpty()) continue;
+                Utils.runIteratingTask(plugin, chunks, (queuedChunk) -> {
+                    Chunk chunk = queuedChunk.getChunk(world);
+                    if (chunk == null || !chunk.isLoaded()) {
+                        if (forceLoad) {
+                            PaperLib.getChunkAtAsync(world, queuedChunk.x, queuedChunk.z).thenAccept(
+                                    this::proceedChunk
+                            );
+                        }
+                    } else proceedChunk(chunk);
+                }, schedule);
             }
-            proceedChunks(world.getUID(), chunks);
-        }
+        });
     }
 
     private boolean isAllowed(World world, int x, int z) {
@@ -149,65 +159,52 @@ public class CavesAging implements Tickable, Configurable {
         return true;
     }
 
-    private void proceedChunks(UUID worldId, Set<QueuedChunk> chunks) {
-        int timer = 0;
-        for (QueuedChunk queuedChunk : chunks) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                World world = Bukkit.getWorld(worldId);
-                if (world == null) return;
-                Chunk chunk = queuedChunk.getChunk(world);
-                if (!chunk.isLoaded()) {
-                    if (forceLoad) {
-                        PaperLib.getChunkAtAsync(world, queuedChunk.x, queuedChunk.z).thenAccept(
-                                this::proceedChunk
-                        );
-                    }
-                } else proceedChunk(chunk);
-            }, (timer += schedule));
-        }
-    }
-
     private void proceedChunk(Chunk chunk) {
-        Location edge = chunk.getBlock(0, 0, 0).getLocation();
+        Location edge = chunk.getBlock(0, chunk.getWorld().getMinHeight(), 0).getLocation();
         ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (chancePerChunks && !Rng.chance(chance)) return;
-            List<DelayedChange> changes = calculateChanges(edge, snapshot);
+        int minHeight = chunk.getWorld().getMinHeight();
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Rng.chance(chance)) return;
+            List<DelayedChange> changes = calculateChanges(edge, snapshot, minHeight);
             if (changes.isEmpty()) return;
 
-            Bukkit.getScheduler().runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
+            plugin.getServer().getScheduler().runTask(plugin, () -> changes.forEach(change -> change.perform(chunk)));
         });
     }
 
-    private List<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot) {
+    private List<DelayedChange> calculateChanges(Location edge, ChunkSnapshot snapshot, int minHeight) {
         List<DelayedChange> changes = new ArrayList<>();
 
-        int count = 0;
+        int affectedCount = 0;
         int totalCount = 0;
-        for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = edge.getWorld().getMinHeight() + 2; y <= yMax; y++) { // TODO Configurable aging script
+        for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = minHeight + 2; y <= yMax; y++) { // TODO Configurable aging script
             Material type = snapshot.getBlockType(x, y, z);
-
-            if (type.isAir())
-                continue;
+            if (type.isAir()) continue;
 
             totalCount++;
 
-            if (AGING_MATERIALS.contains(type))
-                count++;
+            if (AGING_MATERIALS.contains(type)) {
+                affectedCount++;
+            }
 
-            if (snapshot.getBlockSkyLight(x, y, z) > 0)
-                break;
+            if (snapshot.getBlockSkyLight(x, y, z) > 0) {
+                break; // We're breaking Y for-loop, as there's no reason to check further
+            }
 
-            if (lightLevel > 0 && (snapshot.getBlockEmittedLight(x, y+1, z) >= lightLevel ||
-                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel))
+            if (lightLevel >= 0 && (
+                    snapshot.getBlockEmittedLight(x, y, z) >= lightLevel ||
+                    snapshot.getBlockEmittedLight(x, y+1, z) >= lightLevel ||
+                    snapshot.getBlockEmittedLight(x, y-1, z) >= lightLevel
+            )) continue;
+
+            if (!Regions.INSTANCE.isAllowed(ActionType.BLOCK, Locations.add(edge, x, y, z))) {
                 continue;
-
-            if (!Regions.INSTANCE.isAllowed(ActionType.BLOCK, Locations.add(edge, x, y, z)))
-                continue;
+            }
 
             if (type == Material.TORCH) {
-                if (torchRemove > 0 && Rng.chance(torchRemove))
+                if (torchRemove > 0 && Rng.chance(torchRemove)) {
                     changes.add(new DelayedChange(x, y, z, ChangeType.TORCH_AIR));
+                }
             } else if (replaceBlocks.contains(type) && Rng.chance(agingChance)) {
                 if (withReplace) {
                     switch (Rng.nextInt(6)) {
@@ -232,8 +229,7 @@ public class CavesAging implements Tickable, Configurable {
 
                 if (snapshot.getBlockType(x, y+1, z).isAir()){
                     if (withMushrooms && Rng.chance(0.111)) {
-                        changes.add(new DelayedChange(x, y+1, z, Rng.nextBoolean() ?
-                                                                 ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
+                        changes.add(new DelayedChange(x, y+1, z, Rng.nextBoolean() ? ChangeType.RED_MUSHROOM : ChangeType.BROWN_MUSHROOM));
                     } else if (withRocks && Rng.chance(0.167)) {
                         changes.add(new DelayedChange(x, y+1, z, ChangeType.ROCK));
                     }
@@ -241,7 +237,7 @@ public class CavesAging implements Tickable, Configurable {
             }
         }
 
-        return count / (float)++totalCount > percentage ? Collections.emptyList() : changes;
+        return affectedCount / (double) ++totalCount > percentage ? Collections.emptyList() : changes;
     }
 
     @Override
@@ -283,14 +279,12 @@ public class CavesAging implements Tickable, Configurable {
                     }
                 }
                 case RED_MUSHROOM -> {
-                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
-                        return;
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.RED_MUSHROOM, false);
                 }
                 case BROWN_MUSHROOM -> {
-                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType()))
-                        return;
+                    if (!type.isAir() || !Materials.isCave(block.getRelative(BlockFace.DOWN).getType())) return;
                     if (block.getLightLevel() > 12) return;
                     block.setType(Material.BROWN_MUSHROOM, false);
                 }
@@ -306,7 +300,7 @@ public class CavesAging implements Tickable, Configurable {
                 }
                 case COBBLESTONE -> {
                     if (!replaceBlocks.contains(type)) return;
-                    block.setType(Material.COBBLESTONE, false);
+                    block.setType(type == Material.DEEPSLATE ? Material.COBBLED_DEEPSLATE : Material.COBBLESTONE, false);
                 }
                 case ANDESITE -> {
                     if (!replaceBlocks.contains(type)) return;
@@ -326,7 +320,7 @@ public class CavesAging implements Tickable, Configurable {
 
     private record QueuedChunk(int x, int z) {
         public Chunk getChunk(World world) {
-            return world.getChunkAt(x, z);
+            return world.isChunkLoaded(x, z) ? world.getChunkAt(x, z) : null;
         }
     }
 }
