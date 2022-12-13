@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.github.ShaneBeee</groupId>
             <artifactId>GriefPreventionFlags</artifactId>
-            <version>5.9.4</version>
+            <version>5.10.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
