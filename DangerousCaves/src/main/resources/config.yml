@@ -225,7 +225,8 @@ mobs:
   worlds:
     - world
 
-  # Maximal Y coordinate where custom mobs can spawn
+  # Minimal and maximal Y coordinate where custom mobs can spawn
+  y-min: -60
   y-max: 64
 
   # Block renaming with name-tags
